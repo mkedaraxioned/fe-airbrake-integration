@@ -7,10 +7,11 @@ import { App } from './App';
 import reportWebVitals from './reportWebVitals';
 import * as serviceWorker from './serviceWorker';
 import { persistor, store } from './store';
+import { costomTheme } from './styles/theme';
 
 ReactDOM.render(
   <React.StrictMode>
-    <ChakraProvider theme={theme}>
+    <ChakraProvider theme={costomTheme}>
       <ColorModeScript />
       <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>
