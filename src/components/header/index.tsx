@@ -32,7 +32,7 @@ const Header = () => {
               <FaSearch />
             </Box>
             <Box w='full'>
-              <Input placeholder='Search Projects' w='full' boxSizing='border-box' border='none' />
+              <Input placeholder='Search Projects' w='full' boxSizing='border-box' border='none' _focus={{border:'none'}} />
             </Box>
             <Box w='60px' textAlign='center'>
               <Text fontSize='12px'> Ctrl + K</Text>

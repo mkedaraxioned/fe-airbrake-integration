@@ -146,6 +146,7 @@ const Calendar = ({ showDetailsHandle }: Props) => {
   const setTodaysDate = () => {
     setSelectedDate(new Date());
     setCurrentMonth(new Date());
+    showDetailsHandle(format(new Date(), 'dd-MM-yyyy'));
   };
 
   return (

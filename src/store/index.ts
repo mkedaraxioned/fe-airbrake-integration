@@ -11,16 +11,17 @@ import {
   REGISTER,
   REHYDRATE,
 } from 'redux-persist';
+import { PersistConfig } from '../interfaces/storeInterface';
 
 const reducers = combineReducers({
   counter: counterReducer,
 });
 
-const persistConfig = {
+const persistConfig: PersistConfig = {
   key: 'root',
   storage,
 };
-const persistedReducer: any = persistReducer(persistConfig, reducers);
+const persistedReducer = persistReducer(persistConfig, reducers);
 
 export const store = configureStore({
   reducer: persistedReducer,
