@@ -9,10 +9,9 @@ import {
   getMonth,
   startOfMonth,
   endOfWeek,
-  previousDay,
 } from 'date-fns';
-import { Box, Button, Flex, HStack, Text } from '@chakra-ui/react';
-import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
+import { Box, Flex, HStack, Text } from '@chakra-ui/react';
+import { HiOutlineChevronLeft, HiOutlineChevronRight } from 'react-icons/hi';
 import { endOfMonth } from 'date-fns/esm';
 
 interface Props {
@@ -47,27 +46,29 @@ const Calendar = ({ showDetailsHandle }: Props) => {
             onClick={() => changeMonthHandle('prev')}
             cursor='pointer'
           >
-            <FaChevronLeft />
+            <HiOutlineChevronLeft size='21' />
           </Box>
         </Box>
         <Box className='col col-center' fontWeight='semibold'>
-          <span>{format(currentMonth, dateFormat)}</span>
+          <Text fontSize='18.77px' lineHeight='22px' color='primary'>
+            {format(currentMonth, dateFormat)}
+          </Text>
         </Box>
         <Box className='col col-end'>
           <Box onClick={() => changeMonthHandle('next')} cursor='pointer'>
-            <FaChevronRight />
+            <HiOutlineChevronRight size='21' />
           </Box>
         </Box>
       </Flex>
     );
   };
   const renderDays = () => {
-    const dateFormat = 'EEE';
+    const dateFormat = 'EEEEE';
     const days = [];
-    const startDate = startOfWeek(currentMonth, { weekStartsOn: 1 });
+    const startDate = startOfWeek(currentMonth, { weekStartsOn: 0 });
     for (let i = 0; i < 7; i++) {
       days.push(
-        <Box w='46px' h='46px' lineHeight='46px' key={i}>
+        <Box w='55px' h='52px' lineHeight='52px' fontSize='14.55px' color='textLightMid' key={i}>
           {format(addDays(startDate, i), dateFormat)}
         </Box>
       );
@@ -77,8 +78,8 @@ const Calendar = ({ showDetailsHandle }: Props) => {
   const renderCells = () => {
     const monthStart = startOfMonth(currentMonth);
     const monthEnd = endOfMonth(monthStart);
-    const startDate = previousDay(startOfWeek(monthStart),1);
-    const endDate = previousDay(endOfWeek(monthEnd),1)
+    const startDate = startOfWeek(monthStart);
+    const endDate = endOfWeek(monthEnd);
 
     const dateFormat = 'd';
     const rows = [];
@@ -97,19 +98,22 @@ const Calendar = ({ showDetailsHandle }: Props) => {
 
         days.push(
           <Box
-            w='46px'
-            h='46px'
+            w='55px'
+            h='52px'
+            lineHeight='52px'
             bg={`${
               isSameDay(day, selectedDate)
-                ? 'green.300'
+                ? 'primary'
                 : isSameDay(day, selectedDate)
                 ? 'orange.100'
                 : 'white'
             }`}
             color={`${
-              month !== currentMonth.getMonth() || getTime > curTime
-                ? 'blackAlpha.600'
-                : 'black'
+              month !== currentMonth.getMonth()
+                ? 'textLightExtra'
+                : isSameDay(day, selectedDate)
+                ? 'white'
+                : 'textLight'
             }`}
             pointerEvents={`${
               month !== currentMonth.getMonth() || getTime > curTime
@@ -121,21 +125,25 @@ const Calendar = ({ showDetailsHandle }: Props) => {
                 ? 'not-allowed'
                 : 'pointer'
             }`}
-            lineHeight='46px'
             key={i}
             onClick={() => {
               const dayStr = format(cloneDay, 'dd-MM-yyyy');
               onDateClickHandle(cloneDay, dayStr);
             }}
           >
-            <span className='number'>{formattedDate}</span>
+            <Text as='span' fontSize='12.47px' lineHeight='18.7px'>{formattedDate}</Text>
           </Box>
         );
         day = addDays(day, 1);
       }
 
       rows.push(
-        <Box display='flex' flexWrap='wrap' className='date_row' key={day.getTime()}>
+        <Box
+          display='flex'
+          flexWrap='wrap'
+          className='date_row'
+          key={day.getTime()}
+        >
           {days}
         </Box>
       );
@@ -151,18 +159,46 @@ const Calendar = ({ showDetailsHandle }: Props) => {
   };
 
   return (
-    <Box w='322px' textAlign='center'>
-      <HStack p='30px 0' justifyContent='space-between'>
-        <Text fontSize='22px' fontWeight='semibold'>
+    <Box mt='30px' textAlign='center' bg='white' p='12px 35px 5px 35px'>
+      <HStack p='10px 0' justifyContent='center'>
+        {/* <Text fontSize='22px' fontWeight='semibold'>
           Select a date
         </Text>
         <Button bg='primary' color='white' size='sm' onClick={setTodaysDate}>
           Today
-        </Button>
+        </Button> */}
+        <Text
+          color='primary'
+          fontSize='22px'
+          lineHeight='33px'
+          fontWeight='bold'
+        >
+          {' '}
+          Today,{format(new Date(), 'MMM do')}
+        </Text>
       </HStack>
       {renderHeader()}
       {renderDays()}
       {renderCells()}
+      <HStack
+        p='18px 0'
+        color='textLight'
+        fontSize='12px'
+        justifyContent='space-between'
+      >
+        <HStack>
+          <Text w='9px' h='9px' rounded='full' bg='bPink'></Text>
+          <Text>No time logged</Text>
+        </HStack>
+        <HStack>
+          <Text w='9px' h='9px' rounded='full' bg='bOrange'></Text>
+          <Text>Time logged partially</Text>
+        </HStack>
+        <HStack>
+          <Text w='9px' h='9px' rounded='full' bg='bGreen'></Text>
+          <Text>Time logged</Text>
+        </HStack>
+      </HStack>
     </Box>
   );
 };

@@ -1,11 +1,16 @@
 import { extendTheme } from '@chakra-ui/react';
+import Button from './buttonStyleComponent'
+import { lighten } from '@chakra-ui/theme-tools';
 
 export const costomTheme = extendTheme({
   styles: {
     global: {
+      body:{
+        backgroundColor:'bgPrimary',
+      },
       '.wrapper': {
-        maxWidth: '1380px',
-        width: '95%',
+        maxWidth: '1410px',
+        width: '94%',
         margin: '0 auto',
       },
       '.menu-anchor': {
@@ -31,5 +36,18 @@ export const costomTheme = extendTheme({
   },
   colors: {
     primary: '#201547',
+    primaryLight: '#201547',
+    bgPrimary:'#F4FBFF',
+    bgSecondary:'#16C6CC',
+    textLight:'#7C7A80',
+    textLightExtra:'#A5A5A5',
+    textLightMid:'#9C9C9C',
+    bPink: '#F64545',
+    bOrange: '#FF781C',
+    bGreen:'#5AD030',
+    borderPrimary:'#E7E7E7',
+  },
+  components: {
+    Button,
   },
 });
