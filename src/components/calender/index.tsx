@@ -9,6 +9,7 @@ import {
   getMonth,
   startOfMonth,
   endOfWeek,
+  previousDay,
 } from 'date-fns';
 import { Box, Button, Flex, HStack, Text } from '@chakra-ui/react';
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
@@ -63,7 +64,7 @@ const Calendar = ({ showDetailsHandle }: Props) => {
   const renderDays = () => {
     const dateFormat = 'EEE';
     const days = [];
-    const startDate = startOfWeek(currentMonth, { weekStartsOn: 0 });
+    const startDate = startOfWeek(currentMonth, { weekStartsOn: 1 });
     for (let i = 0; i < 7; i++) {
       days.push(
         <Box w='46px' h='46px' lineHeight='46px' key={i}>
@@ -76,8 +77,8 @@ const Calendar = ({ showDetailsHandle }: Props) => {
   const renderCells = () => {
     const monthStart = startOfMonth(currentMonth);
     const monthEnd = endOfMonth(monthStart);
-    const startDate = startOfWeek(monthStart);
-    const endDate = endOfWeek(monthEnd);
+    const startDate = previousDay(startOfWeek(monthStart),1);
+    const endDate = previousDay(endOfWeek(monthEnd),1)
 
     const dateFormat = 'd';
     const rows = [];
@@ -134,13 +135,13 @@ const Calendar = ({ showDetailsHandle }: Props) => {
       }
 
       rows.push(
-        <Box display='flex' flexWrap='wrap' key={day.getTime()}>
+        <Box display='flex' flexWrap='wrap' className='date_row' key={day.getTime()}>
           {days}
         </Box>
       );
       days = [];
     }
-    return <div className='body'>{rows}</div>;
+    return <div className='date_body'>{rows}</div>;
   };
 
   const setTodaysDate = () => {
