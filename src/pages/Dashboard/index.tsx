@@ -1,4 +1,4 @@
-import { Box, Flex, Heading, HStack, ListItem, UnorderedList, VStack } from '@chakra-ui/react';
+import { Box, Flex, Heading, ListItem, UnorderedList } from '@chakra-ui/react';
 import React from 'react';
 import Calendar from '../../components/calender';
 import TaskList from '../../components/taskList';

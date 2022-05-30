@@ -11,7 +11,7 @@ import { costomTheme } from './styles/theme';
 
 ReactDOM.render(
   <React.StrictMode>
-    <ChakraProvider theme={costomTheme}>
+    <ChakraProvider resetCSS theme={costomTheme}>
       <ColorModeScript />
       <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>
