@@ -61,7 +61,7 @@ const AddClient = () => {
               <Link to='/'>Home</Link>
             </BreadcrumbItem>
             <BreadcrumbItem>
-              <Text color='textLight'>Docs</Text>
+              <Text color='textLight'>Add Client</Text>
             </BreadcrumbItem>
           </Breadcrumb>
           <Box p='16px 20px' mt='30px' bg='white' color='primary'>
