@@ -22,7 +22,6 @@ import {
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Calendar from '../../components/calender';
-import CustomCheckbox from '../../components/customCheckBox';
 
 const Team = () => {
   const [checked, setChecked] = useState(false);
@@ -37,7 +36,7 @@ const Team = () => {
     } else {
       myVar = 'admin';
     }
-    console.log(myVar)
+    console.log(myVar);
   };
 
   return (
@@ -180,9 +179,6 @@ const Team = () => {
                     </Td>
                     <Td>vipiny@axioned.com</Td>
                     <Td>
-                      {/* <Checkbox w='44px' h='22px' boxShadow='unset' position='relative' _before={{content:`""`,width:'18px',height:'18px', m:'1px', rounded:'full', position:'absolute', zIndex:'5', backgroundColor:'white'}}
-                      _after={{content:`""`,width:'full',height:'full', rounded:'full', position:'absolute', zIndex:'4', bg:'#1890FF'}}
-                      _checked={{_before:{right:'0',},_after:{bg:'#BFBFBF'}}}/> */}
                       <Switch onChange={() => switchHandler('normal')} />
                     </Td>
                   </Tr>
