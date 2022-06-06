@@ -12,10 +12,10 @@ export const styles = {
     '.date_row div': {
       border: '.7px solid #E9F2F9',
     },
-    '.date_row div:nth-child(7n)': {
+    '.date_row div:nth-of-type(7n)': {
       borderRight: 'none',
     },
-    '.date_row div:nth-child(1n)': {
+    '.date_row div:nth-of-type(1n)': {
       borderLeft: 'none',
       borderTop: 'none',
     },
