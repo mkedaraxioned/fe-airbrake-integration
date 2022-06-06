@@ -1,4 +1,4 @@
-import { Box, Flex, Heading, ListItem, UnorderedList } from '@chakra-ui/react';
+import { Avatar, Box, Flex, Heading, ListItem, Text, UnorderedList } from '@chakra-ui/react';
 import React from 'react';
 import Calendar from '../../components/calender';
 import TaskList from '../../components/taskList';
@@ -11,31 +11,68 @@ const Dashboard = () => {
   return (
     <Box className='wrapper'>
       <Flex>
-        <Box mr='50px'>
+        <Box pt='40px' flexBasis='23%' mr='50px'>
           <Calendar showDetailsHandle={showDetailsHandle} />
-          <Box p='20px 30px'>
-            <Heading as='h2' fontSize='22px' lineHeight='32px' color='primary'>
-              Recently Used
-            </Heading>
-            <UnorderedList listStyleType='none' m='0' color='primary'>
-              <ListItem fontSize='16px' lineHeight='24px' m='14px 0'># Teenlife website maintenance (Sprint 2 - #ICJ..)</ListItem>
-              <ListItem fontSize='16px' lineHeight='24px' m='14px 0'># TEG - WordPress maintenance (Month 46)</ListItem>
-              <ListItem fontSize='16px' lineHeight='24px' m='14px 0'># Pandamic Action Network (Months 65)</ListItem>
-              <ListItem fontSize='16px' lineHeight='24px' m='14px 0'># Shutterstock (Months 65)</ListItem>
-              <ListItem fontSize='16px' lineHeight='24px' m='14px 0'># Teenlife website maintenance (Sprint 2 - #ICJ..)</ListItem>
-              <ListItem fontSize='16px' lineHeight='24px' m='14px 0'># TEG - WordPress maintenance (Month 46)</ListItem>
-              <ListItem fontSize='16px' lineHeight='24px' m='14px 0'># Pandamic Action Network (Months 65)</ListItem>
-            </UnorderedList>
-          </Box>
         </Box>
-        <Box w='529px'>
-          <Box p='16px 20px' mt='30px' bg='white' color='primary'>
-            <Heading as='h3'fontSize='22px' lineHeight='33px'>Project 1</Heading>
-            <TimeLogFrom/>
+        <Box
+          p='40px 55px 0'
+          borderLeft='1px'
+          borderRight='1px'
+          borderColor='borderColor'
+          flexBasis='47%'
+        >
+          <Box>
+            <Heading as='h3' fontSize='22px' lineHeight='27.65px' color='textColor'>
+            Add a new entry
+            </Heading>
+            <TimeLogFrom />
           </Box>
           <Box mt='30px'>
-            <TaskList/>
+            <TaskList />
           </Box>
+        </Box>
+        <Box p='40px 0 0 47px'>
+          <Heading as='h2' fontSize='22px' lineHeight='27.65px' color='textLightMid'>
+            Recently Used
+          </Heading>
+          <UnorderedList listStyleType='none' m='0'>
+            <ListItem p='12px 0' borderBottom='1px' borderColor='borderPrimary' fontSize='16px' lineHeight='24px'  display='flex' alignItems='center'>
+              <Box mr='18px'>
+                <Avatar w='30px' h='30px'/>
+              </Box>
+              <Box>
+                <Text fontSize='14px' lineHeight='17.6px' color='textLightMid'>WordPress Maintenance</Text>
+                <Text fontSize='12px' lineHeight='15.08px' color='textLight'>Month 65</Text>
+              </Box>
+            </ListItem>
+            <ListItem p='12px 0' borderBottom='1px' borderColor='borderPrimary' fontSize='16px' lineHeight='24px'  display='flex' alignItems='center'>
+              <Box mr='18px'>
+                <Avatar w='30px' h='30px'/>
+              </Box>
+              <Box>
+                <Text fontSize='14px' lineHeight='17.6px' color='textLightMid'>WordPress Maintenance</Text>
+                <Text fontSize='12px' lineHeight='15.08px' color='textLight'>Month 65</Text>
+              </Box>
+            </ListItem>
+            <ListItem p='12px 0' borderBottom='1px' borderColor='borderPrimary' fontSize='16px' lineHeight='24px'  display='flex' alignItems='center'>
+              <Box mr='18px'>
+                <Avatar w='30px' h='30px'/>
+              </Box>
+              <Box>
+                <Text fontSize='14px' lineHeight='17.6px' color='textLightMid'>WordPress Maintenance</Text>
+                <Text fontSize='12px' lineHeight='15.08px' color='textLight'>Month 65</Text>
+              </Box>
+            </ListItem>
+            <ListItem p='12px 0' fontSize='16px' lineHeight='24px'  display='flex' alignItems='center'>
+              <Box mr='18px'>
+                <Avatar w='30px' h='30px'/>
+              </Box>
+              <Box>
+                <Text fontSize='14px' lineHeight='17.6px' color='textLightMid'>WordPress Maintenance</Text>
+                <Text fontSize='12px' lineHeight='15.08px' color='textLight'>Month 65</Text>
+              </Box>
+            </ListItem>
+          </UnorderedList>
         </Box>
       </Flex>
     </Box>

@@ -6,26 +6,26 @@ const Button: ComponentStyleConfig = {
   },
   variants: {
     primary: {
-      h:'37.21px',
-      bg: 'bgSecondary',
-      borderColor: 'purple.500',
+      bg: 'btnPurple',
+      borderColor: 'btnPurple',
+      border:'1px',
       color: 'white',
       fontSize: '12.46px',
       lineHeight: '18.69px',
       _hover: {
-        bg: darken('bgSecondary', 5),
+        bg: 'white',
+        color:'btnPurple',
       },
     },
     secondary: {
-      h:'37.21px',
-      bg: 'primary',
       border:'1px',
-      borderColor: 'white',
-      color: 'white',
+      borderColor: 'btnPurple',
+      color: 'btnPurple',
       fontSize: '12.46px',
       lineHeight: '18.69px',
       _hover: {
-        bg: whiten('primary', 30),
+        bg: whiten('btnPurple', 5),
+        color: 'white'
       },
     },
   },

@@ -10,7 +10,7 @@ import {
   startOfMonth,
   endOfWeek,
 } from 'date-fns';
-import { Box, Flex, HStack, Text } from '@chakra-ui/react';
+import { Box, Button, Flex, HStack, Text } from '@chakra-ui/react';
 import { HiOutlineChevronLeft, HiOutlineChevronRight } from 'react-icons/hi';
 import { endOfMonth } from 'date-fns/esm';
 
@@ -39,7 +39,7 @@ const Calendar = ({ showDetailsHandle }: Props) => {
   const renderHeader = () => {
     const dateFormat = 'MMM yyyy';
     return (
-      <Flex justifyContent='space-between' alignItems='center'>
+      <Flex justifyContent='space-between' alignItems='center' color='black'>
         <Box>
           <Box
             className='icon'
@@ -50,7 +50,7 @@ const Calendar = ({ showDetailsHandle }: Props) => {
           </Box>
         </Box>
         <Box className='col col-center' fontWeight='semibold'>
-          <Text fontSize='18.77px' lineHeight='22px' color='primary'>
+          <Text fontSize='16px' lineHeight='20.11px'>
             {format(currentMonth, dateFormat)}
           </Text>
         </Box>
@@ -68,7 +68,14 @@ const Calendar = ({ showDetailsHandle }: Props) => {
     const startDate = startOfWeek(currentMonth, { weekStartsOn: 0 });
     for (let i = 0; i < 7; i++) {
       days.push(
-        <Box w='55px' h='52px' lineHeight='52px' fontSize='14.55px' color='textLightMid' key={i}>
+        <Box
+          w='46px'
+          h='46px'
+          lineHeight='46px'
+          fontSize='14px'
+          color='textLightMid'
+          key={i}
+        >
           {format(addDays(startDate, i), dateFormat)}
         </Box>
       );
@@ -98,22 +105,20 @@ const Calendar = ({ showDetailsHandle }: Props) => {
 
         days.push(
           <Box
-            w='55px'
-            h='52px'
-            lineHeight='52px'
+            w='46px'
+            h='46px'
+            lineHeight='46px'
             bg={`${
               isSameDay(day, selectedDate)
-                ? 'primary'
-                : isSameDay(day, selectedDate)
-                ? 'orange.100'
-                : 'white'
+                ? 'btnPurple'
+                : month !== currentMonth.getMonth()?'#E2E8F066' : ''
             }`}
             color={`${
               month !== currentMonth.getMonth()
-                ? 'textLightExtra'
+                ? 'textLight'
                 : isSameDay(day, selectedDate)
                 ? 'white'
-                : 'textLight'
+                : 'textColor'
             }`}
             pointerEvents={`${
               month !== currentMonth.getMonth() || getTime > curTime
@@ -131,7 +136,9 @@ const Calendar = ({ showDetailsHandle }: Props) => {
               onDateClickHandle(cloneDay, dayStr);
             }}
           >
-            <Text as='span' fontSize='12.47px' lineHeight='18.7px'>{formattedDate}</Text>
+            <Text as='span' fontSize='12px' lineHeight='14.52px'>
+              {formattedDate}
+            </Text>
           </Box>
         );
         day = addDays(day, 1);
@@ -159,46 +166,18 @@ const Calendar = ({ showDetailsHandle }: Props) => {
   };
 
   return (
-    <Box mt='30px' textAlign='center' bg='white' p='12px 35px 5px 35px'>
-      <HStack p='10px 0' justifyContent='center'>
-        {/* <Text fontSize='22px' fontWeight='semibold'>
+    <Box textAlign='center'>
+      <HStack pb='25px' justifyContent='space-between'>
+        <Text fontSize='22px' fontWeight='semibold'>
           Select a date
         </Text>
-        <Button bg='primary' color='white' size='sm' onClick={setTodaysDate}>
+        <Button w='80px' h='30px' variant='primary' fontSize='13px' lineHeight='16.34px' onClick={setTodaysDate}>
           Today
-        </Button> */}
-        <Text
-          color='primary'
-          fontSize='22px'
-          lineHeight='33px'
-          fontWeight='bold'
-        >
-          {' '}
-          Today,{format(new Date(), 'MMM do')}
-        </Text>
+        </Button>
       </HStack>
       {renderHeader()}
       {renderDays()}
       {renderCells()}
-      <HStack
-        p='18px 0'
-        color='textLight'
-        fontSize='12px'
-        justifyContent='space-between'
-      >
-        <HStack>
-          <Text w='9px' h='9px' rounded='full' bg='bPink'></Text>
-          <Text>No time logged</Text>
-        </HStack>
-        <HStack>
-          <Text w='9px' h='9px' rounded='full' bg='bOrange'></Text>
-          <Text>Time logged partially</Text>
-        </HStack>
-        <HStack>
-          <Text w='9px' h='9px' rounded='full' bg='bGreen'></Text>
-          <Text>Time logged</Text>
-        </HStack>
-      </HStack>
     </Box>
   );
 };

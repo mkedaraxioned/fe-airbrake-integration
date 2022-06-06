@@ -1,7 +1,6 @@
 import {
   Avatar,
   Box,
-  Button,
   Flex,
   Heading,
   IconButton,
@@ -16,70 +15,85 @@ import {
   UnorderedList,
 } from '@chakra-ui/react';
 import React from 'react';
-import { FaClock, FaSearch } from 'react-icons/fa';
+import { FaClock} from 'react-icons/fa';
+import {AiOutlineSearch} from 'react-icons/ai'
 import { Link } from 'react-router-dom';
+import { ColorModeSwitcher } from '../../ColorModeSwitcher';
 
 const Header = () => {
+  const menus = [
+    {
+      url: '/clients',
+      title: 'Clients',
+    },
+    {
+      url: '/projects',
+      title: 'Projects',
+    },
+    {
+      url: '/team',
+      title: 'Team',
+    },
+  ];
   return (
-    <Box py='19px' bg='primary'>
-      <Box className='wrapper'>
-        <Flex w='full' justifyContent='space-between' alignItems='center'>
-          <Flex alignItems='center'>
-            <Link to='/'>
-              <Heading
-                display='flex'
-                alignItems='center'
-                color='white'
-                fontSize='24px'
-              >
-                <FaClock fontSize='20px' />
-                <Text as='span' ml='8px'>
-                  App
-                </Text>
-              </Heading>
-            </Link>
-            <UnorderedList
-              display='flex'
-              color='white'
-              listStyleType='none'
-              fontSize='18px'
-              lineHeight='27px'
-            >
-              <ListItem margin='0 23px'>
-                <Link to='/projects'>Projects</Link>
-              </ListItem>
-              <ListItem margin='0 23px'>
-                <Link to='/clients'>Clients</Link>
-              </ListItem>
-              <ListItem margin='0 23px'>
-                <Link to='/team'>Team</Link>
-              </ListItem>
-            </UnorderedList>
-          </Flex>
-          {/* <Flex w='42%'p='0 15px' justifyContent='space-between' alignItems='center' bg='white' borderRadius='md'>
+    <Box py='18px' shadow='md'>
+      <Flex
+        className='wrapper'
+        justifyContent='space-between'
+        alignItems='center'
+      >
+        <Box>
+          <Link to='/'>
+            <Heading display='flex' alignItems='center' fontSize='24px'>
+              <FaClock fontSize='20px' />
+              <Text as='span' ml='8px'>
+                App
+              </Text>
+            </Heading>
+          </Link>
+        </Box>
+        <Flex w='71%' justifyContent='space-between' alignItems='center' color='grayLight'>
+          <Flex
+            w='522px'
+            p='0 15px'
+            justifyContent='space-between'
+            alignItems='center'
+            borderRadius='md'
+            border='1px'
+            borderColor='borderColor'
+          >
             <Box pr='8px' fontSize='22px'>
-              <FaSearch />
+              <AiOutlineSearch />
             </Box>
             <Box w='full'>
-              <Input placeholder='Search Projects' w='full' boxSizing='border-box' border='none' _focus={{border:'none'}} />
+              <Input
+                placeholder='Search Projects'
+                w='full'
+                boxSizing='border-box'
+                border='none'
+                _focus={{ border: 'none' }}
+              />
             </Box>
             <Box w='60px' textAlign='center'>
               <Text fontSize='12px'> Ctrl + K</Text>
             </Box>
-          </Flex> */}
+          </Flex>
           <Flex alignItems='center'>
-            <Box>
-              <Button variant='primary'>
-                <Link to='/add-project'>Add Project</Link>
-              </Button>
-            </Box>
-            <Box margin='0 20px'>
-              <Button variant='secondary'>
-                <Link to='/add-client'>Add Client</Link>
-              </Button>
-            </Box>
+            <UnorderedList
+              display='flex'
+              alignItems='center'
+              listStyleType='none'
+            >
+              {menus.map((menu, index) => (
+                <ListItem margin='0 15px' fontSize='18px'
+                lineHeight='22.63px' key={index}>
+                  <Link to={menu.url}>{menu.title}</Link>
+                </ListItem>
+              ))}
+            </UnorderedList>
             <Menu>
               <MenuButton
+                ml='30px'
                 as={IconButton}
                 outline='none'
                 rounded='full'
@@ -87,7 +101,6 @@ const Header = () => {
                 h='41px'
                 colorScheme='transparent'
                 border='2px'
-                borderColor='white'
               >
                 <Avatar w='full' h='full' />
               </MenuButton>
@@ -108,11 +121,16 @@ const Header = () => {
                 <MenuGroup>
                   <MenuItem>Log Out</MenuItem>
                 </MenuGroup>
+                <MenuGroup>
+                  <MenuItem>
+                    <ColorModeSwitcher/>
+                  </MenuItem>
+                </MenuGroup>
               </MenuList>
             </Menu>
           </Flex>
         </Flex>
-      </Box>
+      </Flex>
     </Box>
   );
 };
