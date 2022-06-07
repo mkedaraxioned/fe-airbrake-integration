@@ -22,7 +22,7 @@ const Dashboard = () => {
           flexBasis='47%'
         >
           <Box>
-            <Heading as='h3' fontSize='22px' lineHeight='27.65px' color='textColor'>
+            <Heading as='h3' fontSize='22px' lineHeight='27.65px' color='textColor' fontFamily='Source Sans Pro' fontWeight='600'>
             Add a new entry
             </Heading>
             <TimeLogFrom />
@@ -32,10 +32,10 @@ const Dashboard = () => {
           </Box>
         </Box>
         <Box p='40px 0 0 47px'>
-          <Heading as='h2' fontSize='22px' lineHeight='27.65px' color='textLightMid'>
+          <Heading as='h2' fontSize='22px' lineHeight='27.65px' color='textLightMid' fontFamily='Source Sans Pro' fontWeight='400'>
             Recently Used
           </Heading>
-          <UnorderedList listStyleType='none' m='0'>
+          <UnorderedList listStyleType='none' m='0' fontFamily='Source Sans Pro' fontWeight='400'>
             <ListItem p='12px 0' borderBottom='1px' borderColor='borderPrimary' fontSize='16px' lineHeight='24px'  display='flex' alignItems='center'>
               <Box mr='18px'>
                 <Avatar w='30px' h='30px'/>

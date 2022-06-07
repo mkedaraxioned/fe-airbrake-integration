@@ -11,30 +11,33 @@ import {
   MenuGroup,
   MenuItem,
   MenuList,
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalOverlay,
   Text,
   UnorderedList,
+  useDisclosure,
 } from '@chakra-ui/react';
 import React from 'react';
 import { FaClock} from 'react-icons/fa';
 import {AiOutlineSearch} from 'react-icons/ai'
 import { Link } from 'react-router-dom';
 import { ColorModeSwitcher } from '../../ColorModeSwitcher';
+import NewProjectForm from '../newProjectForm';
 
 const Header = () => {
-  const menus = [
-    {
-      url: '/clients',
-      title: 'Clients',
-    },
-    {
-      url: '/projects',
-      title: 'Projects',
-    },
-    {
-      url: '/team',
-      title: 'Team',
-    },
-  ];
+  const { isOpen, onOpen, onClose } = useDisclosure()
+  const ModalBox = ()=>{
+    return<Modal size='full' isOpen={isOpen} onClose={onClose}>
+    <ModalOverlay />
+    <ModalContent w='588px' h='full' m='0 0 0 auto'>
+      <ModalBody>
+        <NewProjectForm/>
+      </ModalBody>
+    </ModalContent>
+  </Modal>
+  }
   return (
     <Box py='18px' shadow='md'>
       <Flex
@@ -46,7 +49,7 @@ const Header = () => {
           <Link to='/'>
             <Heading display='flex' alignItems='center' fontSize='24px'>
               <FaClock fontSize='20px' />
-              <Text as='span' ml='8px'>
+              <Text as='span' ml='8px' fontFamily='SourceSansPro-ExtraLight'>
                 App
               </Text>
             </Heading>
@@ -84,12 +87,18 @@ const Header = () => {
               alignItems='center'
               listStyleType='none'
             >
-              {menus.map((menu, index) => (
-                <ListItem margin='0 15px' fontSize='18px'
-                lineHeight='22.63px' key={index}>
-                  <Link to={menu.url}>{menu.title}</Link>
+              <ListItem margin='0 15px' fontSize='18px'
+                lineHeight='22.63px'>
+                  <Link to='/clients'>Clients</Link>
                 </ListItem>
-              ))}
+                <ListItem margin='0 15px' fontSize='18px'
+                lineHeight='22.63px'>
+                  <Link to='#fixme' onClick={onOpen}>Projects</Link>
+                </ListItem>
+                <ListItem margin='0 15px' fontSize='18px'
+                lineHeight='22.63px'>
+                  <Link to='/team'>Team</Link>
+                </ListItem>
             </UnorderedList>
             <Menu>
               <MenuButton
@@ -131,6 +140,7 @@ const Header = () => {
           </Flex>
         </Flex>
       </Flex>
+      <ModalBox/>
     </Box>
   );
 };

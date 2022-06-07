@@ -77,16 +77,16 @@ const TimeLogFrom = () => {
     <Box>
       <form onSubmit={formHandler}>
         <FormControl m='12px 0 15px' isInvalid={errorMsg?.projectName?true:false}>
-          <FormLabel htmlFor='select_project' color='textLightMid' fontSize='14px' lineHeight='17.6px' fontWeight='bold'>Select Project</FormLabel>
-          <Select id='select_project' name='projectName' value={formData.projectName} placeholder='Select' fontSize='14px' lineHeight='17.6px' color='textLightMid' onChange={selecttHandler}>
+          <FormLabel htmlFor='select_project' color='textLightMid' fontSize='14px' lineHeight='17.6px' fontFamily='Source Sans Pro' fontWeight='600'>Select Project</FormLabel>
+          <Select id='select_project' name='projectName' value={formData.projectName} placeholder='Select' fontSize='14px' lineHeight='17.6px' color='textLightMid' fontFamily='Source Sans Pro' fontWeight='400' onChange={selecttHandler}>
             <option value={'ClearForMe Ongoing Retainer Agreement'}>ClearForMe Ongoing Retainer Agreement</option>
             <option value={'Project 2'}>Project 2</option>
           </Select>
           <FormErrorMessage>{errorMsg?.projectName}</FormErrorMessage>
         </FormControl>
         <FormControl m='14px 0' isInvalid={errorMsg?.retainerMonth?true:false}>
-          <FormLabel htmlFor='retainer_month' color='textLightMid' fontSize='14px' lineHeight='17.6px' fontWeight='bold'>Retainer month</FormLabel>
-          <Select id='retainer_month' name='retainerMonth' value={formData.retainerMonth} placeholder='Select' fontSize='14px' lineHeight='17.6px' color='textLightMid' onChange={selecttHandler}>
+          <FormLabel htmlFor='retainer_month' color='textLightMid' fontSize='14px' lineHeight='17.6px' fontFamily='Source Sans Pro' fontWeight='600'>Retainer month</FormLabel>
+          <Select id='retainer_month' name='retainerMonth' value={formData.retainerMonth} placeholder='Select' fontSize='14px' lineHeight='17.6px' color='textLightMid' fontFamily='Source Sans Pro' fontWeight='400' onChange={selecttHandler}>
             <option value={'Task 1'}>Task 1</option>
             <option value={'Task 2'}>Task 2</option>
           </Select>
@@ -94,16 +94,16 @@ const TimeLogFrom = () => {
         </FormControl>
         <HStack justifyContent='space-between' m='14px 0'>
           <FormControl w='143px' mr='10px' isInvalid={errorMsg?.logTime?true:false}>
-            <FormLabel htmlFor='add_time' color='textLightMid' fontSize='14px' lineHeight='17.6px' fontWeight='bold'>Add Time</FormLabel>
+            <FormLabel htmlFor='add_time' color='textLightMid' fontSize='14px' lineHeight='17.6px' fontFamily='Source Sans Pro' fontWeight='600'>Add Time</FormLabel>
             <Flex alignItems='center' border='1px' borderColor='borderColor' rounded='md'>
-              <Input w='50%' id='add_time' boxSizing='border-box' type='text' value={formData.logTime} name='logTime' onChange={inputHandler} border='none' placeholder='88:88' fontSize='14px' lineHeight='17.6px'/>
-              <Text w='50%' textAlign='center' p='8px 0' bg='gray.300' fontSize='14px' lineHeight='24px' color='textLightMid'>Hours</Text>
+              <Input w='50%' id='add_time' boxSizing='border-box' type='text' fontFamily='Source Sans Pro' fontWeight='400' value={formData.logTime} name='logTime' onChange={inputHandler} border='none' placeholder='88:88' fontSize='14px' lineHeight='17.6px'/>
+              <Text w='50%' textAlign='center' p='8px 0' bg='gray.300' fontSize='14px' lineHeight='24px' color='textLightMid' fontFamily='Source Sans Pro' fontWeight='400'>Hours</Text>
             </Flex>
             <FormErrorMessage>{errorMsg?.logTime}</FormErrorMessage>
           </FormControl>
           <FormControl w='70%'>
             <FormLabel htmlFor='select_task' color='textLightMid' fontSize='14px' lineHeight='17.6px' fontWeight='bold'>Comments</FormLabel>
-            <Input id='email' type='email' value={formData.comments} onChange={inputHandler} name='comments'  placeholder='Please describe the activity' fontSize='14px' lineHeight='17.6px'/>
+            <Input id='email' type='email' value={formData.comments} fontFamily='Source Sans Pro' fontWeight='400' onChange={inputHandler} name='comments'  placeholder='Please describe the activity' fontSize='14px' lineHeight='17.6px'/>
           </FormControl>
         </HStack>
         <Box>

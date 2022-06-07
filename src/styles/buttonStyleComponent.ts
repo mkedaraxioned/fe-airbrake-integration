@@ -1,37 +1,34 @@
 import type { ComponentStyleConfig } from '@chakra-ui/theme';
-import {whiten, darken } from '@chakra-ui/theme-tools';
+import { whiten } from '@chakra-ui/theme-tools';
 
 const Button: ComponentStyleConfig = {
-  sizes: {
-  },
+  sizes: {},
   variants: {
     primary: {
       bg: 'btnPurple',
       borderColor: 'btnPurple',
-      border:'1px',
+      border: '1px',
       color: 'white',
       fontSize: '12.46px',
       lineHeight: '18.69px',
       _hover: {
         bg: 'white',
-        color:'btnPurple',
+        color: 'btnPurple',
       },
     },
     secondary: {
-      border:'1px',
+      border: '1px',
       borderColor: 'btnPurple',
       color: 'btnPurple',
       fontSize: '12.46px',
       lineHeight: '18.69px',
       _hover: {
         bg: whiten('btnPurple', 5),
-        color: 'white'
+        color: 'white',
       },
     },
   },
-  defaultProps: {
-    
-  },
+  defaultProps: {},
 };
 
 export default Button;

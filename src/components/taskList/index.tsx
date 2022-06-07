@@ -12,7 +12,7 @@ const TaskList = () => {
     <Box p='17px 0'>
       <Box>
         <HStack justifyContent='space-between' color='textColor'>
-          <Heading as='h3' fontSize='22px' lineHeight='27.65px'>
+          <Heading as='h3' fontSize='22px' lineHeight='27.65px' fontFamily='Source Sans Pro' fontWeight='600'>
           Entries logged
           </Heading>
           <Heading as='h3' fontSize='18px' lineHeight='22.63px'>
@@ -21,8 +21,8 @@ const TaskList = () => {
         </HStack>
       </Box>
       <Box p='15px 0 10px'>
-        <HStack pb='5px' justifyContent='space-between' color='textLightMid' pr='19px'>
-          <Heading as='h4' fontSize='18px' lineHeight='22.63px' >ClearForMe Ongoing Retainer</Heading>
+        <HStack pb='5px' justifyContent='space-between'  color='textLightMid' pr='19px' fontFamily='Source Sans Pro' fontWeight='600'>
+          <Heading as='h4' fontSize='18px' lineHeight='22.63px'>ClearForMe Ongoing Retainer</Heading>
           <Text>4:00 hours</Text>
         </HStack>
         <Box>
@@ -31,8 +31,8 @@ const TaskList = () => {
         </Box>
       </Box>
       <Box>
-        <HStack pb='5px' justifyContent='space-between' color='textLightMid' pr='19px'>
-          <Heading as='h4' fontSize='18px' lineHeight='22.63px' >ClearForMe Ongoing Retainer</Heading>
+        <HStack pb='5px' justifyContent='space-between' color='textLightMid' pr='19px' fontFamily='Source Sans Pro' fontWeight='600'>
+          <Heading as='h4' fontSize='18px' lineHeight='22.63px'>ClearForMe Ongoing Retainer</Heading>
           <Text>4:00 hours</Text>
         </HStack>
         <Box>

@@ -21,7 +21,7 @@ interface Props {
 const Calendar = ({ showDetailsHandle }: Props) => {
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState(new Date());
-
+  
   const changeMonthHandle = (btnType: string) => {
     if (btnType === 'prev') {
       setCurrentMonth(subMonths(currentMonth, 1));
@@ -49,7 +49,11 @@ const Calendar = ({ showDetailsHandle }: Props) => {
             <HiOutlineChevronLeft size='21' />
           </Box>
         </Box>
-        <Box className='col col-center' fontWeight='semibold'>
+        <Box
+          className='col col-center'
+          fontFamily='Source Sans Pro'
+          fontWeight='600'
+        >
           <Text fontSize='16px' lineHeight='20.11px'>
             {format(currentMonth, dateFormat)}
           </Text>
@@ -75,6 +79,8 @@ const Calendar = ({ showDetailsHandle }: Props) => {
           fontSize='14px'
           color='textLightMid'
           key={i}
+          fontFamily='Source Sans Pro'
+          fontWeight='600'
         >
           {format(addDays(startDate, i), dateFormat)}
         </Box>
@@ -82,6 +88,7 @@ const Calendar = ({ showDetailsHandle }: Props) => {
     }
     return <Box display='flex'>{days}</Box>;
   };
+
   const renderCells = () => {
     const monthStart = startOfMonth(currentMonth);
     const monthEnd = endOfMonth(monthStart);
@@ -102,14 +109,13 @@ const Calendar = ({ showDetailsHandle }: Props) => {
         const month = getMonth(day);
         const getTime = new Date(day).getTime();
         const curTime = new Date().getTime();
-
         days.push(
           <Box
             w='46px'
             h='46px'
             lineHeight='46px'
             bg={`${
-              isSameDay(day, selectedDate)
+              isSameDay(day , selectedDate)
                 ? 'btnPurple'
                 : month !== currentMonth.getMonth()?'#E2E8F066' : ''
             }`}
@@ -167,11 +173,21 @@ const Calendar = ({ showDetailsHandle }: Props) => {
 
   return (
     <Box textAlign='center'>
-      <HStack pb='25px' justifyContent='space-between'>
-        <Text fontSize='22px' fontWeight='semibold'>
-          Select a date
-        </Text>
-        <Button w='80px' h='30px' variant='primary' fontSize='13px' lineHeight='16.34px' onClick={setTodaysDate}>
+      <HStack
+        pb='25px'
+        justifyContent='space-between'
+        fontFamily='Source Sans Pro'
+        fontWeight='600'
+      >
+        <Text fontSize='22px'>Select a date</Text>
+        <Button
+          w='80px'
+          h='30px'
+          variant='primary'
+          fontSize='13px'
+          lineHeight='16.34px'
+          onClick={setTodaysDate}
+        >
           Today
         </Button>
       </HStack>

@@ -26,13 +26,13 @@ const TimeCard = () => {
       onMouseOver={over}
       onMouseOut={out}
     >
-      <Box>
+      <Box fontFamily='Source Sans Pro' fontWeight='400'>
         <Text color='textColor'>Milestone / Activity / Task</Text>
         <Text fontSize='12px' lineHeight='15.08px' color='textLight'>
           Notes / Comments
         </Text>
       </Box>
-      <Text color='textLightMid'>1:00 hours</Text>
+      <Text color='textLightMid' fontWeight='600'>1:00 hours</Text>
       <Box pos='absolute' top='45%' right='-24px' display={isVisible?'block':'none'} cursor='pointer' color='grayLight'>
         <RiDeleteBin6Fill fontSize={'16px'} />
       </Box>

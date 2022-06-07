@@ -1,4 +1,4 @@
-import { ChakraProvider, ColorModeScript, theme } from '@chakra-ui/react';
+import { ChakraProvider, ColorModeScript } from '@chakra-ui/react';
 import * as React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
@@ -8,10 +8,14 @@ import reportWebVitals from './reportWebVitals';
 import * as serviceWorker from './serviceWorker';
 import { persistor, store } from './store';
 import { costomTheme } from './styles/theme';
+import "@fontsource/source-sans-pro/600.css"; 
+import "@fontsource/source-sans-pro/400.css"; 
+import Fonts from './styles/fonts';
 
 ReactDOM.render(
   <React.StrictMode>
     <ChakraProvider resetCSS theme={costomTheme}>
+      <Fonts/>
       <ColorModeScript />
       <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>
