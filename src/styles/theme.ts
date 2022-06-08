@@ -8,6 +8,15 @@ export const costomTheme = extendTheme({
       ...globalStyle,
     },
   },
+  fonts:{
+    heading: `'SourceSansPro-ExtraLight'`,
+    subHeading: 'Times New Roman',
+  },
+  textStyles:{
+    h3:{
+      'font-family':'var(--chakra-fonts-subHeading)'
+    }
+  },
   colors: {
     primary: '#201547',
     primaryLight: '#201547',

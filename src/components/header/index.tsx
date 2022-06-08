@@ -31,7 +31,7 @@ const Header = () => {
   const ModalBox = ()=>{
     return<Modal size='full' isOpen={isOpen} onClose={onClose}>
     <ModalOverlay />
-    <ModalContent w='588px' h='full' m='0 0 0 auto'>
+    <ModalContent overflowY='scroll' w='588px' h='full' m='0 0 0 auto'>
       <ModalBody>
         <NewProjectForm/>
       </ModalBody>
@@ -49,7 +49,7 @@ const Header = () => {
           <Link to='/'>
             <Heading display='flex' alignItems='center' fontSize='24px'>
               <FaClock fontSize='20px' />
-              <Text as='span' ml='8px' fontFamily='SourceSansPro-ExtraLight'>
+              <Text as='span' ml='8px' fontFamily='SourceSansProExtraLight'>
                 App
               </Text>
             </Heading>

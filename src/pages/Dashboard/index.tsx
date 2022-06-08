@@ -10,6 +10,7 @@ const Dashboard = () => {
   };
   return (
     <Box className='wrapper'>
+      <Heading as='h3'>heading</Heading>
       <Flex>
         <Box pt='40px' flexBasis='23%' mr='50px'>
           <Calendar showDetailsHandle={showDetailsHandle} />
