@@ -126,9 +126,8 @@ const NewProjectForm = () => {
   }
 
   return (
-    <Box w='full' p='18% 63px 63px' pos='absolute' top={0} right={0} fontFamily='Source Sans Pro' color='textLightMid'>
+    <Box w='full' p='18% 60px 60px' pos='absolute' top={0} right={0} fontFamily='Source Sans Pro' color='textLightMid'>
       <Heading fontFamily='Source Sans Pro' fontWeight='600' fontSize='22px' lineHeight='27.65px'>Add a new project</Heading>
-      <ModalCloseButton />
       <Box>
         <form onSubmit={formHandler}>
           <FormControl p='25px 0 10px' isInvalid={errMsg?.clientName?true:false}>

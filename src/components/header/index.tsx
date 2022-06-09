@@ -1,6 +1,11 @@
 import {
   Avatar,
   Box,
+  Drawer,
+  DrawerBody,
+  DrawerCloseButton,
+  DrawerContent,
+  DrawerOverlay,
   Flex,
   Heading,
   IconButton,
@@ -11,33 +16,32 @@ import {
   MenuGroup,
   MenuItem,
   MenuList,
-  Modal,
-  ModalBody,
-  ModalContent,
-  ModalOverlay,
   Text,
   UnorderedList,
   useDisclosure,
 } from '@chakra-ui/react';
 import React from 'react';
-import { FaClock} from 'react-icons/fa';
-import {AiOutlineSearch} from 'react-icons/ai'
+import { FaClock } from 'react-icons/fa';
+import { AiOutlineSearch } from 'react-icons/ai';
 import { Link } from 'react-router-dom';
 import { ColorModeSwitcher } from '../../ColorModeSwitcher';
 import NewProjectForm from '../newProjectForm';
 
 const Header = () => {
-  const { isOpen, onOpen, onClose } = useDisclosure()
-  const ModalBox = ()=>{
-    return<Modal size='full' isOpen={isOpen} onClose={onClose}>
-    <ModalOverlay />
-    <ModalContent overflowY='scroll' w='588px' h='full' m='0 0 0 auto'>
-      <ModalBody>
-        <NewProjectForm/>
-      </ModalBody>
-    </ModalContent>
-  </Modal>
-  }
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const ModalBox = () => {
+    return (
+      <Drawer isOpen={isOpen} size='lg' placement='right' onClose={onClose}>
+        <DrawerOverlay />
+        <DrawerContent overflowY='scroll' w='588px !important'>
+          <DrawerCloseButton zIndex='10' mt='10px' mr='10px' />
+          <DrawerBody>
+            <NewProjectForm />
+          </DrawerBody>
+        </DrawerContent>
+      </Drawer>
+    );
+  };
   return (
     <Box py='18px' shadow='md'>
       <Flex
@@ -55,7 +59,12 @@ const Header = () => {
             </Heading>
           </Link>
         </Box>
-        <Flex w='71%' justifyContent='space-between' alignItems='center' color='grayLight'>
+        <Flex
+          w='71%'
+          justifyContent='space-between'
+          alignItems='center'
+          color='grayLight'
+        >
           <Flex
             w='522px'
             p='0 15px'
@@ -87,18 +96,17 @@ const Header = () => {
               alignItems='center'
               listStyleType='none'
             >
-              <ListItem margin='0 15px' fontSize='18px'
-                lineHeight='22.63px'>
-                  <Link to='/clients'>Clients</Link>
-                </ListItem>
-                <ListItem margin='0 15px' fontSize='18px'
-                lineHeight='22.63px'>
-                  <Link to='#fixme' onClick={onOpen}>Projects</Link>
-                </ListItem>
-                <ListItem margin='0 15px' fontSize='18px'
-                lineHeight='22.63px'>
-                  <Link to='/team'>Team</Link>
-                </ListItem>
+              <ListItem margin='0 15px' fontSize='18px' lineHeight='22.63px'>
+                <Link to='/clients'>Clients</Link>
+              </ListItem>
+              <ListItem margin='0 15px' fontSize='18px' lineHeight='22.63px'>
+                <Link to='#fixme' onClick={onOpen}>
+                  Projects
+                </Link>
+              </ListItem>
+              <ListItem margin='0 15px' fontSize='18px' lineHeight='22.63px'>
+                <Link to='/team'>Team</Link>
+              </ListItem>
             </UnorderedList>
             <Menu>
               <MenuButton
@@ -132,7 +140,7 @@ const Header = () => {
                 </MenuGroup>
                 <MenuGroup>
                   <MenuItem>
-                    <ColorModeSwitcher/>
+                    <ColorModeSwitcher />
                   </MenuItem>
                 </MenuGroup>
               </MenuList>
@@ -140,7 +148,7 @@ const Header = () => {
           </Flex>
         </Flex>
       </Flex>
-      <ModalBox/>
+      <ModalBox />
     </Box>
   );
 };
