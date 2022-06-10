@@ -26,5 +26,6 @@
         "react",
         "@typescript-eslint"
     ],
-    "rules": {}
+    "rules": {},
+    "ignorePatterns": ["build/*"]
 }
