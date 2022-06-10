@@ -1,5 +1,4 @@
 import type { ComponentStyleConfig } from '@chakra-ui/theme';
-import { whiten } from '@chakra-ui/theme-tools';
 
 const Button: ComponentStyleConfig = {
   sizes: {},
@@ -23,7 +22,7 @@ const Button: ComponentStyleConfig = {
       fontSize: '12.46px',
       lineHeight: '18.69px',
       _hover: {
-        bg: whiten('btnPurple', 5),
+        bg: 'btnPurple',
         color: 'white',
       },
     },

@@ -9,8 +9,8 @@ export const costomTheme = extendTheme({
     },
   },
   fonts:{
-    heading: `'SourceSansPro-ExtraLight'`,
-    subHeading: 'Times New Roman',
+    SourceSansProExtraLight: `'SourceSansPro-ExtraLight';`,
+    subHeading: `'Times New Roman';`,
   },
   textStyles:{
     h3:{

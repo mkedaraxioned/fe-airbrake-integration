@@ -9,17 +9,16 @@ const Fonts= () => (
         src: url('../assets/fonts/SourceSans/SourceSansPro-Black.ttf');
         font-display: swap;
       }
-        
       @font-face {
         font-family: 'SourceSansPro-Bold';
         src: url('../assets/fonts/SourceSans/SourceSansPro-Bold.ttf');
         font-display: swap;
       }
       @font-face {
-        font-family: 'SourceSansProExtraLight';
+        font-family: 'SourceSansPro-ExtraLight';
         font-style: normal;
         font-display: swap;
-        font-weight: 600;
+        font-weight: 200;
         src: url('../assets/fonts/SourceSans/SourceSansPro-ExtraLight.ttf') format('ttf');
       }
       @font-face {

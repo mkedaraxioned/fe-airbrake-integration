@@ -4,18 +4,15 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import { App } from './App';
-import reportWebVitals from './reportWebVitals';
-import * as serviceWorker from './serviceWorker';
 import { persistor, store } from './store';
 import { costomTheme } from './styles/theme';
-import "@fontsource/source-sans-pro/600.css"; 
-import "@fontsource/source-sans-pro/400.css"; 
-import Fonts from './styles/fonts';
+import '@fontsource/source-sans-pro';
+import Fonts from './styles/Fonts';
 
 ReactDOM.render(
   <React.StrictMode>
     <ChakraProvider resetCSS theme={costomTheme}>
-      <Fonts/>
+      <Fonts />
       <ColorModeScript />
       <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>
@@ -26,6 +23,3 @@ ReactDOM.render(
   </React.StrictMode>,
   document.getElementById('root')
 );
-
-serviceWorker.unregister();
-reportWebVitals();

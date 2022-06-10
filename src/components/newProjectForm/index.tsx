@@ -197,7 +197,7 @@ const NewProjectForm = () => {
             </FormControl>
           </Flex>
           <FormControl>
-            <Checkbox onChange={checkboxHandler}>Billable</Checkbox>
+            <Checkbox onChange={checkboxHandler}><Text fontFamily='Source Sans Pro' fontWeight='400' fontSize='14px' color='textLightMid'>Billable</Text></Checkbox>
           </FormControl>
           <FormControl p='20px 0 34px' isInvalid={errMsg?.teamMembers?true:false}>
             <FormLabel fontSize='14px' lineHeight='17.6px' fontWeight='600'  htmlFor='add_time'>Add project members</FormLabel>
