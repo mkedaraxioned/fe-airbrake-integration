@@ -1,5 +1,5 @@
 export interface TimelogForm {
-  date:Date;
+  date: Date;
   projectName: string;
   retainerMonth: string;
   logTime: string;
@@ -7,7 +7,7 @@ export interface TimelogForm {
 }
 
 export interface TimelogFormError {
-  date?:string,
+  date?: string;
   projectName?: string;
   retainerMonth?: string;
   logTime?: string;

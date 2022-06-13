@@ -53,7 +53,12 @@ const Header = () => {
           <Link to='/'>
             <Heading display='flex' alignItems='center' fontSize='24px'>
               <FaClock fontSize='20px' />
-              <Text as='span' ml='8px' fontFamily='Source Sans Pro' fontWeight='600'>
+              <Text
+                as='span'
+                ml='8px'
+                fontFamily='Source Sans Pro'
+                fontWeight='600'
+              >
                 Axioned
               </Text>
             </Heading>

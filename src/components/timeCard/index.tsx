@@ -32,8 +32,17 @@ const TimeCard = () => {
           Notes / Comments
         </Text>
       </Box>
-      <Text color='textLightMid' fontWeight='600'>1:00 hours</Text>
-      <Box pos='absolute' top='45%' right='-24px' display={isVisible?'block':'none'} cursor='pointer' color='grayLight'>
+      <Text color='textLightMid' fontWeight='600'>
+        1:00 hours
+      </Text>
+      <Box
+        pos='absolute'
+        top='45%'
+        right='-24px'
+        display={isVisible ? 'block' : 'none'}
+        cursor='pointer'
+        color='grayLight'
+      >
         <RiDeleteBin6Fill fontSize={'16px'} />
       </Box>
     </Box>

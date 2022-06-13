@@ -15,26 +15,26 @@ import { TimelogFormError } from '../../interfaces/timelogForm';
 import { timeStringValidate } from '../../utils/validation';
 
 const TimeLogFrom = () => {
-  const [formData,setFormData]= useState({
+  const [formData, setFormData] = useState({
     date: new Date(),
-    projectName:'',
-    retainerMonth:'',
+    projectName: '',
+    retainerMonth: '',
     logTime: '',
-    comments:''
-  })
+    comments: '',
+  });
 
-  const [errorMsg,setErrorMsg] = useState<TimelogFormError>()
+  const [errorMsg, setErrorMsg] = useState<TimelogFormError>();
 
-  const selecttHandler = (e:React.ChangeEvent<HTMLSelectElement>)=>{
-    setFormData({...formData,[e.target.name]:e.target.value})
-  } 
-  const inputHandler = (e:React.ChangeEvent<HTMLInputElement>)=>{
-    setFormData({...formData,[e.target.name]:e.target.value})
-  }
+  const selecttHandler = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+  const inputHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
 
   const fieldValidation = () => {
     const errors: TimelogFormError = {};
-    const { date,projectName, retainerMonth, logTime } = formData;
+    const { date, projectName, retainerMonth, logTime } = formData;
 
     if (new Date(date).getTime() > new Date().getTime()) {
       errors.date = "Can't logged time for future date";
@@ -54,61 +54,176 @@ const TimeLogFrom = () => {
     return errors;
   };
 
-  const reset=()=>{
+  const reset = () => {
     setFormData({
       date: new Date(),
-      projectName:'',
-      retainerMonth:'',
+      projectName: '',
+      retainerMonth: '',
       logTime: '',
-      comments:''
-    })
-  }
+      comments: '',
+    });
+  };
 
-  const formHandler = (e:React.FormEvent<HTMLFormElement>)=>{
-    e.preventDefault()
+  const formHandler = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     setErrorMsg(fieldValidation());
     const notValid = fieldValidation();
-    if (Object.values(notValid).length <= 0){
+    if (Object.values(notValid).length <= 0) {
       alert('Success');
-      reset()
+      reset();
     }
-  }
+  };
   return (
     <Box>
       <form onSubmit={formHandler}>
-        <FormControl m='12px 0 15px' isInvalid={errorMsg?.projectName?true:false}>
-          <FormLabel htmlFor='select_project' color='textLightMid' fontSize='14px' lineHeight='17.6px' fontFamily='Source Sans Pro' fontWeight='600'>Select Project</FormLabel>
-          <Select id='select_project' name='projectName' value={formData.projectName} placeholder='Select' fontSize='14px' lineHeight='17.6px' color='textLightMid' fontFamily='Source Sans Pro' fontWeight='400' onChange={selecttHandler}>
-            <option value={'ClearForMe Ongoing Retainer Agreement'}>ClearForMe Ongoing Retainer Agreement</option>
+        <FormControl
+          m='12px 0 15px'
+          isInvalid={errorMsg?.projectName ? true : false}
+        >
+          <FormLabel
+            htmlFor='select_project'
+            color='textLightMid'
+            fontSize='14px'
+            lineHeight='17.6px'
+            fontFamily='Source Sans Pro'
+            fontWeight='600'
+          >
+            Select Project
+          </FormLabel>
+          <Select
+            id='select_project'
+            name='projectName'
+            value={formData.projectName}
+            placeholder='Select'
+            fontSize='14px'
+            lineHeight='17.6px'
+            color='textLightMid'
+            fontFamily='Source Sans Pro'
+            fontWeight='400'
+            onChange={selecttHandler}
+          >
+            <option value={'ClearForMe Ongoing Retainer Agreement'}>
+              ClearForMe Ongoing Retainer Agreement
+            </option>
             <option value={'Project 2'}>Project 2</option>
           </Select>
           <FormErrorMessage>{errorMsg?.projectName}</FormErrorMessage>
         </FormControl>
-        <FormControl m='14px 0' isInvalid={errorMsg?.retainerMonth?true:false}>
-          <FormLabel htmlFor='retainer_month' color='textLightMid' fontSize='14px' lineHeight='17.6px' fontFamily='Source Sans Pro' fontWeight='600'>Retainer month</FormLabel>
-          <Select id='retainer_month' name='retainerMonth' value={formData.retainerMonth} placeholder='Select' fontSize='14px' lineHeight='17.6px' color='textLightMid' fontFamily='Source Sans Pro' fontWeight='400' onChange={selecttHandler}>
+        <FormControl
+          m='14px 0'
+          isInvalid={errorMsg?.retainerMonth ? true : false}
+        >
+          <FormLabel
+            htmlFor='retainer_month'
+            color='textLightMid'
+            fontSize='14px'
+            lineHeight='17.6px'
+            fontFamily='Source Sans Pro'
+            fontWeight='600'
+          >
+            Retainer month
+          </FormLabel>
+          <Select
+            id='retainer_month'
+            name='retainerMonth'
+            value={formData.retainerMonth}
+            placeholder='Select'
+            fontSize='14px'
+            lineHeight='17.6px'
+            color='textLightMid'
+            fontFamily='Source Sans Pro'
+            fontWeight='400'
+            onChange={selecttHandler}
+          >
             <option value={'Task 1'}>Task 1</option>
             <option value={'Task 2'}>Task 2</option>
           </Select>
           <FormErrorMessage>{errorMsg?.retainerMonth}</FormErrorMessage>
         </FormControl>
         <HStack justifyContent='space-between' m='14px 0'>
-          <FormControl w='143px' mr='10px' isInvalid={errorMsg?.logTime?true:false}>
-            <FormLabel htmlFor='add_time' color='textLightMid' fontSize='14px' lineHeight='17.6px' fontFamily='Source Sans Pro' fontWeight='600'>Add Time</FormLabel>
-            <Flex alignItems='center' border='1px' borderColor='borderColor' rounded='md'>
-              <Input w='50%' id='add_time' boxSizing='border-box' type='text' fontFamily='Source Sans Pro' fontWeight='400' value={formData.logTime} name='logTime' onChange={inputHandler} border='none' placeholder='88:88' fontSize='14px' lineHeight='17.6px'/>
-              <Text w='50%' textAlign='center' p='8px 0' bg='gray.300' fontSize='14px' lineHeight='24px' color='textLightMid' fontFamily='Source Sans Pro' fontWeight='400'>Hours</Text>
+          <FormControl
+            w='143px'
+            mr='10px'
+            isInvalid={errorMsg?.logTime ? true : false}
+          >
+            <FormLabel
+              htmlFor='add_time'
+              color='textLightMid'
+              fontSize='14px'
+              lineHeight='17.6px'
+              fontFamily='Source Sans Pro'
+              fontWeight='600'
+            >
+              Add Time
+            </FormLabel>
+            <Flex
+              alignItems='center'
+              border='1px'
+              borderColor='borderColor'
+              rounded='md'
+            >
+              <Input
+                w='50%'
+                id='add_time'
+                boxSizing='border-box'
+                type='text'
+                fontFamily='Source Sans Pro'
+                fontWeight='400'
+                value={formData.logTime}
+                name='logTime'
+                onChange={inputHandler}
+                border='none'
+                placeholder='88:88'
+                fontSize='14px'
+                lineHeight='17.6px'
+              />
+              <Text
+                w='50%'
+                textAlign='center'
+                p='8px 0'
+                bg='gray.300'
+                fontSize='14px'
+                lineHeight='24px'
+                color='textLightMid'
+                fontFamily='Source Sans Pro'
+                fontWeight='400'
+              >
+                Hours
+              </Text>
             </Flex>
             <FormErrorMessage>{errorMsg?.logTime}</FormErrorMessage>
           </FormControl>
           <FormControl w='70%'>
-            <FormLabel htmlFor='select_task' color='textLightMid' fontSize='14px' lineHeight='17.6px' fontWeight='bold'>Comments</FormLabel>
-            <Input id='email' type='email' value={formData.comments} fontFamily='Source Sans Pro' fontWeight='400' onChange={inputHandler} name='comments'  placeholder='Please describe the activity' fontSize='14px' lineHeight='17.6px'/>
+            <FormLabel
+              htmlFor='select_task'
+              color='textLightMid'
+              fontSize='14px'
+              lineHeight='17.6px'
+              fontWeight='bold'
+            >
+              Comments
+            </FormLabel>
+            <Input
+              id='email'
+              type='email'
+              value={formData.comments}
+              fontFamily='Source Sans Pro'
+              fontWeight='400'
+              onChange={inputHandler}
+              name='comments'
+              placeholder='Please describe the activity'
+              fontSize='14px'
+              lineHeight='17.6px'
+            />
           </FormControl>
         </HStack>
         <Box>
-          <Button w='137px' type='submit' variant='primary' mr='22px'>Add Entry</Button>
-          <Button w='105px' variant='secondary' onClick={reset}>Cancel</Button>
+          <Button w='137px' type='submit' variant='primary' mr='22px'>
+            Add Entry
+          </Button>
+          <Button w='105px' variant='secondary' onClick={reset}>
+            Cancel
+          </Button>
         </Box>
       </form>
     </Box>

@@ -23,15 +23,15 @@ const Calendar = ({ showDetailsHandle }: Props) => {
   const [selectedDate, setSelectedDate] = useState(new Date());
 
   const loggedHourData = [
-    {date:'06/05/2022',loggedTime:5},
-    {date:'06/02/2022',loggedTime:8},
-    {date:'05/02/2022',loggedTime:6},
-    {date:'06/06/2022',loggedTime:8},
-    {date:'06/08/2022',loggedTime:8},
-    {date:'05/05/2022',loggedTime:6},
-    {date:'05/18/2022',loggedTime:8},
-  ]
-  
+    { date: '06/05/2022', loggedTime: 5 },
+    { date: '06/02/2022', loggedTime: 8 },
+    { date: '05/02/2022', loggedTime: 6 },
+    { date: '06/06/2022', loggedTime: 8 },
+    { date: '06/08/2022', loggedTime: 8 },
+    { date: '05/05/2022', loggedTime: 6 },
+    { date: '05/18/2022', loggedTime: 8 },
+  ];
+
   const changeMonthHandle = (btnType: string) => {
     if (btnType === 'prev') {
       setCurrentMonth(subMonths(currentMonth, 1));
@@ -93,7 +93,7 @@ const Calendar = ({ showDetailsHandle }: Props) => {
           fontWeight='600'
         >
           {format(addDays(startDate, i), dateFormat)}
-        </Box>
+        </Box>,
       );
     }
     return <Box display='flex'>{days}</Box>;
@@ -119,24 +119,34 @@ const Calendar = ({ showDetailsHandle }: Props) => {
         const month = getMonth(day);
         const getTime = new Date(day).getTime();
         const curTime = new Date().getTime();
-        let bgColorVal = ''
-        loggedHourData.forEach((value)=>{
-          if(new Date(value.date).getTime()===day.getTime()&&value.loggedTime>=8){
-            bgColorVal = '#DCEDC8'
-          } else if(new Date(value.date).getTime()===day.getTime()&&value.loggedTime<8){
-            bgColorVal ='#FFECB3'
+        let bgColorVal = '';
+        loggedHourData.forEach((value) => {
+          if (
+            new Date(value.date).getTime() === day.getTime() &&
+            value.loggedTime >= 8
+          ) {
+            bgColorVal = '#DCEDC8';
+          } else if (
+            new Date(value.date).getTime() === day.getTime() &&
+            value.loggedTime < 8
+          ) {
+            bgColorVal = '#FFECB3';
           }
-        })
-        
+        });
+
         days.push(
           <Box
             w='46px'
             h='46px'
             lineHeight='46px'
             bg={`${
-              isSameDay(day , selectedDate)
+              isSameDay(day, selectedDate)
                 ? 'btnPurple'
-                : month !== currentMonth.getMonth()?'#E2E8F066' : bgColorVal? bgColorVal:''
+                : month !== currentMonth.getMonth()
+                ? '#E2E8F066'
+                : bgColorVal
+                ? bgColorVal
+                : ''
             }`}
             color={`${
               month !== currentMonth.getMonth()
@@ -164,7 +174,7 @@ const Calendar = ({ showDetailsHandle }: Props) => {
             <Text as='span' fontSize='12px' lineHeight='14.52px'>
               {formattedDate}
             </Text>
-          </Box>
+          </Box>,
         );
         day = addDays(day, 1);
       }
@@ -177,7 +187,7 @@ const Calendar = ({ showDetailsHandle }: Props) => {
           key={day.getTime()}
         >
           {days}
-        </Box>
+        </Box>,
       );
       days = [];
     }

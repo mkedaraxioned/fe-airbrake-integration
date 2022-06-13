@@ -1,4 +1,11 @@
-import { Box, Button, Flex, FormControl, FormLabel, Input } from '@chakra-ui/react';
+import {
+  Box,
+  Button,
+  Flex,
+  FormControl,
+  FormLabel,
+  Input,
+} from '@chakra-ui/react';
 import React from 'react';
 
 const AddNewClientForm = () => {
