@@ -37,7 +37,9 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "prepare": "husky install",
-    "lint": "eslint --ext=.jsx,.js,.tsx,.ts  ."
+    "lint": "eslint --ext=.jsx,.js,.tsx,.ts  .",
+    "pre-commit": "lint-staged",
+    "post-merge": "./.husky/post-merge"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -64,14 +66,12 @@
     "eslint-plugin-promise": "^5.2.0",
     "eslint-plugin-react": "^7.29.4",
     "husky": "^7.0.4",
-    "lint-staged": "^13.0.1"
+    "lint-staged": "^13.0.1",
+    "prettier": "^2.6.2"
   },
   "lint-staged": {
-    "src/**/*.{ts,tsx}": [
-      "eslint --ext .tsx --ext .ts ./src --fix"
-    ],
-    "./src/**": [
-      "prettier --write ."
+    "**/*.{js,jsx,ts,tsx,html,css,json}": [
+      "prettier --write"
     ]
   },
   "husky": {
