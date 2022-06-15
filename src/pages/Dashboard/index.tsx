@@ -35,8 +35,7 @@ const Dashboard = () => {
               fontSize='22px'
               lineHeight='27.65px'
               color='textColor'
-              fontFamily='Source Sans Pro'
-              fontWeight='600'
+              textStyle='sourceSansProBold'
             >
               Add a new entry
             </Heading>
@@ -50,24 +49,19 @@ const Dashboard = () => {
           <Heading
             as='h2'
             fontSize='22px'
+            textStyle='sourceSansProRegular'
             lineHeight='27.65px'
             color='textLightMid'
-            fontFamily='Source Sans Pro'
-            fontWeight='400'
           >
             Recently Used
           </Heading>
-          <UnorderedList
-            listStyleType='none'
-            m='0'
-            fontFamily='Source Sans Pro'
-            fontWeight='400'
-          >
+          <UnorderedList listStyleType='none' m='0'>
             <ListItem
               p='12px 0'
               borderBottom='1px'
               borderColor='borderPrimary'
               fontSize='16px'
+              textStyle='sourceSansProRegular'
               lineHeight='24px'
               display='flex'
               alignItems='center'

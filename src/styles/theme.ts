@@ -1,6 +1,7 @@
 import { extendTheme } from '@chakra-ui/react';
 import Button from './buttonStyleComponent';
 import { styles as globalStyle } from './globalStyle';
+import { textStyle } from './textStyle';
 
 export const costomTheme = extendTheme({
   styles: {
@@ -9,23 +10,16 @@ export const costomTheme = extendTheme({
     },
   },
   fonts: {
-    SourceSansProExtraLight: `'SourceSansPro-ExtraLight';`,
-    subHeading: `'Times New Roman';`,
+    sourceSansPro: `'Source Sans Pro'`,
   },
-  textStyles: {
-    h3: {
-      'font-family': 'var(--chakra-fonts-subHeading)',
-    },
+  textStyles:{
+    ...textStyle
   },
   colors: {
     primary: '#201547',
-    primaryLight: '#201547',
-    bgPrimary: '#F4FBFF',
-    bgSecondary: '#16C6CC',
     bgLight: '#F9FAFB',
     textColor: '#050505',
     textLight: '#B0B0B1',
-    textLightExtra: '#A5A5A5',
     textLightMid: '#676767',
     borderColor: '#E2E8F0',
     borderPrimary: '#D4E6F4',

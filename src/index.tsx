@@ -7,12 +7,10 @@ import { App } from './App';
 import { persistor, store } from './store';
 import { costomTheme } from './styles/theme';
 import '@fontsource/source-sans-pro';
-import Fonts from './styles/Fonts';
 
 ReactDOM.render(
   <React.StrictMode>
     <ChakraProvider resetCSS theme={costomTheme}>
-      <Fonts />
       <ColorModeScript />
       <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>

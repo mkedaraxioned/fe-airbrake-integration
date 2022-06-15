@@ -147,12 +147,11 @@ const NewProjectForm = () => {
       pos='absolute'
       top={0}
       right={0}
-      fontFamily='Source Sans Pro'
       color='textLightMid'
+      textStyle='sourceSansProRegular'
     >
       <Heading
-        fontFamily='Source Sans Pro'
-        fontWeight='600'
+        textStyle='sourceSansProBold'
         fontSize='22px'
         lineHeight='27.65px'
       >
@@ -246,8 +245,6 @@ const NewProjectForm = () => {
                   p='10px 0'
                   bg='grayColor'
                   color='textLightMid'
-                  fontFamily='Source Sans Pro'
-                  fontWeight='400'
                 >
                   <AiOutlineCalendar fontSize='20px' />
                 </Stack>
@@ -294,8 +291,6 @@ const NewProjectForm = () => {
                     p='10px 0'
                     bg='grayColor'
                     color='textLightMid'
-                    fontFamily='Source Sans Pro'
-                    fontWeight='400'
                   >
                     <AiOutlineCalendar fontSize='20px' />
                   </Stack>
@@ -327,12 +322,7 @@ const NewProjectForm = () => {
           </Flex>
           <FormControl>
             <Checkbox onChange={checkboxHandler}>
-              <Text
-                fontFamily='Source Sans Pro'
-                fontWeight='400'
-                fontSize='14px'
-                color='textLightMid'
-              >
+              <Text fontSize='14px' color='textLightMid'>
                 Billable
               </Text>
             </Checkbox>

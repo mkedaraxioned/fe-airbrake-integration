@@ -53,13 +53,8 @@ const Header = () => {
           <Link to='/'>
             <Heading display='flex' alignItems='center' fontSize='24px'>
               <FaClock fontSize='20px' />
-              <Text
-                as='span'
-                ml='8px'
-                fontFamily='Source Sans Pro'
-                fontWeight='600'
-              >
-                Axioned
+              <Text as='span' ml='8px' textStyle='sourceSansProBold'>
+                Loggr
               </Text>
             </Heading>
           </Link>
@@ -86,30 +81,35 @@ const Header = () => {
               <Input
                 placeholder='Search Projects'
                 w='full'
+                textStyle='sourceSansProRegular'
                 boxSizing='border-box'
                 border='none'
                 _focus={{ border: 'none' }}
               />
             </Box>
             <Box w='60px' textAlign='center'>
-              <Text fontSize='12px'> Ctrl + K</Text>
+              <Text fontSize='12px' textStyle='sourceSansProBold'>
+                {' '}
+                Ctrl + K
+              </Text>
             </Box>
           </Flex>
           <Flex alignItems='center'>
             <UnorderedList
               display='flex'
-              alignItems='center'
               listStyleType='none'
+              textStyle='sourceSansProBold'
+              color='textColor'
             >
-              <ListItem margin='0 15px' fontSize='18px' lineHeight='22.63px'>
+              <ListItem margin='0 15px' fontSize='18px' lineHeight='23px'>
                 <Link to='/clients'>Clients</Link>
               </ListItem>
-              <ListItem margin='0 15px' fontSize='18px' lineHeight='22.63px'>
+              <ListItem margin='0 15px' fontSize='18px' lineHeight='23px'>
                 <Link to='#fixme' onClick={onOpen}>
                   Projects
                 </Link>
               </ListItem>
-              <ListItem margin='0 15px' fontSize='18px' lineHeight='22.63px'>
+              <ListItem margin='0 15px' fontSize='18px' lineHeight='23px'>
                 <Link to='/team'>Team</Link>
               </ListItem>
             </UnorderedList>

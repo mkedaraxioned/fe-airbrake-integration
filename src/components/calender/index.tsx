@@ -59,11 +59,7 @@ const Calendar = ({ showDetailsHandle }: Props) => {
             <HiOutlineChevronLeft size='21' />
           </Box>
         </Box>
-        <Box
-          className='col col-center'
-          fontFamily='Source Sans Pro'
-          fontWeight='600'
-        >
+        <Box className='col col-center' textStyle='sourceSansProBold'>
           <Text fontSize='16px' lineHeight='20.11px'>
             {format(currentMonth, dateFormat)}
           </Text>
@@ -85,12 +81,11 @@ const Calendar = ({ showDetailsHandle }: Props) => {
         <Box
           w='46px'
           h='46px'
-          lineHeight='46px'
           fontSize='14px'
           color='textLightMid'
           key={i}
-          fontFamily='Source Sans Pro'
-          fontWeight='600'
+          textStyle='sourceSansProBold'
+          lineHeight='46px'
         >
           {format(addDays(startDate, i), dateFormat)}
         </Box>,
@@ -205,8 +200,7 @@ const Calendar = ({ showDetailsHandle }: Props) => {
       <HStack
         pb='25px'
         justifyContent='space-between'
-        fontFamily='Source Sans Pro'
-        fontWeight='600'
+        textStyle='sourceSansProBold'
       >
         <Text fontSize='22px'>Select a date</Text>
         <Button

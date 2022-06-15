@@ -11,8 +11,7 @@ const TaskList = () => {
             as='h3'
             fontSize='22px'
             lineHeight='27.65px'
-            fontFamily='Source Sans Pro'
-            fontWeight='600'
+            textStyle='sourceSansProBold'
           >
             Entries logged
           </Heading>
@@ -20,8 +19,7 @@ const TaskList = () => {
             as='h3'
             fontSize='18px'
             lineHeight='22.63px'
-            fontFamily='Source Sans Pro'
-            fontWeight='600'
+            textStyle='sourceSansProBold'
           >
             7:30 hours
           </Heading>
@@ -38,12 +36,11 @@ const TaskList = () => {
             as='h4'
             fontSize='18px'
             lineHeight='22.63px'
-            fontFamily='Source Sans Pro'
-            fontWeight='600'
+            textStyle='sourceSansProBold'
           >
             ClearForMe Ongoing Retainer
           </Heading>
-          <Text>4:00 hours</Text>
+          <Text textStyle='sourceSansProBold'>4:00 hours</Text>
         </HStack>
         <Box>
           <TimeCard />
@@ -56,19 +53,16 @@ const TaskList = () => {
           justifyContent='space-between'
           color='textLightMid'
           pr='19px'
-          fontFamily='Source Sans Pro'
-          fontWeight='600'
         >
           <Heading
             as='h4'
             fontSize='18px'
             lineHeight='22.63px'
-            fontFamily='Source Sans Pro'
-            fontWeight='600'
+            textStyle='sourceSansProBold'
           >
             ClearForMe Ongoing Retainer
           </Heading>
-          <Text>4:00 hours</Text>
+          <Text textStyle='sourceSansProBold'>4:00 hours</Text>
         </HStack>
         <Box>
           <TimeCard />

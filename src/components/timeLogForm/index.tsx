@@ -85,8 +85,7 @@ const TimeLogFrom = () => {
             color='textLightMid'
             fontSize='14px'
             lineHeight='17.6px'
-            fontFamily='Source Sans Pro'
-            fontWeight='600'
+            textStyle='sourceSansProBold'
           >
             Select Project
           </FormLabel>
@@ -98,8 +97,7 @@ const TimeLogFrom = () => {
             fontSize='14px'
             lineHeight='17.6px'
             color='textLightMid'
-            fontFamily='Source Sans Pro'
-            fontWeight='400'
+            textStyle='sourceSansProRegular'
             onChange={selecttHandler}
           >
             <option value={'ClearForMe Ongoing Retainer Agreement'}>
@@ -118,8 +116,7 @@ const TimeLogFrom = () => {
             color='textLightMid'
             fontSize='14px'
             lineHeight='17.6px'
-            fontFamily='Source Sans Pro'
-            fontWeight='600'
+            textStyle='sourceSansProBold'
           >
             Retainer month
           </FormLabel>
@@ -131,8 +128,7 @@ const TimeLogFrom = () => {
             fontSize='14px'
             lineHeight='17.6px'
             color='textLightMid'
-            fontFamily='Source Sans Pro'
-            fontWeight='400'
+            textStyle='sourceSansProRegular'
             onChange={selecttHandler}
           >
             <option value={'Task 1'}>Task 1</option>
@@ -151,42 +147,41 @@ const TimeLogFrom = () => {
               color='textLightMid'
               fontSize='14px'
               lineHeight='17.6px'
-              fontFamily='Source Sans Pro'
-              fontWeight='600'
+              textStyle='sourceSansProBold'
             >
               Add Time
             </FormLabel>
             <Flex
               alignItems='center'
+              rounded='md'
               border='1px'
               borderColor='borderColor'
-              rounded='md'
             >
               <Input
                 w='50%'
+                h='38px'
                 id='add_time'
                 boxSizing='border-box'
                 type='text'
-                fontFamily='Source Sans Pro'
-                fontWeight='400'
                 value={formData.logTime}
                 name='logTime'
                 onChange={inputHandler}
                 border='none'
                 placeholder='88:88'
                 fontSize='14px'
+                textStyle='sourceSansProRegular'
                 lineHeight='17.6px'
               />
               <Text
                 w='50%'
+                h='38px'
                 textAlign='center'
                 p='8px 0'
                 bg='gray.300'
                 fontSize='14px'
                 lineHeight='24px'
                 color='textLightMid'
-                fontFamily='Source Sans Pro'
-                fontWeight='400'
+                textStyle='sourceSansProRegular'
               >
                 Hours
               </Text>
@@ -199,7 +194,7 @@ const TimeLogFrom = () => {
               color='textLightMid'
               fontSize='14px'
               lineHeight='17.6px'
-              fontWeight='bold'
+              textStyle='sourceSansProBold'
             >
               Comments
             </FormLabel>
@@ -207,8 +202,7 @@ const TimeLogFrom = () => {
               id='email'
               type='email'
               value={formData.comments}
-              fontFamily='Source Sans Pro'
-              fontWeight='400'
+              textStyle='sourceSansProRegular'
               onChange={inputHandler}
               name='comments'
               placeholder='Please describe the activity'
