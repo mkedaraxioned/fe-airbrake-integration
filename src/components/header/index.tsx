@@ -23,12 +23,24 @@ import {
 import React from 'react';
 import { FaClock } from 'react-icons/fa';
 import { AiOutlineSearch } from 'react-icons/ai';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { ColorModeSwitcher } from '../../ColorModeSwitcher';
 import NewProjectForm from '../newProjectForm';
+import { userLogout } from '../../feature/userSlice';
+import { useSelector, useDispatch } from 'react-redux';
+import { RootState } from '../../store';
 
 const Header = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const user = useSelector((state: RootState) => state.user);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const logOut = () => {
+    dispatch(userLogout());
+    navigate('/login', { replace: true });
+  };
+
   const ModalBox = () => {
     return (
       <Drawer isOpen={isOpen} size='lg' placement='right' onClose={onClose}>
@@ -95,24 +107,26 @@ const Header = () => {
             </Box>
           </Flex>
           <Flex alignItems='center'>
-            <UnorderedList
-              display='flex'
-              listStyleType='none'
-              textStyle='sourceSansProBold'
-              color='textColor'
-            >
-              <ListItem margin='0 15px' fontSize='18px' lineHeight='23px'>
-                <Link to='/clients'>Clients</Link>
-              </ListItem>
-              <ListItem margin='0 15px' fontSize='18px' lineHeight='23px'>
-                <Link to='#fixme' onClick={onOpen}>
-                  Projects
-                </Link>
-              </ListItem>
-              <ListItem margin='0 15px' fontSize='18px' lineHeight='23px'>
-                <Link to='/team'>Team</Link>
-              </ListItem>
-            </UnorderedList>
+            {user.role === 'admin' ? (
+              <UnorderedList
+                display='flex'
+                listStyleType='none'
+                textStyle='sourceSansProBold'
+                color='textColor'
+              >
+                <ListItem margin='0 15px' fontSize='18px' lineHeight='23px'>
+                  <Link to='/clients'>Clients</Link>
+                </ListItem>
+                <ListItem margin='0 15px' fontSize='18px' lineHeight='23px'>
+                  <Link to='#fixme' onClick={onOpen}>
+                    Projects
+                  </Link>
+                </ListItem>
+                <ListItem margin='0 15px' fontSize='18px' lineHeight='23px'>
+                  <Link to='/team'>Team</Link>
+                </ListItem>
+              </UnorderedList>
+            ) : null}
             <Menu>
               <MenuButton
                 ml='30px'
@@ -124,24 +138,28 @@ const Header = () => {
                 colorScheme='transparent'
                 border='2px'
               >
-                <Avatar w='full' h='full' />
+                <Avatar w='full' h='full' src='' />
               </MenuButton>
               <MenuList>
                 <MenuGroup>
-                  <MenuItem>
-                    <Text fontWeight='bold'>loggr</Text>
+                  <MenuItem pointerEvents='none'>
+                    <Text fontWeight='bold'>{user.name}</Text>
                   </MenuItem>
-                  <MenuItem> Account </MenuItem>
-                  <MenuItem>
-                    {' '}
-                    <Link to='dashboard' className='menu-anchor'>
-                      Dashboard
-                    </Link>{' '}
-                  </MenuItem>
-                  <MenuItem> Setting </MenuItem>
+                  {user.role === 'admin' ? (
+                    <>
+                      <MenuItem> Account </MenuItem>
+                      <MenuItem>
+                        {' '}
+                        <Link to='dashboard' className='menu-anchor'>
+                          Dashboard
+                        </Link>{' '}
+                      </MenuItem>
+                      <MenuItem> Setting </MenuItem>
+                    </>
+                  ) : null}
                 </MenuGroup>
                 <MenuGroup>
-                  <MenuItem>Log Out</MenuItem>
+                  <MenuItem onClick={logOut}>Log Out</MenuItem>
                 </MenuGroup>
                 <MenuGroup>
                   <MenuItem>
