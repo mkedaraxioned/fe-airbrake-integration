@@ -8,7 +8,7 @@ const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const loginUser = () => {
-    dispatch(userLogin({ name: 'Dnyaneshwar Inchale', role: 'normal' }));
+    dispatch(userLogin({ name: 'Axioned loggr', role: 'admin' }));
     navigate('/', { replace: true });
   };
   return (
