@@ -12,8 +12,19 @@ export const costomTheme = extendTheme({
   fonts: {
     sourceSansPro: `'Source Sans Pro'`,
   },
-  textStyles:{
-    ...textStyle
+  textStyles: {
+    ...textStyle,
+  },
+  radii: {
+    none: '0',
+    sm: '0.125rem',
+    base: '0.25rem',
+    md: '0.3125rem',
+    lg: '0.5rem',
+    xl: '0.75rem',
+    '2xl': '1rem',
+    '3xl': '1.5rem',
+    full: '9999px',
   },
   colors: {
     primary: '#201547',
@@ -28,6 +39,8 @@ export const costomTheme = extendTheme({
     grayColor: '#EDF2F7',
     grayLight: '#696969',
     grayMid: '#F2F2F2',
+    tabBg: ' #F8F8F8',
+    greenLight: '#00BB8B',
   },
   components: {
     Button,
