@@ -1,8 +1,12 @@
 export const styles = {
+  body: {
+    backgroundColor: '#F9FAFB',
+  },
   '.wrapper': {
     maxWidth: '1400px',
     width: '94%',
     margin: '0 auto',
+    backgroundColor: '#FFFFFF',
   },
   '.menu-anchor': {
     width: '100%',

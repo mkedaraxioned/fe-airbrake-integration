@@ -34,7 +34,7 @@ const Header = () => {
   };
 
   return (
-    <Box py='18px' shadow='md'>
+    <Box py='18px' bg='white' position='relative' shadow='md'>
       <Flex
         className='wrapper'
         justifyContent='space-between'

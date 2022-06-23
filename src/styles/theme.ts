@@ -28,7 +28,6 @@ export const costomTheme = extendTheme({
   },
   colors: {
     primary: '#201547',
-    bgLight: '#F9FAFB',
     textColor: '#050505',
     textLight: '#B0B0B1',
     textLightMid: '#676767',
@@ -41,6 +40,8 @@ export const costomTheme = extendTheme({
     grayMid: '#F2F2F2',
     tabBg: ' #F8F8F8',
     greenLight: '#00BB8B',
+    bgPrimary: '#FBFBFC',
+    bgSecondary: '#F9FAFB',
   },
   components: {
     Button,

@@ -1,15 +1,18 @@
 import { Avatar, AvatarGroup, Box, Flex, Text } from '@chakra-ui/react';
 import React from 'react';
 import { BiCalendar } from 'react-icons/bi';
-
+import './projectCard.modules.css';
 const ProjectCard = () => {
   return (
     <Box
       w='298px'
       border='1px'
-      mr='16px'
+      mr='17px'
+      mb='30px'
       borderColor='borderColor'
       rounded='md'
+      bg='bgPrimary'
+      className='project-card'
     >
       <Flex
         alignItems='center'

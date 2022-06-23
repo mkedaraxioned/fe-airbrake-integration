@@ -23,7 +23,7 @@ import {
 import NewProjectForm from '../../components/newProjectForm';
 import { Link } from 'react-router-dom';
 import TabsButton from '../../components/tabButton';
-import ProjectCard from '../../components/projectCard';
+import ProjectList from '../../components/projectList';
 
 const Projects = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -44,7 +44,7 @@ const Projects = () => {
 
   return (
     <Box>
-      <Box p='15px 55px' className='wrapper'>
+      <Box p='15px 55px 80px' className='wrapper'>
         <Breadcrumb m='15px 0' fontSize='14px'>
           <BreadcrumbItem>
             <Link to='/'>Home</Link>
@@ -101,23 +101,18 @@ const Projects = () => {
           borderColor='borderColor'
           rounded='md'
         >
-          <TabList borderBottom='1px'>
+          <TabList pb='2px' borderBottom='1px'>
             <TabsButton>My Projects</TabsButton>
             <TabsButton>All Projects</TabsButton>
           </TabList>
           <TabPanels>
-            <TabPanel>
-              <Flex flexWrap='wrap'>
-                <ProjectCard />
-                <ProjectCard />
-                <ProjectCard />
-                <ProjectCard />
-                <ProjectCard />
-                <ProjectCard />
-              </Flex>
+            <TabPanel p='30px 22px'>
+              <ProjectList />
+              <ProjectList />
             </TabPanel>
-            <TabPanel>
-              <p>two!</p>
+            <TabPanel p='30px 22px'>
+              <ProjectList />
+              <ProjectList />
             </TabPanel>
           </TabPanels>
         </Tabs>

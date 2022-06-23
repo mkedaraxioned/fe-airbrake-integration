@@ -10,7 +10,7 @@ const TabsButton = ({ children }: Props) => {
     <Box>
       <Tab
         w='200px'
-        h='61px'
+        h='58px'
         color='textLightMid'
         fontSize='18px'
         textStyle='sourceSansProRegular'
