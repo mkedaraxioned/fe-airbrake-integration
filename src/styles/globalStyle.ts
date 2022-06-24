@@ -3,7 +3,7 @@ export const styles = {
     backgroundColor: '#F9FAFB',
   },
   '.wrapper': {
-    maxWidth: '1400px',
+    maxWidth: '1410px',
     width: '94%',
     margin: '0 auto',
     backgroundColor: '#FFFFFF',
