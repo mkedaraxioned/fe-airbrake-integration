@@ -16,10 +16,10 @@ const ProjectList = () => {
       </Text>
       <Flex flexWrap='wrap'>
         <ProjectCard />
+        <ProjectCard calenderChng={true} />
         <ProjectCard />
-        <ProjectCard />
-        <ProjectCard />
-        <ProjectCard />
+        <ProjectCard calenderChng={true} />
+        <ProjectCard calenderChng={true} />
         <ProjectCard />
       </Flex>
     </Box>

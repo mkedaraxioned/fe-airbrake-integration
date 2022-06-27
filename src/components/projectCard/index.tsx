@@ -1,9 +1,15 @@
 import { Avatar, AvatarGroup, Box, Flex, Text } from '@chakra-ui/react';
 import React from 'react';
-import { BiCalendar } from 'react-icons/bi';
 import { Link } from 'react-router-dom';
 import './projectCard.modules.css';
-const ProjectCard = () => {
+import { ReactComponent as CalenderIcon1 } from '../../assets/images/calenderIcon1.svg';
+import { ReactComponent as CalenderIcon2 } from '../../assets/images/calenderIcon2.svg';
+
+interface Props {
+  calenderChng?: boolean;
+}
+
+const ProjectCard = ({ calenderChng }: Props) => {
   return (
     <Box
       w='298px'
@@ -31,7 +37,7 @@ const ProjectCard = () => {
           >
             Bed Linen
           </Text>
-          <BiCalendar style={{ fontSize: '23px', color: '#718096' }} />
+          {calenderChng ? <CalenderIcon2 /> : <CalenderIcon1 />}
         </Flex>
         <Box p='15px 22px'>
           <Text
@@ -52,12 +58,31 @@ const ProjectCard = () => {
             Members:
           </Text>
           <AvatarGroup size='sm' flexWrap='wrap' w='60%'>
-            <Avatar name='Dnyaneshwar I' />
-            <Avatar name='Vipin Y' />
-            <Avatar name='Prajakta P' />
-            <Avatar name='Dnyaneshwar I' />
-            <Avatar name='Vipin Y' />
-            <Avatar name='Prajakta P' />
+            <Avatar
+              title='Vipin Y'
+              name='Vipin Y'
+              src='https://lh3.googleusercontent.com/a-/AOh14GgVaCdQ3H7ETdZugiK3ce4Kxvp91FFfq0k0_WcI=s48-p'
+            />
+            <Avatar
+              name='Prajakta P'
+              title='Prajakta P'
+              src='https://lh3.googleusercontent.com/a-/AOh14GhzeVmBRp11Nni3bJKIknoM6Yav8yaCs8jex3qQlQ=s40-p'
+            />
+            <Avatar
+              name='Vipin Y'
+              title='Vipin Y'
+              src='https://lh3.googleusercontent.com/a-/AOh14GgVaCdQ3H7ETdZugiK3ce4Kxvp91FFfq0k0_WcI=s48-p'
+            />
+            <Avatar
+              name='Prajakta P'
+              title='Prajakta P'
+              src='https://lh3.googleusercontent.com/a-/AOh14GhzeVmBRp11Nni3bJKIknoM6Yav8yaCs8jex3qQlQ=s40-p'
+            />
+            <Avatar
+              name='Dnyaneshwar I'
+              title='Dnyaneshwar I'
+              src='https://lh3.google.com/u/0/ogw/ADea4I6TpQUaF1Miu3OmVLI9N8qbf9Zre1W4dbdU9ysp=s32-c-mo'
+            />
           </AvatarGroup>
         </Box>
       </Link>
