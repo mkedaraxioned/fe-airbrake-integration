@@ -44,7 +44,7 @@ const Projects = () => {
 
   return (
     <Box>
-      <Box h='92vh' p='15px 55px 80px' className='wrapper'>
+      <Box p='15px 55px 80px' className='wrapper'>
         <Breadcrumb m='15px 0' fontSize='14px' spacing='4px'>
           <BreadcrumbItem>
             <Link to='/'>Home</Link>

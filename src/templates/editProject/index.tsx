@@ -23,7 +23,7 @@ import { Link } from 'react-router-dom';
 const EditProject = () => {
   return (
     <Box>
-      <Box p='15px 55px 0' className='wrapper'>
+      <Box p='15px 55px 40px' className='wrapper'>
         <Breadcrumb
           m='15px 0'
           fontSize='14px'
@@ -75,7 +75,7 @@ const EditProject = () => {
             </Button>
           </HStack>
         </Flex>
-        <Box p='30px 0 0'>
+        <Box p='30px 0'>
           <Box pos='relative'>
             <Text
               pr='10px'
@@ -98,7 +98,7 @@ const EditProject = () => {
             alignItems='flex-start'
             divider={<StackDivider />}
           >
-            <Box h='77vh' p='22px 0'>
+            <Box h='77px' p='22px 0'>
               <Flex
                 justifyContent='space-between'
                 color='textLightMid'
