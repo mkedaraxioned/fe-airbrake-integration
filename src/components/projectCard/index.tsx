@@ -5,17 +5,17 @@ import { Link } from 'react-router-dom';
 import './projectCard.modules.css';
 const ProjectCard = () => {
   return (
-    <Link to='/projects/harvest'>
-      <Box
-        w='298px'
-        border='1px'
-        mr='17px'
-        mb='30px'
-        borderColor='borderColor'
-        rounded='md'
-        bg='bgPrimary'
-        className='project-card'
-      >
+    <Box
+      w='298px'
+      border='1px'
+      mr='17px'
+      mb='30px'
+      borderColor='borderColor'
+      rounded='md'
+      bg='bgPrimary'
+      className='project-card'
+    >
+      <Link to='/projects/harvest'>
         <Flex
           alignItems='center'
           p='15px 22px'
@@ -60,8 +60,8 @@ const ProjectCard = () => {
             <Avatar name='Prajakta P' />
           </AvatarGroup>
         </Box>
-      </Box>
-    </Link>
+      </Link>
+    </Box>
   );
 };
 
