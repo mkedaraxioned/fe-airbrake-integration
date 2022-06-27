@@ -20,7 +20,7 @@ const TimeCard = () => {
       display='flex'
       alignItems='center'
       justifyContent='space-between'
-      bg='bgLight'
+      bg='bgPrimary'
       fontSize='14px'
       lineHeight='17.6px'
       onMouseOver={over}

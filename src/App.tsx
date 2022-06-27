@@ -5,8 +5,10 @@ import Header from './components/header';
 import AddClient from './pages/AddClient';
 import Dashboard from './pages/Dashboard';
 import Login from './pages/Login';
+import Projects from './pages/Projects';
 import Team from './pages/Team';
 import { RootState } from './store';
+import EditProject from './templates/editProject';
 export const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const user = useSelector((state: RootState) => state.user);
@@ -26,6 +28,8 @@ export const App = () => {
               <Route path='/dashboard' element={<Dashboard />} />
               <Route path='/add-client' element={<AddClient />} />
               <Route path='/team' element={<Team />} />
+              <Route path='/projects' element={<Projects />} />
+              <Route path='/projects/:project/*' element={<EditProject />} />
             </>
           ) : (
             <Route path='/login' element={<Login />} />
