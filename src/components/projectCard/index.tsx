@@ -8,7 +8,7 @@ const ProjectCard = () => {
     <Box
       w='298px'
       border='1px'
-      mr='17px'
+      mr='20px'
       mb='30px'
       borderColor='borderColor'
       rounded='md'
