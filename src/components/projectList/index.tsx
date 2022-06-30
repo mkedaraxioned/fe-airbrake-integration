@@ -1,7 +1,7 @@
-import { Box, Flex, Text } from '@chakra-ui/react';
+import { Box, Flex, ListItem, Text, UnorderedList } from '@chakra-ui/react';
 import React from 'react';
 import ProjectCard from '../projectCard';
-
+import './projectList.modules.css';
 const ProjectList = () => {
   return (
     <Box>
@@ -14,14 +14,29 @@ const ProjectList = () => {
       >
         Harvest
       </Text>
-      <Flex flexWrap='wrap'>
-        <ProjectCard />
-        <ProjectCard calenderChng={true} />
-        <ProjectCard />
-        <ProjectCard calenderChng={true} />
-        <ProjectCard calenderChng={true} />
-        <ProjectCard />
-      </Flex>
+      <UnorderedList
+        m='0'
+        listStyleType='none'
+        display='flex'
+        flexWrap='wrap'
+        className='project_list'
+      >
+        <ListItem flexBasis='25%'>
+          <ProjectCard calenderChng={true} />
+        </ListItem>
+        <ListItem flexBasis='25%'>
+          <ProjectCard />
+        </ListItem>
+        <ListItem flexBasis='25%'>
+          <ProjectCard calenderChng={true} />
+        </ListItem>
+        <ListItem flexBasis='25%'>
+          <ProjectCard calenderChng={true} />
+        </ListItem>
+        <ListItem flexBasis='25%'>
+          <ProjectCard />
+        </ListItem>
+      </UnorderedList>
     </Box>
   );
 };

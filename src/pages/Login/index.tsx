@@ -91,13 +91,9 @@ const Login = () => {
             <Image src={axionedLogo} alt='Axioned' />
             <Text pt='5px'>
               Made with{' '}
-              <AiFillHeart
-                style={{
-                  display: 'inline',
-                  color: 'red',
-                  verticalAlign: 'text-top',
-                }}
-              />{' '}
+              <Text as='span' color='red' fontSize='18px'>
+                &#10084;
+              </Text>{' '}
               in India
             </Text>
           </VStack>

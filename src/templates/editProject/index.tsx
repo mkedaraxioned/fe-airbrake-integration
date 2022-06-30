@@ -16,11 +16,21 @@ import {
   UnorderedList,
   VStack,
 } from '@chakra-ui/react';
-import React from 'react';
+import React, { useState } from 'react';
 import { AiOutlinePlusCircle } from 'react-icons/ai';
 import { Link } from 'react-router-dom';
+import { Task } from '../../interfaces/editProject';
 
 const EditProject = () => {
+  const [taskNode, setTaskNode] = useState<Task[]>([{ title: '', hr: '' }]);
+
+  const addTaskControls = () => {
+    setTaskNode([...taskNode, { title: '', hr: '' }]);
+  };
+  const removeTaskControls = (taskIndex: number) => {
+    const filterTask = taskNode.filter((_, index) => index !== taskIndex);
+    setTaskNode(filterTask);
+  };
   return (
     <Box>
       <Box p='15px 55px 40px' className='wrapper'>
@@ -78,12 +88,6 @@ const EditProject = () => {
         <Box p='30px 0'>
           <Box pos='relative'>
             <Text
-              pr='10px'
-              pos='absolute'
-              top='-12px'
-              left='0'
-              bg='white'
-              zIndex='3'
               color='textColor'
               textStyle='sourceSansProBold'
               fontSize='18px'
@@ -91,7 +95,6 @@ const EditProject = () => {
             >
               Manage
             </Text>
-            <Divider />
           </Box>
           <HStack
             justifyContent='space-between'
@@ -111,17 +114,13 @@ const EditProject = () => {
               </Flex>
               <UnorderedList m='0'>
                 <ListItem m='20px 0' display='flex'>
-                  <Box
+                  <Input
                     w='387px'
-                    p='12px 17px'
                     mr='32px'
-                    rounded='md'
-                    bg='grayMid'
-                  >
-                    <Text textStyle='inputTextStyle'>
-                      Month 1 (May 18 - Jun 17
-                    </Text>
-                  </Box>
+                    textStyle='inputTextStyle'
+                    type='text'
+                    value='Month(May 18 - Jun 17)'
+                  />
                   <FormControl w='114px'>
                     <Input
                       type='text'
@@ -132,46 +131,34 @@ const EditProject = () => {
                   </FormControl>
                 </ListItem>
                 <ListItem m='20px 0' display='flex'>
-                  <Box
+                  <Input
                     w='387px'
-                    p='12px 17px'
                     mr='32px'
-                    rounded='md'
-                    bg='grayMid'
-                  >
-                    <Text textStyle='inputTextStyle'>
-                      Month 1 (May 18 - Jun 17
-                    </Text>
-                  </Box>
+                    textStyle='inputTextStyle'
+                    type='text'
+                    value='Month(May 18 - Jun 17)'
+                  />
                   <FormControl w='114px'>
                     <Input
                       type='text'
                       textStyle='inputTextStyle'
-                      _disabled={{ bg: 'grayMid' }}
-                      disabled
                       value={80}
                       textAlign='center'
                     />
                   </FormControl>
                 </ListItem>
                 <ListItem m='20px 0' display='flex'>
-                  <Box
+                  <Input
                     w='387px'
-                    p='12px 17px'
                     mr='32px'
-                    rounded='md'
-                    bg='grayMid'
-                  >
-                    <Text textStyle='inputTextStyle'>
-                      Month 1 (May 18 - Jun 17
-                    </Text>
-                  </Box>
+                    textStyle='inputTextStyle'
+                    type='text'
+                    value='Month(May 18 - Jun 17)'
+                  />
                   <FormControl w='114px'>
                     <Input
                       type='text'
                       textStyle='inputTextStyle'
-                      _disabled={{ bg: 'grayMid' }}
-                      disabled
                       value={80}
                       textAlign='center'
                     />
@@ -210,72 +197,39 @@ const EditProject = () => {
                 </HStack>
               </Flex>
               <UnorderedList listStyleType='none' m='0'>
-                <ListItem m='20px 0'>
-                  <HStack>
-                    <FormControl w='387px' mr='20px'>
-                      <Input
-                        type='text'
-                        textStyle='inputTextStyle'
-                        value='Task name 1'
-                      />
-                    </FormControl>
-                    <FormControl w='60px' mr='37px !important'>
-                      <Input
-                        type='text'
-                        textStyle='inputTextStyle'
-                        value={20}
-                        textAlign='center'
-                      />
-                    </FormControl>
-                    <Box>
-                      <Checkbox size='lg' />
-                    </Box>
-                  </HStack>
-                </ListItem>
-                <ListItem m='20px 0'>
-                  <HStack>
-                    <FormControl w='387px' mr='20px'>
-                      <Input
-                        type='text'
-                        textStyle='inputTextStyle'
-                        value='Task name 1'
-                      />
-                    </FormControl>
-                    <FormControl w='60px' mr='37px !important'>
-                      <Input
-                        type='text'
-                        textStyle='inputTextStyle'
-                        value={20}
-                        textAlign='center'
-                      />
-                    </FormControl>
-                    <Box>
-                      <Checkbox size='lg' />
-                    </Box>
-                  </HStack>
-                </ListItem>
-                <ListItem m='20px 0'>
-                  <HStack>
-                    <FormControl w='387px' mr='20px'>
-                      <Input
-                        type='text'
-                        textStyle='inputTextStyle'
-                        value='Task name 1'
-                      />
-                    </FormControl>
-                    <FormControl w='60px' mr='37px !important'>
-                      <Input
-                        type='text'
-                        textStyle='inputTextStyle'
-                        value={20}
-                        textAlign='center'
-                      />
-                    </FormControl>
-                    <Box>
-                      <Checkbox size='lg' />
-                    </Box>
-                  </HStack>
-                </ListItem>
+                {taskNode.map((_, index) => {
+                  return (
+                    <ListItem m='20px 0' key={index}>
+                      <HStack>
+                        <FormControl w='387px' mr='20px'>
+                          <Input
+                            type='text'
+                            textStyle='inputTextStyle'
+                            placeholder='Enter Task'
+                            value={_.title}
+                          />
+                        </FormControl>
+                        <FormControl w='60px' mr='37px !important'>
+                          <Input
+                            type='text'
+                            placeholder='Hrs'
+                            textStyle='inputTextStyle'
+                            value={_.hr}
+                            textAlign='center'
+                          />
+                        </FormControl>
+                        <Box>
+                          <Checkbox size='lg' />
+                          {index === 0 ? null : (
+                            <Button onClick={() => removeTaskControls(index)}>
+                              Del
+                            </Button>
+                          )}
+                        </Box>
+                      </HStack>
+                    </ListItem>
+                  );
+                })}
               </UnorderedList>
               <Box
                 display='flex'
@@ -284,7 +238,14 @@ const EditProject = () => {
                 cursor='pointer'
               >
                 <AiOutlinePlusCircle />
-                <Text ml='5px' textStyle='inputTextStyle'>
+                <Text
+                  ml='5px'
+                  textStyle='inputTextStyle'
+                  onClick={addTaskControls}
+                  _hover={{
+                    textDecor: 'underline',
+                  }}
+                >
                   Add new task
                 </Text>
               </Box>

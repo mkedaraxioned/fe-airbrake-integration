@@ -1,5 +1,6 @@
 import { extendTheme } from '@chakra-ui/react';
 import Button from './buttonStyleComponent';
+import Radio from './radioButtonStyleComponent';
 import { styles as globalStyle } from './globalStyle';
 import { textStyle } from './textStyle';
 
@@ -46,5 +47,6 @@ export const costomTheme = extendTheme({
   },
   components: {
     Button,
+    Radio,
   },
 });

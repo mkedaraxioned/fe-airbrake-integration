@@ -8,6 +8,7 @@ import {
   UnorderedList,
 } from '@chakra-ui/react';
 import React from 'react';
+import AutoCompleteElem from '../../components/autoComplete';
 import Calendar from '../../components/calender';
 import TaskList from '../../components/taskList';
 import TimeLogFrom from '../../components/timeLogForm';
