@@ -38,6 +38,7 @@ const AutoCompleteElem = ({ onChange, items }: Props) => {
           iconColor: '#676767',
           lineColor: '#E2E8F0',
           placeholderColor: '#676767',
+          zIndex: 2,
         }}
       />
     </div>

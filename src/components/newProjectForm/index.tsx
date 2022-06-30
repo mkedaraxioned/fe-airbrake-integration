@@ -84,8 +84,8 @@ const NewProjectForm = () => {
     setTeamMembers();
   }, [member]);
 
-  const selectClient = (item: MemberObj) => {
-    setFormData({ ...formData, clientName: item.name });
+  const selecttHandler = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
   const inputHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -203,7 +203,22 @@ const NewProjectForm = () => {
             <FormLabel fontSize='14px' lineHeight='17.6px' fontWeight='600'>
               Select Client
             </FormLabel>
-            <AutoCompleteElem onChange={selectClient} items={allClients} />
+            <Select
+              id='select_project'
+              name='clientName'
+              value={formData.clientName}
+              placeholder='Select'
+              fontSize='14px'
+              lineHeight='17.6px'
+              color='textLightMid'
+              textStyle='sourceSansProRegular'
+              onChange={selecttHandler}
+            >
+              <option value={'ClearForMe Ongoing Retainer Agreement'}>
+                ClearForMe Ongoing Retainer Agreement
+              </option>
+              <option value={'Project 2'}>Project 2</option>
+            </Select>
             <FormErrorMessage>{errMsg?.clientName}</FormErrorMessage>
           </FormControl>
           <FormControl p='8px 0' isInvalid={errMsg?.projectName ? true : false}>
@@ -366,10 +381,13 @@ const NewProjectForm = () => {
               Add project members
             </FormLabel>
             <AutoCompleteElem onChange={selectMember} items={items} />
-            <AvatarGroup size='md' mt='15px' flexWrap='wrap' w='60%'>
+            <AvatarGroup mt='15px' flexWrap='wrap' w='60%'>
               {formData.teamMembers.length > 0 &&
-                formData.teamMembers.map((memberData, index) => (
+                formData.teamMembers.map((memberData) => (
                   <Avatar
+                    w='32px'
+                    h='32px'
+                    size='32px'
                     key={memberData.id}
                     onClick={() => unselectMember(memberData.id)}
                     name={memberData.name}

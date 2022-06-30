@@ -2,4 +2,9 @@
   width: 88%;
   margin-left: 11px;
   outline: none;
+  position: relative;
+  z-index: 3;
+}
+.date_picker_react .react-datepicker-popper {
+  z-index: 5 !important;
 }

@@ -44,6 +44,8 @@ export const costomTheme = extendTheme({
     greenLight: '#00BB8B',
     bgPrimary: '#FBFBFC',
     bgSecondary: '#F9FAFB',
+    bgLight: '#FDFDFD',
+    inputBg: '#F3F6F9',
   },
   components: {
     Button,

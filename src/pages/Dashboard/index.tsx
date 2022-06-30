@@ -18,17 +18,20 @@ const Dashboard = () => {
     console.log(dayStr);
   };
   return (
-    <Box className='wrapper'>
-      <Flex>
-        <Box pt='40px' flexBasis='23%' mr='50px'>
-          <Calendar showDetailsHandle={showDetailsHandle} />
+    <Box>
+      <Flex justifyContent='center'>
+        <Box flexBasis='31%' bg='bgLight'>
+          <Box w='323px' mt='40px' mr='50px' ml='auto'>
+            <Calendar showDetailsHandle={showDetailsHandle} />
+          </Box>
         </Box>
         <Box
           p='40px 55px 0'
           borderLeft='1px'
           borderRight='1px'
           borderColor='borderColor'
-          flexBasis='47%'
+          flexBasis='36%'
+          bg='white'
         >
           <Box>
             <Heading
@@ -46,7 +49,7 @@ const Dashboard = () => {
             <TaskList />
           </Box>
         </Box>
-        <Box p='40px 0 0 47px'>
+        <Box p='40px 0 0 47px' flexBasis='33%'>
           <Heading
             as='h2'
             fontSize='22px'
@@ -56,7 +59,7 @@ const Dashboard = () => {
           >
             Recently Used
           </Heading>
-          <UnorderedList listStyleType='none' m='0'>
+          <UnorderedList w='40%' listStyleType='none' m='0'>
             <ListItem
               p='12px 0'
               borderBottom='1px'

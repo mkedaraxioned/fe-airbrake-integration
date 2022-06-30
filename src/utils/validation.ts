@@ -13,6 +13,7 @@ export const numberValidate = (numbers: string) => {
 };
 
 export const timeStringValidate = (numbers: string) => {
-  const numberPatter = new RegExp(/^(?:[0-9]+(?:[.:][0-9]+)?|[.:][0-9]+)$/);
+  // const numberPatter = new RegExp(/^(?:[0-9]+(?:[.:][0-9]+)?|[.:][0-9]+)$/);
+  const numberPatter = new RegExp(/[^0-9.:]/);
   return numberPatter.test(numbers);
 };

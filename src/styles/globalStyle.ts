@@ -27,4 +27,7 @@ export const styles = {
       borderBottom: 'none',
     },
   },
+  '.react-datepicker-popper': {
+    zIndex: '4 !important',
+  },
 };

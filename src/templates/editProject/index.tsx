@@ -4,7 +4,6 @@ import {
   BreadcrumbItem,
   Button,
   Checkbox,
-  Divider,
   Flex,
   FormControl,
   Heading,
@@ -20,9 +19,19 @@ import React, { useState } from 'react';
 import { AiOutlinePlusCircle } from 'react-icons/ai';
 import { Link } from 'react-router-dom';
 import { Task } from '../../interfaces/editProject';
+import { ReactComponent as DeleteSvg } from '../../assets/images/delete.svg';
+import CustomCheckbox from '../../components/customCheckBox';
 
 const EditProject = () => {
   const [taskNode, setTaskNode] = useState<Task[]>([{ title: '', hr: '' }]);
+  const [isVisibleIndex, setIsVisibleIndex] = useState(0);
+  const over = (index: number) => {
+    setIsVisibleIndex(index);
+  };
+
+  const out = () => {
+    setIsVisibleIndex(0);
+  };
 
   const addTaskControls = () => {
     setTaskNode([...taskNode, { title: '', hr: '' }]);
@@ -31,9 +40,13 @@ const EditProject = () => {
     const filterTask = taskNode.filter((_, index) => index !== taskIndex);
     setTaskNode(filterTask);
   };
+
+  const checkHandler = (e: any) => {
+    console.log(e.target.checked, 'val');
+  };
   return (
     <Box>
-      <Box p='15px 55px 40px' className='wrapper'>
+      <Box p='15px 55px 80px' className='wrapper'>
         <Breadcrumb
           m='15px 0'
           fontSize='14px'
@@ -199,8 +212,13 @@ const EditProject = () => {
               <UnorderedList listStyleType='none' m='0'>
                 {taskNode.map((_, index) => {
                   return (
-                    <ListItem m='20px 0' key={index}>
-                      <HStack>
+                    <ListItem
+                      m='20px 0'
+                      key={index}
+                      onMouseOver={() => over(index)}
+                      onMouseOut={out}
+                    >
+                      <HStack pos='relative'>
                         <FormControl w='387px' mr='20px'>
                           <Input
                             type='text'
@@ -219,13 +237,22 @@ const EditProject = () => {
                           />
                         </FormControl>
                         <Box>
-                          <Checkbox size='lg' />
-                          {index === 0 ? null : (
-                            <Button onClick={() => removeTaskControls(index)}>
-                              Del
-                            </Button>
-                          )}
+                          <CustomCheckbox onChange={checkHandler} />
                         </Box>
+                        {index === 0 ? null : (
+                          <Box
+                            display={
+                              isVisibleIndex === index ? 'block' : 'none'
+                            }
+                            pos='absolute'
+                            top='25%'
+                            right='-10px'
+                            cursor='pointer'
+                            onClick={() => removeTaskControls(index)}
+                          >
+                            <DeleteSvg />
+                          </Box>
+                        )}
                       </HStack>
                     </ListItem>
                   );
