@@ -1,0 +1,9 @@
+.project_list li {
+  margin-right: 1.6%;
+  margin-bottom: 30px;
+  flex-basis: 23.8%;
+}
+
+.project_list li:nth-child(4n + 4) {
+  margin-right: 0;
+}

@@ -1,6 +1,7 @@
 import {
   Box,
   Button,
+  Checkbox,
   Flex,
   FormControl,
   FormErrorMessage,
@@ -10,7 +11,7 @@ import {
   Select,
   Text,
 } from '@chakra-ui/react';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { TimelogFormError } from '../../interfaces/timelogForm';
 import { timeStringValidate } from '../../utils/validation';
 
@@ -18,12 +19,29 @@ const TimeLogFrom = () => {
   const [formData, setFormData] = useState({
     date: new Date(),
     projectName: '',
-    retainerMonth: '',
+    task: '',
     logTime: '',
     comments: '',
+    billable: 'nonBillable',
   });
 
   const [errorMsg, setErrorMsg] = useState<TimelogFormError>();
+
+  useEffect(() => {
+    if (!formData.logTime) return;
+    const valid = !timeStringValidate(formData.logTime);
+    if (valid) {
+      setErrorMsg({
+        ...errorMsg,
+        ['logTime']: '',
+      });
+    } else {
+      setErrorMsg({
+        ...errorMsg,
+        ['logTime']: 'Please enter valid time',
+      });
+    }
+  }, [formData.logTime]);
 
   const selecttHandler = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -32,9 +50,15 @@ const TimeLogFrom = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  const checkboxHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    e.target.checked
+      ? setFormData({ ...formData, billable: 'billable' })
+      : setFormData({ ...formData, billable: 'nonBillable' });
+  };
+
   const fieldValidation = () => {
     const errors: TimelogFormError = {};
-    const { date, projectName, retainerMonth, logTime } = formData;
+    const { date, projectName, task, logTime, comments } = formData;
 
     if (new Date(date).getTime() > new Date().getTime()) {
       errors.date = "Can't logged time for future date";
@@ -43,12 +67,14 @@ const TimeLogFrom = () => {
     if (!projectName) {
       errors.projectName = 'Please select project ';
     }
-    if (!retainerMonth) {
-      errors.retainerMonth = 'Please Retainer month ';
+    if (!task) {
+      errors.task = 'Please Retainer month ';
     }
-
-    if (!logTime || !timeStringValidate(logTime) || !logTime.includes(':')) {
-      errors.logTime = 'Please enter valid log time (00:00)';
+    if (!comments) {
+      errors.comments = 'Please enter comments ';
+    }
+    if (!logTime || timeStringValidate(formData.logTime)) {
+      errors.logTime = 'Please enter valid time';
     }
 
     return errors;
@@ -58,9 +84,10 @@ const TimeLogFrom = () => {
     setFormData({
       date: new Date(),
       projectName: '',
-      retainerMonth: '',
+      task: '',
       logTime: '',
       comments: '',
+      billable: 'nonBillable',
     });
   };
 
@@ -70,6 +97,7 @@ const TimeLogFrom = () => {
     const notValid = fieldValidation();
     if (Object.values(notValid).length <= 0) {
       alert('Success');
+      console.log(formData);
       reset();
     }
   };
@@ -107,23 +135,44 @@ const TimeLogFrom = () => {
           </Select>
           <FormErrorMessage>{errorMsg?.projectName}</FormErrorMessage>
         </FormControl>
-        <FormControl
-          m='14px 0'
-          isInvalid={errorMsg?.retainerMonth ? true : false}
-        >
-          <FormLabel
-            htmlFor='retainer_month'
+        <Box>
+          <Text
+            pb='8px'
             color='textLightMid'
             fontSize='14px'
             lineHeight='17.6px'
             textStyle='sourceSansProBold'
           >
-            Retainer month
+            Duration
+          </Text>
+          <Text
+            rounded='md'
+            p='10px 16px'
+            border='1px'
+            borderColor='borderColor'
+            bg='inputBg'
+            color='textLightMid'
+            fontSize='14px'
+            lineHeight='17.6px'
+            textStyle='sourceSansProRegular'
+          >
+            Month 41 (4 April - 3 May)
+          </Text>
+        </Box>
+        <FormControl m='14px 0' isInvalid={errorMsg?.task ? true : false}>
+          <FormLabel
+            htmlFor='task'
+            color='textLightMid'
+            fontSize='14px'
+            lineHeight='17.6px'
+            textStyle='sourceSansProBold'
+          >
+            Select Task
           </FormLabel>
           <Select
-            id='retainer_month'
-            name='retainerMonth'
-            value={formData.retainerMonth}
+            id='task'
+            name='task'
+            value={formData.task}
             placeholder='Select'
             fontSize='14px'
             lineHeight='17.6px'
@@ -134,12 +183,13 @@ const TimeLogFrom = () => {
             <option value={'Task 1'}>Task 1</option>
             <option value={'Task 2'}>Task 2</option>
           </Select>
-          <FormErrorMessage>{errorMsg?.retainerMonth}</FormErrorMessage>
+          <FormErrorMessage>{errorMsg?.task}</FormErrorMessage>
         </FormControl>
         <HStack justifyContent='space-between' m='14px 0'>
           <FormControl
             w='143px'
             mr='10px'
+            pos='relative'
             isInvalid={errorMsg?.logTime ? true : false}
           >
             <FormLabel
@@ -186,9 +236,15 @@ const TimeLogFrom = () => {
                 Hours
               </Text>
             </Flex>
-            <FormErrorMessage>{errorMsg?.logTime}</FormErrorMessage>
+            <FormErrorMessage pos='absolute' bottom='-18px'>
+              {errorMsg?.logTime}
+            </FormErrorMessage>
           </FormControl>
-          <FormControl w='70%'>
+          <FormControl
+            w='70%'
+            pos='relative'
+            isInvalid={errorMsg?.comments ? true : false}
+          >
             <FormLabel
               htmlFor='select_task'
               color='textLightMid'
@@ -199,8 +255,7 @@ const TimeLogFrom = () => {
               Comments
             </FormLabel>
             <Input
-              id='email'
-              type='email'
+              type='text'
               value={formData.comments}
               textStyle='sourceSansProRegular'
               onChange={inputHandler}
@@ -209,9 +264,19 @@ const TimeLogFrom = () => {
               fontSize='14px'
               lineHeight='17.6px'
             />
+            <FormErrorMessage pos='absolute' bottom='-18px'>
+              {errorMsg?.comments}
+            </FormErrorMessage>
           </FormControl>
         </HStack>
-        <Box>
+        <FormControl pt='5px'>
+          <Checkbox onChange={checkboxHandler}>
+            <Text fontSize='14px' color='textLightMid'>
+              Billable
+            </Text>
+          </Checkbox>
+        </FormControl>
+        <Box pt='10px'>
           <Button w='137px' type='submit' variant='primary' mr='22px'>
             Add Entry
           </Button>

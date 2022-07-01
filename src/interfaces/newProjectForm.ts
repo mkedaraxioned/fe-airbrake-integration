@@ -1,11 +1,16 @@
+export interface MemberObj {
+  id: number;
+  name: string;
+}
+
 export interface NewProjectFormData {
   clientName: string;
   projectName: string;
   projectType: 'fixed' | 'retainer' | 'retainer-granular';
-  startDate: string;
-  endDate?: string;
+  startDate: Date | null;
+  endDate?: Date | null;
   billable: 'billable' | 'nonBillable';
-  teamMembers: string[];
+  teamMembers: MemberObj[];
 }
 export interface NewProjectFormErr {
   clientName?: string;

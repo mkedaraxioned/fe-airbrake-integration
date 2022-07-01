@@ -1,7 +1,6 @@
 import { Avatar, AvatarGroup, Box, Flex, Text } from '@chakra-ui/react';
 import React from 'react';
 import { Link } from 'react-router-dom';
-import './projectCard.modules.css';
 import { ReactComponent as CalenderIcon1 } from '../../assets/images/calenderIcon1.svg';
 import { ReactComponent as CalenderIcon2 } from '../../assets/images/calenderIcon2.svg';
 
@@ -12,14 +11,13 @@ interface Props {
 const ProjectCard = ({ calenderChng }: Props) => {
   return (
     <Box
-      w='298px'
+      w='full'
       border='1px'
-      mr='20px'
-      mb='30px'
       borderColor='borderColor'
       rounded='md'
       bg='bgPrimary'
       className='project-card'
+      boxSizing='border-box'
     >
       <Link to='/projects/harvest'>
         <Flex

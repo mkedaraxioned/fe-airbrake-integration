@@ -1,6 +1,6 @@
 import { Box, Text } from '@chakra-ui/react';
 import React, { useState } from 'react';
-import { RiDeleteBin6Fill } from 'react-icons/ri';
+import { ReactComponent as DeleteSvg } from '../../assets/images/delete.svg';
 
 const TimeCard = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -13,7 +13,7 @@ const TimeCard = () => {
   };
   return (
     <Box
-      p='30px 20px'
+      p='11px 40px 11px 20px'
       m='10px 0'
       pos='relative'
       rounded='md'
@@ -37,13 +37,13 @@ const TimeCard = () => {
       </Text>
       <Box
         pos='absolute'
-        top='45%'
-        right='-24px'
+        top='35%'
+        right='15px'
         display={isVisible ? 'block' : 'none'}
         cursor='pointer'
         color='grayLight'
       >
-        <RiDeleteBin6Fill fontSize={'16px'} />
+        <DeleteSvg />
       </Box>
     </Box>
   );
