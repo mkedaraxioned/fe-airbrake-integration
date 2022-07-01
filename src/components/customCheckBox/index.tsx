@@ -1,6 +1,6 @@
 import { chakra, Box, useCheckbox } from '@chakra-ui/react';
 import React from 'react';
-import { RiCheckFill, RiCheckboxCircleLine } from 'react-icons/ri';
+import { AiOutlineCheckCircle, AiFillCheckCircle } from 'react-icons/ai';
 
 const CustomCheckbox = (props: any) => {
   const { state, getInputProps, htmlProps } = useCheckbox(props);
@@ -10,13 +10,13 @@ const CustomCheckbox = (props: any) => {
       <input {...getInputProps()} hidden />
 
       {!state.isChecked && (
-        <Box color='#439F6E' fontSize='21px'>
-          <RiCheckFill />
+        <Box color='#439F6E' fontSize='20px'>
+          <AiOutlineCheckCircle />
         </Box>
       )}
       {state.isChecked && (
-        <Box color='#439F6E' fontSize='21px'>
-          <RiCheckboxCircleLine />
+        <Box color='#439F6E' fontSize='20px'>
+          <AiFillCheckCircle />
         </Box>
       )}
     </chakra.label>

@@ -10,8 +10,6 @@ import {
   FormLabel,
   Heading,
   Input,
-  Radio,
-  RadioGroup,
   Select,
   Stack,
   Text,
@@ -27,6 +25,8 @@ import './newProjectForm.modules.css';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import AutoCompleteElem from '../autoComplete';
+import CustomRadio from '../customRadio';
+import { FaCheckSquare } from 'react-icons/fa';
 
 const NewProjectForm = () => {
   const [formData, setFormData] = useState<NewProjectFormData>({
@@ -81,8 +81,8 @@ const NewProjectForm = () => {
       ? setFormData({ ...formData, billable: 'billable' })
       : setFormData({ ...formData, billable: 'nonBillable' });
   };
-  const radioHandler = (val: 'fixed' | 'retainer' | 'retainer-granular') => {
-    setFormData({ ...formData, projectType: val });
+  const radioHandler = (e: any) => {
+    setFormData({ ...formData, projectType: e.target.value });
   };
   const selectMember = (item: MemberObj) => {
     setMember(item);
@@ -225,25 +225,34 @@ const NewProjectForm = () => {
             <FormLabel fontSize='14px' lineHeight='17.6px' fontWeight='600'>
               Select project Type
             </FormLabel>
-            <RadioGroup onChange={radioHandler} value={formData.projectType}>
-              <Stack direction='row' alignItems='center'>
-                <Radio value='fixed' variant='primary'>
-                  <Text fontSize='14px' lineHeight='17.6px'>
-                    Fixed
-                  </Text>
-                </Radio>
-                <Radio value='retainer' variant='primary'>
-                  <Text fontSize='14px' lineHeight='17.6px'>
-                    Retainer
-                  </Text>
-                </Radio>
-                <Radio value='retainer granular' variant='primary'>
-                  <Text fontSize='14px' lineHeight='17.6px'>
-                    Retainer (Granular)
-                  </Text>
-                </Radio>
-              </Stack>
-            </RadioGroup>
+            <Flex>
+              <Box mr='20px'>
+                <CustomRadio
+                  onChange={radioHandler}
+                  lable='Fixed'
+                  value='fixed'
+                  isChecked={formData.projectType === 'fixed' ? true : false}
+                />
+              </Box>
+              <Box mr='20px'>
+                <CustomRadio
+                  onChange={radioHandler}
+                  lable='Retainer'
+                  value='retainer'
+                  isChecked={formData.projectType === 'retainer' ? true : false}
+                />
+              </Box>
+              <Box>
+                <CustomRadio
+                  onChange={radioHandler}
+                  lable='Retainer (Granular)'
+                  value='retainer-granular'
+                  isChecked={
+                    formData.projectType === 'retainer-granular' ? true : false
+                  }
+                />
+              </Box>
+            </Flex>
           </FormControl>
           <Flex justifyContent='space-between'>
             <FormControl
@@ -347,7 +356,7 @@ const NewProjectForm = () => {
             </FormControl>
           </Flex>
           <FormControl>
-            <Checkbox onChange={checkboxHandler}>
+            <Checkbox icon={<FaCheckSquare />} onChange={checkboxHandler}>
               <Text fontSize='14px' color='textLightMid'>
                 Billable
               </Text>

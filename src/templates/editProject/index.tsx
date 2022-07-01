@@ -244,7 +244,7 @@ const EditProject = () => {
                               isVisibleIndex === index ? 'block' : 'none'
                             }
                             pos='absolute'
-                            top='25%'
+                            top='24%'
                             right='-10px'
                             cursor='pointer'
                             onClick={() => removeTaskControls(index)}
