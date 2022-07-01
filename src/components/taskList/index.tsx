@@ -27,10 +27,9 @@ const TaskList = () => {
       </Box>
       <Box p='15px 0 10px'>
         <HStack
-          pb='5px'
+          p='0 33px 5px 0'
           justifyContent='space-between'
           color='textLightMid'
-          pr='19px'
         >
           <Heading
             as='h4'
@@ -49,10 +48,9 @@ const TaskList = () => {
       </Box>
       <Box>
         <HStack
-          pb='5px'
+          p='0 33px 5px 0'
           justifyContent='space-between'
           color='textLightMid'
-          pr='19px'
         >
           <Heading
             as='h4'

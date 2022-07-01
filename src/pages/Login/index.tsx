@@ -13,7 +13,7 @@ import { userLogin } from '../../feature/userSlice';
 import { useNavigate } from 'react-router';
 import loginImg from '../../assets/images/loginImg.png';
 import axionedLogo from '../../assets/images/axionedLogo.png';
-import { AiFillClockCircle, AiFillHeart } from 'react-icons/ai';
+import { AiFillClockCircle } from 'react-icons/ai';
 import { FcGoogle } from 'react-icons/fc';
 
 const Login = () => {
@@ -91,13 +91,9 @@ const Login = () => {
             <Image src={axionedLogo} alt='Axioned' />
             <Text pt='5px'>
               Made with{' '}
-              <AiFillHeart
-                style={{
-                  display: 'inline',
-                  color: 'red',
-                  verticalAlign: 'text-top',
-                }}
-              />{' '}
+              <Text as='span' color='red' fontSize='18px'>
+                &#10084;
+              </Text>{' '}
               in India
             </Text>
           </VStack>

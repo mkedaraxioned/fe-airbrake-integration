@@ -9,6 +9,7 @@ export interface TimelogForm {
 export interface TimelogFormError {
   date?: string;
   projectName?: string;
-  retainerMonth?: string;
+  task?: string;
   logTime?: string;
+  comments?: string;
 }

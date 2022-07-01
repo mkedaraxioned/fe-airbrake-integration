@@ -10,7 +10,7 @@ import {
   startOfMonth,
   endOfWeek,
 } from 'date-fns';
-import { Box, Button, Flex, HStack, Text } from '@chakra-ui/react';
+import { Box, Flex, Text } from '@chakra-ui/react';
 import { HiOutlineChevronLeft, HiOutlineChevronRight } from 'react-icons/hi';
 import { endOfMonth } from 'date-fns/esm';
 
@@ -189,31 +189,27 @@ const Calendar = ({ showDetailsHandle }: Props) => {
     return <div className='date_body'>{rows}</div>;
   };
 
-  const setTodaysDate = () => {
-    setSelectedDate(new Date());
-    setCurrentMonth(new Date());
-    showDetailsHandle(format(new Date(), 'dd-MM-yyyy'));
-  };
+  // const setTodaysDate = () => {
+  //   setSelectedDate(new Date());
+  //   setCurrentMonth(new Date());
+  //   showDetailsHandle(format(new Date(), 'dd-MM-yyyy'));
+  // };
 
   return (
-    <Box textAlign='center'>
-      <HStack
-        pb='25px'
-        justifyContent='space-between'
-        textStyle='sourceSansProBold'
-      >
-        <Text fontSize='22px'>Select a date</Text>
-        <Button
-          w='80px'
-          h='30px'
-          variant='primary'
-          fontSize='13px'
-          lineHeight='16.34px'
-          onClick={setTodaysDate}
+    <Box w='full' textAlign='center'>
+      <Box pb='25px' textAlign='left'>
+        <Text
+          fontSize='22px'
+          textStyle='sourceSansProBold'
+          lineHeight='27.65px'
         >
-          Today
-        </Button>
-      </HStack>
+          {`${
+            isSameDay(new Date(), selectedDate)
+              ? 'Today'
+              : format(selectedDate, 'EEEE')
+          }, ${format(selectedDate, 'MMM do')}`}
+        </Text>
+      </Box>
       {renderHeader()}
       {renderDays()}
       {renderCells()}

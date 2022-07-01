@@ -10,8 +10,6 @@ import {
   FormLabel,
   Heading,
   Input,
-  Radio,
-  RadioGroup,
   Select,
   Stack,
   Text,
@@ -19,35 +17,59 @@ import {
 import React, { useEffect, useState } from 'react';
 import { AiOutlineCalendar } from 'react-icons/ai';
 import {
+  MemberObj,
   NewProjectFormData,
   NewProjectFormErr,
 } from '../../interfaces/newProjectForm';
+import './newProjectForm.modules.css';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+import AutoCompleteElem from '../autoComplete';
+import CustomRadio from '../customRadio';
+import { FaCheckSquare } from 'react-icons/fa';
 
 const NewProjectForm = () => {
   const [formData, setFormData] = useState<NewProjectFormData>({
     clientName: '',
     projectName: '',
     projectType: 'fixed',
-    startDate: '',
-    endDate: '',
+    startDate: new Date(),
+    endDate: null,
     billable: 'nonBillable',
     teamMembers: [],
   });
 
   const [errMsg, setErrMsg] = useState<NewProjectFormErr>();
-  const [member, setMember] = useState('');
+  const [member, setMember] = useState<MemberObj | null>(null);
+
+  const items = [
+    {
+      id: 0,
+      name: 'Kedar M',
+    },
+    {
+      id: 1,
+      name: 'Vipin Y',
+    },
+    {
+      id: 2,
+      name: 'Dnyaneshwar I',
+    },
+    {
+      id: 3,
+      name: 'Prajakta P',
+    },
+    {
+      id: 4,
+      name: 'Anurag B',
+    },
+  ];
 
   useEffect(() => {
     setTeamMembers();
   }, [member]);
 
-  const changeInputType = (
-    e: React.FocusEvent<HTMLInputElement, Element>,
-    type: string,
-  ) => {
-    e.target.type = type;
-  };
-  const selectHandler = (e: React.ChangeEvent<HTMLSelectElement>) => {
+  const selecttHandler = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
   const inputHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -59,22 +81,22 @@ const NewProjectForm = () => {
       ? setFormData({ ...formData, billable: 'billable' })
       : setFormData({ ...formData, billable: 'nonBillable' });
   };
-  const radioHandler = (val: 'fixed' | 'retainer' | 'retainer-granular') => {
-    setFormData({ ...formData, projectType: val });
+  const radioHandler = (e: any) => {
+    setFormData({ ...formData, projectType: e.target.value });
   };
-  const selectMember = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setMember(e.target.value);
+  const selectMember = (item: MemberObj) => {
+    setMember(item);
   };
-
   const setTeamMembers = () => {
+    const arr = formData.teamMembers?.map((val) => val.id);
     if (!member) return null;
-    if (!formData.teamMembers.includes(member)) {
+    if (!arr.includes(member.id)) {
       setFormData({
         ...formData,
         teamMembers: [...formData.teamMembers, member],
       });
       setErrMsg({ ...errMsg, teamMembers: '' });
-      setMember('');
+      setMember(null);
     } else {
       setErrMsg({ ...errMsg, teamMembers: 'Team member already added' });
     }
@@ -112,9 +134,9 @@ const NewProjectForm = () => {
   };
 
   const unselectMember = (id: number) => {
-    const myArr = formData.teamMembers.filter((_, index) => index !== id);
+    const myArr = formData.teamMembers.filter((_) => _.id !== id);
     setFormData({ ...formData, teamMembers: myArr });
-    setMember('');
+    setMember(null);
   };
 
   const reset = () => {
@@ -122,12 +144,12 @@ const NewProjectForm = () => {
       clientName: '',
       projectName: '',
       projectType: 'fixed',
-      startDate: '',
-      endDate: '',
+      startDate: new Date(),
+      endDate: null,
       billable: 'nonBillable',
       teamMembers: [],
     });
-    setMember('');
+    setMember(null);
   };
 
   const formHandler = (e: React.FormEvent<HTMLFormElement>) => {
@@ -143,7 +165,7 @@ const NewProjectForm = () => {
   return (
     <Box
       w='full'
-      p='18% 60px 60px'
+      p='40px 60px 60px'
       pos='absolute'
       top={0}
       right={0}
@@ -167,16 +189,20 @@ const NewProjectForm = () => {
               Select Client
             </FormLabel>
             <Select
-              placeholder='Select option'
+              id='select_project'
               name='clientName'
+              value={formData.clientName}
+              placeholder='Select'
               fontSize='14px'
               lineHeight='17.6px'
-              onChange={selectHandler}
-              value={formData.clientName}
+              color='textLightMid'
+              textStyle='sourceSansProRegular'
+              onChange={selecttHandler}
             >
-              <option value='option1'>Option 1</option>
-              <option value='option2'>Option 2</option>
-              <option value='option3'>Option 3</option>
+              <option value={'ClearForMe Ongoing Retainer Agreement'}>
+                ClearForMe Ongoing Retainer Agreement
+              </option>
+              <option value={'Project 2'}>Project 2</option>
             </Select>
             <FormErrorMessage>{errMsg?.clientName}</FormErrorMessage>
           </FormControl>
@@ -199,25 +225,34 @@ const NewProjectForm = () => {
             <FormLabel fontSize='14px' lineHeight='17.6px' fontWeight='600'>
               Select project Type
             </FormLabel>
-            <RadioGroup onChange={radioHandler} value={formData.projectType}>
-              <Stack direction='row' alignItems='center'>
-                <Radio value='fixed' colorScheme='orange'>
-                  <Text fontSize='14px' lineHeight='17.6px'>
-                    Fixed
-                  </Text>
-                </Radio>
-                <Radio value='retainer' colorScheme='orange'>
-                  <Text fontSize='14px' lineHeight='17.6px'>
-                    Retainer
-                  </Text>
-                </Radio>
-                <Radio value='retainer granular' colorScheme='orange'>
-                  <Text fontSize='14px' lineHeight='17.6px'>
-                    Retainer (Granular)
-                  </Text>
-                </Radio>
-              </Stack>
-            </RadioGroup>
+            <Flex>
+              <Box mr='20px'>
+                <CustomRadio
+                  onChange={radioHandler}
+                  lable='Fixed'
+                  value='fixed'
+                  isChecked={formData.projectType === 'fixed' ? true : false}
+                />
+              </Box>
+              <Box mr='20px'>
+                <CustomRadio
+                  onChange={radioHandler}
+                  lable='Retainer'
+                  value='retainer'
+                  isChecked={formData.projectType === 'retainer' ? true : false}
+                />
+              </Box>
+              <Box>
+                <CustomRadio
+                  onChange={radioHandler}
+                  lable='Retainer (Granular)'
+                  value='retainer-granular'
+                  isChecked={
+                    formData.projectType === 'retainer-granular' ? true : false
+                  }
+                />
+              </Box>
+            </Flex>
           </FormControl>
           <Flex justifyContent='space-between'>
             <FormControl
@@ -248,16 +283,16 @@ const NewProjectForm = () => {
                 >
                   <AiOutlineCalendar fontSize='20px' />
                 </Stack>
-                <Input
-                  type='text'
-                  placeholder='Select start date'
-                  onFocus={(e) => changeInputType(e, 'date')}
-                  onBlur={(e) => changeInputType(e, 'text')}
-                  border='none'
-                  name='startDate'
-                  value={formData.startDate}
-                  onChange={inputHandler}
-                />
+                <Box>
+                  <DatePicker
+                    selected={formData.startDate}
+                    onChange={(date: Date) =>
+                      setFormData({ ...formData, startDate: date })
+                    }
+                    placeholderText='mm/dd/yyyy'
+                    className='date_picker_react'
+                  />
+                </Box>
               </Flex>
               <FormErrorMessage>{errMsg?.startDate}</FormErrorMessage>
             </FormControl>
@@ -294,16 +329,16 @@ const NewProjectForm = () => {
                   >
                     <AiOutlineCalendar fontSize='20px' />
                   </Stack>
-                  <Input
-                    type='text'
-                    placeholder='Select end date'
-                    onFocus={(e) => changeInputType(e, 'date')}
-                    onBlur={(e) => changeInputType(e, 'text')}
-                    border='none'
-                    name='endDate'
-                    value={formData.endDate}
-                    onChange={inputHandler}
-                  />
+                  <Box>
+                    <DatePicker
+                      selected={formData.endDate}
+                      onChange={(date: Date) =>
+                        setFormData({ ...formData, endDate: date })
+                      }
+                      placeholderText='mm/dd/yyyy'
+                      className='date_picker_react'
+                    />
+                  </Box>
                 </Flex>
               ) : (
                 <Text
@@ -321,7 +356,7 @@ const NewProjectForm = () => {
             </FormControl>
           </Flex>
           <FormControl>
-            <Checkbox onChange={checkboxHandler}>
+            <Checkbox icon={<FaCheckSquare />} onChange={checkboxHandler}>
               <Text fontSize='14px' color='textLightMid'>
                 Billable
               </Text>
@@ -339,25 +374,17 @@ const NewProjectForm = () => {
             >
               Add project members
             </FormLabel>
-            <Select
-              placeholder='Select option'
-              name='clientName'
-              fontSize='14px'
-              lineHeight='17.6px'
-              onChange={selectMember}
-              value={member}
-            >
-              <option value='kedar m'>Kedar M</option>
-              <option value='kedar w'>Kedar W</option>
-              <option value='dnyaneshwar'>Dnyaneshwar</option>
-            </Select>
-            <AvatarGroup size='md' mt='15px' flexWrap='wrap' w='60%'>
+            <AutoCompleteElem onChange={selectMember} items={items} />
+            <AvatarGroup mt='15px' flexWrap='wrap' w='60%'>
               {formData.teamMembers.length > 0 &&
-                formData.teamMembers.map((memberData, index) => (
+                formData.teamMembers.map((memberData) => (
                   <Avatar
-                    key={index}
-                    onClick={() => unselectMember(index)}
-                    name={memberData}
+                    w='32px'
+                    h='32px'
+                    size='32px'
+                    key={memberData.id}
+                    onClick={() => unselectMember(memberData.id)}
+                    name={memberData.name}
                     cursor='pointer'
                   />
                 ))}
