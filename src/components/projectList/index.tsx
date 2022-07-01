@@ -1,4 +1,4 @@
-import { Box, Flex, ListItem, Text, UnorderedList } from '@chakra-ui/react';
+import { Box, ListItem, Text, UnorderedList } from '@chakra-ui/react';
 import React from 'react';
 import ProjectCard from '../projectCard';
 import './projectList.modules.css';

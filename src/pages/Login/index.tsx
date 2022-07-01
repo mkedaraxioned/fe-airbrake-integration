@@ -13,7 +13,7 @@ import { userLogin } from '../../feature/userSlice';
 import { useNavigate } from 'react-router';
 import loginImg from '../../assets/images/loginImg.png';
 import axionedLogo from '../../assets/images/axionedLogo.png';
-import { AiFillClockCircle, AiFillHeart } from 'react-icons/ai';
+import { AiFillClockCircle } from 'react-icons/ai';
 import { FcGoogle } from 'react-icons/fc';
 
 const Login = () => {

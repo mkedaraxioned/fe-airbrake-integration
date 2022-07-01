@@ -65,21 +65,6 @@ const NewProjectForm = () => {
     },
   ];
 
-  const allClients = [
-    {
-      id: 0,
-      name: 'Harvest',
-    },
-    {
-      id: 1,
-      name: 'Shutterstock',
-    },
-    {
-      id: 2,
-      name: 'Evok',
-    },
-  ];
-  console.log(formData, 'formData');
   useEffect(() => {
     setTeamMembers();
   }, [member]);

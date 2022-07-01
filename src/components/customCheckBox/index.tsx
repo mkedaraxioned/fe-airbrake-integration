@@ -1,4 +1,4 @@
-import { chakra, Box, useCheckbox, Text } from '@chakra-ui/react';
+import { chakra, Box, useCheckbox } from '@chakra-ui/react';
 import React from 'react';
 import { RiCheckFill, RiCheckboxCircleLine } from 'react-icons/ri';
 const CustomCheckbox = (props: any) => {
