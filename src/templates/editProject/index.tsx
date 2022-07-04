@@ -22,6 +22,10 @@ import { ReactComponent as DeleteSvg } from '../../assets/images/delete.svg';
 import CustomCheckbox from '../../components/customCheckBox';
 
 const EditProject = () => {
+  const [formData, setFormData] = useState<any>({
+    task: [],
+    milestone: [],
+  });
   const [taskNode, setTaskNode] = useState<Task[]>([{ title: '', hr: '' }]);
   const [isVisibleIndex, setIsVisibleIndex] = useState(0);
   const over = (index: number) => {
@@ -42,6 +46,14 @@ const EditProject = () => {
 
   const checkHandler = (e: any) => {
     console.log(e.target.checked, 'val');
+  };
+
+  const handleInputChange = (e: any, index: any) => {
+    const { name, value } = e.target;
+    const list: any = [...taskNode];
+    list[index][name] = value;
+    setTaskNode(list);
+    setFormData({ ...formData, task: list });
   };
   return (
     <Box>
@@ -224,6 +236,8 @@ const EditProject = () => {
                             textStyle='inputTextStyle'
                             placeholder='Enter Task'
                             value={_.title}
+                            name='title'
+                            onChange={(e) => handleInputChange(e, index)}
                           />
                         </FormControl>
                         <FormControl w='60px' mr='37px !important'>
@@ -232,6 +246,8 @@ const EditProject = () => {
                             placeholder='Hrs'
                             textStyle='inputTextStyle'
                             value={_.hr}
+                            name='hr'
+                            onChange={(e) => handleInputChange(e, index)}
                             textAlign='center'
                           />
                         </FormControl>
