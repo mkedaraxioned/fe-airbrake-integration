@@ -155,7 +155,7 @@ const Calendar = ({ showDetailsHandle }: Props) => {
                 : bgColorVal
             }`}
             color={`${
-              month !== currentMonth.getMonth()
+              month !== currentMonth.getMonth() || !isAfter(new Date(), day)
                 ? 'textLight'
                 : isSameDay(day, selectedDate)
                 ? 'white'
