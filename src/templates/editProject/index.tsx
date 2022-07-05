@@ -28,6 +28,7 @@ const EditProject = () => {
   });
   const [taskNode, setTaskNode] = useState<Task[]>([{ title: '', hr: '' }]);
   const [isVisibleIndex, setIsVisibleIndex] = useState(0);
+
   const over = (index: number) => {
     setIsVisibleIndex(index);
   };
@@ -44,12 +45,15 @@ const EditProject = () => {
     setTaskNode(filterTask);
   };
 
-  const checkHandler = (e: any) => {
+  const checkHandler = (e: any): void => {
     console.log(e.target.checked, 'val');
   };
 
-  const handleInputChange = (e: any, index: any) => {
-    const { name, value } = e.target;
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    index: number,
+  ) => {
+    const { name, value }: { name: string; value: string } = e.target;
     const list: any = [...taskNode];
     list[index][name] = value;
     setTaskNode(list);

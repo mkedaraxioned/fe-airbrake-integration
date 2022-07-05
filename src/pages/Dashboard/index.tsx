@@ -74,7 +74,7 @@ const Dashboard = () => {
                   alignItems='center'
                   key={index}
                   cursor='pointer'
-                  onClick={() => setRecentProject('wordPress-maintenance')}
+                  onClick={() => setRecentProject('WordPress Maintenance')}
                 >
                   <Box mr='18px'>
                     <Avatar w='30px' h='30px' />

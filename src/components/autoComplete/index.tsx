@@ -5,14 +5,15 @@ import { MemberObj } from '../../interfaces/newProjectForm';
 
 interface Props {
   items: MemberObj[];
+  recentProject?: string;
   onChange: (item: MemberObj) => void;
 }
 
-const AutoCompleteElem = ({ onChange, items }: Props) => {
+const AutoCompleteElem = ({ onChange, items, recentProject }: Props) => {
   const formatResult = (item: MemberObj) => {
     return (
       <>
-        <span style={{ display: 'block', textAlign: 'left', color: '#050505' }}>
+        <span style={{ display: 'block', textAlign: 'left', color: '#676767' }}>
           {item.name}
         </span>
       </>
@@ -24,7 +25,7 @@ const AutoCompleteElem = ({ onChange, items }: Props) => {
         items={items}
         onSelect={onChange}
         formatResult={formatResult}
-        placeholder='Search here...'
+        placeholder={recentProject ? recentProject : 'Search here...'}
         showIcon={false}
         styling={{
           height: '40px',
@@ -32,9 +33,9 @@ const AutoCompleteElem = ({ onChange, items }: Props) => {
           borderRadius: '5px',
           backgroundColor: 'white',
           boxShadow: 'none',
-          color: '#050505',
-          fontSize: '12px',
-          fontFamily: 'Courier',
+          color: '#676767',
+          fontSize: '14px',
+          fontFamily: 'Source Sans Pro',
           iconColor: '#676767',
           lineColor: '#E2E8F0',
           placeholderColor: '#676767',

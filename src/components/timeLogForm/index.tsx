@@ -12,8 +12,10 @@ import {
   Text,
 } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
+import { MemberObj } from '../../interfaces/newProjectForm';
 import { TimelogFormError } from '../../interfaces/timelogForm';
 import { timeStringValidate } from '../../utils/validation';
+import AutoCompleteElem from '../autoComplete';
 
 const TimeLogFrom = ({ recentProject }: { recentProject: string }) => {
   const [formData, setFormData] = useState({
@@ -29,12 +31,23 @@ const TimeLogFrom = ({ recentProject }: { recentProject: string }) => {
   const [errorMsg, setErrorMsg] = useState<TimelogFormError>();
   const allTask = [
     {
-      projectName: 'wordPress-maintenance',
+      projectName: 'WordPress Maintenance',
       task: ['task 1', 'task 2', 'task 3'],
     },
     {
       projectName: 'ClearForMe Ongoing Retainer Agreement',
       task: ['task 4', 'task 5', 'task 6'],
+    },
+  ];
+
+  const items = [
+    {
+      id: 0,
+      name: 'ClearForMe Ongoing Retainer Agreement',
+    },
+    {
+      id: 1,
+      name: 'WordPress Maintenance',
     },
   ];
 
@@ -76,6 +89,10 @@ const TimeLogFrom = ({ recentProject }: { recentProject: string }) => {
     e.target.checked
       ? setFormData({ ...formData, billable: 'billable' })
       : setFormData({ ...formData, billable: 'nonBillable' });
+  };
+
+  const selectProject = (item: MemberObj) => {
+    setFormData({ ...formData, projectName: item.name });
   };
 
   const fieldValidation = () => {
@@ -138,25 +155,11 @@ const TimeLogFrom = ({ recentProject }: { recentProject: string }) => {
           >
             Select Project
           </FormLabel>
-          <Select
-            id='select_project'
-            name='projectName'
-            value={formData.projectName}
-            placeholder='Select'
-            fontSize='14px'
-            lineHeight='17.6px'
-            color='textLightMid'
-            textStyle='sourceSansProRegular'
-            onChange={selecttHandler}
-          >
-            <option value={'ClearForMe Ongoing Retainer Agreement'}>
-              ClearForMe Ongoing Retainer Agreement
-            </option>
-            <option value={'Project 2'}>Project 2</option>
-            <option value={'wordPress-maintenance'}>
-              WordPress Maintenance
-            </option>
-          </Select>
+          <AutoCompleteElem
+            onChange={selectProject}
+            items={items}
+            recentProject={recentProject}
+          />
           <FormErrorMessage>{errorMsg?.projectName}</FormErrorMessage>
         </FormControl>
         <Box>
