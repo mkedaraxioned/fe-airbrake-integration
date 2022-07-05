@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { ReactSearchAutocomplete } from 'react-search-autocomplete';
-import { MemberObj } from '../../interfaces/newProjectForm';
 
 const ProjectAutoCompleteElem = () => {
   const [clients, setClients] = useState([]);
