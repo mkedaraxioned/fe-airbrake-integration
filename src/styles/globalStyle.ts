@@ -8,6 +8,9 @@ export const styles = {
     margin: '0 auto',
     backgroundColor: '#FFFFFF',
   },
+  '.custom_select_menu_list': {
+    padding: '0 !important',
+  },
   '.menu-anchor': {
     width: '100%',
     display: 'inline-block',

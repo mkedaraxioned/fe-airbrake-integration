@@ -12,10 +12,9 @@ import {
   Text,
 } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
-import { MemberObj } from '../../interfaces/newProjectForm';
 import { TimelogFormError } from '../../interfaces/timelogForm';
 import { timeStringValidate } from '../../utils/validation';
-import AutoCompleteElem from '../autoComplete';
+import CustomSelect, { Options } from '../customSelect';
 
 const TimeLogFrom = ({ recentProject }: { recentProject: string }) => {
   const [formData, setFormData] = useState({
@@ -37,17 +36,6 @@ const TimeLogFrom = ({ recentProject }: { recentProject: string }) => {
     {
       projectName: 'ClearForMe Ongoing Retainer Agreement',
       task: ['task 4', 'task 5', 'task 6'],
-    },
-  ];
-
-  const items = [
-    {
-      id: 0,
-      name: 'ClearForMe Ongoing Retainer Agreement',
-    },
-    {
-      id: 1,
-      name: 'WordPress Maintenance',
     },
   ];
 
@@ -91,8 +79,8 @@ const TimeLogFrom = ({ recentProject }: { recentProject: string }) => {
       : setFormData({ ...formData, billable: 'nonBillable' });
   };
 
-  const selectProject = (item: MemberObj) => {
-    setFormData({ ...formData, projectName: item.name });
+  const selectProject = (item: Options) => {
+    setFormData({ ...formData, projectName: item.value });
   };
 
   const fieldValidation = () => {
@@ -139,6 +127,7 @@ const TimeLogFrom = ({ recentProject }: { recentProject: string }) => {
       reset();
     }
   };
+
   return (
     <Box>
       <form onSubmit={formHandler}>
@@ -155,11 +144,7 @@ const TimeLogFrom = ({ recentProject }: { recentProject: string }) => {
           >
             Select Project
           </FormLabel>
-          <AutoCompleteElem
-            onChange={selectProject}
-            items={items}
-            recentProject={recentProject}
-          />
+          <CustomSelect onChange={selectProject} />
           <FormErrorMessage>{errorMsg?.projectName}</FormErrorMessage>
         </FormControl>
         <Box>
