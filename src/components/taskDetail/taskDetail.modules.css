@@ -1,0 +1,5 @@
+div[role='progressbar'] {
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+  background-color: #3e467e;
+}

@@ -20,6 +20,8 @@ import { Link } from 'react-router-dom';
 import { Task } from '../../interfaces/editProject';
 import { ReactComponent as DeleteSvg } from '../../assets/images/delete.svg';
 import CustomCheckbox from '../../components/customCheckBox';
+import RecurringProjectTasks from '../../components/recurringProjectTask';
+import RecurringProjectArchive from '../../components/recurringProjectArchive';
 
 const EditProject = () => {
   const [formData, setFormData] = useState<any>({
@@ -68,16 +70,14 @@ const EditProject = () => {
           textStyle='sourceSansProRegular'
           spacing='4px'
         >
-          <BreadcrumbItem color='textLight'>
-            <Text color='black'>
-              <Link to='/'>Home</Link>
-            </Text>
+          <BreadcrumbItem color='black'>
+            <Link to='/'>Home</Link>
           </BreadcrumbItem>
-          <BreadcrumbItem color='textLight'>
+          <BreadcrumbItem color='black'>
             <Link to='/projects'>Projects</Link>
           </BreadcrumbItem>
-          <BreadcrumbItem color='textLight'>
-            <Text>Harvest</Text>
+          <BreadcrumbItem color='black'>
+            <Link to='/projects/harvest/'>harvest</Link>
           </BreadcrumbItem>
           <BreadcrumbItem color='textLight'>
             <Text>Manage</Text>
@@ -129,7 +129,7 @@ const EditProject = () => {
             alignItems='flex-start'
             divider={<StackDivider />}
           >
-            <Box h='77px' p='22px 0'>
+            <Box p='22px 0'>
               <Flex
                 justifyContent='space-between'
                 color='textLightMid'
@@ -141,40 +141,6 @@ const EditProject = () => {
                 <Text>Total budget hrs (opt)</Text>
               </Flex>
               <UnorderedList m='0'>
-                <ListItem m='20px 0' display='flex'>
-                  <Input
-                    w='387px'
-                    mr='32px'
-                    textStyle='inputTextStyle'
-                    type='text'
-                    value='Month(May 18 - Jun 17)'
-                  />
-                  <FormControl w='114px'>
-                    <Input
-                      type='text'
-                      textStyle='inputTextStyle'
-                      value={80}
-                      textAlign='center'
-                    />
-                  </FormControl>
-                </ListItem>
-                <ListItem m='20px 0' display='flex'>
-                  <Input
-                    w='387px'
-                    mr='32px'
-                    textStyle='inputTextStyle'
-                    type='text'
-                    value='Month(May 18 - Jun 17)'
-                  />
-                  <FormControl w='114px'>
-                    <Input
-                      type='text'
-                      textStyle='inputTextStyle'
-                      value={80}
-                      textAlign='center'
-                    />
-                  </FormControl>
-                </ListItem>
                 <ListItem m='20px 0' display='flex'>
                   <Input
                     w='387px'

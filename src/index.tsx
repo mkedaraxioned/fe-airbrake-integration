@@ -1,4 +1,4 @@
-import { ChakraProvider, ColorModeScript } from '@chakra-ui/react';
+import { ChakraProvider, ColorModeScript, CSSReset } from '@chakra-ui/react';
 import * as React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
@@ -12,6 +12,7 @@ ReactDOM.render(
   <React.StrictMode>
     <ChakraProvider resetCSS theme={costomTheme}>
       <ColorModeScript />
+      <CSSReset />
       <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>
           <App />
