@@ -6,9 +6,10 @@ import {
   startOfWeek,
   addDays,
   isSameDay,
-  getMonth,
   startOfMonth,
   endOfWeek,
+  isSameMonth,
+  isAfter,
 } from 'date-fns';
 import { Box, Flex, Text } from '@chakra-ui/react';
 import { HiOutlineChevronLeft, HiOutlineChevronRight } from 'react-icons/hi';
@@ -65,7 +66,14 @@ const Calendar = ({ showDetailsHandle }: Props) => {
           </Text>
         </Box>
         <Box className='col col-end'>
-          <Box onClick={() => changeMonthHandle('next')} cursor='pointer'>
+          <Box
+            onClick={() => changeMonthHandle('next')}
+            cursor={isSameMonth(currentMonth, new Date()) ? 'none' : 'pointer'}
+            pointerEvents={
+              isSameMonth(currentMonth, new Date()) ? 'none' : 'auto'
+            }
+            opacity={isSameMonth(currentMonth, new Date()) ? '.3' : '1'}
+          >
             <HiOutlineChevronRight size='21' />
           </Box>
         </Box>
@@ -111,7 +119,6 @@ const Calendar = ({ showDetailsHandle }: Props) => {
       for (let i = 0; i < 7; i++) {
         formattedDate = format(day, dateFormat);
         const cloneDay = day;
-        const month = getMonth(day);
         const getTime = new Date(day).getTime();
         const curTime = new Date().getTime();
         let bgColorVal = '';
@@ -137,29 +144,19 @@ const Calendar = ({ showDetailsHandle }: Props) => {
             bg={`${
               isSameDay(day, selectedDate)
                 ? 'btnPurple'
-                : month !== currentMonth.getMonth()
+                : !isAfter(new Date(), day)
                 ? '#E2E8F066'
                 : bgColorVal
-                ? bgColorVal
-                : ''
             }`}
             color={`${
-              month !== currentMonth.getMonth()
+              !isAfter(new Date(), day)
                 ? 'textLight'
                 : isSameDay(day, selectedDate)
                 ? 'white'
                 : 'textColor'
             }`}
-            pointerEvents={`${
-              month !== currentMonth.getMonth() || getTime > curTime
-                ? 'none'
-                : 'auto'
-            }`}
-            cursor={`${
-              month !== currentMonth.getMonth() || getTime > curTime
-                ? 'not-allowed'
-                : 'pointer'
-            }`}
+            pointerEvents={`${getTime > curTime ? 'none' : 'auto'}`}
+            cursor={`${getTime > curTime ? 'not-allowed' : 'pointer'}`}
             key={i}
             onClick={() => {
               const dayStr = format(cloneDay, 'dd-MM-yyyy');

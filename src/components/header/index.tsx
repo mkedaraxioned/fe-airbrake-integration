@@ -34,7 +34,7 @@ const Header = () => {
   };
 
   return (
-    <Box py='18px' bg='white' position='relative' shadow='md'>
+    <Box py='18px' bg='white' position='sticky' top='0' shadow='md' zIndex='5'>
       <Flex
         className='wrapper'
         justifyContent='space-between'
@@ -78,7 +78,14 @@ const Header = () => {
                 _focus={{ border: 'none' }}
               />
             </Box>
-            <Box w='60px' textAlign='center'>
+            <Box
+              w='60px'
+              textAlign='center'
+              bg='white'
+              border='2px'
+              borderColor='borderColor'
+              rounded='md'
+            >
               <Text fontSize='12px' textStyle='sourceSansProBold'>
                 {' '}
                 Ctrl + K

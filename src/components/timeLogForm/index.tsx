@@ -14,8 +14,9 @@ import {
 import React, { useEffect, useState } from 'react';
 import { TimelogFormError } from '../../interfaces/timelogForm';
 import { timeStringValidate } from '../../utils/validation';
+import CustomSelect, { Options } from '../customSelect';
 
-const TimeLogFrom = () => {
+const TimeLogFrom = ({ recentProject }: { recentProject: string }) => {
   const [formData, setFormData] = useState({
     date: new Date(),
     projectName: '',
@@ -24,8 +25,19 @@ const TimeLogFrom = () => {
     comments: '',
     billable: 'nonBillable',
   });
+  const [taskNode, setTaskNode] = useState<string[]>([]);
 
   const [errorMsg, setErrorMsg] = useState<TimelogFormError>();
+  const allTask = [
+    {
+      projectName: 'WordPress Maintenance',
+      task: ['task 1', 'task 2', 'task 3'],
+    },
+    {
+      projectName: 'ClearForMe Ongoing Retainer Agreement',
+      task: ['task 4', 'task 5', 'task 6'],
+    },
+  ];
 
   useEffect(() => {
     if (!formData.logTime) return;
@@ -43,6 +55,17 @@ const TimeLogFrom = () => {
     }
   }, [formData.logTime]);
 
+  useEffect(() => {
+    recentProject && setFormData({ ...formData, projectName: recentProject });
+  }, [recentProject]);
+
+  useEffect(() => {
+    const tasks = allTask.filter(
+      (project) => project.projectName === formData.projectName,
+    );
+    setTaskNode(tasks[0]?.task);
+  }, [formData.projectName]);
+
   const selecttHandler = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -54,6 +77,10 @@ const TimeLogFrom = () => {
     e.target.checked
       ? setFormData({ ...formData, billable: 'billable' })
       : setFormData({ ...formData, billable: 'nonBillable' });
+  };
+
+  const selectProject = (item: Options) => {
+    setFormData({ ...formData, projectName: item.value });
   };
 
   const fieldValidation = () => {
@@ -97,10 +124,10 @@ const TimeLogFrom = () => {
     const notValid = fieldValidation();
     if (Object.values(notValid).length <= 0) {
       alert('Success');
-      console.log(formData);
       reset();
     }
   };
+
   return (
     <Box>
       <form onSubmit={formHandler}>
@@ -117,22 +144,7 @@ const TimeLogFrom = () => {
           >
             Select Project
           </FormLabel>
-          <Select
-            id='select_project'
-            name='projectName'
-            value={formData.projectName}
-            placeholder='Select'
-            fontSize='14px'
-            lineHeight='17.6px'
-            color='textLightMid'
-            textStyle='sourceSansProRegular'
-            onChange={selecttHandler}
-          >
-            <option value={'ClearForMe Ongoing Retainer Agreement'}>
-              ClearForMe Ongoing Retainer Agreement
-            </option>
-            <option value={'Project 2'}>Project 2</option>
-          </Select>
+          <CustomSelect onChange={selectProject} />
           <FormErrorMessage>{errorMsg?.projectName}</FormErrorMessage>
         </FormControl>
         <Box>
@@ -180,8 +192,11 @@ const TimeLogFrom = () => {
             textStyle='sourceSansProRegular'
             onChange={selecttHandler}
           >
-            <option value={'Task 1'}>Task 1</option>
-            <option value={'Task 2'}>Task 2</option>
+            {taskNode?.map((task, index) => (
+              <option value={task} key={index}>
+                {task}
+              </option>
+            ))}
           </Select>
           <FormErrorMessage>{errorMsg?.task}</FormErrorMessage>
         </FormControl>

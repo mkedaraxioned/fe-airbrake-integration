@@ -9,6 +9,7 @@ import Projects from './pages/Projects';
 import Team from './pages/Team';
 import { RootState } from './store';
 import EditProject from './templates/editProject';
+import ProjectTaskDetails from './templates/projectTaskDetail';
 export const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const user = useSelector((state: RootState) => state.user);
@@ -29,7 +30,14 @@ export const App = () => {
               <Route path='/add-client' element={<AddClient />} />
               <Route path='/team' element={<Team />} />
               <Route path='/projects' element={<Projects />} />
-              <Route path='/projects/:project/*' element={<EditProject />} />
+              <Route
+                path='/projects/:project/'
+                element={<ProjectTaskDetails />}
+              />
+              <Route
+                path='/projects/:project/manage*'
+                element={<EditProject />}
+              />
             </>
           ) : (
             <Route path='/login' element={<Login />} />

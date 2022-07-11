@@ -22,8 +22,13 @@ import { ReactComponent as DeleteSvg } from '../../assets/images/delete.svg';
 import CustomCheckbox from '../../components/customCheckBox';
 
 const EditProject = () => {
+  const [formData, setFormData] = useState<any>({
+    task: [],
+    milestone: [],
+  });
   const [taskNode, setTaskNode] = useState<Task[]>([{ title: '', hr: '' }]);
   const [isVisibleIndex, setIsVisibleIndex] = useState(0);
+
   const over = (index: number) => {
     setIsVisibleIndex(index);
   };
@@ -40,8 +45,19 @@ const EditProject = () => {
     setTaskNode(filterTask);
   };
 
-  const checkHandler = (e: any) => {
+  const checkHandler = (e: any): void => {
     console.log(e.target.checked, 'val');
+  };
+
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    index: number,
+  ) => {
+    const { name, value }: { name: string; value: string } = e.target;
+    const list: any = [...taskNode];
+    list[index][name] = value;
+    setTaskNode(list);
+    setFormData({ ...formData, task: list });
   };
   return (
     <Box>
@@ -52,16 +68,14 @@ const EditProject = () => {
           textStyle='sourceSansProRegular'
           spacing='4px'
         >
-          <BreadcrumbItem color='textLight'>
-            <Text color='black'>
-              <Link to='/'>Home</Link>
-            </Text>
+          <BreadcrumbItem color='black'>
+            <Link to='/'>Home</Link>
           </BreadcrumbItem>
-          <BreadcrumbItem color='textLight'>
+          <BreadcrumbItem color='black'>
             <Link to='/projects'>Projects</Link>
           </BreadcrumbItem>
-          <BreadcrumbItem color='textLight'>
-            <Text>Harvest</Text>
+          <BreadcrumbItem color='black'>
+            <Link to='/projects/harvest/'>harvest</Link>
           </BreadcrumbItem>
           <BreadcrumbItem color='textLight'>
             <Text>Manage</Text>
@@ -113,7 +127,7 @@ const EditProject = () => {
             alignItems='flex-start'
             divider={<StackDivider />}
           >
-            <Box h='77px' p='22px 0'>
+            <Box p='22px 0'>
               <Flex
                 justifyContent='space-between'
                 color='textLightMid'
@@ -125,40 +139,6 @@ const EditProject = () => {
                 <Text>Total budget hrs (opt)</Text>
               </Flex>
               <UnorderedList m='0'>
-                <ListItem m='20px 0' display='flex'>
-                  <Input
-                    w='387px'
-                    mr='32px'
-                    textStyle='inputTextStyle'
-                    type='text'
-                    value='Month(May 18 - Jun 17)'
-                  />
-                  <FormControl w='114px'>
-                    <Input
-                      type='text'
-                      textStyle='inputTextStyle'
-                      value={80}
-                      textAlign='center'
-                    />
-                  </FormControl>
-                </ListItem>
-                <ListItem m='20px 0' display='flex'>
-                  <Input
-                    w='387px'
-                    mr='32px'
-                    textStyle='inputTextStyle'
-                    type='text'
-                    value='Month(May 18 - Jun 17)'
-                  />
-                  <FormControl w='114px'>
-                    <Input
-                      type='text'
-                      textStyle='inputTextStyle'
-                      value={80}
-                      textAlign='center'
-                    />
-                  </FormControl>
-                </ListItem>
                 <ListItem m='20px 0' display='flex'>
                   <Input
                     w='387px'
@@ -224,6 +204,8 @@ const EditProject = () => {
                             textStyle='inputTextStyle'
                             placeholder='Enter Task'
                             value={_.title}
+                            name='title'
+                            onChange={(e) => handleInputChange(e, index)}
                           />
                         </FormControl>
                         <FormControl w='60px' mr='37px !important'>
@@ -232,6 +214,8 @@ const EditProject = () => {
                             placeholder='Hrs'
                             textStyle='inputTextStyle'
                             value={_.hr}
+                            name='hr'
+                            onChange={(e) => handleInputChange(e, index)}
                             textAlign='center'
                           />
                         </FormControl>
