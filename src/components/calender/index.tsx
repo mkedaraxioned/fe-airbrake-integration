@@ -9,6 +9,8 @@ import {
   getMonth,
   startOfMonth,
   endOfWeek,
+  isSameMonth,
+  isAfter,
 } from 'date-fns';
 import { Box, Flex, Text } from '@chakra-ui/react';
 import { HiOutlineChevronLeft, HiOutlineChevronRight } from 'react-icons/hi';
@@ -65,7 +67,18 @@ const Calendar = ({ showDetailsHandle }: Props) => {
           </Text>
         </Box>
         <Box className='col col-end'>
-          <Box onClick={() => changeMonthHandle('next')} cursor='pointer'>
+          <Box
+            onClick={() => changeMonthHandle('next')}
+            cursor={
+              isSameMonth(currentMonth, selectedDate) ? 'none' : 'pointer'
+            }
+            pointerEvents={
+              isSameMonth(currentMonth, selectedDate) ? 'none' : 'auto'
+            }
+            visibility={
+              isSameMonth(currentMonth, selectedDate) ? 'hidden' : 'visible'
+            }
+          >
             <HiOutlineChevronRight size='21' />
           </Box>
         </Box>
@@ -137,14 +150,12 @@ const Calendar = ({ showDetailsHandle }: Props) => {
             bg={`${
               isSameDay(day, selectedDate)
                 ? 'btnPurple'
-                : month !== currentMonth.getMonth()
+                : month !== currentMonth.getMonth() || !isAfter(new Date(), day)
                 ? '#E2E8F066'
                 : bgColorVal
-                ? bgColorVal
-                : ''
             }`}
             color={`${
-              month !== currentMonth.getMonth()
+              month !== currentMonth.getMonth() || !isAfter(new Date(), day)
                 ? 'textLight'
                 : isSameDay(day, selectedDate)
                 ? 'white'
