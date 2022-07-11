@@ -6,7 +6,6 @@ import {
   startOfWeek,
   addDays,
   isSameDay,
-  getMonth,
   startOfMonth,
   endOfWeek,
   isSameMonth,
@@ -120,7 +119,6 @@ const Calendar = ({ showDetailsHandle }: Props) => {
       for (let i = 0; i < 7; i++) {
         formattedDate = format(day, dateFormat);
         const cloneDay = day;
-        const month = getMonth(day);
         const getTime = new Date(day).getTime();
         const curTime = new Date().getTime();
         let bgColorVal = '';

@@ -20,8 +20,6 @@ import { Link } from 'react-router-dom';
 import { Task } from '../../interfaces/editProject';
 import { ReactComponent as DeleteSvg } from '../../assets/images/delete.svg';
 import CustomCheckbox from '../../components/customCheckBox';
-import RecurringProjectTasks from '../../components/recurringProjectTask';
-import RecurringProjectArchive from '../../components/recurringProjectArchive';
 
 const EditProject = () => {
   const [formData, setFormData] = useState<any>({

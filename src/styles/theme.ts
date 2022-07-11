@@ -1,4 +1,4 @@
-import { extendTheme, withDefaultColorScheme } from '@chakra-ui/react';
+import { extendTheme } from '@chakra-ui/react';
 import Button from './buttonStyleComponent';
 import Radio from './radioButtonStyleComponent';
 import { styles as globalStyle } from './globalStyle';

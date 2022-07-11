@@ -4,63 +4,17 @@ import {
   BreadcrumbItem,
   Button,
   Flex,
-  FormControl,
   Heading,
   HStack,
-  Input,
-  ListItem,
-  StackDivider,
   Text,
-  UnorderedList,
   VStack,
 } from '@chakra-ui/react';
-import React, { useState } from 'react';
-import { AiOutlinePlusCircle } from 'react-icons/ai';
+import React from 'react';
 import { Link } from 'react-router-dom';
-import { Task } from '../../interfaces/editProject';
-import { ReactComponent as DeleteSvg } from '../../assets/images/delete.svg';
-import CustomCheckbox from '../../components/customCheckBox';
 import RecurringProjectTasks from '../../components/recurringProjectTask';
 import RecurringProjectArchive from '../../components/recurringProjectArchive';
 
 const ProjectTaskDetails = () => {
-  const [formData, setFormData] = useState<any>({
-    task: [],
-    milestone: [],
-  });
-  const [taskNode, setTaskNode] = useState<Task[]>([{ title: '', hr: '' }]);
-  const [isVisibleIndex, setIsVisibleIndex] = useState(0);
-
-  const over = (index: number) => {
-    setIsVisibleIndex(index);
-  };
-
-  const out = () => {
-    setIsVisibleIndex(0);
-  };
-
-  const addTaskControls = () => {
-    setTaskNode([...taskNode, { title: '', hr: '' }]);
-  };
-  const removeTaskControls = (taskIndex: number) => {
-    const filterTask = taskNode.filter((_, index) => index !== taskIndex);
-    setTaskNode(filterTask);
-  };
-
-  const checkHandler = (e: any): void => {
-    console.log(e.target.checked, 'val');
-  };
-
-  const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement>,
-    index: number,
-  ) => {
-    const { name, value }: { name: string; value: string } = e.target;
-    const list: any = [...taskNode];
-    list[index][name] = value;
-    setTaskNode(list);
-    setFormData({ ...formData, task: list });
-  };
   return (
     <Box>
       <Box p='15px 55px 80px' className='wrapper'>
