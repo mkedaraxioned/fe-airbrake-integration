@@ -13,6 +13,9 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import RecurringProjectTasks from '../../components/recurringProjectTask';
 import RecurringProjectArchive from '../../components/recurringProjectArchive';
+import { ReactComponent as EditSvg } from '../../assets/images/edit.svg';
+import { ReactComponent as ManageSvg } from '../../assets/images/manage.svg';
+import { ReactComponent as ReportSvg } from '../../assets/images/report.svg';
 
 const ProjectTaskDetails = () => {
   return (
@@ -57,10 +60,30 @@ const ProjectTaskDetails = () => {
           </VStack>
           <HStack>
             <Button w='137px' mr='10px' variant='secondary'>
-              Edit Project
+              <Flex alignItems='center'>
+                <ReportSvg />
+                <Text pt='3px' pl='8px'>
+                  View Report
+                </Text>
+              </Flex>
             </Button>
-            <Button w='137px' ml='10px' variant='primary'>
-              <Link to='/projects/harvest/manage'>Manage</Link>
+            <Button w='137px' variant='secondary'>
+              <Flex alignItems='center'>
+                <EditSvg />
+                <Text pt='3px' pl='8px'>
+                  Edit Project
+                </Text>
+              </Flex>
+            </Button>
+            <Button w='137px' ml='18px !important' variant='primary'>
+              <Link to='/projects/harvest/manage'>
+                <Flex alignItems='center'>
+                  <ManageSvg />
+                  <Text pt='3px' pl='8px'>
+                    Manage Task
+                  </Text>
+                </Flex>
+              </Link>
             </Button>
           </HStack>
         </Flex>

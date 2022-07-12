@@ -6,13 +6,16 @@ import {
   Box,
   Divider,
   Flex,
+  List,
+  ListItem,
   Progress,
   Text,
 } from '@chakra-ui/react';
 import React from 'react';
 import { FaMinus, FaPlus } from 'react-icons/fa';
 import { HiDotsHorizontal } from 'react-icons/hi';
-
+import { Link } from 'react-router-dom';
+import { ReactComponent as EditGreyIcon } from '../../assets/images/editGreyIcon.svg';
 const TaskDetailGranular = () => {
   return (
     <Box m='20px 0 40px'>
@@ -177,7 +180,7 @@ const TaskDetailGranular = () => {
                                   <Text textAlign='left'>Shritej B</Text>
                                 </Box>
                               </Flex>
-                              <Box pl='23%'>
+                              <Box pl='22.2%'>
                                 <Text>2.5 Hrs</Text>
                               </Box>
                               <Box pr='15.4%'>
@@ -185,12 +188,72 @@ const TaskDetailGranular = () => {
                               </Box>
                             </AccordionButton>
                           </h2>
-                          <AccordionPanel pb={4}>
-                            Lorem ipsum dolor sit amet, consectetur adipiscing
-                            elit, sed do eiusmod tempor incididunt ut labore et
-                            dolore magna aliqua. Ut enim ad minim veniam, quis
-                            nostrud exercitation ullamco laboris nisi ut aliquip
-                            ex ea commodo consequat.
+                          <AccordionPanel p={0}>
+                            <List>
+                              <ListItem>
+                                <Flex
+                                  p='15px 24px'
+                                  borderTop='1px'
+                                  borderColor='borderColor'
+                                  fontSize='14px'
+                                  lineHeight='17.6px'
+                                  color='textLightMid'
+                                  textStyle='sourceSansProRegular'
+                                >
+                                  <Flex flexBasis='50%' alignItems='center'>
+                                    <Link to='/'>
+                                      <EditGreyIcon />
+                                    </Link>
+                                    <Text pl='11px'>Tuesday, May 15, 2022</Text>
+                                  </Flex>
+                                  <Text pl='18px' flexBasis='50%'>
+                                    25:00
+                                  </Text>
+                                </Flex>
+                              </ListItem>
+                              <ListItem>
+                                <Flex
+                                  p='15px 24px'
+                                  borderTop='1px'
+                                  borderColor='borderColor'
+                                  fontSize='14px'
+                                  lineHeight='17.6px'
+                                  color='textLightMid'
+                                  textStyle='sourceSansProRegular'
+                                >
+                                  <Flex flexBasis='50%' alignItems='center'>
+                                    <Link to='/'>
+                                      <EditGreyIcon />
+                                    </Link>
+                                    <Text pl='11px'>Tuesday, May 15, 2022</Text>
+                                  </Flex>
+                                  <Text pl='18px' flexBasis='50%'>
+                                    25:00
+                                  </Text>
+                                </Flex>
+                              </ListItem>
+                              <ListItem>
+                                <Flex
+                                  p='15px 24px'
+                                  borderTop='1px'
+                                  borderColor='borderColor'
+                                  fontSize='14px'
+                                  lineHeight='17.6px'
+                                  color='textLightMid'
+                                  textStyle='sourceSansProRegular'
+                                >
+                                  <Flex flexBasis='50%' alignItems='center'>
+                                    <Link to='/'>
+                                      <EditGreyIcon />
+                                    </Link>
+                                    <Text pl='11px'>Tuesday, May 15, 2022</Text>
+                                  </Flex>
+                                  <Text pl='18px' flexBasis='50%'>
+                                    25:00
+                                  </Text>
+                                </Flex>
+                              </ListItem>
+                            </List>
                           </AccordionPanel>
                         </>
                       )}
@@ -233,7 +296,7 @@ const TaskDetailGranular = () => {
                                   <Text textAlign='left'>Shritej B</Text>
                                 </Box>
                               </Flex>
-                              <Box pl='23%'>
+                              <Box pl='22.2%'>
                                 <Text>2.5 Hrs</Text>
                               </Box>
                               <Box pr='15.4%'>
@@ -241,12 +304,72 @@ const TaskDetailGranular = () => {
                               </Box>
                             </AccordionButton>
                           </h2>
-                          <AccordionPanel pb={4}>
-                            Lorem ipsum dolor sit amet, consectetur adipiscing
-                            elit, sed do eiusmod tempor incididunt ut labore et
-                            dolore magna aliqua. Ut enim ad minim veniam, quis
-                            nostrud exercitation ullamco laboris nisi ut aliquip
-                            ex ea commodo consequat.
+                          <AccordionPanel p={0}>
+                            <List>
+                              <ListItem>
+                                <Flex
+                                  p='15px 24px'
+                                  borderTop='1px'
+                                  borderColor='borderColor'
+                                  fontSize='14px'
+                                  lineHeight='17.6px'
+                                  color='textLightMid'
+                                  textStyle='sourceSansProRegular'
+                                >
+                                  <Flex flexBasis='50%' alignItems='center'>
+                                    <Link to='/'>
+                                      <EditGreyIcon />
+                                    </Link>
+                                    <Text pl='11px'>Tuesday, May 15, 2022</Text>
+                                  </Flex>
+                                  <Text pl='18px' flexBasis='50%'>
+                                    25:00
+                                  </Text>
+                                </Flex>
+                              </ListItem>
+                              <ListItem>
+                                <Flex
+                                  p='15px 24px'
+                                  borderTop='1px'
+                                  borderColor='borderColor'
+                                  fontSize='14px'
+                                  lineHeight='17.6px'
+                                  color='textLightMid'
+                                  textStyle='sourceSansProRegular'
+                                >
+                                  <Flex flexBasis='50%' alignItems='center'>
+                                    <Link to='/'>
+                                      <EditGreyIcon />
+                                    </Link>
+                                    <Text pl='11px'>Tuesday, May 15, 2022</Text>
+                                  </Flex>
+                                  <Text pl='18px' flexBasis='50%'>
+                                    25:00
+                                  </Text>
+                                </Flex>
+                              </ListItem>
+                              <ListItem>
+                                <Flex
+                                  p='15px 24px'
+                                  borderTop='1px'
+                                  borderColor='borderColor'
+                                  fontSize='14px'
+                                  lineHeight='17.6px'
+                                  color='textLightMid'
+                                  textStyle='sourceSansProRegular'
+                                >
+                                  <Flex flexBasis='50%' alignItems='center'>
+                                    <Link to='/'>
+                                      <EditGreyIcon />
+                                    </Link>
+                                    <Text pl='11px'>Tuesday, May 15, 2022</Text>
+                                  </Flex>
+                                  <Text pl='18px' flexBasis='50%'>
+                                    25:00
+                                  </Text>
+                                </Flex>
+                              </ListItem>
+                            </List>
                           </AccordionPanel>
                         </>
                       )}
@@ -347,7 +470,7 @@ const TaskDetailGranular = () => {
                                 borderColor: 'borderColor',
                               }}
                             >
-                              <Flex>
+                              <Flex flexBasis='50%'>
                                 <Box
                                   padding='2px 1px 1px '
                                   border='2px'
@@ -365,20 +488,80 @@ const TaskDetailGranular = () => {
                                   <Text textAlign='left'>Shritej B</Text>
                                 </Box>
                               </Flex>
-                              <Box pl='23%'>
+                              <Box flexBasis='25%' textAlign='left'>
                                 <Text>2.5 Hrs</Text>
                               </Box>
-                              <Box pr='15.4%'>
+                              <Box flexBasis='23%' textAlign='left'>
                                 <Text>22 January 2022</Text>
                               </Box>
                             </AccordionButton>
                           </h2>
-                          <AccordionPanel pb={4}>
-                            Lorem ipsum dolor sit amet, consectetur adipiscing
-                            elit, sed do eiusmod tempor incididunt ut labore et
-                            dolore magna aliqua. Ut enim ad minim veniam, quis
-                            nostrud exercitation ullamco laboris nisi ut aliquip
-                            ex ea commodo consequat.
+                          <AccordionPanel p={0}>
+                            <List>
+                              <ListItem>
+                                <Flex
+                                  p='15px 24px'
+                                  borderTop='1px'
+                                  borderColor='borderColor'
+                                  fontSize='14px'
+                                  lineHeight='17.6px'
+                                  color='textLightMid'
+                                  textStyle='sourceSansProRegular'
+                                >
+                                  <Flex flexBasis='50%' alignItems='center'>
+                                    <Link to='/'>
+                                      <EditGreyIcon />
+                                    </Link>
+                                    <Text pl='11px'>Tuesday, May 15, 2022</Text>
+                                  </Flex>
+                                  <Text pl='18px' flexBasis='50%'>
+                                    25:00
+                                  </Text>
+                                </Flex>
+                              </ListItem>
+                              <ListItem>
+                                <Flex
+                                  p='15px 24px'
+                                  borderTop='1px'
+                                  borderColor='borderColor'
+                                  fontSize='14px'
+                                  lineHeight='17.6px'
+                                  color='textLightMid'
+                                  textStyle='sourceSansProRegular'
+                                >
+                                  <Flex flexBasis='50%' alignItems='center'>
+                                    <Link to='/'>
+                                      <EditGreyIcon />
+                                    </Link>
+                                    <Text pl='11px'>Tuesday, May 15, 2022</Text>
+                                  </Flex>
+                                  <Text pl='18px' flexBasis='50%'>
+                                    25:00
+                                  </Text>
+                                </Flex>
+                              </ListItem>
+                              <ListItem>
+                                <Flex
+                                  p='15px 24px'
+                                  borderTop='1px'
+                                  borderColor='borderColor'
+                                  fontSize='14px'
+                                  lineHeight='17.6px'
+                                  color='textLightMid'
+                                  textStyle='sourceSansProRegular'
+                                >
+                                  <Flex flexBasis='50%' alignItems='center'>
+                                    <Link to='/'>
+                                      <EditGreyIcon />
+                                    </Link>
+                                    <Text pl='11px'>Tuesday, May 15, 2022</Text>
+                                  </Flex>
+                                  <Text pl='18px' flexBasis='50%'>
+                                    25:00
+                                  </Text>
+                                </Flex>
+                              </ListItem>
+                            </List>
                           </AccordionPanel>
                         </>
                       )}
@@ -403,7 +586,7 @@ const TaskDetailGranular = () => {
                                 borderColor: 'borderColor',
                               }}
                             >
-                              <Flex>
+                              <Flex flexBasis='50%'>
                                 <Box
                                   padding='2px 1px 1px '
                                   border='2px'
@@ -421,20 +604,80 @@ const TaskDetailGranular = () => {
                                   <Text textAlign='left'>Shritej B</Text>
                                 </Box>
                               </Flex>
-                              <Box pl='23%'>
+                              <Box flexBasis='25%' textAlign='left'>
                                 <Text>2.5 Hrs</Text>
                               </Box>
-                              <Box pr='15.4%'>
+                              <Box flexBasis='23%' textAlign='left'>
                                 <Text>22 January 2022</Text>
                               </Box>
                             </AccordionButton>
                           </h2>
-                          <AccordionPanel pb={4}>
-                            Lorem ipsum dolor sit amet, consectetur adipiscing
-                            elit, sed do eiusmod tempor incididunt ut labore et
-                            dolore magna aliqua. Ut enim ad minim veniam, quis
-                            nostrud exercitation ullamco laboris nisi ut aliquip
-                            ex ea commodo consequat.
+                          <AccordionPanel p={0}>
+                            <List>
+                              <ListItem>
+                                <Flex
+                                  p='15px 24px'
+                                  borderTop='1px'
+                                  borderColor='borderColor'
+                                  fontSize='14px'
+                                  lineHeight='17.6px'
+                                  color='textLightMid'
+                                  textStyle='sourceSansProRegular'
+                                >
+                                  <Flex flexBasis='50%' alignItems='center'>
+                                    <Link to='/'>
+                                      <EditGreyIcon />
+                                    </Link>
+                                    <Text pl='11px'>Tuesday, May 15, 2022</Text>
+                                  </Flex>
+                                  <Text pl='18px' flexBasis='50%'>
+                                    25:00
+                                  </Text>
+                                </Flex>
+                              </ListItem>
+                              <ListItem>
+                                <Flex
+                                  p='15px 24px'
+                                  borderTop='1px'
+                                  borderColor='borderColor'
+                                  fontSize='14px'
+                                  lineHeight='17.6px'
+                                  color='textLightMid'
+                                  textStyle='sourceSansProRegular'
+                                >
+                                  <Flex flexBasis='50%' alignItems='center'>
+                                    <Link to='/'>
+                                      <EditGreyIcon />
+                                    </Link>
+                                    <Text pl='11px'>Tuesday, May 15, 2022</Text>
+                                  </Flex>
+                                  <Text pl='18px' flexBasis='50%'>
+                                    25:00
+                                  </Text>
+                                </Flex>
+                              </ListItem>
+                              <ListItem>
+                                <Flex
+                                  p='15px 24px'
+                                  borderTop='1px'
+                                  borderColor='borderColor'
+                                  fontSize='14px'
+                                  lineHeight='17.6px'
+                                  color='textLightMid'
+                                  textStyle='sourceSansProRegular'
+                                >
+                                  <Flex flexBasis='50%' alignItems='center'>
+                                    <Link to='/'>
+                                      <EditGreyIcon />
+                                    </Link>
+                                    <Text pl='11px'>Tuesday, May 15, 2022</Text>
+                                  </Flex>
+                                  <Text pl='18px' flexBasis='50%'>
+                                    25:00
+                                  </Text>
+                                </Flex>
+                              </ListItem>
+                            </List>
                           </AccordionPanel>
                         </>
                       )}
