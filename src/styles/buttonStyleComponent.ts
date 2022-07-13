@@ -11,8 +11,8 @@ const Button: ComponentStyleConfig = {
       fontSize: '12.46px',
       lineHeight: '18.69px',
       _hover: {
-        bg: 'white',
-        color: 'btnPurple',
+        bg: 'royalDarkBlue',
+        color: 'white',
       },
     },
     secondary: {
@@ -22,8 +22,9 @@ const Button: ComponentStyleConfig = {
       fontSize: '12.46px',
       lineHeight: '18.69px',
       _hover: {
-        bg: 'btnPurple',
-        color: 'white',
+        bg: 'white',
+        color: 'royalDarkBlue',
+        borderColor: 'royalDarkBlue',
       },
     },
   },

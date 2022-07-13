@@ -6,11 +6,11 @@ import {
   startOfWeek,
   addDays,
   isSameDay,
-  getMonth,
   startOfMonth,
   endOfWeek,
   isSameMonth,
   isAfter,
+  getMonth,
 } from 'date-fns';
 import { Box, Flex, Text } from '@chakra-ui/react';
 import { HiOutlineChevronLeft, HiOutlineChevronRight } from 'react-icons/hi';
@@ -69,15 +69,11 @@ const Calendar = ({ showDetailsHandle }: Props) => {
         <Box className='col col-end'>
           <Box
             onClick={() => changeMonthHandle('next')}
-            cursor={
-              isSameMonth(currentMonth, selectedDate) ? 'none' : 'pointer'
-            }
+            cursor={isSameMonth(currentMonth, new Date()) ? 'none' : 'pointer'}
             pointerEvents={
-              isSameMonth(currentMonth, selectedDate) ? 'none' : 'auto'
+              isSameMonth(currentMonth, new Date()) ? 'none' : 'auto'
             }
-            visibility={
-              isSameMonth(currentMonth, selectedDate) ? 'hidden' : 'visible'
-            }
+            opacity={isSameMonth(currentMonth, new Date()) ? '.3' : '1'}
           >
             <HiOutlineChevronRight size='21' />
           </Box>
@@ -119,14 +115,13 @@ const Calendar = ({ showDetailsHandle }: Props) => {
     let days = [];
     let day = startDate;
     let formattedDate = '';
-
     while (day <= endDate) {
       for (let i = 0; i < 7; i++) {
         formattedDate = format(day, dateFormat);
         const cloneDay = day;
-        const month = getMonth(day);
         const getTime = new Date(day).getTime();
         const curTime = new Date().getTime();
+        const month = getMonth(day);
         let bgColorVal = '';
         loggedHourData.forEach((value) => {
           if (
@@ -141,7 +136,6 @@ const Calendar = ({ showDetailsHandle }: Props) => {
             bgColorVal = '#FFECB3';
           }
         });
-
         days.push(
           <Box
             w='46px'
@@ -150,7 +144,7 @@ const Calendar = ({ showDetailsHandle }: Props) => {
             bg={`${
               isSameDay(day, selectedDate)
                 ? 'btnPurple'
-                : month !== currentMonth.getMonth() || !isAfter(new Date(), day)
+                : !isAfter(new Date(), day)
                 ? '#E2E8F066'
                 : bgColorVal
             }`}
@@ -161,16 +155,8 @@ const Calendar = ({ showDetailsHandle }: Props) => {
                 ? 'white'
                 : 'textColor'
             }`}
-            pointerEvents={`${
-              month !== currentMonth.getMonth() || getTime > curTime
-                ? 'none'
-                : 'auto'
-            }`}
-            cursor={`${
-              month !== currentMonth.getMonth() || getTime > curTime
-                ? 'not-allowed'
-                : 'pointer'
-            }`}
+            pointerEvents={`${getTime > curTime ? 'none' : 'auto'}`}
+            cursor={`${getTime > curTime ? 'not-allowed' : 'pointer'}`}
             key={i}
             onClick={() => {
               const dayStr = format(cloneDay, 'dd-MM-yyyy');
