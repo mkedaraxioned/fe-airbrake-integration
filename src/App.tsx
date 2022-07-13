@@ -8,7 +8,7 @@ import Login from './pages/Login';
 import Projects from './pages/Projects';
 import Team from './pages/Team';
 import { RootState } from './store';
-import EditProject from './templates/editProject';
+import ManageTask from './templates/manageTask';
 import ProjectTaskDetails from './templates/projectTaskDetail';
 export const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -35,8 +35,8 @@ export const App = () => {
                 element={<ProjectTaskDetails />}
               />
               <Route
-                path='/projects/:project/manage*'
-                element={<EditProject />}
+                path='/projects/:project/manage/'
+                element={<ManageTask />}
               />
             </>
           ) : (

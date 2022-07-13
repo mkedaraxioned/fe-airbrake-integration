@@ -20,8 +20,10 @@ import { Link } from 'react-router-dom';
 import { Task } from '../../interfaces/editProject';
 import { ReactComponent as DeleteSvg } from '../../assets/images/delete.svg';
 import CustomCheckbox from '../../components/customCheckBox';
+import { ReactComponent as EditSvg } from '../../assets/images/edit.svg';
+import { ReactComponent as ManageTaskSvg } from '../../assets/images/manage_task.svg';
 
-const EditProject = () => {
+const ManageTask = () => {
   const [formData, setFormData] = useState<any>({
     task: [],
     milestone: [],
@@ -124,10 +126,16 @@ const EditProject = () => {
             </VStack>
             <HStack>
               <Button w='137px' mr='10px' variant='secondary'>
-                Edit Project
+                <EditSvg />
+                <Text pt='2px' pl='8px'>
+                  Edit Project
+                </Text>
               </Button>
               <Button type='submit' w='137px' ml='10px' variant='primary'>
-                Save
+                <ManageTaskSvg />
+                <Text pt='2px' pl='8px'>
+                  Manage Task
+                </Text>
               </Button>
             </HStack>
           </Flex>
@@ -301,4 +309,4 @@ const EditProject = () => {
   );
 };
 
-export default EditProject;
+export default ManageTask;
