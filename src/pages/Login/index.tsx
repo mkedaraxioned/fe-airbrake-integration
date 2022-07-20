@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   Box,
   Button,
@@ -15,13 +15,27 @@ import loginImg from '../../assets/images/loginImg.png';
 import axionedLogo from '../../assets/images/axionedLogo.png';
 import { AiFillClockCircle } from 'react-icons/ai';
 import { FcGoogle } from 'react-icons/fc';
+import { variables } from '../../constants/backend';
+import { useSearchParams } from 'react-router-dom';
+import { _get } from '../../utils/api';
 
 const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const loginUser = () => {
-    dispatch(userLogin({ name: 'Axioned loggr', role: 'admin' }));
-    navigate('/', { replace: true });
+
+  const [searchParams] = useSearchParams();
+  const token = searchParams.get('token') as string;
+  useEffect(() => {
+    if (token) {
+      localStorage.setItem('token', token);
+      getUserProfile();
+      navigate('/', { replace: true });
+    }
+  }, []);
+
+  const getUserProfile = async () => {
+    const res = await _get('api/users/profile');
+    dispatch(userLogin(res.data.profile));
   };
   return (
     <Box>
@@ -65,8 +79,7 @@ const Login = () => {
             mt='74px'
             shadow='0 4px 25px 1px rgb(0 0 0 / 8%)'
             cursor='pointer'
-            href='#fixme'
-            onClick={loginUser}
+            href={`${variables.BACKEND_URL}api/auth/google`}
             bg='white'
             _hover={{
               shadow: 'none',

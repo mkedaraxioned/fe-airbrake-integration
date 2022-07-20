@@ -10,6 +10,7 @@ import {
   endOfWeek,
   isSameMonth,
   isAfter,
+  getMonth,
 } from 'date-fns';
 import { Box, Flex, Text } from '@chakra-ui/react';
 import { HiOutlineChevronLeft, HiOutlineChevronRight } from 'react-icons/hi';
@@ -114,13 +115,13 @@ const Calendar = ({ showDetailsHandle }: Props) => {
     let days = [];
     let day = startDate;
     let formattedDate = '';
-
     while (day <= endDate) {
       for (let i = 0; i < 7; i++) {
         formattedDate = format(day, dateFormat);
         const cloneDay = day;
         const getTime = new Date(day).getTime();
         const curTime = new Date().getTime();
+        const month = getMonth(day);
         let bgColorVal = '';
         loggedHourData.forEach((value) => {
           if (
@@ -135,7 +136,6 @@ const Calendar = ({ showDetailsHandle }: Props) => {
             bgColorVal = '#FFECB3';
           }
         });
-
         days.push(
           <Box
             w='46px'
@@ -149,7 +149,7 @@ const Calendar = ({ showDetailsHandle }: Props) => {
                 : bgColorVal
             }`}
             color={`${
-              !isAfter(new Date(), day)
+              month !== currentMonth.getMonth() || !isAfter(new Date(), day)
                 ? 'textLight'
                 : isSameDay(day, selectedDate)
                 ? 'white'

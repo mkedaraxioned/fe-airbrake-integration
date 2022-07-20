@@ -6,16 +6,17 @@ import AddClient from './pages/AddClient';
 import Dashboard from './pages/Dashboard';
 import Login from './pages/Login';
 import Projects from './pages/Projects';
+import Reports from './pages/reports';
 import Team from './pages/Team';
 import { RootState } from './store';
-import EditProject from './templates/editProject';
+import ManageTask from './templates/manageTask';
 import ProjectTaskDetails from './templates/projectTaskDetail';
 export const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const user = useSelector((state: RootState) => state.user);
 
   useEffect(() => {
-    user.name ? setIsLoggedIn(true) : setIsLoggedIn(false);
+    user.profile.name ? setIsLoggedIn(true) : setIsLoggedIn(false);
   }, [user]);
 
   return (
@@ -30,13 +31,14 @@ export const App = () => {
               <Route path='/add-client' element={<AddClient />} />
               <Route path='/team' element={<Team />} />
               <Route path='/projects' element={<Projects />} />
+              <Route path='/reports' element={<Reports />} />
               <Route
                 path='/projects/:project/'
                 element={<ProjectTaskDetails />}
               />
               <Route
-                path='/projects/:project/manage*'
-                element={<EditProject />}
+                path='/projects/:project/manage/'
+                element={<ManageTask />}
               />
             </>
           ) : (
