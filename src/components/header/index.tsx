@@ -27,9 +27,9 @@ const Header = () => {
   const user = useSelector((state: RootState) => state.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
   const logOut = () => {
     dispatch(userLogout());
+    localStorage.removeItem('token');
     navigate('/login', { replace: true });
   };
 
@@ -93,7 +93,7 @@ const Header = () => {
             </Box>
           </Flex>
           <Flex alignItems='center'>
-            {user.role === 'admin' ? (
+            {user.profile.role === 'ADMIN' ? (
               <UnorderedList
                 display='flex'
                 listStyleType='none'
@@ -122,14 +122,14 @@ const Header = () => {
                 colorScheme='transparent'
                 border='2px'
               >
-                <Avatar w='full' h='full' src='' />
+                <Avatar w='full' h='full' src={user.profile.avatar} />
               </MenuButton>
               <MenuList>
                 <MenuGroup>
                   <MenuItem pointerEvents='none'>
-                    <Text fontWeight='bold'>{user.name}</Text>
+                    <Text fontWeight='bold'>{user.profile.name}</Text>
                   </MenuItem>
-                  {user.role === 'admin' ? (
+                  {user.profile.role === 'ADMIN' ? (
                     <>
                       <MenuItem> Account </MenuItem>
                       <MenuItem>
