@@ -26,7 +26,6 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import AutoCompleteElem from '../autoComplete';
 import CustomRadio from '../customRadio';
-import { FaCheckSquare } from 'react-icons/fa';
 
 const NewProjectForm = () => {
   const [formData, setFormData] = useState<NewProjectFormData>({
@@ -289,7 +288,7 @@ const NewProjectForm = () => {
                     onChange={(date: Date) =>
                       setFormData({ ...formData, startDate: date })
                     }
-                    placeholderText='mm/dd/yyyy'
+                    placeholderText='MM/DD/YYYY'
                     className='date_picker_react'
                   />
                 </Box>
@@ -335,7 +334,7 @@ const NewProjectForm = () => {
                       onChange={(date: Date) =>
                         setFormData({ ...formData, endDate: date })
                       }
-                      placeholderText='mm/dd/yyyy'
+                      placeholderText='MM/DD/YYYY'
                       className='date_picker_react'
                     />
                   </Box>
@@ -356,7 +355,15 @@ const NewProjectForm = () => {
             </FormControl>
           </Flex>
           <FormControl>
-            <Checkbox icon={<FaCheckSquare />} onChange={checkboxHandler}>
+            <Checkbox
+              onChange={checkboxHandler}
+              _checked={{
+                '.chakra-checkbox__control': {
+                  backgroundColor: 'btnPurple',
+                  border: 'none',
+                },
+              }}
+            >
               <Text fontSize='14px' color='textLightMid'>
                 Billable
               </Text>

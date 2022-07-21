@@ -285,7 +285,15 @@ const TimeLogFrom = ({ recentProject }: { recentProject: string }) => {
           </FormControl>
         </HStack>
         <FormControl pt='5px'>
-          <Checkbox onChange={checkboxHandler}>
+          <Checkbox
+            onChange={checkboxHandler}
+            _checked={{
+              '.chakra-checkbox__control': {
+                backgroundColor: 'btnPurple',
+                border: 'none',
+              },
+            }}
+          >
             <Text fontSize='14px' color='textLightMid'>
               Billable
             </Text>

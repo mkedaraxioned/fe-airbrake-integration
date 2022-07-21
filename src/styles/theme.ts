@@ -31,7 +31,7 @@ export const costomTheme = extendTheme({
     primary: '#201547',
     textColor: '#050505',
     textLight: '#B0B0B1',
-    textLightMid: '#676767',
+    textLightMid: '#757575',
     textGray: '#797979',
     borderColor: '#E2E8F0',
     borderPrimary: '#D4E6F4',
