@@ -33,4 +33,15 @@ export const styles = {
   '.react-datepicker-popper': {
     zIndex: '4 !important',
   },
+
+  '.date_picker_react': {
+    width: '88%',
+    marginLeft: '11px',
+    outline: 'none',
+    position: 'relative',
+    zIndex: '3',
+  },
+  '.date_picker_react .react-datepicker-popper': {
+    zIndex: '5 !important',
+  },
 };
