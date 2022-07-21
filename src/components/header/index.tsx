@@ -1,6 +1,11 @@
 import {
   Avatar,
   Box,
+  Drawer,
+  DrawerBody,
+  DrawerCloseButton,
+  DrawerContent,
+  DrawerOverlay,
   Flex,
   Heading,
   IconButton,
@@ -13,6 +18,7 @@ import {
   MenuList,
   Text,
   UnorderedList,
+  useDisclosure,
 } from '@chakra-ui/react';
 import React from 'react';
 import { FaClock } from 'react-icons/fa';
@@ -22,11 +28,28 @@ import { ColorModeSwitcher } from '../../ColorModeSwitcher';
 import { userLogout } from '../../feature/userSlice';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../store';
+import NewClient from '../addClient';
 
 const Header = () => {
   const user = useSelector((state: RootState) => state.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const ModalBox = () => {
+    return (
+      <Drawer isOpen={isOpen} size='lg' placement='right' onClose={onClose}>
+        <DrawerOverlay />
+        <DrawerContent overflowY='scroll' w='588px !important'>
+          <DrawerCloseButton zIndex='10' mt='10px' mr='10px' />
+          <DrawerBody>
+            <NewClient />
+          </DrawerBody>
+        </DrawerContent>
+      </Drawer>
+    );
+  };
+
   const logOut = () => {
     dispatch(userLogout());
     localStorage.removeItem('token');
@@ -101,7 +124,9 @@ const Header = () => {
                 color='textColor'
               >
                 <ListItem margin='0 15px' fontSize='18px' lineHeight='23px'>
-                  <Link to='/clients'>Clients</Link>
+                  <Text onClick={onOpen} cursor='pointer'>
+                    Clients
+                  </Text>
                 </ListItem>
                 <ListItem margin='0 15px' fontSize='18px' lineHeight='23px'>
                   <Link to='/projects'>Projects</Link>
@@ -155,6 +180,7 @@ const Header = () => {
           </Flex>
         </Flex>
       </Flex>
+      <ModalBox />
     </Box>
   );
 };

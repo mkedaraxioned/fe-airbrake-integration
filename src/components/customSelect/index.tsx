@@ -14,14 +14,8 @@ interface Props {
 }
 const CustomSelect = ({ onChange }: Props) => {
   const options: Options[] = [
-    {
-      value: 'ClearForMe Ongoing Retainer Agreement',
-      label: 'ClearForMe Ongoing Retainer',
-      clientName: 'harvest',
-    },
     { value: 'pan', label: 'Pandemic Actions Network', clientName: 'Evok' },
     { value: 'alpha', label: 'Alpha', clientName: 'Evok' },
-    { value: 'beta', label: 'Beta', clientName: 'harvest' },
     {
       value: 'shutterstock',
       label: 'Shutterstock',
@@ -97,7 +91,7 @@ const CustomSelect = ({ onChange }: Props) => {
             props.children?.map((child: any) =>
               child.props.data.clientName === val ? child : null,
             );
-          const getChildChilent: React.ReactNode =
+          const getChildChildrent: React.ReactNode =
             props.children.length > 0 &&
             props.children?.map((child: any) =>
               child.props.data.clientName === val
@@ -106,9 +100,9 @@ const CustomSelect = ({ onChange }: Props) => {
             );
           return (
             <Box key={val}>
-              {Array.isArray(getChildChilent) &&
-                getChildChilent.length > 0 &&
-                getChildChilent.includes(val) && (
+              {Array.isArray(getChildChildrent) &&
+                getChildChildrent.length > 0 &&
+                getChildChildrent.includes(val) && (
                   <Text
                     p='0px 12px'
                     m='0'
@@ -116,7 +110,7 @@ const CustomSelect = ({ onChange }: Props) => {
                     textTransform='uppercase'
                     textStyle='sourceSansProBold'
                   >
-                    {val}
+                    {val}f
                   </Text>
                 )}
               {getChildren ? (
@@ -140,7 +134,7 @@ const CustomSelect = ({ onChange }: Props) => {
         onChange={onChange}
         options={options}
         styles={customStyles}
-        placeholder='search here...'
+        placeholder='Search project'
         components={{ MenuList: CustomMenuList }}
       />
     </Box>
