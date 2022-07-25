@@ -1,22 +1,27 @@
 export interface MemberObj {
   id: number;
-  name: string;
+  name?: string;
 }
 
 export interface NewProjectFormData {
-  clientName: string;
-  projectName: string;
-  projectType: 'fixed' | 'retainer' | 'retainer-granular';
-  startDate: Date | null;
-  endDate?: Date | null;
-  billable: 'billable' | 'nonBillable';
-  teamMembers: MemberObj[];
+  client: string;
+  title: string;
+  type: 'FIXED' | 'RETAINER' | 'RETAINER_GRANULAR';
+  startDate: string | null;
+  endDate?: string | null;
+  billable: boolean;
+  members: MemberObj[];
 }
 export interface NewProjectFormErr {
-  clientName?: string;
-  projectName?: string;
+  client?: string;
+  title?: string;
   projectType?: string;
   startDate?: string;
   endDate?: string;
-  teamMembers?: string;
+  members?: string;
+}
+
+export interface Client {
+  id: string;
+  name: string;
 }
