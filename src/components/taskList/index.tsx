@@ -22,7 +22,7 @@ const TaskList = () => {
             lineHeight='22.63px'
             textStyle='sourceSansProBold'
           >
-            7:30
+            07:30
           </Heading>
         </HStack>
       </Box>
@@ -41,7 +41,7 @@ const TaskList = () => {
             ClearForMe Ongoing Retainer
           </Heading>
           <Text pr='5px' textStyle='sourceSansProBold'>
-            4:00
+            04:00
           </Text>
         </HStack>
         <Box>
@@ -64,7 +64,7 @@ const TaskList = () => {
             ClearForMe Ongoing Retainer
           </Heading>
           <Text pr='5px' textStyle='sourceSansProBold'>
-            4:00
+            04:00
           </Text>
         </HStack>
         <Box>

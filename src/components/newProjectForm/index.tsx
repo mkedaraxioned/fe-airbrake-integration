@@ -13,6 +13,8 @@ import {
   Select,
   Stack,
   Text,
+  toast,
+  useToast,
 } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 import { AiOutlineCalendar } from 'react-icons/ai';
@@ -27,17 +29,21 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import AutoCompleteElem from '../autoComplete';
 import CustomRadio from '../customRadio';
-import { _get } from '../../utils/api';
+import { _get, _post } from '../../utils/api';
 import { add, format } from 'date-fns';
 
-const NewProjectForm = () => {
+interface Props {
+  onClose: () => void;
+}
+
+const NewProjectForm = ({ onClose }: Props) => {
   const [formData, setFormData] = useState<NewProjectFormData>({
-    client: '',
+    clientId: '',
     title: '',
     type: 'FIXED',
-    startDate: format(new Date(), "yyyy-MM-dd'T'00:00:00.000+00:00"),
-    endDate: format(new Date(), "yyyy-MM-dd'T'00:00:00.000+00:00"),
-    billable: false,
+    startDate: format(new Date(), "yyyy-MM-dd'T'hh:mm:ss"),
+    endDate: format(new Date(), "yyyy-MM-dd'T'hh:mm:ss"),
+    billingType: false,
     members: [],
   });
   const [errMsg, setErrMsg] = useState<NewProjectFormErr>();
@@ -45,7 +51,8 @@ const NewProjectForm = () => {
   const [allUsers, setAllUsers] = useState<any>([]);
   const [selectedUsers, setSelectedUsers] = useState<any>([]);
   const [allClient, setAllClient] = useState<Client[]>([]);
-  console.log(formData, 'formData');
+  const toast = useToast();
+
   useEffect(() => {
     setMembers();
   }, [member]);
@@ -76,10 +83,7 @@ const NewProjectForm = () => {
     if (formData.type !== 'FIXED') {
       setFormData({
         ...formData,
-        endDate: format(
-          new Date(createdDate),
-          "yyyy-MM-dd'T'00:00:00.000+00:00",
-        ),
+        endDate: format(new Date(createdDate), "yyyy-MM-dd'T'hh:mm:ss"),
       });
     }
   };
@@ -93,8 +97,8 @@ const NewProjectForm = () => {
 
   const checkboxHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.target.checked
-      ? setFormData({ ...formData, billable: true })
-      : setFormData({ ...formData, billable: false });
+      ? setFormData({ ...formData, billingType: true })
+      : setFormData({ ...formData, billingType: false });
   };
   const radioHandler = (e: any) => {
     setFormData({ ...formData, type: e.target.value });
@@ -104,11 +108,12 @@ const NewProjectForm = () => {
   };
   const setMembers = () => {
     const arr = formData.members?.map((val) => val.id);
+    const user = allUsers?.filter((ele: any) => ele.id == member?.id);
     if (!member) return null;
     if (!arr.includes(member.id)) {
       setFormData({
         ...formData,
-        members: [...formData.members, { id: member.id }],
+        members: [...formData.members, user[0]],
       });
       setSelectedUsers([...selectedUsers, member]);
       setErrMsg({ ...errMsg, members: '' });
@@ -119,9 +124,9 @@ const NewProjectForm = () => {
   };
   const fieldValidation = () => {
     const errors: NewProjectFormErr = {};
-    const { client, title, startDate, endDate, type, members } = formData;
+    const { clientId, title, startDate, endDate, type, members } = formData;
 
-    if (!client) {
+    if (!clientId) {
       errors.client = 'Please select client.';
     }
     if (!title) {
@@ -151,24 +156,45 @@ const NewProjectForm = () => {
 
   const reset = () => {
     setFormData({
-      client: '',
+      clientId: '',
       title: '',
       type: 'FIXED',
-      startDate: format(new Date(), "yyyy-MM-dd'T'HH:mm:ss.SSSZ"),
+      startDate: format(new Date(), "yyyy-MM-dd'T'hh:mm:ss"),
       endDate: null,
-      billable: false,
+      billingType: false,
       members: [],
     });
     setMember(null);
   };
 
-  const formHandler = (e: React.FormEvent<HTMLFormElement>) => {
+  const formHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setErrMsg(fieldValidation());
-    const notValid = fieldValidation();
-    if (Object.values(notValid).length <= 0) {
-      alert('Success');
-      reset();
+    try {
+      setErrMsg(fieldValidation());
+      const notValid = fieldValidation();
+      if (Object.values(notValid).length <= 0) {
+        await _post('api/projects/', formData);
+        onClose();
+        reset();
+        toast({
+          title: 'Project',
+          description: 'New project created successfully.',
+          status: 'success',
+          duration: 2000,
+          position: 'top-right',
+          isClosable: true,
+        });
+      }
+    } catch (error) {
+      error &&
+        toast({
+          title: 'Project',
+          description: 'Project not created.',
+          status: 'error',
+          duration: 2000,
+          position: 'top-right',
+          isClosable: true,
+        });
     }
   };
 
@@ -200,8 +226,8 @@ const NewProjectForm = () => {
             </FormLabel>
             <Select
               id='select_project'
-              name='client'
-              value={formData.client}
+              name='clientId'
+              value={formData.clientId}
               placeholder='Select'
               fontSize='14px'
               lineHeight='17.6px'
@@ -244,7 +270,7 @@ const NewProjectForm = () => {
                 <CustomRadio
                   onChange={radioHandler}
                   lable='Fixed'
-                  value='fixed'
+                  value='FIXED'
                   isChecked={formData.type === 'FIXED' ? true : false}
                 />
               </Box>
@@ -305,7 +331,7 @@ const NewProjectForm = () => {
                         ...formData,
                         startDate: format(
                           new Date(date),
-                          "yyyy-MM-dd'T'00:00:00.000+00:00",
+                          "yyyy-MM-dd'T'hh:mm:ss",
                         ),
                       })
                     }
@@ -357,7 +383,7 @@ const NewProjectForm = () => {
                           ...formData,
                           endDate: format(
                             new Date(date),
-                            "yyyy-MM-dd'T'00:00:00.000+00:00",
+                            "yyyy-MM-dd'T'hh:mm:ss",
                           ),
                         })
                       }

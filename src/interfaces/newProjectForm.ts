@@ -1,15 +1,19 @@
 export interface MemberObj {
   id: number;
-  name?: string;
+  name: string;
+  avatar: string;
+  email: string;
+  role: string;
+  status: string;
 }
 
 export interface NewProjectFormData {
-  client: string;
+  clientId: string;
   title: string;
   type: 'FIXED' | 'RETAINER' | 'RETAINER_GRANULAR';
-  startDate: string | null;
+  startDate?: string;
   endDate?: string | null;
-  billable: boolean;
+  billingType: boolean;
   members: MemberObj[];
 }
 export interface NewProjectFormErr {
