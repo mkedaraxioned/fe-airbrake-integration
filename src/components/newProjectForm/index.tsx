@@ -13,7 +13,6 @@ import {
   Select,
   Stack,
   Text,
-  toast,
   useToast,
 } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
