@@ -35,7 +35,7 @@ const Projects = () => {
         <DrawerContent overflowY='scroll' w='588px !important'>
           <DrawerCloseButton zIndex='10' mt='10px' mr='10px' />
           <DrawerBody>
-            <NewProjectForm />
+            <NewProjectForm onClose={onClose} />
           </DrawerBody>
         </DrawerContent>
       </Drawer>

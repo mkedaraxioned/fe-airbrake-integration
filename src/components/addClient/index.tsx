@@ -6,38 +6,54 @@ import {
   FormLabel,
   Heading,
   Input,
+  useToast,
 } from '@chakra-ui/react';
 import React, { useState } from 'react';
+import { _post } from '../../utils/api';
 
 interface FormData {
-  title?: string;
+  name?: string;
 }
 
-const NewClient = () => {
+interface Prop {
+  onClose: () => void;
+}
+
+const NewClient = ({ onClose }: Prop) => {
   const [formData, setFormData] = useState<FormData>({
-    title: '',
+    name: '',
   });
 
   const [errMsg, setErrMsg] = useState<FormData>();
+  const toast = useToast();
   const inputHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const reset = () => {
     setFormData({
-      title: '',
+      name: '',
     });
-    setErrMsg({ title: '' });
+    setErrMsg({ name: '' });
   };
 
-  const formHandler = (e: React.FormEvent<HTMLFormElement>) => {
+  const formHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const { title } = formData;
-    if (title) {
-      alert('Success');
+    const { name } = formData;
+    if (name) {
+      await _post('api/clients/', formData);
       reset();
+      onClose();
+      toast({
+        title: 'Client',
+        description: 'New client created successfully.',
+        status: 'success',
+        duration: 2000,
+        position: 'top-right',
+        isClosable: true,
+      });
     } else {
-      setErrMsg({ title: 'Please enter client name' });
+      setErrMsg({ name: 'Please enter client name' });
     }
   };
 
@@ -60,20 +76,20 @@ const NewClient = () => {
       </Heading>
       <Box>
         <form onSubmit={formHandler}>
-          <FormControl p='15px 0' isInvalid={errMsg?.title ? true : false}>
+          <FormControl p='15px 0' isInvalid={errMsg?.name ? true : false}>
             <FormLabel fontSize='14px' lineHeight='17.6px' fontWeight='600'>
               Client name
             </FormLabel>
             <Input
               type='text'
-              name='title'
+              name='name'
               placeholder='Please enter client name'
               fontSize='14px'
               lineHeight='17.6px'
               onChange={inputHandler}
-              value={formData.title}
+              value={formData.name}
             />
-            <FormErrorMessage>{errMsg?.title}</FormErrorMessage>
+            <FormErrorMessage>{errMsg?.name}</FormErrorMessage>
           </FormControl>
           <Box pt='22px'>
             <Button w='137px' type='submit' variant='primary' mr='22px'>

@@ -16,11 +16,10 @@ const CustomSelect = ({ onChange }: Props) => {
   const options: Options[] = [
     { value: 'pan', label: 'Pandemic Actions Network', clientName: 'Evok' },
     { value: 'alpha', label: 'Alpha', clientName: 'Evok' },
-    {
-      value: 'shutterstock',
-      label: 'Shutterstock',
-      clientName: 'Shutterstock',
-    },
+    { value: 'alpha', label: 'Alpha', clientName: 'Shutterstock' },
+    { value: 'alpha', label: 'Alpha', clientName: 'Shutterstock' },
+    { value: 'beta', label: 'beta', clientName: 'beta' },
+    { value: 'beta', label: 'beta', clientName: 'beta' },
   ];
 
   const customStyles = {
@@ -33,7 +32,7 @@ const CustomSelect = ({ onChange }: Props) => {
           ? '#E2E8F0'
           : '#fff',
         color: state.isSelected ? '#4657CE' : '#050505',
-        padding: '2px 5px 2px 15px',
+        padding: '2px 5px 2px 25px',
         fontSize: '14px',
         margin: '0',
       };
@@ -104,13 +103,13 @@ const CustomSelect = ({ onChange }: Props) => {
                 getChildChildrent.length > 0 &&
                 getChildChildrent.includes(val) && (
                   <Text
-                    p='0px 12px'
+                    p='0px 15px'
                     m='0'
                     fontSize='14px'
                     textTransform='uppercase'
                     textStyle='sourceSansProBold'
                   >
-                    {val}f
+                    {val}
                   </Text>
                 )}
               {getChildren ? (
