@@ -2,18 +2,20 @@ import { Box, ListItem, Text, UnorderedList } from '@chakra-ui/react';
 import React from 'react';
 import ProjectCard from '../projectCard';
 import './projectList.modules.css';
-const ProjectList = () => {
+const ProjectList = ({ clientName, projects }: any) => {
   return (
     <Box>
-      <Text
-        mb='8px'
-        color='textColor'
-        fontSize='22px'
-        textStyle='sourceSansProBold'
-        lineHeight='27.65px'
-      >
-        Harvest
-      </Text>
+      {projects?.length > 0 && (
+        <Text
+          mb='8px'
+          color='textColor'
+          fontSize='22px'
+          textStyle='sourceSansProBold'
+          lineHeight='27.65px'
+        >
+          {clientName}
+        </Text>
+      )}
       <UnorderedList
         m='0'
         listStyleType='none'
@@ -21,21 +23,13 @@ const ProjectList = () => {
         flexWrap='wrap'
         className='project_list'
       >
-        <ListItem flexBasis='25%'>
-          <ProjectCard calenderChng={true} />
-        </ListItem>
-        <ListItem flexBasis='25%'>
-          <ProjectCard />
-        </ListItem>
-        <ListItem flexBasis='25%'>
-          <ProjectCard calenderChng={true} />
-        </ListItem>
-        <ListItem flexBasis='25%'>
-          <ProjectCard calenderChng={true} />
-        </ListItem>
-        <ListItem flexBasis='25%'>
-          <ProjectCard />
-        </ListItem>
+        {projects?.map((project: any, index: number) => {
+          return (
+            <ListItem flexBasis='25%' key={index}>
+              <ProjectCard project={project} />
+            </ListItem>
+          );
+        })}
       </UnorderedList>
     </Box>
   );

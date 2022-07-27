@@ -23,11 +23,20 @@ const NewClient = ({ onClose }: Prop) => {
   const [formData, setFormData] = useState<FormData>({
     name: '',
   });
-
   const [errMsg, setErrMsg] = useState<FormData>();
   const toast = useToast();
   const inputHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const fieldValidation = () => {
+    const errors: FormData = {};
+    const { name } = formData;
+
+    if (!name) {
+      errors.name = 'Please enter client name.';
+    }
+    return errors;
   };
 
   const reset = () => {
@@ -39,21 +48,32 @@ const NewClient = ({ onClose }: Prop) => {
 
   const formHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const { name } = formData;
-    if (name) {
-      await _post('api/clients/', formData);
-      reset();
-      onClose();
+    try {
+      setErrMsg(fieldValidation());
+      const notValid = fieldValidation();
+      if (Object.values(notValid).length <= 0) {
+        await _post('api/clients/', formData);
+        reset();
+        onClose();
+        toast({
+          title: 'Client',
+          description: 'New client created successfully.',
+          status: 'success',
+          duration: 2000,
+          position: 'top-right',
+          isClosable: true,
+        });
+      }
+    } catch (error: any) {
+      const { error: errorMessage } = error.response.data;
       toast({
         title: 'Client',
-        description: 'New client created successfully.',
-        status: 'success',
+        description: errorMessage,
+        status: 'error',
         duration: 2000,
         position: 'top-right',
         isClosable: true,
       });
-    } else {
-      setErrMsg({ name: 'Please enter client name' });
     }
   };
 
@@ -96,7 +116,7 @@ const NewClient = ({ onClose }: Prop) => {
               Save
             </Button>
             <Button w='105px' variant='secondary' onClick={reset}>
-              Cancel
+              Clear
             </Button>
           </Box>
         </form>

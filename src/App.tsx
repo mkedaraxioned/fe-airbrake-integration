@@ -33,11 +33,11 @@ export const App = () => {
               <Route path='/projects' element={<Projects />} />
               <Route path='/reports' element={<Reports />} />
               <Route
-                path='/projects/:project/'
+                path='/projects/:projectId/'
                 element={<ProjectTaskDetails />}
               />
               <Route
-                path='/projects/:project/manage/'
+                path='/projects/:projectId/manage/'
                 element={<ManageTask />}
               />
             </>

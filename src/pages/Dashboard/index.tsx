@@ -7,17 +7,37 @@ import {
   Text,
   UnorderedList,
 } from '@chakra-ui/react';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import Calendar from '../../components/calender';
 import TaskList from '../../components/taskList';
 import TimeLogFrom from '../../components/timeLogForm';
+import { allUsers } from '../../feature/allUserSlice';
+import { allClients } from '../../feature/clientsSlice';
+import { allProjects } from '../../feature/projectsSlice';
+import { _get } from '../../utils/api';
 
 const Dashboard = () => {
   const [recentProject, setRecentProject] = useState('');
-
+  const dispatch = useDispatch();
   const showDetailsHandle = (dayStr: string) => {
     console.log(dayStr);
   };
+
+  useEffect(() => {
+    fetchClientsProjects();
+  }, []);
+
+  const fetchClientsProjects = async () => {
+    const clientRes = await _get('api/clients');
+    const projectsRes = await _get('api/projects');
+    const usersRes = await _get('api/users/all');
+    dispatch(allProjects(projectsRes.data?.projects));
+    dispatch(allClients(clientRes.data?.clients));
+    dispatch(allUsers(usersRes.data?.users));
+    console.log(usersRes.data?.users, 'usersRes.data?.users');
+  };
+
   return (
     <Box>
       <Flex justifyContent='center'>

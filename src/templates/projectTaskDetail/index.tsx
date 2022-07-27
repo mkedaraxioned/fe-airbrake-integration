@@ -9,15 +9,35 @@ import {
   Text,
   VStack,
 } from '@chakra-ui/react';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import RecurringProjectTasks from '../../components/recurringProjectTask';
 import RecurringProjectArchive from '../../components/recurringProjectArchive';
 import { ReactComponent as EditSvg } from '../../assets/images/edit.svg';
 import { ReactComponent as ManageSvg } from '../../assets/images/manage.svg';
 import { ReactComponent as ReportSvg } from '../../assets/images/report.svg';
+import { useParams } from 'react-router';
+import { _get } from '../../utils/api';
 
 const ProjectTaskDetails = () => {
+  const [projectData, setProjectData] = useState();
+  const { projectId } = useParams();
+  const [errMsg, setErrMsg] = useState<string>('');
+  console.log(errMsg, projectData);
+
+  useEffect(() => {
+    getProject();
+  }, [projectId]);
+  const getProject = async () => {
+    try {
+      if (projectId) {
+        const res = await _get(`api/projects/${projectId}`);
+        setProjectData(res.data.project);
+      }
+    } catch (error) {
+      setErrMsg('Project details not found');
+    }
+  };
   return (
     <Box>
       <Box p='15px 55px 80px' className='wrapper'>
@@ -76,7 +96,7 @@ const ProjectTaskDetails = () => {
               </Flex>
             </Button>
             <Button w='137px' ml='18px !important' variant='primary'>
-              <Link to='/projects/harvest/manage'>
+              <Link to={`/projects/${projectId}/manage`}>
                 <Flex alignItems='center'>
                   <ManageSvg />
                   <Text pt='3px' pl='8px'>

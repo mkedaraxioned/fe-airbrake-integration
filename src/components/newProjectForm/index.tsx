@@ -13,7 +13,6 @@ import {
   Select,
   Stack,
   Text,
-  toast,
   useToast,
 } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
@@ -31,6 +30,8 @@ import AutoCompleteElem from '../autoComplete';
 import CustomRadio from '../customRadio';
 import { _get, _post } from '../../utils/api';
 import { add, format } from 'date-fns';
+import { useDispatch } from 'react-redux';
+import { allProjects } from '../../feature/projectsSlice';
 
 interface Props {
   onClose: () => void;
@@ -52,6 +53,7 @@ const NewProjectForm = ({ onClose }: Props) => {
   const [selectedUsers, setSelectedUsers] = useState<any>([]);
   const [allClient, setAllClient] = useState<Client[]>([]);
   const toast = useToast();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     setMembers();
@@ -86,6 +88,10 @@ const NewProjectForm = ({ onClose }: Props) => {
         endDate: format(new Date(createdDate), "yyyy-MM-dd'T'hh:mm:ss"),
       });
     }
+  };
+  const fetchProjects = async () => {
+    const projectsRes = await _get('api/projects');
+    dispatch(allProjects(projectsRes.data?.projects));
   };
 
   const selecttHandler = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -165,6 +171,7 @@ const NewProjectForm = ({ onClose }: Props) => {
       members: [],
     });
     setMember(null);
+    setSelectedUsers([]);
   };
 
   const formHandler = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -176,6 +183,7 @@ const NewProjectForm = ({ onClose }: Props) => {
         await _post('api/projects/', formData);
         onClose();
         reset();
+        fetchProjects();
         toast({
           title: 'Project',
           description: 'New project created successfully.',
@@ -461,7 +469,7 @@ const NewProjectForm = ({ onClose }: Props) => {
               Save
             </Button>
             <Button w='105px' variant='secondary' onClick={reset}>
-              Cancel
+              Clear
             </Button>
           </Box>
         </form>

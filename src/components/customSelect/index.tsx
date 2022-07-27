@@ -1,12 +1,11 @@
 import { Box, Text } from '@chakra-ui/react';
-import React from 'react';
+import React, { useState } from 'react';
 import Select, { components } from 'react-select';
 import { utilClientName } from '../../utils/common';
 
 export interface Options {
-  value: string;
-  label: string;
-  clientName: string;
+  id: string;
+  name: string;
 }
 
 interface Props {
@@ -14,13 +13,15 @@ interface Props {
 }
 const CustomSelect = ({ onChange }: Props) => {
   const options: Options[] = [
-    { value: 'pan', label: 'Pandemic Actions Network', clientName: 'Evok' },
-    { value: 'alpha', label: 'Alpha', clientName: 'Evok' },
-    { value: 'alpha', label: 'Alpha', clientName: 'Shutterstock' },
-    { value: 'alpha', label: 'Alpha', clientName: 'Shutterstock' },
-    { value: 'beta', label: 'beta', clientName: 'beta' },
-    { value: 'beta', label: 'beta', clientName: 'beta' },
+    { id: '1', name: 'Evok' },
+    { id: '2', name: 'Evok' },
+    { id: '3', name: 'Shutterstock' },
+    { id: '4', name: 'Shutterstock' },
+    { id: '5', name: 'beta' },
+    { id: '6', name: 'beta' },
   ];
+
+  const [noDataFound, setNoDataFound] = useState<boolean>(false);
 
   const customStyles = {
     option: (provide: any, state: any) => {
@@ -84,7 +85,7 @@ const CustomSelect = ({ onChange }: Props) => {
     const clients = utilClientName(props.options);
     return (
       <Box className='customSearchInput'>
-        {clients.map((val: string) => {
+        {clients.map((val: any) => {
           const getChildren: React.ReactNode =
             props.children.length > 0 &&
             props.children?.map((child: any) =>
@@ -97,6 +98,7 @@ const CustomSelect = ({ onChange }: Props) => {
                 ? child.props.data.clientName
                 : null,
             );
+          if (getChildren) setNoDataFound(false);
           return (
             <Box key={val}>
               {Array.isArray(getChildChildrent) &&
@@ -120,16 +122,30 @@ const CustomSelect = ({ onChange }: Props) => {
                 >
                   {getChildren}
                 </MenuList>
-              ) : null}
+              ) : (
+                setNoDataFound(true)
+              )}
             </Box>
           );
         })}
+        {noDataFound && (
+          <Text
+            p='7px 15px'
+            m='0'
+            fontSize='14px'
+            textStyle='sourceSansProRegular'
+          >
+            Not found
+          </Text>
+        )}
       </Box>
     );
   };
   return (
     <Box>
       <Select
+        getOptionLabel={(option) => option.name}
+        getOptionValue={(option) => option.id}
         onChange={onChange}
         options={options}
         styles={customStyles}

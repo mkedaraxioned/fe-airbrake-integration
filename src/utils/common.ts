@@ -1,9 +1,14 @@
+export interface ClientSet {
+  name: string;
+  id: string;
+}
+
 export const utilClientName = (arr: any) => {
-  const newArr: string[] = [];
+  const newArr: ClientSet[] = [];
   arr?.filter((item: any) => {
-    const i = newArr.findIndex((x: any) => x === item.clientName);
+    const i = newArr.findIndex((x: any) => x === item.name);
     if (i <= -1) {
-      newArr.push(item.clientName);
+      newArr.push({ name: item.name, id: item.id });
     }
     return null;
   });

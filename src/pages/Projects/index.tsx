@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Box,
   Breadcrumb,
@@ -24,9 +24,45 @@ import NewProjectForm from '../../components/newProjectForm';
 import { Link } from 'react-router-dom';
 import TabsButton from '../../components/tabButton';
 import ProjectList from '../../components/projectList';
+import { _get } from '../../utils/api';
+import { RootState } from '../../store';
+import { useSelector } from 'react-redux';
+import { ClientSet, utilClientName } from '../../utils/common';
 
 const Projects = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [clientSet, setClientSet] = useState<ClientSet[]>([]);
+  const [myProjects, setMyProjects] = useState([]);
+  const { projects } = useSelector((state: RootState) => state.allProjects);
+  const { clients } = useSelector((state: RootState) => state.allClients);
+
+  useEffect(() => {
+    unqClients();
+  }, [clients]);
+
+  useEffect(() => {
+    fetchMyProjects();
+  }, []);
+
+  const fetchMyProjects = async () => {
+    try {
+      const res = await _get('api/projects/user');
+      setMyProjects(res.data.projects);
+    } catch (err) {
+      return err;
+    }
+  };
+
+  const unqClients = () => {
+    if (clients) {
+      const set: ClientSet[] = utilClientName(clients);
+      const sortArr = set.sort((a: { name: string }, b: { name: string }) =>
+        a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1,
+      );
+      setClientSet(sortArr);
+      console.log(sortArr, 'set');
+    }
+  };
 
   const ModalBox = () => {
     return (
@@ -107,13 +143,36 @@ const Projects = () => {
           </TabList>
           <TabPanels>
             <TabPanel p='30px 22px'>
-              <ProjectList />
-              <ProjectList />
+              {clientSet.length > 0 &&
+                clientSet.map((client) => {
+                  const projectPerClient = myProjects?.filter(
+                    (project: { clientId: string }) =>
+                      project.clientId === client.id,
+                  );
+                  return (
+                    <ProjectList
+                      key={client.id}
+                      clientName={client.name}
+                      projects={projectPerClient}
+                    />
+                  );
+                })}
             </TabPanel>
             <TabPanel p='30px 22px'>
-              <ProjectList />
-              <ProjectList />
-              <ProjectList />
+              {clientSet.length > 0 &&
+                clientSet.map((client) => {
+                  const projectPerClient = projects?.filter(
+                    (project: { clientId: string }) =>
+                      project.clientId === client.id,
+                  );
+                  return (
+                    <ProjectList
+                      key={client.id}
+                      clientName={client.name}
+                      projects={projectPerClient}
+                    />
+                  );
+                })}
             </TabPanel>
           </TabPanels>
         </Tabs>

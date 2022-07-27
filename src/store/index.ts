@@ -1,6 +1,9 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import storage from 'redux-persist/lib/storage';
 import userReducer from '../feature/userSlice';
+import projectsReducer from '../feature/projectsSlice';
+import clientsReducer from '../feature/clientsSlice';
+import usersReducer from '../feature/allUserSlice';
 import persistReducer from 'redux-persist/es/persistReducer';
 import {
   persistStore,
@@ -15,6 +18,9 @@ import { PersistConfig } from '../interfaces/storeInterface';
 
 const reducers = combineReducers({
   user: userReducer,
+  allUsers: usersReducer,
+  allProjects: projectsReducer,
+  allClients: clientsReducer,
 });
 
 const persistConfig: PersistConfig = {

@@ -80,7 +80,7 @@ const TimeLogFrom = ({ recentProject }: { recentProject: string }) => {
   };
 
   const selectProject = (item: Options) => {
-    setFormData({ ...formData, projectName: item.value });
+    setFormData({ ...formData, projectName: item.name });
   };
 
   const fieldValidation = () => {
@@ -242,9 +242,9 @@ const TimeLogFrom = ({ recentProject }: { recentProject: string }) => {
                 h='38px'
                 textAlign='center'
                 p='8px 0'
-                bg='gray.300'
+                bg='inputBg'
                 fontSize='14px'
-                lineHeight='24px'
+                lineHeight='21px'
                 color='textLightMid'
                 textStyle='sourceSansProRegular'
               >
