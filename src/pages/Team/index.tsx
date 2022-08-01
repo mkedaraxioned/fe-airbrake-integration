@@ -51,7 +51,7 @@ const Team = () => {
             There are{' '}
             <Text as='span' fontWeight='bold'>
               8 people
-            </Text>
+            </Text>{' '}
             on this account,
             <Text as='span' fontWeight='bold'>
               {' '}
