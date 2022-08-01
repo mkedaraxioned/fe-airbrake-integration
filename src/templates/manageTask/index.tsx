@@ -20,7 +20,7 @@ import { Link } from 'react-router-dom';
 import { ReactComponent as EditSvg } from '../../assets/images/edit.svg';
 import { ReactComponent as ManageTaskSvg } from '../../assets/images/manage_task.svg';
 import { useParams } from 'react-router';
-import { _get } from '../../utils/api';
+import { _get, _patch } from '../../utils/api';
 import FixedProjectManage, {
   FixedFormDataPhase,
   FixedProjectError,
@@ -31,6 +31,9 @@ import RecurringProjectManage, {
   RecurringProjectError,
 } from '../../components/recurringProjectManage';
 import { timeStringValidate } from '../../utils/validation';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../store';
+import { FixedFormData } from '../../interfaces/editProject';
 
 const ManageTask = () => {
   const [projectData, setProjectData] = useState<any>();
@@ -49,9 +52,12 @@ const ManageTask = () => {
     taskEr: '',
     milestoneEr: '',
   });
+  const { projects } = useSelector((state: RootState) => state.allProjects);
   const toast = useToast();
 
   const { projectId } = useParams();
+  const project = projects?.find(({ id }: { id: string }) => id === projectId);
+
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   useEffect(() => {
@@ -130,11 +136,16 @@ const ManageTask = () => {
     try {
       setFixedProjectErr(fixedProjectValidation());
       const notValid = fixedProjectValidation();
+      const formData: FixedFormData = {
+        members: project.members,
+        milestones: [...project.milestones, fixedFormData.phase],
+        tasks: project.tasks,
+      };
       if (
         Object.values(notValid).length <= 0 &&
         fixedFormData.phase.length > 0
       ) {
-        console.log(fixedFormData, 'fixedFormData');
+        await _patch(`api/projects/${project.id}`, formData);
         onClose();
         toast({
           title: 'Phase',
@@ -161,11 +172,16 @@ const ManageTask = () => {
     try {
       setRecurringProjectErr(recurringProjectValidation());
       const notValid = recurringProjectValidation();
+      const formData: FixedFormData = {
+        members: project.members,
+        milestones: [...project.milestones, recurringFormData.milestone],
+        tasks: [...project.recurringFormData.tasks],
+      };
       if (
         Object.values(notValid).length <= 0 &&
         recurringFormData.milestone.length > 0
       ) {
-        console.log(recurringFormData, 'recurringFormData');
+        await _patch(`api/projects/${project.id}`, formData);
         onClose();
         toast({
           title: 'Project',
