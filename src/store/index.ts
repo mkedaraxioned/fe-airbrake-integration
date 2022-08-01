@@ -15,6 +15,7 @@ import {
   REHYDRATE,
 } from 'redux-persist';
 import { PersistConfig } from '../interfaces/storeInterface';
+import { useDispatch } from 'react-redux';
 
 const reducers = combineReducers({
   user: userReducer,
@@ -41,4 +42,5 @@ export const store = configureStore({
 
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
+export const useAppDispatch: () => AppDispatch = useDispatch;
 export const persistor = persistStore(store);

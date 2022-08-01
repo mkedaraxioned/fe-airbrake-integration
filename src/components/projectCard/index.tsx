@@ -49,18 +49,24 @@ const ProjectCard = ({ project }: Props) => {
             {project.type === 'FIXED' ? <CalenderIcon1 /> : <CalenderIcon2 />}
           </Tooltip>
         </Flex>
-        <Box p='15px 22px'>
-          <Text
-            color='greenLight'
-            fontSize='13.83px'
-            textStyle='sourceSansProBold'
-            lineHeight='17.39px'
-          >
-            20 hours remaining
+        <Box p='12px 22px'>
+          <Text>
+            <Text
+              p='2px 8px'
+              bg='greenLightBg'
+              color='greenLight'
+              fontSize='13.83px'
+              textStyle='sourceSansProBold'
+              lineHeight='17.39px'
+              display='inline-block'
+              as='span'
+            >
+              20 hours remaining
+            </Text>
           </Text>
           <Text
             color='textColor'
-            p='5px 0 2px'
+            p='10px 0 5px'
             fontSize='14px'
             textStyle='sourceSansProBold'
             lineHeight='17.6px'

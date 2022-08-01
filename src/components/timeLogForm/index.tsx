@@ -137,7 +137,7 @@ const TimeLogFrom = ({ recentProject }: { recentProject: string }) => {
         >
           <FormLabel
             htmlFor='select_project'
-            color='textLightMid'
+            color='grayLight'
             fontSize='14px'
             lineHeight='17.6px'
             textStyle='sourceSansProBold'
@@ -150,12 +150,12 @@ const TimeLogFrom = ({ recentProject }: { recentProject: string }) => {
         <Box>
           <Text
             pb='8px'
-            color='textLightMid'
+            color='grayLight'
             fontSize='14px'
             lineHeight='17.6px'
             textStyle='sourceSansProBold'
           >
-            Duration
+            Milestone
           </Text>
           <Text
             rounded='md'
@@ -163,7 +163,7 @@ const TimeLogFrom = ({ recentProject }: { recentProject: string }) => {
             border='1px'
             borderColor='borderColor'
             bg='inputBg'
-            color='textLightMid'
+            color='grayLight'
             fontSize='14px'
             lineHeight='17.6px'
             textStyle='sourceSansProRegular'
@@ -174,7 +174,7 @@ const TimeLogFrom = ({ recentProject }: { recentProject: string }) => {
         <FormControl m='14px 0' isInvalid={errorMsg?.task ? true : false}>
           <FormLabel
             htmlFor='task'
-            color='textLightMid'
+            color='grayLight'
             fontSize='14px'
             lineHeight='17.6px'
             textStyle='sourceSansProBold'
@@ -188,7 +188,7 @@ const TimeLogFrom = ({ recentProject }: { recentProject: string }) => {
             placeholder='Select'
             fontSize='14px'
             lineHeight='17.6px'
-            color='textLightMid'
+            color='grayLight'
             textStyle='sourceSansProRegular'
             onChange={selecttHandler}
           >
@@ -209,7 +209,7 @@ const TimeLogFrom = ({ recentProject }: { recentProject: string }) => {
           >
             <FormLabel
               htmlFor='add_time'
-              color='textLightMid'
+              color='grayLight'
               fontSize='14px'
               lineHeight='17.6px'
               textStyle='sourceSansProBold'
@@ -245,7 +245,7 @@ const TimeLogFrom = ({ recentProject }: { recentProject: string }) => {
                 bg='inputBg'
                 fontSize='14px'
                 lineHeight='21px'
-                color='textLightMid'
+                color='grayLight'
                 textStyle='sourceSansProRegular'
               >
                 Hours
@@ -262,7 +262,7 @@ const TimeLogFrom = ({ recentProject }: { recentProject: string }) => {
           >
             <FormLabel
               htmlFor='select_task'
-              color='textLightMid'
+              color='grayLight'
               fontSize='14px'
               lineHeight='17.6px'
               textStyle='sourceSansProBold'
@@ -294,7 +294,7 @@ const TimeLogFrom = ({ recentProject }: { recentProject: string }) => {
               },
             }}
           >
-            <Text fontSize='14px' color='textLightMid'>
+            <Text fontSize='14px' color='grayLight'>
               Billable
             </Text>
           </Checkbox>

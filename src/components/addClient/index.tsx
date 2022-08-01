@@ -84,7 +84,7 @@ const NewClient = ({ onClose }: Prop) => {
       pos='absolute'
       top={0}
       right={0}
-      color='textLightMid'
+      color='grayLight'
       textStyle='sourceSansProRegular'
     >
       <Heading

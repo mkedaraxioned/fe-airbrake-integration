@@ -98,7 +98,7 @@ const Reports = () => {
               p='8px 25px'
               justifyContent='space-between'
               bg='bgGray'
-              color='textLightMid'
+              color='grayLight'
               textStyle='sourceSansProBold'
               fontSize='14px'
               lineHeight='17.6px'

@@ -90,7 +90,7 @@ const TaskDetail = ({ displayBlock }: Props) => {
         p='8px 26px'
         justifyContent='space-between'
         bg='bgGray'
-        color='textLightMid'
+        color='grayLight'
         fontSize='14px'
         textStyle='sourceSansProBold'
         lineHeight='17.6px'
@@ -120,7 +120,7 @@ const TaskDetail = ({ displayBlock }: Props) => {
                   pl='25px'
                   display='flex'
                   justifyContent='space-between'
-                  color='textLightMid'
+                  color='grayLight'
                   fontSize='14px'
                   textStyle='sourceSansProRegular'
                   lineHeight='17.6px'
@@ -165,7 +165,7 @@ const TaskDetail = ({ displayBlock }: Props) => {
                       borderColor='borderColor'
                       fontSize='14px'
                       lineHeight='17.6px'
-                      color='textLightMid'
+                      color='grayLight'
                       textStyle='sourceSansProRegular'
                     >
                       <Flex flexBasis='50%' alignItems='center'>
@@ -186,7 +186,7 @@ const TaskDetail = ({ displayBlock }: Props) => {
                       borderColor='borderColor'
                       fontSize='14px'
                       lineHeight='17.6px'
-                      color='textLightMid'
+                      color='grayLight'
                       textStyle='sourceSansProRegular'
                     >
                       <Flex flexBasis='50%' alignItems='center'>
@@ -207,7 +207,7 @@ const TaskDetail = ({ displayBlock }: Props) => {
                       borderColor='borderColor'
                       fontSize='14px'
                       lineHeight='17.6px'
-                      color='textLightMid'
+                      color='grayLight'
                       textStyle='sourceSansProRegular'
                     >
                       <Flex flexBasis='50%' alignItems='center'>
@@ -236,7 +236,7 @@ const TaskDetail = ({ displayBlock }: Props) => {
                   pl='25px'
                   display='flex'
                   justifyContent='space-between'
-                  color='textLightMid'
+                  color='grayLight'
                   fontSize='14px'
                   textStyle='sourceSansProRegular'
                   lineHeight='17.6px'
@@ -281,7 +281,7 @@ const TaskDetail = ({ displayBlock }: Props) => {
                       borderColor='borderColor'
                       fontSize='14px'
                       lineHeight='17.6px'
-                      color='textLightMid'
+                      color='grayLight'
                       textStyle='sourceSansProRegular'
                     >
                       <Flex flexBasis='50%' alignItems='center'>
@@ -302,7 +302,7 @@ const TaskDetail = ({ displayBlock }: Props) => {
                       borderColor='borderColor'
                       fontSize='14px'
                       lineHeight='17.6px'
-                      color='textLightMid'
+                      color='grayLight'
                       textStyle='sourceSansProRegular'
                     >
                       <Flex flexBasis='50%' alignItems='center'>
@@ -323,7 +323,7 @@ const TaskDetail = ({ displayBlock }: Props) => {
                       borderColor='borderColor'
                       fontSize='14px'
                       lineHeight='17.6px'
-                      color='textLightMid'
+                      color='grayLight'
                       textStyle='sourceSansProRegular'
                     >
                       <Flex flexBasis='50%' alignItems='center'>

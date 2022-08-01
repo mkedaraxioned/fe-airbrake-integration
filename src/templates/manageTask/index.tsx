@@ -9,46 +9,48 @@ import {
   DrawerContent,
   DrawerOverlay,
   Flex,
-  FormControl,
   Heading,
   HStack,
-  Input,
-  ListItem,
-  StackDivider,
   Text,
-  UnorderedList,
   useDisclosure,
+  useToast,
 } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
-import { AiOutlinePlusCircle } from 'react-icons/ai';
 import { Link } from 'react-router-dom';
-import { Task } from '../../interfaces/editProject';
-import { ReactComponent as DeleteSvg } from '../../assets/images/delete.svg';
-import CustomCheckbox from '../../components/customCheckBox';
 import { ReactComponent as EditSvg } from '../../assets/images/edit.svg';
 import { ReactComponent as ManageTaskSvg } from '../../assets/images/manage_task.svg';
 import { useParams } from 'react-router';
 import { _get } from '../../utils/api';
-import FixedProjectManage from '../../components/fixedProjectManage';
+import FixedProjectManage, {
+  FixedFormDataPhase,
+  FixedProjectError,
+  Phase,
+} from '../../components/fixedProjectManage';
 import CreateMilestone from '../../components/createMilestone';
+import RecurringProjectManage, {
+  RecurringProjectError,
+} from '../../components/recurringProjectManage';
+import { timeStringValidate } from '../../utils/validation';
 
 const ManageTask = () => {
   const [projectData, setProjectData] = useState<any>();
-  const [fixedFormData, setFixedFormData] = useState<any>({
-    phase: [],
+  const [recurringFormData, setRecurringFormData] = useState<any>({
+    tasks: [{ title: '', hr: '' }],
+    milestone: [{ title: 'Month(May 18 - Jun 17)', budget: '80' }],
+  });
+  const [fixedFormData, setFixedFormData] = useState<FixedFormDataPhase>({
+    phase: [{ title: '', budget: '' }],
+  });
+  const [fixedProjectErr, setFixedProjectErr] = useState<FixedProjectError>({
+    phaseEr: '',
   });
 
-  console.log(projectData, 'projectData');
-  const [formData, setFormData] = useState<any>({
-    task: [],
-    milestone: [],
+  const [recurringProjectErr, setRecurringProjectErr] = useState<any>({
+    taskEr: '',
+    milestoneEr: '',
   });
-  const [taskNode, setTaskNode] = useState<Task[]>([{ title: '', hr: '' }]);
-  const [mileStone, setMileStone] = useState<any>([
-    { title: 'Month(May 18 - Jun 17)', hr: '80' },
-    { title: 'Month(Jun 18 - Jul 17)', hr: '40' },
-  ]);
-  const [isVisibleIndex, setIsVisibleIndex] = useState(0);
+  const toast = useToast();
+
   const { projectId } = useParams();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -65,38 +67,45 @@ const ManageTask = () => {
     }
   };
 
-  const over = (index: number) => {
-    setIsVisibleIndex(index);
+  const fixedProjectValidation = () => {
+    const errors: FixedProjectError = {};
+    const { phase } = fixedFormData;
+
+    phase.forEach((elem: Phase) => {
+      if (!elem.title) {
+        errors.phaseEr = 'Please enter milestone';
+      }
+      if (!elem.budget || timeStringValidate(elem.budget)) {
+        errors.phaseEr = 'Please enter milestone';
+      }
+    });
+    return errors;
   };
 
-  const out = () => {
-    setIsVisibleIndex(0);
-  };
+  const recurringProjectValidation = () => {
+    const errors: RecurringProjectError = {};
+    const { tasks, milestone } = recurringFormData;
 
-  const addTaskControls = () => {
-    setTaskNode([...taskNode, { title: '', hr: '' }]);
-  };
+    milestone.forEach((phase: Phase) => {
+      if (!phase.title) {
+        errors.milestoneEr = 'Please enter milestone';
+      }
+      if (!phase.budget || timeStringValidate(phase.budget)) {
+        errors.milestoneEr = 'Please enter milestone';
+      }
+    });
 
-  const removeTaskControls = (taskIndex: number) => {
-    const filterTask = taskNode.filter((_, index) => index !== taskIndex);
-    setTaskNode(filterTask);
-  };
+    tasks.forEach((task: { title: string; hr: string }) => {
+      if (!task.title) {
+        errors.taskEr = 'Please enter task';
+      }
+      if (!task.hr || timeStringValidate(task.hr)) {
+        errors.taskEr = 'Please enter task';
+      }
+    });
 
-  const checkHandler = (e: any): void => {
-    console.log(e.target.checked, 'val');
+    return errors;
   };
-
-  const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement>,
-    index: number,
-  ) => {
-    const { name, value }: { name: string; value: string } = e.target;
-    const list: any = [...taskNode];
-    list[index][name] = value;
-    setTaskNode(list);
-    setFormData({ ...formData, task: list });
-  };
-
   const ModalBox = () => {
     return (
       <Drawer isOpen={isOpen} size='lg' placement='right' onClose={onClose}>
@@ -117,24 +126,82 @@ const ManageTask = () => {
     );
   };
 
-  const handleInputChangeMilestone = (
-    e: React.ChangeEvent<HTMLInputElement>,
-    index: number,
-  ) => {
-    const { name, value }: { name: string; value: string } = e.target;
-    const mileStoneList: any = [...mileStone];
-    mileStoneList[index][name] = value;
-    setMileStone(mileStoneList);
-    setFormData({ ...formData, milestone: mileStoneList });
+  const fixedProjectFormHandler = async () => {
+    try {
+      setFixedProjectErr(fixedProjectValidation());
+      const notValid = fixedProjectValidation();
+      if (
+        Object.values(notValid).length <= 0 &&
+        fixedFormData.phase.length > 0
+      ) {
+        console.log(fixedFormData, 'fixedFormData');
+        onClose();
+        toast({
+          title: 'Phase',
+          description: 'Milestone created successfully.',
+          status: 'success',
+          duration: 2000,
+          position: 'top-right',
+          isClosable: true,
+        });
+      }
+    } catch (error) {
+      error &&
+        toast({
+          title: 'Phase',
+          description: 'Milestone not created.',
+          status: 'error',
+          duration: 2000,
+          position: 'top-right',
+          isClosable: true,
+        });
+    }
   };
-  const formHandler = (e: React.FormEvent<HTMLFormElement>) => {
+  const recurringProjectFormHandler = async () => {
+    try {
+      setRecurringProjectErr(recurringProjectValidation());
+      const notValid = recurringProjectValidation();
+      if (
+        Object.values(notValid).length <= 0 &&
+        recurringFormData.milestone.length > 0
+      ) {
+        console.log(recurringFormData, 'recurringFormData');
+        onClose();
+        toast({
+          title: 'Project',
+          description: 'Project update successfully.',
+          status: 'success',
+          duration: 2000,
+          position: 'top-right',
+          isClosable: true,
+        });
+      }
+    } catch (error) {
+      error &&
+        toast({
+          title: 'Project',
+          description: 'Project not updated.',
+          status: 'error',
+          duration: 2000,
+          position: 'top-right',
+          isClosable: true,
+        });
+    }
+  };
+
+  const formHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (projectData?.type === 'FIXED') {
+      await fixedProjectFormHandler();
+    } else {
+      await recurringProjectFormHandler();
+    }
   };
 
   return (
     <Box>
       <form onSubmit={formHandler}>
-        <Box p='15px 55px 80px' className='wrapper'>
+        <Box p='15px 55px 80px' className='wrapper' textTransform='capitalize'>
           <Breadcrumb
             m='15px 0'
             fontSize='14px'
@@ -225,160 +292,15 @@ const ManageTask = () => {
               <FixedProjectManage
                 fixedFormData={fixedFormData}
                 setFixedFormData={setFixedFormData}
+                fixedProjectErr={fixedProjectErr}
+                setFixedProjectErr={setFixedProjectErr}
               />
             ) : (
-              <HStack
-                justifyContent='space-between'
-                alignItems='flex-start'
-                divider={<StackDivider />}
-              >
-                <Box p='22px 0'>
-                  <Flex
-                    justifyContent='space-between'
-                    color='textLightMid'
-                    textStyle='sourceSansProBold'
-                    fontSize='14px'
-                    lineHeight='17.6px'
-                  >
-                    <Text>Month cycle - Milestone</Text>
-                    <Text>Total budget hrs (opt)</Text>
-                  </Flex>
-                  <UnorderedList m='0'>
-                    {mileStone.length > 0 &&
-                      mileStone.map((_: any, index: any) => {
-                        return (
-                          <ListItem key={index} m='20px 0' display='flex'>
-                            <Input
-                              w='387px'
-                              mr='32px'
-                              textStyle='inputTextStyle'
-                              type='text'
-                              name='title'
-                              value={_.title}
-                              onChange={(e) =>
-                                handleInputChangeMilestone(e, index)
-                              }
-                            />
-                            <FormControl w='114px'>
-                              <Input
-                                type='text'
-                                textStyle='inputTextStyle'
-                                value={_.budget}
-                                name='hr'
-                                onChange={(e) =>
-                                  handleInputChangeMilestone(e, index)
-                                }
-                                textAlign='center'
-                              />
-                            </FormControl>
-                          </ListItem>
-                        );
-                      })}
-                  </UnorderedList>
-                  <Text textStyle='inputTextStyle' textDecor='underline'>
-                    Load older entries
-                  </Text>
-                </Box>
-                <Box p='22px 0'>
-                  <Flex w='562px' justifyContent='space-between'>
-                    <HStack
-                      flexBasis='69%'
-                      justifyContent='space-between'
-                      color='textLightMid'
-                      textStyle='sourceSansProBold'
-                      fontSize='14px'
-                      lineHeight='17.6px'
-                    >
-                      <Text>Task/Activity name</Text>
-                      <Text fontWeight='400' textDecor='underline'>
-                        View archive tasks
-                      </Text>
-                    </HStack>
-                    <HStack
-                      flexBasis='26%'
-                      justifyContent='space-between'
-                      color='textLightMid'
-                      textStyle='sourceSansProBold'
-                      fontSize='14px'
-                      lineHeight='17.6px'
-                    >
-                      <Text>Budget Hrs</Text>
-                      <Text m='0 !important'>Archive</Text>
-                    </HStack>
-                  </Flex>
-                  <UnorderedList listStyleType='none' m='0'>
-                    {taskNode.map((_, index) => {
-                      return (
-                        <ListItem
-                          m='20px 0'
-                          key={index}
-                          onMouseOver={() => over(index)}
-                          onMouseOut={out}
-                        >
-                          <HStack pos='relative'>
-                            <FormControl w='387px' mr='20px'>
-                              <Input
-                                type='text'
-                                textStyle='inputTextStyle'
-                                placeholder='Enter Task'
-                                value={_.title}
-                                name='title'
-                                onChange={(e) => handleInputChange(e, index)}
-                              />
-                            </FormControl>
-                            <FormControl w='60px' mr='37px !important'>
-                              <Input
-                                type='text'
-                                placeholder='Hrs'
-                                textStyle='inputTextStyle'
-                                value={_.hr}
-                                name='hr'
-                                onChange={(e) => handleInputChange(e, index)}
-                                textAlign='center'
-                              />
-                            </FormControl>
-                            <Box>
-                              <CustomCheckbox onChange={checkHandler} />
-                            </Box>
-                            {index === 0 ? null : (
-                              <Box
-                                display={
-                                  isVisibleIndex === index ? 'block' : 'none'
-                                }
-                                pos='absolute'
-                                top='24%'
-                                right='-10px'
-                                cursor='pointer'
-                                onClick={() => removeTaskControls(index)}
-                              >
-                                <DeleteSvg />
-                              </Box>
-                            )}
-                          </HStack>
-                        </ListItem>
-                      );
-                    })}
-                  </UnorderedList>
-                  <Box
-                    display='flex'
-                    alignItems='center'
-                    textStyle='inputTextStyle'
-                    cursor='pointer'
-                  >
-                    <AiOutlinePlusCircle />
-                    <Text
-                      ml='5px'
-                      textStyle='inputTextStyle'
-                      onClick={addTaskControls}
-                      _hover={{
-                        textDecor: 'underline',
-                      }}
-                    >
-                      Add new task
-                    </Text>
-                  </Box>
-                </Box>
-              </HStack>
+              <RecurringProjectManage
+                setRecurringFormData={setRecurringFormData}
+                recurringFormData={recurringFormData}
+                recurringProjectErr={recurringProjectErr}
+              />
             )}
           </Box>
         </Box>

@@ -213,7 +213,7 @@ const NewProjectForm = ({ onClose }: Props) => {
       pos='absolute'
       top={0}
       right={0}
-      color='textLightMid'
+      color='grayLight'
       textStyle='sourceSansProRegular'
     >
       <Heading
@@ -239,7 +239,7 @@ const NewProjectForm = ({ onClose }: Props) => {
               placeholder='Select'
               fontSize='14px'
               lineHeight='17.6px'
-              color='textLightMid'
+              color='grayLight'
               textStyle='sourceSansProRegular'
               onChange={selecttHandler}
             >
@@ -327,7 +327,7 @@ const NewProjectForm = ({ onClose }: Props) => {
                   alignItems='center'
                   p='10px 0'
                   bg='grayColor'
-                  color='textLightMid'
+                  color='grayLight'
                 >
                   <AiOutlineCalendar fontSize='20px' />
                 </Stack>
@@ -379,7 +379,7 @@ const NewProjectForm = ({ onClose }: Props) => {
                     alignItems='center'
                     p='10px 0'
                     bg='grayColor'
-                    color='textLightMid'
+                    color='grayLight'
                   >
                     <AiOutlineCalendar fontSize='20px' />
                   </Stack>
@@ -406,7 +406,7 @@ const NewProjectForm = ({ onClose }: Props) => {
                   bg='grayMid'
                   fontSize='14px'
                   lineHeight='24px'
-                  color='textLightMid'
+                  color='grayLight'
                   rounded='md'
                 >
                   Starts every{' '}
@@ -427,7 +427,7 @@ const NewProjectForm = ({ onClose }: Props) => {
                 },
               }}
             >
-              <Text fontSize='14px' color='textLightMid'>
+              <Text fontSize='14px' color='grayLight'>
                 Billable
               </Text>
             </Checkbox>
@@ -444,7 +444,11 @@ const NewProjectForm = ({ onClose }: Props) => {
             >
               Add project members
             </FormLabel>
-            <AutoCompleteElem onChange={selectMember} items={allUsers} />
+            <AutoCompleteElem
+              onChange={selectMember}
+              items={allUsers}
+              placeholder={'Select member'}
+            />
             <AvatarGroup mt='15px' flexWrap='wrap' w='60%'>
               {selectedUsers.length > 0 &&
                 selectedUsers.map((memberData: any) => {

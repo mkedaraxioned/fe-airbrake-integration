@@ -1,7 +1,8 @@
 import { Box, Text } from '@chakra-ui/react';
 import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
 import Select, { components } from 'react-select';
-import { utilClientName } from '../../utils/common';
+import { RootState } from '../../store';
 
 export interface Options {
   id: string;
@@ -12,16 +13,39 @@ interface Props {
   onChange: (item: any) => void;
 }
 const CustomSelect = ({ onChange }: Props) => {
-  const options: Options[] = [
-    { id: '1', name: 'Evok' },
-    { id: '2', name: 'Evok' },
-    { id: '3', name: 'Shutterstock' },
-    { id: '4', name: 'Shutterstock' },
-    { id: '5', name: 'beta' },
-    { id: '6', name: 'beta' },
-  ];
-
   const [noDataFound, setNoDataFound] = useState<boolean>(false);
+  const { projects } = useSelector((state: RootState) => state.allProjects);
+  const { clients } = useSelector((state: RootState) => state.allClients);
+  const optionsData = projects.map((elem: any) => {
+    const client = clients?.find(
+      ({ id }: { id: string }) => id === elem.clientId,
+    );
+    return client
+      ? {
+          label: elem.title,
+          value: elem.id,
+          clientName: client?.name,
+          clientId: client?.id,
+        }
+      : null;
+  });
+
+  const sortOptions = optionsData?.sort(
+    (a: { clientName: string }, b: { clientName: string }) =>
+      a?.clientName.toLowerCase() > b?.clientName.toLowerCase() ? 1 : -1,
+  );
+
+  const utilClientName = (arr: any) => {
+    const newArr: { clientName: string; id: string }[] = [];
+    arr?.filter((item: any) => {
+      const i = newArr.findIndex((x: any) => x.clientName === item.clientName);
+      if (i <= -1) {
+        newArr.push({ clientName: item.clientName, id: item.clientId });
+      }
+      return null;
+    });
+    return newArr;
+  };
 
   const customStyles = {
     option: (provide: any, state: any) => {
@@ -82,28 +106,28 @@ const CustomSelect = ({ onChange }: Props) => {
 
   const CustomMenuList = ({ selectProps, ...props }: any) => {
     const { MenuList } = components;
-    const clients = utilClientName(props.options);
+    const Allclients = utilClientName(props.options);
     return (
       <Box className='customSearchInput'>
-        {clients.map((val: any) => {
+        {Allclients.map((val: any) => {
           const getChildren: React.ReactNode =
             props.children.length > 0 &&
             props.children?.map((child: any) =>
-              child.props.data.clientName === val ? child : null,
+              child.props.data.clientName === val.clientName ? child : null,
             );
           const getChildChildrent: React.ReactNode =
             props.children.length > 0 &&
             props.children?.map((child: any) =>
-              child.props.data.clientName === val
+              child.props.data.clientName === val.clientName
                 ? child.props.data.clientName
                 : null,
             );
           if (getChildren) setNoDataFound(false);
           return (
-            <Box key={val}>
+            <Box key={val?.clientName}>
               {Array.isArray(getChildChildrent) &&
                 getChildChildrent.length > 0 &&
-                getChildChildrent.includes(val) && (
+                getChildChildrent.includes(val.clientName) && (
                   <Text
                     p='0px 15px'
                     m='0'
@@ -111,7 +135,7 @@ const CustomSelect = ({ onChange }: Props) => {
                     textTransform='uppercase'
                     textStyle='sourceSansProBold'
                   >
-                    {val}
+                    {val?.clientName}
                   </Text>
                 )}
               {getChildren ? (
@@ -141,13 +165,14 @@ const CustomSelect = ({ onChange }: Props) => {
       </Box>
     );
   };
+  console.log(optionsData, 'optionsDataoptionsData');
   return (
     <Box>
       <Select
-        getOptionLabel={(option) => option.name}
-        getOptionValue={(option) => option.id}
+        // getOptionLabel={(option) => option.name}
+        // getOptionValue={(option) => option.id}
         onChange={onChange}
-        options={options}
+        options={sortOptions}
         styles={customStyles}
         placeholder='Search project'
         components={{ MenuList: CustomMenuList }}

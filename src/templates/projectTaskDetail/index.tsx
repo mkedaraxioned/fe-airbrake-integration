@@ -20,10 +20,10 @@ import { useParams } from 'react-router';
 import { _get } from '../../utils/api';
 
 const ProjectTaskDetails = () => {
-  const [projectData, setProjectData] = useState();
+  const [projectData, setProjectData] = useState<any>();
   const { projectId } = useParams();
   const [errMsg, setErrMsg] = useState<string>('');
-  console.log(errMsg, projectData);
+  console.log(projectData, 'projectData', errMsg);
 
   useEffect(() => {
     getProject();
@@ -100,7 +100,9 @@ const ProjectTaskDetails = () => {
                 <Flex alignItems='center'>
                   <ManageSvg />
                   <Text pt='3px' pl='8px'>
-                    Manage Task
+                    {projectData?.type === 'FIXED'
+                      ? 'Manage Phase'
+                      : 'Manage Task'}
                   </Text>
                 </Flex>
               </Link>

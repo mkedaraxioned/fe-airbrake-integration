@@ -30,7 +30,7 @@ const TaskList = () => {
         <HStack
           p='0 33px 5px 0'
           justifyContent='space-between'
-          color='textLightMid'
+          color='grayLight'
         >
           <Heading
             as='h4'
@@ -53,7 +53,7 @@ const TaskList = () => {
         <HStack
           p='0 33px 5px 0'
           justifyContent='space-between'
-          color='textLightMid'
+          color='grayLight'
         >
           <Heading
             as='h4'

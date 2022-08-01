@@ -83,7 +83,7 @@ const TaskDetailGranular = () => {
                   display='flex'
                   justifyContent='space-between'
                   bg='purpleLight'
-                  color='textLightMid'
+                  color='grayLight'
                   fontSize='14px'
                   textStyle='sourceSansProRegular'
                   lineHeight='17.6px'
@@ -121,7 +121,7 @@ const TaskDetailGranular = () => {
                   p='8px 26px'
                   justifyContent='space-between'
                   bg='bgGray'
-                  color='textLightMid'
+                  color='grayLight'
                   fontSize='14px'
                   textStyle='sourceSansProBold'
                   lineHeight='17.6px'
@@ -152,7 +152,7 @@ const TaskDetailGranular = () => {
                               pl='25px'
                               display='flex'
                               justifyContent='space-between'
-                              color='textLightMid'
+                              color='grayLight'
                               fontSize='14px'
                               textStyle='sourceSansProRegular'
                               lineHeight='17.6px'
@@ -197,7 +197,7 @@ const TaskDetailGranular = () => {
                                   borderColor='borderColor'
                                   fontSize='14px'
                                   lineHeight='17.6px'
-                                  color='textLightMid'
+                                  color='grayLight'
                                   textStyle='sourceSansProRegular'
                                 >
                                   <Flex flexBasis='50%' alignItems='center'>
@@ -218,7 +218,7 @@ const TaskDetailGranular = () => {
                                   borderColor='borderColor'
                                   fontSize='14px'
                                   lineHeight='17.6px'
-                                  color='textLightMid'
+                                  color='grayLight'
                                   textStyle='sourceSansProRegular'
                                 >
                                   <Flex flexBasis='50%' alignItems='center'>
@@ -239,7 +239,7 @@ const TaskDetailGranular = () => {
                                   borderColor='borderColor'
                                   fontSize='14px'
                                   lineHeight='17.6px'
-                                  color='textLightMid'
+                                  color='grayLight'
                                   textStyle='sourceSansProRegular'
                                 >
                                   <Flex flexBasis='50%' alignItems='center'>
@@ -268,7 +268,7 @@ const TaskDetailGranular = () => {
                               pl='25px'
                               display='flex'
                               justifyContent='space-between'
-                              color='textLightMid'
+                              color='grayLight'
                               fontSize='14px'
                               textStyle='sourceSansProRegular'
                               lineHeight='17.6px'
@@ -313,7 +313,7 @@ const TaskDetailGranular = () => {
                                   borderColor='borderColor'
                                   fontSize='14px'
                                   lineHeight='17.6px'
-                                  color='textLightMid'
+                                  color='grayLight'
                                   textStyle='sourceSansProRegular'
                                 >
                                   <Flex flexBasis='50%' alignItems='center'>
@@ -334,7 +334,7 @@ const TaskDetailGranular = () => {
                                   borderColor='borderColor'
                                   fontSize='14px'
                                   lineHeight='17.6px'
-                                  color='textLightMid'
+                                  color='grayLight'
                                   textStyle='sourceSansProRegular'
                                 >
                                   <Flex flexBasis='50%' alignItems='center'>
@@ -355,7 +355,7 @@ const TaskDetailGranular = () => {
                                   borderColor='borderColor'
                                   fontSize='14px'
                                   lineHeight='17.6px'
-                                  color='textLightMid'
+                                  color='grayLight'
                                   textStyle='sourceSansProRegular'
                                 >
                                   <Flex flexBasis='50%' alignItems='center'>
@@ -391,7 +391,7 @@ const TaskDetailGranular = () => {
                   display='flex'
                   justifyContent='space-between'
                   bg='purpleLight'
-                  color='textLightMid'
+                  color='grayLight'
                   fontSize='14px'
                   textStyle='sourceSansProRegular'
                   lineHeight='17.6px'
@@ -429,7 +429,7 @@ const TaskDetailGranular = () => {
                   p='8px 26px'
                   justifyContent='space-between'
                   bg='bgGray'
-                  color='textLightMid'
+                  color='grayLight'
                   fontSize='14px'
                   textStyle='sourceSansProBold'
                   lineHeight='17.6px'
@@ -460,7 +460,7 @@ const TaskDetailGranular = () => {
                               pl='25px'
                               display='flex'
                               justifyContent='space-between'
-                              color='textLightMid'
+                              color='grayLight'
                               fontSize='14px'
                               textStyle='sourceSansProRegular'
                               lineHeight='17.6px'
@@ -505,7 +505,7 @@ const TaskDetailGranular = () => {
                                   borderColor='borderColor'
                                   fontSize='14px'
                                   lineHeight='17.6px'
-                                  color='textLightMid'
+                                  color='grayLight'
                                   textStyle='sourceSansProRegular'
                                 >
                                   <Flex flexBasis='50%' alignItems='center'>
@@ -526,7 +526,7 @@ const TaskDetailGranular = () => {
                                   borderColor='borderColor'
                                   fontSize='14px'
                                   lineHeight='17.6px'
-                                  color='textLightMid'
+                                  color='grayLight'
                                   textStyle='sourceSansProRegular'
                                 >
                                   <Flex flexBasis='50%' alignItems='center'>
@@ -547,7 +547,7 @@ const TaskDetailGranular = () => {
                                   borderColor='borderColor'
                                   fontSize='14px'
                                   lineHeight='17.6px'
-                                  color='textLightMid'
+                                  color='grayLight'
                                   textStyle='sourceSansProRegular'
                                 >
                                   <Flex flexBasis='50%' alignItems='center'>
@@ -576,7 +576,7 @@ const TaskDetailGranular = () => {
                               pl='25px'
                               display='flex'
                               justifyContent='space-between'
-                              color='textLightMid'
+                              color='grayLight'
                               fontSize='14px'
                               textStyle='sourceSansProRegular'
                               lineHeight='17.6px'
@@ -621,7 +621,7 @@ const TaskDetailGranular = () => {
                                   borderColor='borderColor'
                                   fontSize='14px'
                                   lineHeight='17.6px'
-                                  color='textLightMid'
+                                  color='grayLight'
                                   textStyle='sourceSansProRegular'
                                 >
                                   <Flex flexBasis='50%' alignItems='center'>
@@ -642,7 +642,7 @@ const TaskDetailGranular = () => {
                                   borderColor='borderColor'
                                   fontSize='14px'
                                   lineHeight='17.6px'
-                                  color='textLightMid'
+                                  color='grayLight'
                                   textStyle='sourceSansProRegular'
                                 >
                                   <Flex flexBasis='50%' alignItems='center'>
@@ -663,7 +663,7 @@ const TaskDetailGranular = () => {
                                   borderColor='borderColor'
                                   fontSize='14px'
                                   lineHeight='17.6px'
-                                  color='textLightMid'
+                                  color='grayLight'
                                   textStyle='sourceSansProRegular'
                                 >
                                   <Flex flexBasis='50%' alignItems='center'>

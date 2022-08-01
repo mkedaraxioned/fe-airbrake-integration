@@ -12,7 +12,7 @@ import {
   isAfter,
   getMonth,
 } from 'date-fns';
-import { Box, Flex, Text } from '@chakra-ui/react';
+import { Box, Button, Flex, Text } from '@chakra-ui/react';
 import { HiOutlineChevronLeft, HiOutlineChevronRight } from 'react-icons/hi';
 import { endOfMonth } from 'date-fns/esm';
 
@@ -49,7 +49,7 @@ const Calendar = ({ showDetailsHandle }: Props) => {
   };
 
   const renderHeader = () => {
-    const dateFormat = 'MMM yyyy';
+    const dateFormat = 'MMMM yyyy';
     return (
       <Flex justifyContent='space-between' alignItems='center' color='black'>
         <Box>
@@ -91,7 +91,7 @@ const Calendar = ({ showDetailsHandle }: Props) => {
           w='46px'
           h='46px'
           fontSize='14px'
-          color='textLightMid'
+          color='grayLight'
           key={i}
           textStyle='sourceSansProBold'
           lineHeight='46px'
@@ -186,15 +186,21 @@ const Calendar = ({ showDetailsHandle }: Props) => {
     return <div className='date_body'>{rows}</div>;
   };
 
-  // const setTodaysDate = () => {
-  //   setSelectedDate(new Date());
-  //   setCurrentMonth(new Date());
-  //   showDetailsHandle(format(new Date(), 'dd-MM-yyyy'));
-  // };
+  const setTodaysDate = () => {
+    setSelectedDate(new Date());
+    setCurrentMonth(new Date());
+    showDetailsHandle(format(new Date(), 'dd-MM-yyyy'));
+  };
 
   return (
     <Box w='full' textAlign='center'>
-      <Box pb='25px' textAlign='left'>
+      <Box
+        pb='25px'
+        textAlign='left'
+        display='flex'
+        justifyContent='space-between'
+        alignItems='center'
+      >
         <Text
           fontSize='22px'
           textStyle='sourceSansProBold'
@@ -206,6 +212,9 @@ const Calendar = ({ showDetailsHandle }: Props) => {
               : format(selectedDate, 'EEEE')
           }, ${format(selectedDate, 'MMM do')}`}
         </Text>
+        <Button height='30px' onClick={setTodaysDate} variant='primary'>
+          Today
+        </Button>
       </Box>
       {renderHeader()}
       {renderDays()}

@@ -111,7 +111,7 @@ const CreateMilestone = ({ onClose, projectId, name }: Props) => {
       pos='absolute'
       top={0}
       right={0}
-      color='textLightMid'
+      color='grayLight'
       textStyle='sourceSansProRegular'
     >
       <Heading
@@ -146,7 +146,7 @@ const CreateMilestone = ({ onClose, projectId, name }: Props) => {
             >
               <FormLabel
                 htmlFor='select_task'
-                color='textLightMid'
+                color='grayLight'
                 fontSize='14px'
                 lineHeight='17.6px'
                 textStyle='sourceSansProBold'
@@ -175,7 +175,7 @@ const CreateMilestone = ({ onClose, projectId, name }: Props) => {
             >
               <FormLabel
                 htmlFor='add_time'
-                color='textLightMid'
+                color='grayLight'
                 fontSize='14px'
                 lineHeight='17.6px'
                 textStyle='sourceSansProBold'
@@ -211,7 +211,7 @@ const CreateMilestone = ({ onClose, projectId, name }: Props) => {
                   bg='inputBg'
                   fontSize='14px'
                   lineHeight='21px'
-                  color='textLightMid'
+                  color='grayLight'
                   textStyle='sourceSansProRegular'
                 >
                   Hours

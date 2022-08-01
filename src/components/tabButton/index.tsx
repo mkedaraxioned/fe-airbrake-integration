@@ -11,7 +11,7 @@ const TabsButton = ({ children }: Props) => {
       <Tab
         w='200px'
         h='58px'
-        color='textLightMid'
+        color='grayLight'
         fontSize='18px'
         textStyle='sourceSansProRegular'
         lineHeight='22.63px'

@@ -33,9 +33,8 @@ const Dashboard = () => {
     const projectsRes = await _get('api/projects');
     const usersRes = await _get('api/users/all');
     dispatch(allProjects(projectsRes.data?.projects));
-    dispatch(allClients(clientRes.data?.clients));
+    dispatch(allClients(clientRes.data?.client));
     dispatch(allUsers(usersRes.data?.users));
-    console.log(usersRes.data?.users, 'usersRes.data?.users');
   };
 
   return (

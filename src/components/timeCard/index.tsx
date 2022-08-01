@@ -32,7 +32,7 @@ const TimeCard = () => {
           Notes / Comments
         </Text>
       </Box>
-      <Text color='textLightMid' textStyle='sourceSansProBold'>
+      <Text color='grayLight' textStyle='sourceSansProBold'>
         01:00
       </Text>
       <Box
