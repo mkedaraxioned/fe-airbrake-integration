@@ -116,9 +116,9 @@ const Projects = () => {
               fontSize='14px'
               textStyle='sourceSansProRegular'
             >
-              <option value='option1'>Option 1</option>
-              <option value='option2'>Option 2</option>
-              <option value='option3'>Option 3</option>
+              <option value='FIXED'>Fixed</option>
+              <option value='RETAINER_GRANULAR'>Retainer Granular</option>
+              <option value='RETAINER'>Retainer</option>
             </Select>
             <Box>
               <Button w='138px' ml='10px' variant='primary' onClick={onOpen}>

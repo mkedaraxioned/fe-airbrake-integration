@@ -75,7 +75,7 @@ const NewProjectForm = ({ onClose }: Props) => {
 
   const fetchAllClients = async () => {
     const res = await _get('api/clients/');
-    setAllClient(res.data.clients);
+    setAllClient(res.data.client);
   };
 
   const setRetainerEndDate = () => {
@@ -243,7 +243,7 @@ const NewProjectForm = ({ onClose }: Props) => {
               textStyle='sourceSansProRegular'
               onChange={selecttHandler}
             >
-              {allClient.length > 0 &&
+              {allClient?.length > 0 &&
                 allClient?.map((client: Client) => {
                   return (
                     <option key={client.id} value={client.id}>
