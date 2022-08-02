@@ -43,7 +43,6 @@ const ManageTask = () => {
     milestone: [
       { title: 'Month(May 18 - Jun 17)', budget: '80', projectId: projectId },
     ],
-    isArchieved: false,
   });
   const [fixedFormData, setFixedFormData] = useState<FixedFormDataPhase>({
     phase: [{ title: '', budget: '', projectId: projectId }],
@@ -216,123 +215,104 @@ const ManageTask = () => {
         });
     }
   };
-  console.log(projectData, 'projectData');
-  const formHandler = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (projectData?.type === 'FIXED') {
-      fixedProjectFormHandler();
-    } else {
-      recurringProjectFormHandler();
-    }
-  };
 
   return (
     <Box>
-      <form onSubmit={formHandler}>
-        <Box p='15px 55px 80px' className='wrapper' textTransform='capitalize'>
-          <Breadcrumb
-            m='15px 0'
-            fontSize='14px'
-            textStyle='sourceSansProRegular'
-            spacing='4px'
-          >
-            <BreadcrumbItem color='black'>
-              <Link to='/'>Home</Link>
-            </BreadcrumbItem>
-            <BreadcrumbItem color='black'>
-              <Link to='/projects'>Projects</Link>
-            </BreadcrumbItem>
-            <BreadcrumbItem color='black'>
-              <Link to={`/projects/${projectData?.id}/`}>
-                {projectData?.title}
-              </Link>
-            </BreadcrumbItem>
-            <BreadcrumbItem color='textLight'>
-              <Text>Manage</Text>
-            </BreadcrumbItem>
-          </Breadcrumb>
-          <Flex justifyContent='space-between'>
-            <Box>
-              <Text
-                fontSize='14px'
-                color='textGray'
-                textStyle='sourceSansProRegular'
-                lineHeight='17.6px'
-                textAlign='left'
-              >
-                {projectData?.client.name}
-              </Text>
-              <Heading
-                as='h2'
-                m='0 !important'
-                color='textColor'
-                textStyle='sourceSansProBold'
-                fontSize='22px'
-                lineHeight='27.65px'
-              >
-                {projectData?.title}
-              </Heading>
-            </Box>
-            <HStack>
-              {projectData?.type === 'FIXED' && (
-                <Button w='170px' onClick={onOpen} variant='secondary'>
-                  <EditSvg />
-                  <Text pt='2px' pl='8px'>
-                    Create Milestone
-                  </Text>
-                </Button>
-              )}
-              <Box>
-                <Button w='137px' margin='0 10px' variant='secondary'>
-                  <EditSvg />
-                  <Text pt='2px' pl='8px'>
-                    Edit Project
-                  </Text>
-                </Button>
-              </Box>
-              <Button
-                type='submit'
-                w={projectData?.type === 'FIXED' ? '147px' : '137px'}
-                variant='primary'
-              >
-                <ManageTaskSvg />
+      <Box p='15px 55px 80px' className='wrapper' textTransform='capitalize'>
+        <Breadcrumb
+          m='15px 0'
+          fontSize='14px'
+          textStyle='sourceSansProRegular'
+          spacing='4px'
+        >
+          <BreadcrumbItem color='black'>
+            <Link to='/'>Home</Link>
+          </BreadcrumbItem>
+          <BreadcrumbItem color='black'>
+            <Link to='/projects'>Projects</Link>
+          </BreadcrumbItem>
+          <BreadcrumbItem color='black'>
+            <Link to={`/projects/${projectData?.id}/`}>
+              {projectData?.title}
+            </Link>
+          </BreadcrumbItem>
+          <BreadcrumbItem color='textLight'>
+            <Text>Manage</Text>
+          </BreadcrumbItem>
+        </Breadcrumb>
+        <Flex justifyContent='space-between'>
+          <Box>
+            <Text
+              fontSize='14px'
+              color='textGray'
+              textStyle='sourceSansProRegular'
+              lineHeight='17.6px'
+              textAlign='left'
+            >
+              {projectData?.client.name}
+            </Text>
+            <Heading
+              as='h2'
+              m='0 !important'
+              color='textColor'
+              textStyle='sourceSansProBold'
+              fontSize='22px'
+              lineHeight='27.65px'
+            >
+              {projectData?.title}
+            </Heading>
+          </Box>
+          <HStack>
+            {projectData?.type === 'FIXED' && (
+              <Button w='170px' onClick={onOpen} variant='secondary'>
+                <EditSvg />
                 <Text pt='2px' pl='8px'>
-                  {projectData?.type === 'FIXED'
-                    ? 'Manage Phase'
-                    : 'Manage Task'}
+                  Create Milestone
                 </Text>
               </Button>
-            </HStack>
-          </Flex>
-          <Box p='30px 0'>
-            <Box pos='relative'>
-              <Text
-                color='textColor'
-                textStyle='sourceSansProBold'
-                fontSize='18px'
-                lineHeight='22.63px'
-              >
-                Manage
-              </Text>
-            </Box>
-            {/* Fixed project */}
-            {projectData?.type === 'FIXED' ? (
-              <FixedProjectManage
-                fixedFormData={fixedFormData}
-                setFixedFormData={setFixedFormData}
-                fixedProjectErr={fixedProjectErr}
-                setFixedProjectErr={setFixedProjectErr}
-              />
-            ) : (
-              <RecurringProjectManage
-                setRecurringFormData={setRecurringFormData}
-                recurringFormData={recurringFormData}
-                recurringProjectErr={recurringProjectErr}
-              />
             )}
+            <Box>
+              <Button w='137px' margin='0 10px' variant='secondary'>
+                <EditSvg />
+                <Text pt='2px' pl='8px'>
+                  Edit Project
+                </Text>
+              </Button>
+            </Box>
+            <Button
+              type='submit'
+              w={projectData?.type === 'FIXED' ? '147px' : '137px'}
+              variant='primary'
+            >
+              <ManageTaskSvg />
+              <Text pt='2px' pl='8px'>
+                {projectData?.type === 'FIXED' ? 'Manage Phase' : 'Manage Task'}
+              </Text>
+            </Button>
+          </HStack>
+        </Flex>
+        <Box p='30px 0'>
+          <Box pos='relative'>
+            <Text
+              color='textColor'
+              textStyle='sourceSansProBold'
+              fontSize='18px'
+              lineHeight='22.63px'
+            >
+              Manage
+            </Text>
           </Box>
+          {/* Fixed project */}
+          {projectData?.type === 'FIXED' ? (
+            <FixedProjectManage
+              projectId={projectData.id}
+              setFormValues={setFormValues}
+            />
+          ) : (
+            <RecurringProjectManage recurringProjectErr={recurringProjectErr} />
+          )}
         </Box>
-      </form>
+      </Box>
       <ModalBox />
     </Box>
   );

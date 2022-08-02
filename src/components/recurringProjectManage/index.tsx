@@ -8,12 +8,15 @@ import {
   StackDivider,
   Text,
   UnorderedList,
+  useToast,
 } from '@chakra-ui/react';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { AiOutlinePlusCircle } from 'react-icons/ai';
 import CustomCheckbox from '../customCheckBox';
 import { ReactComponent as DeleteSvg } from '../../assets/images/delete.svg';
 import { timeStringValidate } from '../../utils/validation';
+import { _get, _patch } from '../../utils/api';
+import { useParams } from 'react-router';
 
 export interface RecurringProjectError {
   milestoneEr?: string;
@@ -21,21 +24,27 @@ export interface RecurringProjectError {
 }
 
 interface Props {
-  setRecurringFormData: any;
-  recurringFormData: any;
   recurringProjectErr: any;
 }
 
-const RecurringProjectManage = ({
-  setRecurringFormData,
-  recurringFormData,
-  recurringProjectErr,
-}: Props) => {
-  const { tasks, milestone } = recurringFormData;
+interface Err {
+  budgetEr?: string;
+  titleEr?: string;
+  id?: number | null;
+}
+
+const RecurringProjectManage = ({ recurringProjectErr }: Props) => {
+  const [recurringFormData, setRecurringFormData] = useState<any>({
+    tasks: [{ title: '', hr: '' }],
+    milestone: [],
+  });
+  const [milestoneErr, setMilestoneErr] = useState<Err>({});
   const [timeError, setTimeError] = useState('');
   const [budgetError, budgetTimeError] = useState('');
   const [isVisibleIndex, setIsVisibleIndex] = useState(0);
-
+  const { tasks, milestone } = recurringFormData;
+  const { projectId } = useParams();
+  const toast = useToast();
   const over = (index: number) => {
     setIsVisibleIndex(index);
   };
@@ -50,7 +59,21 @@ const RecurringProjectManage = ({
       tasks: [...recurringFormData.tasks, { title: '', hr: '' }],
     });
   };
+  useEffect(() => {
+    fetchProject();
+  }, []);
 
+  const fetchProject = async () => {
+    if (projectId) {
+      const res = await _get(`api/projects/${projectId}`);
+      setRecurringFormData({
+        milestone: res.data.project.milestones,
+        tasks: res.data.project.tasks,
+      });
+    }
+  };
+
+  console.log(projectId, 'projectId');
   const removeTaskControls = (taskIndex: number) => {
     const filterTask = recurringFormData.tasks.filter(
       (_: { title: string; hr: string }, index: number) => index !== taskIndex,
@@ -92,10 +115,62 @@ const RecurringProjectManage = ({
     setRecurringFormData({ ...recurringFormData, milestone: mileStoneList });
     if (name === 'budget') {
       if (timeStringValidate(value)) {
-        budgetTimeError('Please Enter valid time');
+        setMilestoneErr({ budgetEr: 'Please Enter valid time', id: index });
       } else {
-        budgetTimeError('');
+        setMilestoneErr({ budgetEr: '', id: null });
       }
+    }
+  };
+
+  const milestoneValidation = (title: string, budget: string) => {
+    const errors: Err = {};
+    if (!title) {
+      errors.titleEr = 'Please enter milestone';
+    }
+    if (!budget || timeStringValidate(budget)) {
+      errors.budgetEr = 'Please enter valid milestone';
+    }
+
+    return errors;
+  };
+  console.log(milestoneErr, 'milestoneErr');
+
+  const milestoneHandler = async (
+    e: React.FormEvent<HTMLFormElement>,
+    id: string | undefined,
+    title: string,
+    budget: string,
+    index: number,
+  ) => {
+    e.preventDefault();
+    setMilestoneErr({ ...milestoneValidation(title, budget), id: index });
+    e.preventDefault();
+    try {
+      setMilestoneErr({ ...milestoneValidation(title, budget), id: index });
+      const notValid = milestoneValidation(title, budget);
+      if (id && Object.values(notValid).length <= 0) {
+        await _patch(`api/milestones/${id}`, { title, budget });
+        fetchProject();
+        toast({
+          title: 'Milestone',
+          description: 'Milestone successfully saved.',
+          status: 'success',
+          duration: 2000,
+          position: 'top-right',
+          isClosable: true,
+        });
+      } else {
+        throw 'Milestone Not saved';
+      }
+    } catch (err) {
+      toast({
+        title: 'Milestone',
+        description: 'Milestone not saved.',
+        status: 'error',
+        duration: 2000,
+        position: 'top-right',
+        isClosable: true,
+      });
     }
   };
 
@@ -120,28 +195,39 @@ const RecurringProjectManage = ({
           <UnorderedList m='0'>
             {milestone?.length > 0 &&
               milestone.map((_: any, index: any) => {
+                console.log(_, '__');
                 return (
-                  <ListItem key={index} m='20px 0' display='flex'>
-                    <Input
-                      w='387px'
-                      mr='32px'
-                      textStyle='inputTextStyle'
-                      type='text'
-                      name='title'
-                      value={_.title}
-                      onChange={(e) => handleInputChangeMilestone(e, index)}
-                    />
-                    <FormControl w='114px'>
+                  <form
+                    key={index}
+                    onSubmit={(e) =>
+                      milestoneHandler(e, _.id, _.title, _.budget, index)
+                    }
+                  >
+                    <ListItem m='20px 0' display='flex' alignItems='center'>
                       <Input
-                        type='text'
+                        w='387px'
+                        mr='32px'
                         textStyle='inputTextStyle'
-                        value={_.budget}
-                        name='budget'
+                        type='text'
+                        name='title'
+                        value={_.title}
                         onChange={(e) => handleInputChangeMilestone(e, index)}
-                        textAlign='center'
                       />
-                    </FormControl>
-                  </ListItem>
+                      <FormControl w='114px'>
+                        <Input
+                          type='text'
+                          textStyle='inputTextStyle'
+                          value={_.budget}
+                          name='budget'
+                          onChange={(e) => handleInputChangeMilestone(e, index)}
+                          textAlign='center'
+                        />
+                      </FormControl>
+                      <Box>
+                        <button type='submit'>Save</button>
+                      </Box>
+                    </ListItem>
+                  </form>
                 );
               })}
           </UnorderedList>
