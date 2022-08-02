@@ -75,7 +75,7 @@ const NewProjectForm = ({ onClose }: Props) => {
 
   const fetchAllClients = async () => {
     const res = await _get('api/clients/');
-    setAllClient(res.data.client);
+    setAllClient(res.data.clients);
   };
 
   const setRetainerEndDate = () => {

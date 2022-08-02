@@ -33,16 +33,20 @@ import RecurringProjectManage, {
 import { timeStringValidate } from '../../utils/validation';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store';
-import { FixedFormData } from '../../interfaces/editProject';
+import { FixedFormObj, RecurringFormObj } from '../../interfaces/editProject';
 
 const ManageTask = () => {
+  const { projectId } = useParams();
   const [projectData, setProjectData] = useState<any>();
   const [recurringFormData, setRecurringFormData] = useState<any>({
     tasks: [{ title: '', hr: '' }],
-    milestone: [{ title: 'Month(May 18 - Jun 17)', budget: '80' }],
+    milestone: [
+      { title: 'Month(May 18 - Jun 17)', budget: '80', projectId: projectId },
+    ],
+    isArchieved: false,
   });
   const [fixedFormData, setFixedFormData] = useState<FixedFormDataPhase>({
-    phase: [{ title: '', budget: '' }],
+    phase: [{ title: '', budget: '', projectId: projectId }],
   });
   const [fixedProjectErr, setFixedProjectErr] = useState<FixedProjectError>({
     phaseEr: '',
@@ -55,22 +59,26 @@ const ManageTask = () => {
   const { projects } = useSelector((state: RootState) => state.allProjects);
   const toast = useToast();
 
-  const { projectId } = useParams();
   const project = projects?.find(({ id }: { id: string }) => id === projectId);
-
   const { isOpen, onOpen, onClose } = useDisclosure();
+
+  useEffect(() => {
+    setFormValues();
+  }, [projectData]);
 
   useEffect(() => {
     fetchProject();
   }, [projectId]);
+  const setFormValues = () => {
+    if (projectData?.type === 'FIXED') {
+      setFixedFormData({ phase: [...projectData.milestones] });
+    }
+  };
 
   const fetchProject = async () => {
-    try {
-      const res = await _get(`api/projects/${projectId}`);
-      setProjectData(res.data.project);
-    } catch (error) {
-      console.log(error);
-    }
+    const res = await _get(`api/projects/${projectId}`);
+    setProjectData(res.data.project);
+    console.log(res.data.project, 'res.data.project');
   };
 
   const fixedProjectValidation = () => {
@@ -122,7 +130,7 @@ const ManageTask = () => {
             {projectId && (
               <CreateMilestone
                 onClose={onClose}
-                name={projectData?.title}
+                name={project?.title}
                 projectId={projectId}
               />
             )}
@@ -136,19 +144,19 @@ const ManageTask = () => {
     try {
       setFixedProjectErr(fixedProjectValidation());
       const notValid = fixedProjectValidation();
-      const formData: FixedFormData = {
-        members: project.members,
-        milestones: [...project.milestones, fixedFormData.phase],
-        tasks: project.tasks,
-      };
+
       if (
         Object.values(notValid).length <= 0 &&
-        fixedFormData.phase.length > 0
+        fixedFormData?.phase.length > 0
       ) {
-        await _patch(`api/projects/${project.id}`, formData);
+        const formObj: FixedFormObj = {
+          members: projectData.members,
+          milestones: [...projectData.milestones, ...fixedFormData.phase],
+        };
+        await _patch(`api/projects/${projectData.id}`, formObj);
         onClose();
         toast({
-          title: 'Phase',
+          title: 'Milestone',
           description: 'Milestone created successfully.',
           status: 'success',
           duration: 2000,
@@ -159,7 +167,7 @@ const ManageTask = () => {
     } catch (error) {
       error &&
         toast({
-          title: 'Phase',
+          title: 'Milestone',
           description: 'Milestone not created.',
           status: 'error',
           duration: 2000,
@@ -168,20 +176,24 @@ const ManageTask = () => {
         });
     }
   };
+  console.log(project, 'project');
   const recurringProjectFormHandler = async () => {
     try {
       setRecurringProjectErr(recurringProjectValidation());
       const notValid = recurringProjectValidation();
-      const formData: FixedFormData = {
-        members: project.members,
-        milestones: [...project.milestones, recurringFormData.milestone],
-        tasks: [...project.recurringFormData.tasks],
-      };
       if (
         Object.values(notValid).length <= 0 &&
-        recurringFormData.milestone.length > 0
+        recurringFormData?.milestone.length > 0
       ) {
-        await _patch(`api/projects/${project.id}`, formData);
+        const recurringFormObj: RecurringFormObj = {
+          members: projectData.members,
+          tasks: [...projectData.tasks, ...recurringFormData.tasks],
+          milestones: [
+            ...projectData.milestones,
+            ...recurringFormData.milestone,
+          ],
+        };
+        await _patch(`api/projects/${projectData.id}`, recurringFormObj);
         onClose();
         toast({
           title: 'Project',
@@ -204,13 +216,13 @@ const ManageTask = () => {
         });
     }
   };
-
-  const formHandler = async (e: React.FormEvent<HTMLFormElement>) => {
+  console.log(projectData, 'projectData');
+  const formHandler = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (projectData?.type === 'FIXED') {
-      await fixedProjectFormHandler();
+      fixedProjectFormHandler();
     } else {
-      await recurringProjectFormHandler();
+      recurringProjectFormHandler();
     }
   };
 

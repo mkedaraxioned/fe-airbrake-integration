@@ -16,6 +16,7 @@ import { timeStringValidate } from '../../utils/validation';
 export interface Phase {
   title: string;
   budget: string;
+  projectId?: string;
 }
 
 export interface FixedProjectError {
