@@ -37,6 +37,9 @@ const Dashboard = () => {
     dispatch(allUsers(usersRes.data?.users));
   };
 
+  const configValue: string = process.env.BACKEND_URL as string;
+  console.log(configValue, 'configValue');
+
   return (
     <Box>
       <Flex justifyContent='center'>

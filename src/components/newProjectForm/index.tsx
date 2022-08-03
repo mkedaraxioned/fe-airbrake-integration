@@ -92,14 +92,8 @@ const NewProjectForm = ({ onClose, projectId }: Props) => {
           clientId: res.data.project.clientId,
           title: res.data.project.title,
           type: res.data.project.type,
-          startDate: format(
-            new Date(res.data.project.startDate),
-            "yyyy-MM-dd'T'hh:mm:ss",
-          ),
-          endDate: format(
-            new Date(res.data.project.endDate),
-            "yyyy-MM-dd'T'hh:mm:ss",
-          ),
+          startDate: res.data.project.startDate,
+          endDate: res.data.project.endDate,
           billingType: res.data.project.billingType,
           members: res.data.project.members,
         });
@@ -189,7 +183,7 @@ const NewProjectForm = ({ onClose, projectId }: Props) => {
     setSelectedUsers(userArr);
     setMember(null);
   };
-
+  console.log(formData, 'formData');
   const reset = () => {
     setFormData({
       clientId: '',
