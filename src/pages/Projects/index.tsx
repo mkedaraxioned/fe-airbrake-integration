@@ -36,7 +36,6 @@ const Projects = () => {
   const [myProjects, setMyProjects] = useState([]);
   const { projects } = useSelector((state: RootState) => state.allProjects);
   const { clients } = useSelector((state: RootState) => state.allClients);
-  console.log(projects, 'projects', clients, 'clients');
 
   useEffect(() => {
     unqClients();

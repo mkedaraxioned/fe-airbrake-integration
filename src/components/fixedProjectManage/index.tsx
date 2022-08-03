@@ -13,6 +13,7 @@ import {
 import React, { useEffect, useState } from 'react';
 import { AiOutlinePlusCircle } from 'react-icons/ai';
 import { FaCheck } from 'react-icons/fa';
+import { useParams } from 'react-router';
 import { ReactComponent as DeleteSvg } from '../../assets/images/delete.svg';
 import { _get, _patch, _post } from '../../utils/api';
 import { timeStringValidate } from '../../utils/validation';
@@ -30,29 +31,18 @@ export interface FixedFormDataPhase {
   phase: Phase[];
 }
 
-interface Props {
-  projectId: string;
-  setFormValues: any;
-}
-
 interface Err {
   budgetEr?: string;
   titleEr?: string;
   id?: number | null;
 }
 
-const FixedProjectManage = ({ setFormValues, projectId }: Props) => {
+const FixedProjectManage = () => {
   const [errMessage, setErrMessage] = useState<Err>({});
   const [fixedFormData, setFixedFormData] = useState<any>({
     phase: [],
   });
-  const removePhaseControls = (phaseIndex: number) => {
-    const filterPhase = fixedFormData.phase?.filter(
-      (_: { title: string; budget: string }, index: number) =>
-        index !== phaseIndex,
-    );
-    setFixedFormData({ phase: filterPhase });
-  };
+  const { projectId } = useParams();
   const toast = useToast();
 
   useEffect(() => {
@@ -88,6 +78,21 @@ const FixedProjectManage = ({ setFormValues, projectId }: Props) => {
     });
   };
 
+  const removePhaseControls = async (
+    id: string | undefined,
+    phaseIndex: number,
+  ) => {
+    const filterPhase = fixedFormData.phase?.filter(
+      (_: { title: string; budget: string }, index: number) =>
+        index !== phaseIndex,
+    );
+    setFixedFormData({ phase: filterPhase });
+    if (id) {
+      await _patch(`api/milestones/${id}`, { isDeleted: true });
+      await fetchProject();
+    }
+  };
+
   const milestoneValidation = (title: string, budget: string) => {
     const errors: Err = {};
     if (!title) {
@@ -113,10 +118,11 @@ const FixedProjectManage = ({ setFormValues, projectId }: Props) => {
       const notValid = milestoneValidation(title, budget);
       if (id && Object.values(notValid).length <= 0) {
         await _patch(`api/milestones/${id}`, { title, budget });
-      } else {
+      } else if (!id && Object.values(notValid).length <= 0) {
         await _post('api/milestones', { projectId, title, budget });
+      } else {
+        throw 'Milestone Not saved';
       }
-      setFormValues();
       toast({
         title: 'Milestone',
         description: 'Milestone successfully saved.',
@@ -168,91 +174,98 @@ const FixedProjectManage = ({ setFormValues, projectId }: Props) => {
         <UnorderedList listStyleType='none' m='0'>
           {fixedFormData.phase.map(
             (
-              _: { title: string; budget: string; id?: string },
+              _: {
+                title: string;
+                budget: string;
+                id?: string;
+                isDeleted: boolean;
+              },
               index: number,
             ) => {
               return (
-                <ListItem m='20px 0' key={index}>
-                  <form
-                    onSubmit={(e) =>
-                      formHandler(e, _.id, _.title, _.budget, index)
-                    }
-                  >
-                    <HStack pos='relative'>
-                      <FormControl
-                        pos='relative'
-                        w='387px'
-                        mr='20px'
-                        isInvalid={
-                          errMessage?.titleEr && errMessage?.id === index
-                            ? true
-                            : false
-                        }
-                      >
-                        <Input
-                          type='text'
-                          textStyle='inputTextStyle'
-                          placeholder='Enter Phase'
-                          value={_.title}
-                          name='title'
-                          onChange={(e) => handleInputChange(e, index)}
-                        />
-                        {errMessage.id === index && (
-                          <FormErrorMessage
-                            pos='absolute'
-                            width='192px'
-                            bottom='-18px'
-                            fontSize='12px'
-                          >
-                            {errMessage?.titleEr}
-                          </FormErrorMessage>
-                        )}
-                      </FormControl>
-                      <FormControl
-                        w='60px'
-                        pos='relative'
-                        mr='10px !important'
-                        isInvalid={
-                          errMessage?.budgetEr && errMessage?.id === index
-                            ? true
-                            : false
-                        }
-                      >
-                        <Input
-                          type='text'
-                          placeholder='Hrs'
-                          textStyle='inputTextStyle'
-                          value={_.budget}
-                          name='budget'
-                          onChange={(e) => handleInputChange(e, index)}
-                          textAlign='center'
-                        />
-                        {errMessage.id === index && (
-                          <FormErrorMessage
-                            pos='absolute'
-                            width='192px'
-                            bottom='-18px'
-                            left='-40px'
-                            fontSize='12px'
-                          >
-                            {errMessage?.budgetEr}
-                          </FormErrorMessage>
-                        )}
-                      </FormControl>
-                      <Flex>
-                        <Box
-                          cursor='pointer'
-                          onClick={() => removePhaseControls(index)}
+                !_.isDeleted && (
+                  <ListItem m='20px 0' key={index}>
+                    <form
+                      onSubmit={(e) =>
+                        formHandler(e, _.id, _.title, _.budget, index)
+                      }
+                    >
+                      <HStack pos='relative'>
+                        <FormControl
+                          pos='relative'
+                          w='387px'
+                          mr='20px'
+                          isInvalid={
+                            errMessage?.titleEr && errMessage?.id === index
+                              ? true
+                              : false
+                          }
                         >
-                          <DeleteSvg />
-                        </Box>
-                        <button type='submit'>
-                          <FaCheck />
-                        </button>
-                      </Flex>
-                    </HStack>
-                  </form>
-                </ListItem>
+                          <Input
+                            type='text'
+                            textStyle='inputTextStyle'
+                            placeholder='Enter Phase'
+                            value={_.title}
+                            name='title'
+                            onChange={(e) => handleInputChange(e, index)}
+                          />
+                          {errMessage.id === index && (
+                            <FormErrorMessage
+                              pos='absolute'
+                              width='192px'
+                              bottom='-18px'
+                              fontSize='12px'
+                            >
+                              {errMessage?.titleEr}
+                            </FormErrorMessage>
+                          )}
+                        </FormControl>
+                        <FormControl
+                          w='60px'
+                          pos='relative'
+                          mr='10px !important'
+                          isInvalid={
+                            errMessage?.budgetEr && errMessage?.id === index
+                              ? true
+                              : false
+                          }
+                        >
+                          <Input
+                            type='text'
+                            placeholder='Hrs'
+                            textStyle='inputTextStyle'
+                            value={_.budget}
+                            name='budget'
+                            onChange={(e) => handleInputChange(e, index)}
+                            textAlign='center'
+                          />
+                          {errMessage.id === index && (
+                            <FormErrorMessage
+                              pos='absolute'
+                              width='192px'
+                              bottom='-18px'
+                              left='-40px'
+                              fontSize='12px'
+                            >
+                              {errMessage?.budgetEr}
+                            </FormErrorMessage>
+                          )}
+                        </FormControl>
+                        <Flex>
+                          <Box
+                            cursor='pointer'
+                            onClick={() => removePhaseControls(_.id, index)}
+                          >
+                            <DeleteSvg />
+                          </Box>
+                          <button type='submit'>
+                            <FaCheck />
+                          </button>
+                        </Flex>
+                      </HStack>
+                    </form>
+                  </ListItem>
+                )
               );
             },
           )}
