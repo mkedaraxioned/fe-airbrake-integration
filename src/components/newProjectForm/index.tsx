@@ -28,16 +28,17 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import AutoCompleteElem from '../autoComplete';
 import CustomRadio from '../customRadio';
-import { _get, _post } from '../../utils/api';
+import { _get, _patch, _post } from '../../utils/api';
 import { add, format } from 'date-fns';
 import { useDispatch } from 'react-redux';
 import { allProjects } from '../../feature/projectsSlice';
 
 interface Props {
   onClose: () => void;
+  projectId?: string;
 }
 
-const NewProjectForm = ({ onClose }: Props) => {
+const NewProjectForm = ({ onClose, projectId }: Props) => {
   const [formData, setFormData] = useState<NewProjectFormData>({
     clientId: '',
     title: '',
@@ -65,6 +66,10 @@ const NewProjectForm = ({ onClose }: Props) => {
   }, []);
 
   useEffect(() => {
+    fetchProject();
+  }, []);
+
+  useEffect(() => {
     setRetainerEndDate();
   }, [formData.type, formData.startDate]);
 
@@ -75,7 +80,26 @@ const NewProjectForm = ({ onClose }: Props) => {
 
   const fetchAllClients = async () => {
     const res = await _get('api/clients/');
-    setAllClient(res.data.client);
+    setAllClient(res.data.clients);
+  };
+
+  const fetchProject = async () => {
+    if (projectId) {
+      const res = await _get(`api/projects/${projectId}`);
+      console.log(res.data.project, 'resres');
+      if (res.data) {
+        setFormData({
+          clientId: res.data.project.clientId,
+          title: res.data.project.title,
+          type: res.data.project.type,
+          startDate: res.data.project.startDate,
+          endDate: res.data.project.endDate,
+          billingType: res.data.project.billingType,
+          members: res.data.project.members,
+        });
+        setSelectedUsers(res.data.project.members);
+      }
+    }
   };
 
   const setRetainerEndDate = () => {
@@ -159,7 +183,7 @@ const NewProjectForm = ({ onClose }: Props) => {
     setSelectedUsers(userArr);
     setMember(null);
   };
-
+  console.log(formData, 'formData');
   const reset = () => {
     setFormData({
       clientId: '',
@@ -180,7 +204,15 @@ const NewProjectForm = ({ onClose }: Props) => {
       setErrMsg(fieldValidation());
       const notValid = fieldValidation();
       if (Object.values(notValid).length <= 0) {
-        await _post('api/projects/', formData);
+        if (projectId) {
+          await _patch(`api/projects/${projectId}`, {
+            ...formData,
+            milestones: [],
+            tasks: [],
+          });
+        } else {
+          await _post('api/projects/', formData);
+        }
         onClose();
         reset();
         fetchProjects();
@@ -228,6 +260,8 @@ const NewProjectForm = ({ onClose }: Props) => {
           <FormControl
             p='25px 0 10px'
             isInvalid={errMsg?.client ? true : false}
+            opacity={projectId ? '.3' : '1'}
+            pointerEvents={projectId ? 'none' : 'auto'}
           >
             <FormLabel fontSize='14px' lineHeight='17.6px' fontWeight='600'>
               Select Client
@@ -269,7 +303,11 @@ const NewProjectForm = ({ onClose }: Props) => {
             />
             <FormErrorMessage>{errMsg?.title}</FormErrorMessage>
           </FormControl>
-          <FormControl p='8px 0'>
+          <FormControl
+            p='8px 0'
+            opacity={projectId ? '.3' : '1'}
+            pointerEvents={projectId ? 'none' : 'auto'}
+          >
             <FormLabel fontSize='14px' lineHeight='17.6px' fontWeight='600'>
               Select project Type
             </FormLabel>
@@ -302,7 +340,11 @@ const NewProjectForm = ({ onClose }: Props) => {
               </Box>
             </Flex>
           </FormControl>
-          <Flex justifyContent='space-between'>
+          <Flex
+            justifyContent='space-between'
+            opacity={projectId ? '.3' : '1'}
+            pointerEvents={projectId ? 'none' : 'auto'}
+          >
             <FormControl
               p='8px 0'
               flexBasis='48%'

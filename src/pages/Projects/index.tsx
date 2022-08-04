@@ -63,9 +63,6 @@ const Projects = () => {
       setClientSet(sortArr);
     }
   };
-
-  console.log(clients, 'clientSet');
-
   const ModalBox = () => {
     return (
       <Drawer isOpen={isOpen} size='lg' placement='right' onClose={onClose}>

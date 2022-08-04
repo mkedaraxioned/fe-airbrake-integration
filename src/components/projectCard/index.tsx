@@ -45,7 +45,15 @@ const ProjectCard = ({ project }: Props) => {
           >
             {project.title}
           </Text>
-          <Tooltip label={project.type}>
+          <Tooltip
+            label={
+              project.type === 'FIXED'
+                ? 'Fixed'
+                : project.type === 'RETAINER'
+                ? 'Retainer'
+                : 'Retainer(Granular)'
+            }
+          >
             {project.type === 'FIXED' ? <CalenderIcon1 /> : <CalenderIcon2 />}
           </Tooltip>
         </Flex>

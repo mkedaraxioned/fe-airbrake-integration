@@ -2,40 +2,45 @@ import {
   Box,
   Flex,
   FormControl,
+  FormErrorMessage,
   HStack,
   Input,
   ListItem,
   StackDivider,
   Text,
   UnorderedList,
+  useToast,
 } from '@chakra-ui/react';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { AiOutlinePlusCircle } from 'react-icons/ai';
 import CustomCheckbox from '../customCheckBox';
 import { ReactComponent as DeleteSvg } from '../../assets/images/delete.svg';
 import { timeStringValidate } from '../../utils/validation';
+import { _get, _patch, _post } from '../../utils/api';
+import { useParams } from 'react-router';
 
 export interface RecurringProjectError {
   milestoneEr?: string;
   taskEr?: string;
 }
 
-interface Props {
-  setRecurringFormData: any;
-  recurringFormData: any;
-  recurringProjectErr: any;
+interface Err {
+  budgetEr?: string;
+  titleEr?: string;
+  id?: number | null;
 }
 
-const RecurringProjectManage = ({
-  setRecurringFormData,
-  recurringFormData,
-  recurringProjectErr,
-}: Props) => {
-  const { tasks, milestone } = recurringFormData;
-  const [timeError, setTimeError] = useState('');
-  const [budgetError, budgetTimeError] = useState('');
+const RecurringProjectManage = () => {
+  const [recurringFormData, setRecurringFormData] = useState<any>({
+    tasks: [{ title: '', budget: '' }],
+    milestone: [],
+  });
+  const [milestoneErr, setMilestoneErr] = useState<Err>({});
+  const [taskErr, setTaskErr] = useState<Err>({});
   const [isVisibleIndex, setIsVisibleIndex] = useState(0);
-
+  const { tasks, milestone } = recurringFormData;
+  const { projectId } = useParams();
+  const toast = useToast();
   const over = (index: number) => {
     setIsVisibleIndex(index);
   };
@@ -47,22 +52,61 @@ const RecurringProjectManage = ({
   const addTaskControls = () => {
     setRecurringFormData({
       ...recurringFormData,
-      tasks: [...recurringFormData.tasks, { title: '', hr: '' }],
+      tasks: [...recurringFormData.tasks, { title: '', budget: '' }],
     });
   };
+  useEffect(() => {
+    fetchProject();
+  }, []);
 
-  const removeTaskControls = (taskIndex: number) => {
+  const fetchProject = async () => {
+    if (projectId) {
+      const res = await _get(`api/projects/${projectId}`);
+      setRecurringFormData({
+        milestone: res.data.project.milestones,
+        tasks: res.data.project.tasks,
+      });
+    }
+  };
+
+  console.log(projectId, 'projectId');
+  const removeTaskControls = async (id: string, taskIndex: number) => {
     const filterTask = recurringFormData.tasks.filter(
-      (_: { title: string; hr: string }, index: number) => index !== taskIndex,
+      (_: { title: string; budget: string }, index: number) =>
+        index !== taskIndex,
     );
     setRecurringFormData({
       ...recurringFormData,
       tasks: filterTask,
     });
+    if (id) {
+      await _patch(`api/tasks/${id}`, { isDeleted: true });
+      await fetchProject();
+      toast({
+        title: 'Task',
+        description: 'Task Deleted.',
+        status: 'success',
+        duration: 2000,
+        position: 'top-right',
+        isClosable: true,
+      });
+    }
   };
 
-  const checkHandler = (e: any): void => {
-    console.log(e.target.checked, 'val');
+  const checkHandler = async (e: any, id: string) => {
+    const archived = e.target.checked;
+    if (id && archived) {
+      await _patch(`api/tasks/${id}`, { isArchieved: true });
+      await fetchProject();
+      toast({
+        title: 'Task',
+        description: 'Task Archived successfully.',
+        status: 'success',
+        duration: 2000,
+        position: 'top-right',
+        isClosable: true,
+      });
+    }
   };
 
   const handleInputChange = (
@@ -73,11 +117,11 @@ const RecurringProjectManage = ({
     const list: any = [...recurringFormData.tasks];
     list[index][name] = value;
     setRecurringFormData({ ...recurringFormData, tasks: list });
-    if (name === 'hr') {
+    if (name === 'budget') {
       if (timeStringValidate(value)) {
-        setTimeError('Please Enter valid time');
+        setTaskErr({ budgetEr: 'Please enter valid budget' });
       } else {
-        setTimeError('');
+        setTaskErr({ budgetEr: '' });
       }
     }
   };
@@ -92,10 +136,110 @@ const RecurringProjectManage = ({
     setRecurringFormData({ ...recurringFormData, milestone: mileStoneList });
     if (name === 'budget') {
       if (timeStringValidate(value)) {
-        budgetTimeError('Please Enter valid time');
+        setMilestoneErr({ budgetEr: 'Please Enter valid budget', id: index });
       } else {
-        budgetTimeError('');
+        setMilestoneErr({ budgetEr: '', id: null });
       }
+    }
+  };
+
+  const fieldValidation = (title: string, budget: string) => {
+    const errors: Err = {};
+    if (!title) {
+      errors.titleEr = 'Please enter milestone';
+    }
+    if (!budget || timeStringValidate(budget)) {
+      errors.budgetEr = 'Please enter valid budget';
+    }
+
+    return errors;
+  };
+
+  const taskFieldValidation = (title: string, budget: string) => {
+    const errors: Err = {};
+    if (!title) {
+      errors.titleEr = 'Please enter Task';
+    }
+    if (!budget || timeStringValidate(budget)) {
+      errors.budgetEr = 'Please enter valid budget';
+    }
+
+    return errors;
+  };
+
+  const taskFormHandler = async (
+    e: React.FormEvent<HTMLFormElement>,
+    id: string,
+    title: any,
+    budget: any,
+    index: number,
+  ) => {
+    e.preventDefault();
+    try {
+      setTaskErr({ ...taskFieldValidation(title, budget), id: index });
+      const notValid = fieldValidation(title, budget);
+      if (id && Object.values(notValid).length <= 0) {
+        await _patch(`api/tasks/${id}`, { projectId, title, budget });
+      } else if (!id && Object.values(notValid).length <= 0) {
+        await _post('api/tasks', { projectId, title, budget });
+      } else {
+        throw 'Milestone Not saved';
+      }
+      await fetchProject();
+      toast({
+        title: 'Task',
+        description: 'Task successfully saved.',
+        status: 'success',
+        duration: 2000,
+        position: 'top-right',
+        isClosable: true,
+      });
+    } catch (err) {
+      toast({
+        title: 'Task',
+        description: 'Task not saved.',
+        status: 'error',
+        duration: 2000,
+        position: 'top-right',
+        isClosable: true,
+      });
+    }
+  };
+
+  const milestoneHandler = async (
+    e: React.FormEvent<HTMLFormElement>,
+    id: string | undefined,
+    title: string,
+    budget: string,
+    index: number,
+  ) => {
+    e.preventDefault();
+    try {
+      setMilestoneErr({ ...fieldValidation(title, budget), id: index });
+      const notValid = fieldValidation(title, budget);
+      if (id && Object.values(notValid).length <= 0) {
+        await _patch(`api/milestones/${id}`, { title, budget });
+        await fetchProject();
+        toast({
+          title: 'Milestone',
+          description: 'Milestone successfully saved.',
+          status: 'success',
+          duration: 2000,
+          position: 'top-right',
+          isClosable: true,
+        });
+      } else {
+        throw 'Milestone Not saved';
+      }
+    } catch (err) {
+      toast({
+        title: 'Milestone',
+        description: 'Milestone not saved.',
+        status: 'error',
+        duration: 2000,
+        position: 'top-right',
+        isClosable: true,
+      });
     }
   };
 
@@ -120,54 +264,85 @@ const RecurringProjectManage = ({
           <UnorderedList m='0'>
             {milestone?.length > 0 &&
               milestone.map((_: any, index: any) => {
+                console.log(_, '__');
                 return (
-                  <ListItem key={index} m='20px 0' display='flex'>
-                    <Input
-                      w='387px'
-                      mr='32px'
-                      textStyle='inputTextStyle'
-                      type='text'
-                      name='title'
-                      value={_.title}
-                      onChange={(e) => handleInputChangeMilestone(e, index)}
-                    />
-                    <FormControl w='114px'>
-                      <Input
-                        type='text'
-                        textStyle='inputTextStyle'
-                        value={_.budget}
-                        name='budget'
-                        onChange={(e) => handleInputChangeMilestone(e, index)}
-                        textAlign='center'
-                      />
-                    </FormControl>
-                  </ListItem>
+                  <form
+                    key={index}
+                    onSubmit={(e) =>
+                      milestoneHandler(e, _.id, _.title, _.budget, index)
+                    }
+                  >
+                    <ListItem m='20px 0' display='flex' alignItems='center'>
+                      <Flex>
+                        <FormControl
+                          pos='relative'
+                          isInvalid={
+                            milestoneErr?.titleEr && milestoneErr?.id === index
+                              ? true
+                              : false
+                          }
+                        >
+                          <Input
+                            w='387px'
+                            mr='32px'
+                            textStyle='inputTextStyle'
+                            type='text'
+                            name='title'
+                            value={_.title}
+                            onChange={(e) =>
+                              handleInputChangeMilestone(e, index)
+                            }
+                          />
+                          {milestoneErr.id === index && (
+                            <FormErrorMessage
+                              pos='absolute'
+                              width='192px'
+                              bottom='-18px'
+                              fontSize='12px'
+                            >
+                              {milestoneErr?.titleEr}
+                            </FormErrorMessage>
+                          )}
+                        </FormControl>
+                        <FormControl
+                          w='114px'
+                          pos='relative'
+                          isInvalid={
+                            milestoneErr?.budgetEr && milestoneErr?.id === index
+                              ? true
+                              : false
+                          }
+                        >
+                          <Input
+                            type='text'
+                            textStyle='inputTextStyle'
+                            value={_.budget}
+                            name='budget'
+                            onChange={(e) =>
+                              handleInputChangeMilestone(e, index)
+                            }
+                            textAlign='center'
+                          />
+                          {milestoneErr.id === index && (
+                            <FormErrorMessage
+                              pos='absolute'
+                              width='192px'
+                              bottom='-18px'
+                              fontSize='12px'
+                            >
+                              {milestoneErr?.budgetEr}
+                            </FormErrorMessage>
+                          )}
+                        </FormControl>
+                      </Flex>
+                      <Box>
+                        <button type='submit'>Save</button>
+                      </Box>
+                    </ListItem>
+                  </form>
                 );
               })}
           </UnorderedList>
-          {recurringProjectErr.mileStoneEr && (
-            <Text
-              pos='absolute'
-              bottom='-22px'
-              color='#E53E3E'
-              fontSize='14px'
-              textStyle='sourceSansProRegular'
-            >
-              {recurringProjectErr.mileStoneEr}
-            </Text>
-          )}
-          {budgetError && (
-            <Text
-              pos='absolute'
-              right='0px'
-              bottom='-22px'
-              color='#E53E3E'
-              fontSize='14px'
-              textStyle='sourceSansProRegular'
-            >
-              {budgetError}
-            </Text>
-          )}
         </Box>
         <Text textStyle='inputTextStyle' textDecor='underline'>
           Load older entries
@@ -202,81 +377,121 @@ const RecurringProjectManage = ({
         </Flex>
         <Box pos='relative'>
           <UnorderedList listStyleType='none' m='0'>
-            {tasks?.map((_: { title: string; hr: string }, index: number) => {
-              return (
-                <ListItem
-                  m='20px 0'
-                  key={index}
-                  onMouseOver={() => over(index)}
-                  onMouseOut={out}
-                >
-                  <HStack pos='relative'>
-                    <FormControl w='387px' mr='20px'>
-                      <Input
-                        type='text'
-                        textStyle='inputTextStyle'
-                        placeholder='Enter Task'
-                        value={_.title}
-                        name='title'
-                        onChange={(e) => handleInputChange(e, index)}
-                      />
-                    </FormControl>
-                    <FormControl w='60px' mr='37px !important'>
-                      <Input
-                        type='text'
-                        placeholder='Hrs'
-                        textStyle='inputTextStyle'
-                        value={_.hr}
-                        name='hr'
-                        onChange={(e) => handleInputChange(e, index)}
-                        textAlign='center'
-                      />
-                    </FormControl>
-                    <Box>
-                      <CustomCheckbox onChange={checkHandler} />
-                    </Box>
-                    {index === 0 ? null : (
-                      <Box
-                        display={isVisibleIndex === index ? 'block' : 'none'}
-                        pos='absolute'
-                        top='24%'
-                        right='-10px'
-                        cursor='pointer'
-                        onClick={() => removeTaskControls(index)}
+            {tasks?.map(
+              (
+                _: {
+                  title: string;
+                  budget: string;
+                  id: string;
+                  isDeleted: boolean;
+                  isArchieved: boolean;
+                },
+                index: number,
+              ) => {
+                console.log(_, 'taskstaskstasks');
+                return (
+                  !_.isDeleted &&
+                  !_.isArchieved && (
+                    <form
+                      key={index}
+                      onSubmit={(e) =>
+                        taskFormHandler(e, _.id, _.title, _.budget, index)
+                      }
+                    >
+                      <ListItem
+                        m='20px 0'
+                        onMouseOver={() => over(index)}
+                        onMouseOut={out}
                       >
-                        <DeleteSvg />
-                      </Box>
-                    )}
-                  </HStack>
-                </ListItem>
-              );
-            })}
+                        <HStack pos='relative'>
+                          <FormControl
+                            w='387px'
+                            mr='20px'
+                            isInvalid={
+                              taskErr?.titleEr && taskErr?.id === index
+                                ? true
+                                : false
+                            }
+                          >
+                            <Input
+                              type='text'
+                              textStyle='inputTextStyle'
+                              placeholder='Enter Task'
+                              value={_.title}
+                              name='title'
+                              onChange={(e) => handleInputChange(e, index)}
+                            />
+                            {taskErr.id === index && (
+                              <FormErrorMessage
+                                pos='absolute'
+                                width='192px'
+                                bottom='-18px'
+                                fontSize='12px'
+                              >
+                                {taskErr?.titleEr}
+                              </FormErrorMessage>
+                            )}
+                          </FormControl>
+                          <FormControl
+                            w='60px'
+                            mr='37px !important'
+                            isInvalid={
+                              taskErr?.budgetEr && taskErr?.id === index
+                                ? true
+                                : false
+                            }
+                          >
+                            <Input
+                              type='text'
+                              placeholder='Hrs'
+                              textStyle='inputTextStyle'
+                              value={_.budget}
+                              name='budget'
+                              onChange={(e) => handleInputChange(e, index)}
+                              textAlign='center'
+                            />
+                            {taskErr.id === index && (
+                              <FormErrorMessage
+                                pos='absolute'
+                                width='192px'
+                                bottom='-18px'
+                                fontSize='12px'
+                              >
+                                {taskErr?.budgetEr}
+                              </FormErrorMessage>
+                            )}
+                          </FormControl>
+                          <Box>
+                            <CustomCheckbox
+                              onChange={(e: any) => checkHandler(e, _.id)}
+                            />
+                          </Box>
+                          <Box
+                            display={
+                              isVisibleIndex === index ? 'block' : 'none'
+                            }
+                            pos='absolute'
+                            top='24%'
+                            right='-10px'
+                            cursor='pointer'
+                            onClick={() => removeTaskControls(_.id, index)}
+                          >
+                            <DeleteSvg />
+                          </Box>
+                          <Box>
+                            <button type='submit'>save</button>
+                          </Box>
+                        </HStack>
+                      </ListItem>
+                    </form>
+                  )
+                );
+              },
+            )}
           </UnorderedList>
-          {recurringProjectErr.taskEr && (
-            <Text
-              pos='absolute'
-              bottom='-22px'
-              color='#E53E3E'
-              fontSize='14px'
-              textStyle='sourceSansProRegular'
-            >
-              {recurringProjectErr.taskEr}
-            </Text>
-          )}
-          {timeError && (
-            <Text
-              pos='absolute'
-              right='50px'
-              bottom='-22px'
-              color='#E53E3E'
-              fontSize='14px'
-              textStyle='sourceSansProRegular'
-            >
-              {timeError}
-            </Text>
-          )}
         </Box>
         <Box
+          pt='20px'
           display='flex'
           alignItems='center'
           textStyle='inputTextStyle'

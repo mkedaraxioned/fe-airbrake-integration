@@ -16,7 +16,7 @@ export const App = () => {
   const user = useSelector((state: RootState) => state.user);
 
   useEffect(() => {
-    user.profile.name ? setIsLoggedIn(true) : setIsLoggedIn(false);
+    user.profile?.name ? setIsLoggedIn(true) : setIsLoggedIn(false);
   }, [user]);
 
   return (
