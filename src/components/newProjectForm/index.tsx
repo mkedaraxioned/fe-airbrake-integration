@@ -205,11 +205,7 @@ const NewProjectForm = ({ onClose, projectId }: Props) => {
       const notValid = fieldValidation();
       if (Object.values(notValid).length <= 0) {
         if (projectId) {
-          await _patch(`api/projects/${projectId}`, {
-            ...formData,
-            milestones: [],
-            tasks: [],
-          });
+          await _patch(`api/projects/${projectId}`, formData);
         } else {
           await _post('api/projects/', formData);
         }

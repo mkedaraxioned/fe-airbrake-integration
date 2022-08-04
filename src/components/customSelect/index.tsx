@@ -86,9 +86,9 @@ const CustomSelect = ({ onChange }: Props) => {
         maxHeight: '250px',
         border: '1px solid #E2E8F0',
         top: '34px',
-        overflow: 'scroll',
+        overflowY: 'scroll',
         '::-webkit-scrollbar': {
-          width: '2px',
+          width: '5px',
           height: '0',
         },
         '::-webkit-scrollbar-track': {
@@ -165,7 +165,7 @@ const CustomSelect = ({ onChange }: Props) => {
       </Box>
     );
   };
-  console.log(optionsData, 'optionsDataoptionsData');
+
   return (
     <Box>
       <Select
