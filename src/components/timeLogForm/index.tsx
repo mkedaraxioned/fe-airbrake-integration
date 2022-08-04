@@ -176,7 +176,7 @@ const TimeLogFrom = ({ formData, setFormData }: Props) => {
           <CustomSelect onChange={selectProject} />
           <FormErrorMessage>{errorMsg?.projectName}</FormErrorMessage>
         </FormControl>
-        <Box>
+        {/* <Box>
           <Text
             pb='8px'
             color='grayLight'
@@ -199,7 +199,7 @@ const TimeLogFrom = ({ formData, setFormData }: Props) => {
           >
             Month 41 (4 April - 3 May)
           </Text>
-        </Box>
+        </Box> */}
         <FormControl m='14px 0' isInvalid={errorMsg?.task ? true : false}>
           <FormLabel
             htmlFor='task'
