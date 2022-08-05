@@ -10,34 +10,43 @@ import {
   Input,
   Select,
   Text,
+  useToast,
 } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { TimelogFormError } from '../../interfaces/timelogForm';
+import { RootState } from '../../store';
+import { _post } from '../../utils/api';
 import { timeStringValidate } from '../../utils/validation';
-import CustomSelect, { Options } from '../customSelect';
+import CustomSelect from '../customSelect';
 
-const TimeLogFrom = ({ recentProject }: { recentProject: string }) => {
-  const [formData, setFormData] = useState({
-    date: new Date(),
-    projectName: '',
-    task: '',
-    logTime: '',
-    comments: '',
-    billable: 'nonBillable',
-  });
-  const [taskNode, setTaskNode] = useState<string[]>([]);
+export interface TimeLogFormData {
+  date: Date;
+  projectId: string;
+  milestoneId: string;
+  taskId: string;
+  logTime: string;
+  comments: string;
+  billingType: boolean;
+}
+
+interface Props {
+  formData: TimeLogFormData;
+  setFormData: any;
+}
+
+const TimeLogFrom = ({ formData, setFormData }: Props) => {
+  const [projectType, setProjectType] = useState<string>('');
+
+  const [taskNode, setTaskNode] = useState([]);
+  const [milestoneData, setMilestoneData] = useState([]);
 
   const [errorMsg, setErrorMsg] = useState<TimelogFormError>();
-  const allTask = [
-    {
-      projectName: 'WordPress Maintenance',
-      task: ['task 1', 'task 2', 'task 3'],
-    },
-    {
-      projectName: 'ClearForMe Ongoing Retainer Agreement',
-      task: ['task 4', 'task 5', 'task 6'],
-    },
-  ];
+  const { projects } = useSelector((state: RootState) => state.allProjects);
+  const toast = useToast();
+  useEffect(() => {
+    selectOptionData();
+  }, [formData.projectId]);
 
   useEffect(() => {
     if (!formData.logTime) return;
@@ -55,16 +64,16 @@ const TimeLogFrom = ({ recentProject }: { recentProject: string }) => {
     }
   }, [formData.logTime]);
 
-  useEffect(() => {
-    recentProject && setFormData({ ...formData, projectName: recentProject });
-  }, [recentProject]);
-
-  useEffect(() => {
-    const tasks = allTask.filter(
-      (project) => project.projectName === formData.projectName,
+  const selectOptionData = () => {
+    const project = projects.find(
+      (project: { id: string }) => project.id === formData.projectId,
     );
-    setTaskNode(tasks[0]?.task);
-  }, [formData.projectName]);
+    if (project) {
+      setTaskNode(project.tasks);
+      setMilestoneData(project.milestones);
+      setProjectType(project.type);
+    }
+  };
 
   const selecttHandler = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -75,26 +84,26 @@ const TimeLogFrom = ({ recentProject }: { recentProject: string }) => {
 
   const checkboxHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.target.checked
-      ? setFormData({ ...formData, billable: 'billable' })
-      : setFormData({ ...formData, billable: 'nonBillable' });
+      ? setFormData({ ...formData, billingType: true })
+      : setFormData({ ...formData, billingType: false });
   };
 
-  const selectProject = (item: Options) => {
-    setFormData({ ...formData, projectName: item.name });
+  const selectProject = (item: { value: string }) => {
+    setFormData({ ...formData, projectId: item.value });
   };
 
   const fieldValidation = () => {
     const errors: TimelogFormError = {};
-    const { date, projectName, task, logTime, comments } = formData;
+    const { date, projectId, taskId, logTime, comments } = formData;
 
     if (new Date(date).getTime() > new Date().getTime()) {
       errors.date = "Can't logged time for future date";
     }
 
-    if (!projectName) {
+    if (!projectId) {
       errors.projectName = 'Please select project ';
     }
-    if (!task) {
+    if (!taskId) {
       errors.task = 'Please Retainer month ';
     }
     if (!comments) {
@@ -110,21 +119,41 @@ const TimeLogFrom = ({ recentProject }: { recentProject: string }) => {
   const reset = () => {
     setFormData({
       date: new Date(),
-      projectName: '',
-      task: '',
+      projectId: '',
+      taskId: '',
+      milestoneId: '',
       logTime: '',
       comments: '',
-      billable: 'nonBillable',
+      billingType: false,
     });
   };
 
-  const formHandler = (e: React.FormEvent<HTMLFormElement>) => {
+  const formHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setErrorMsg(fieldValidation());
-    const notValid = fieldValidation();
-    if (Object.values(notValid).length <= 0) {
-      alert('Success');
-      reset();
+    try {
+      setErrorMsg(fieldValidation());
+      const notValid = fieldValidation();
+      if (Object.values(notValid).length <= 0) {
+        await _post('api/timecards', formData);
+        toast({
+          title: 'Project',
+          description: 'Timecard created successfully.',
+          status: 'success',
+          duration: 2000,
+          position: 'top-right',
+          isClosable: true,
+        });
+        reset();
+      }
+    } catch (error: any) {
+      toast({
+        title: 'Timecard',
+        description: error.response.data.error,
+        status: 'error',
+        duration: 2000,
+        position: 'top-right',
+        isClosable: true,
+      });
     }
   };
 
@@ -142,12 +171,12 @@ const TimeLogFrom = ({ recentProject }: { recentProject: string }) => {
             lineHeight='17.6px'
             textStyle='sourceSansProBold'
           >
-            Select Project
+            Project
           </FormLabel>
           <CustomSelect onChange={selectProject} />
           <FormErrorMessage>{errorMsg?.projectName}</FormErrorMessage>
         </FormControl>
-        <Box>
+        {/* <Box>
           <Text
             pb='8px'
             color='grayLight'
@@ -170,7 +199,7 @@ const TimeLogFrom = ({ recentProject }: { recentProject: string }) => {
           >
             Month 41 (4 April - 3 May)
           </Text>
-        </Box>
+        </Box> */}
         <FormControl m='14px 0' isInvalid={errorMsg?.task ? true : false}>
           <FormLabel
             htmlFor='task'
@@ -179,12 +208,12 @@ const TimeLogFrom = ({ recentProject }: { recentProject: string }) => {
             lineHeight='17.6px'
             textStyle='sourceSansProBold'
           >
-            Select Task
+            Milestone
           </FormLabel>
           <Select
             id='task'
-            name='task'
-            value={formData.task}
+            name='milestoneId'
+            value={formData.milestoneId}
             placeholder='Select'
             fontSize='14px'
             lineHeight='17.6px'
@@ -192,14 +221,53 @@ const TimeLogFrom = ({ recentProject }: { recentProject: string }) => {
             textStyle='sourceSansProRegular'
             onChange={selecttHandler}
           >
-            {taskNode?.map((task, index) => (
-              <option value={task} key={index}>
-                {task}
-              </option>
-            ))}
+            {milestoneData.length > 0 &&
+              milestoneData.map(
+                (task: { id: string; title: string }, index) => {
+                  return (
+                    <option value={task.id} key={index}>
+                      {task.title}
+                    </option>
+                  );
+                },
+              )}
           </Select>
           <FormErrorMessage>{errorMsg?.task}</FormErrorMessage>
         </FormControl>
+        {projectType !== 'FIXED' && (
+          <FormControl m='14px 0' isInvalid={errorMsg?.task ? true : false}>
+            <FormLabel
+              htmlFor='task'
+              color='grayLight'
+              fontSize='14px'
+              lineHeight='17.6px'
+              textStyle='sourceSansProBold'
+            >
+              Task
+            </FormLabel>
+            <Select
+              id='task'
+              name='taskId'
+              value={formData.taskId}
+              placeholder='Select'
+              fontSize='14px'
+              lineHeight='17.6px'
+              color='grayLight'
+              textStyle='sourceSansProRegular'
+              onChange={selecttHandler}
+            >
+              {taskNode.length > 0 &&
+                taskNode.map((task: { id: string; title: string }, index) => {
+                  return (
+                    <option value={task.id} key={index}>
+                      {task.title}
+                    </option>
+                  );
+                })}
+            </Select>
+            <FormErrorMessage>{errorMsg?.task}</FormErrorMessage>
+          </FormControl>
+        )}
         <HStack justifyContent='space-between' m='14px 0'>
           <FormControl
             w='143px'
@@ -214,7 +282,7 @@ const TimeLogFrom = ({ recentProject }: { recentProject: string }) => {
               lineHeight='17.6px'
               textStyle='sourceSansProBold'
             >
-              Add Time
+              Time
             </FormLabel>
             <Flex
               alignItems='center'

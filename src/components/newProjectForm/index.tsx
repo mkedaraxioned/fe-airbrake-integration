@@ -207,8 +207,8 @@ const NewProjectForm = ({ onClose, projectId }: Props) => {
         if (projectId) {
           await _patch(`api/projects/${projectId}`, {
             ...formData,
-            milestones: [],
             tasks: [],
+            milestones: [],
           });
         } else {
           await _post('api/projects/', formData);

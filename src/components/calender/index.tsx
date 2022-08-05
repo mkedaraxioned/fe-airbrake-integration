@@ -210,11 +210,13 @@ const Calendar = ({ showDetailsHandle }: Props) => {
             isSameDay(new Date(), selectedDate)
               ? 'Today'
               : format(selectedDate, 'EEEE')
-          }, ${format(selectedDate, 'MMM do')}`}
+          }, ${format(selectedDate, 'MMMM do')}`}
         </Text>
-        <Button height='30px' onClick={setTodaysDate} variant='primary'>
-          Today
-        </Button>
+        {!isSameMonth(currentMonth, new Date()) && (
+          <Button height='30px' onClick={setTodaysDate} variant='primary'>
+            Today
+          </Button>
+        )}
       </Box>
       {renderHeader()}
       {renderDays()}
