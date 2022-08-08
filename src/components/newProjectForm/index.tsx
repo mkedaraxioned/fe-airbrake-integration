@@ -13,10 +13,12 @@ import {
   Select,
   Stack,
   Text,
+  useToast,
 } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 import { AiOutlineCalendar } from 'react-icons/ai';
 import {
+  Client,
   MemberObj,
   NewProjectFormData,
   NewProjectFormErr,
@@ -26,47 +28,95 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import AutoCompleteElem from '../autoComplete';
 import CustomRadio from '../customRadio';
+import { _get, _patch, _post } from '../../utils/api';
+import { add, format } from 'date-fns';
+import { useDispatch } from 'react-redux';
+import { allProjects } from '../../feature/projectsSlice';
 
-const NewProjectForm = () => {
+interface Props {
+  onClose: () => void;
+  projectId?: string;
+}
+
+const NewProjectForm = ({ onClose, projectId }: Props) => {
   const [formData, setFormData] = useState<NewProjectFormData>({
-    clientName: '',
-    projectName: '',
-    projectType: 'fixed',
-    startDate: new Date(),
-    endDate: null,
-    billable: 'nonBillable',
-    teamMembers: [],
+    clientId: '',
+    title: '',
+    type: 'FIXED',
+    startDate: format(new Date(), "yyyy-MM-dd'T'hh:mm:ss"),
+    endDate: format(new Date(), "yyyy-MM-dd'T'hh:mm:ss"),
+    billingType: false,
+    members: [],
   });
-
   const [errMsg, setErrMsg] = useState<NewProjectFormErr>();
   const [member, setMember] = useState<MemberObj | null>(null);
-
-  const items = [
-    {
-      id: 0,
-      name: 'Kedar M',
-    },
-    {
-      id: 1,
-      name: 'Vipin Y',
-    },
-    {
-      id: 2,
-      name: 'Dnyaneshwar I',
-    },
-    {
-      id: 3,
-      name: 'Prajakta P',
-    },
-    {
-      id: 4,
-      name: 'Anurag B',
-    },
-  ];
+  const [allUsers, setAllUsers] = useState<any>([]);
+  const [selectedUsers, setSelectedUsers] = useState<any>([]);
+  const [allClient, setAllClient] = useState<Client[]>([]);
+  const toast = useToast();
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    setTeamMembers();
+    setMembers();
   }, [member]);
+
+  useEffect(() => {
+    fetchAllUser();
+    fetchAllClients();
+  }, []);
+
+  useEffect(() => {
+    fetchProject();
+  }, []);
+
+  useEffect(() => {
+    setRetainerEndDate();
+  }, [formData.type, formData.startDate]);
+
+  const fetchAllUser = async () => {
+    const res = await _get('api/users/all');
+    setAllUsers(res.data.users);
+  };
+
+  const fetchAllClients = async () => {
+    const res = await _get('api/clients/');
+    setAllClient(res.data.clients);
+  };
+
+  const fetchProject = async () => {
+    if (projectId) {
+      const res = await _get(`api/projects/${projectId}`);
+      console.log(res.data.project, 'resres');
+      if (res.data) {
+        setFormData({
+          clientId: res.data.project.clientId,
+          title: res.data.project.title,
+          type: res.data.project.type,
+          startDate: res.data.project.startDate,
+          endDate: res.data.project.endDate,
+          billingType: res.data.project.billingType,
+          members: res.data.project.members,
+        });
+        setSelectedUsers(res.data.project.members);
+      }
+    }
+  };
+
+  const setRetainerEndDate = () => {
+    const createdDate = add(new Date(formData.startDate as string), {
+      months: 1,
+    });
+    if (formData.type !== 'FIXED') {
+      setFormData({
+        ...formData,
+        endDate: format(new Date(createdDate), "yyyy-MM-dd'T'hh:mm:ss"),
+      });
+    }
+  };
+  const fetchProjects = async () => {
+    const projectsRes = await _get('api/projects');
+    dispatch(allProjects(projectsRes.data?.projects));
+  };
 
   const selecttHandler = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -77,87 +127,114 @@ const NewProjectForm = () => {
 
   const checkboxHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.target.checked
-      ? setFormData({ ...formData, billable: 'billable' })
-      : setFormData({ ...formData, billable: 'nonBillable' });
+      ? setFormData({ ...formData, billingType: true })
+      : setFormData({ ...formData, billingType: false });
   };
   const radioHandler = (e: any) => {
-    setFormData({ ...formData, projectType: e.target.value });
+    setFormData({ ...formData, type: e.target.value });
   };
   const selectMember = (item: MemberObj) => {
     setMember(item);
   };
-  const setTeamMembers = () => {
-    const arr = formData.teamMembers?.map((val) => val.id);
+  const setMembers = () => {
+    const arr = formData.members?.map((val) => val.id);
+    const user = allUsers?.filter((ele: any) => ele.id == member?.id);
     if (!member) return null;
     if (!arr.includes(member.id)) {
       setFormData({
         ...formData,
-        teamMembers: [...formData.teamMembers, member],
+        members: [...formData.members, user[0]],
       });
-      setErrMsg({ ...errMsg, teamMembers: '' });
+      setSelectedUsers([...selectedUsers, member]);
+      setErrMsg({ ...errMsg, members: '' });
       setMember(null);
     } else {
-      setErrMsg({ ...errMsg, teamMembers: 'Team member already added' });
+      setErrMsg({ ...errMsg, members: 'Team member already added' });
     }
   };
   const fieldValidation = () => {
     const errors: NewProjectFormErr = {};
-    const {
-      clientName,
-      projectName,
-      startDate,
-      endDate,
-      projectType,
-      teamMembers,
-    } = formData;
+    const { clientId, title, startDate, endDate, type, members } = formData;
 
-    if (!clientName) {
-      errors.clientName = 'Please select client.';
+    if (!clientId) {
+      errors.client = 'Please select client.';
     }
-    if (!projectName) {
-      errors.projectName = 'Please enter project name. ';
+    if (!title) {
+      errors.title = 'Please enter project name. ';
     }
 
     if (!startDate) {
       errors.startDate = 'Please enter start date';
     }
 
-    if (projectType === 'fixed' && !endDate) {
+    if (type === 'FIXED' && !endDate) {
       errors.endDate = 'Please enter end date';
     }
 
-    if (teamMembers.length <= 0) {
-      errors.teamMembers = 'Please select team members';
+    if (members.length <= 0) {
+      errors.members = 'Please select team members';
     }
     return errors;
   };
-
   const unselectMember = (id: number) => {
-    const myArr = formData.teamMembers.filter((_) => _.id !== id);
-    setFormData({ ...formData, teamMembers: myArr });
+    const myArr = formData.members.filter((_) => _.id !== id);
+    const userArr = selectedUsers.filter((_: any) => _.id !== id);
+    setFormData({ ...formData, members: myArr });
+    setSelectedUsers(userArr);
     setMember(null);
   };
-
+  console.log(formData, 'formData');
   const reset = () => {
     setFormData({
-      clientName: '',
-      projectName: '',
-      projectType: 'fixed',
-      startDate: new Date(),
+      clientId: '',
+      title: '',
+      type: 'FIXED',
+      startDate: format(new Date(), "yyyy-MM-dd'T'hh:mm:ss"),
       endDate: null,
-      billable: 'nonBillable',
-      teamMembers: [],
+      billingType: false,
+      members: [],
     });
     setMember(null);
+    setSelectedUsers([]);
   };
 
-  const formHandler = (e: React.FormEvent<HTMLFormElement>) => {
+  const formHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setErrMsg(fieldValidation());
-    const notValid = fieldValidation();
-    if (Object.values(notValid).length <= 0) {
-      alert('Success');
-      reset();
+    try {
+      setErrMsg(fieldValidation());
+      const notValid = fieldValidation();
+      if (Object.values(notValid).length <= 0) {
+        if (projectId) {
+          await _patch(`api/projects/${projectId}`, {
+            ...formData,
+            tasks: [],
+            milestones: [],
+          });
+        } else {
+          await _post('api/projects/', formData);
+        }
+        onClose();
+        reset();
+        fetchProjects();
+        toast({
+          title: 'Project',
+          description: 'New project created successfully.',
+          status: 'success',
+          duration: 2000,
+          position: 'top-right',
+          isClosable: true,
+        });
+      }
+    } catch (error) {
+      error &&
+        toast({
+          title: 'Project',
+          description: 'Project not created.',
+          status: 'error',
+          duration: 2000,
+          position: 'top-right',
+          isClosable: true,
+        });
     }
   };
 
@@ -168,7 +245,7 @@ const NewProjectForm = () => {
       pos='absolute'
       top={0}
       right={0}
-      color='textLightMid'
+      color='grayLight'
       textStyle='sourceSansProRegular'
     >
       <Heading
@@ -182,45 +259,55 @@ const NewProjectForm = () => {
         <form onSubmit={formHandler}>
           <FormControl
             p='25px 0 10px'
-            isInvalid={errMsg?.clientName ? true : false}
+            isInvalid={errMsg?.client ? true : false}
+            opacity={projectId ? '.3' : '1'}
+            pointerEvents={projectId ? 'none' : 'auto'}
           >
             <FormLabel fontSize='14px' lineHeight='17.6px' fontWeight='600'>
               Select Client
             </FormLabel>
             <Select
               id='select_project'
-              name='clientName'
-              value={formData.clientName}
+              name='clientId'
+              value={formData.clientId}
               placeholder='Select'
               fontSize='14px'
               lineHeight='17.6px'
-              color='textLightMid'
+              color='grayLight'
               textStyle='sourceSansProRegular'
               onChange={selecttHandler}
             >
-              <option value={'ClearForMe Ongoing Retainer Agreement'}>
-                ClearForMe Ongoing Retainer Agreement
-              </option>
-              <option value={'Project 2'}>Project 2</option>
+              {allClient?.length > 0 &&
+                allClient?.map((client: Client) => {
+                  return (
+                    <option key={client.id} value={client.id}>
+                      {client.name}
+                    </option>
+                  );
+                })}
             </Select>
-            <FormErrorMessage>{errMsg?.clientName}</FormErrorMessage>
+            <FormErrorMessage>{errMsg?.client}</FormErrorMessage>
           </FormControl>
-          <FormControl p='8px 0' isInvalid={errMsg?.projectName ? true : false}>
+          <FormControl p='8px 0' isInvalid={errMsg?.title ? true : false}>
             <FormLabel fontSize='14px' lineHeight='17.6px' fontWeight='600'>
               Project Name
             </FormLabel>
             <Input
               type='text'
-              name='projectName'
+              name='title'
               placeholder='Please enter project name'
               fontSize='14px'
               lineHeight='17.6px'
               onChange={inputHandler}
-              value={formData.projectName}
+              value={formData.title}
             />
-            <FormErrorMessage>{errMsg?.projectName}</FormErrorMessage>
+            <FormErrorMessage>{errMsg?.title}</FormErrorMessage>
           </FormControl>
-          <FormControl p='8px 0'>
+          <FormControl
+            p='8px 0'
+            opacity={projectId ? '.3' : '1'}
+            pointerEvents={projectId ? 'none' : 'auto'}
+          >
             <FormLabel fontSize='14px' lineHeight='17.6px' fontWeight='600'>
               Select project Type
             </FormLabel>
@@ -229,31 +316,35 @@ const NewProjectForm = () => {
                 <CustomRadio
                   onChange={radioHandler}
                   lable='Fixed'
-                  value='fixed'
-                  isChecked={formData.projectType === 'fixed' ? true : false}
+                  value='FIXED'
+                  isChecked={formData.type === 'FIXED' ? true : false}
                 />
               </Box>
               <Box mr='20px'>
                 <CustomRadio
                   onChange={radioHandler}
                   lable='Retainer'
-                  value='retainer'
-                  isChecked={formData.projectType === 'retainer' ? true : false}
+                  value='RETAINER'
+                  isChecked={formData.type === 'RETAINER' ? true : false}
                 />
               </Box>
               <Box>
                 <CustomRadio
                   onChange={radioHandler}
                   lable='Retainer (Granular)'
-                  value='retainer-granular'
+                  value='RETAINER_GRANULAR'
                   isChecked={
-                    formData.projectType === 'retainer-granular' ? true : false
+                    formData.type === 'RETAINER_GRANULAR' ? true : false
                   }
                 />
               </Box>
             </Flex>
           </FormControl>
-          <Flex justifyContent='space-between'>
+          <Flex
+            justifyContent='space-between'
+            opacity={projectId ? '.3' : '1'}
+            pointerEvents={projectId ? 'none' : 'auto'}
+          >
             <FormControl
               p='8px 0'
               flexBasis='48%'
@@ -278,15 +369,21 @@ const NewProjectForm = () => {
                   alignItems='center'
                   p='10px 0'
                   bg='grayColor'
-                  color='textLightMid'
+                  color='grayLight'
                 >
                   <AiOutlineCalendar fontSize='20px' />
                 </Stack>
                 <Box>
                   <DatePicker
-                    selected={formData.startDate}
+                    selected={new Date(formData.startDate as string)}
                     onChange={(date: Date) =>
-                      setFormData({ ...formData, startDate: date })
+                      setFormData({
+                        ...formData,
+                        startDate: format(
+                          new Date(date),
+                          "yyyy-MM-dd'T'hh:mm:ss",
+                        ),
+                      })
                     }
                     placeholderText='MM/DD/YYYY'
                     className='date_picker_react'
@@ -306,13 +403,13 @@ const NewProjectForm = () => {
                 fontWeight='600'
                 htmlFor='add_time'
               >
-                {formData.projectType === 'fixed' ? (
+                {formData.type === 'FIXED' ? (
                   <Text visibility='hidden'>Select date</Text>
                 ) : (
                   'Month cycle (in days)'
                 )}
               </FormLabel>
-              {formData.projectType === 'fixed' ? (
+              {formData.type === 'FIXED' ? (
                 <Flex
                   alignItems='center'
                   border='1px'
@@ -324,15 +421,21 @@ const NewProjectForm = () => {
                     alignItems='center'
                     p='10px 0'
                     bg='grayColor'
-                    color='textLightMid'
+                    color='grayLight'
                   >
                     <AiOutlineCalendar fontSize='20px' />
                   </Stack>
                   <Box>
                     <DatePicker
-                      selected={formData.endDate}
+                      selected={new Date(formData.endDate as string)}
                       onChange={(date: Date) =>
-                        setFormData({ ...formData, endDate: date })
+                        setFormData({
+                          ...formData,
+                          endDate: format(
+                            new Date(date),
+                            "yyyy-MM-dd'T'hh:mm:ss",
+                          ),
+                        })
                       }
                       placeholderText='MM/DD/YYYY'
                       className='date_picker_react'
@@ -345,10 +448,12 @@ const NewProjectForm = () => {
                   bg='grayMid'
                   fontSize='14px'
                   lineHeight='24px'
-                  color='textLightMid'
+                  color='grayLight'
                   rounded='md'
                 >
-                  Starts every 25th of the month
+                  Starts every{' '}
+                  {format(new Date(formData.endDate as string), 'do')} of the
+                  month
                 </Text>
               )}
               <FormErrorMessage>{errMsg?.endDate}</FormErrorMessage>
@@ -364,14 +469,14 @@ const NewProjectForm = () => {
                 },
               }}
             >
-              <Text fontSize='14px' color='textLightMid'>
+              <Text fontSize='14px' color='grayLight'>
                 Billable
               </Text>
             </Checkbox>
           </FormControl>
           <FormControl
             p='20px 0 34px'
-            isInvalid={errMsg?.teamMembers ? true : false}
+            isInvalid={errMsg?.members ? true : false}
           >
             <FormLabel
               fontSize='14px'
@@ -381,29 +486,36 @@ const NewProjectForm = () => {
             >
               Add project members
             </FormLabel>
-            <AutoCompleteElem onChange={selectMember} items={items} />
+            <AutoCompleteElem
+              onChange={selectMember}
+              items={allUsers}
+              placeholder={'Select member'}
+            />
             <AvatarGroup mt='15px' flexWrap='wrap' w='60%'>
-              {formData.teamMembers.length > 0 &&
-                formData.teamMembers.map((memberData) => (
-                  <Avatar
-                    w='32px'
-                    h='32px'
-                    size='32px'
-                    key={memberData.id}
-                    onClick={() => unselectMember(memberData.id)}
-                    name={memberData.name}
-                    cursor='pointer'
-                  />
-                ))}
+              {selectedUsers.length > 0 &&
+                selectedUsers.map((memberData: any) => {
+                  return (
+                    <Avatar
+                      w='32px'
+                      h='32px'
+                      size='32px'
+                      key={memberData.id}
+                      src={memberData.avatar}
+                      onClick={() => unselectMember(memberData.id)}
+                      name={memberData.name}
+                      cursor='pointer'
+                    />
+                  );
+                })}
             </AvatarGroup>
-            <FormErrorMessage>{errMsg?.teamMembers}</FormErrorMessage>
+            <FormErrorMessage>{errMsg?.members}</FormErrorMessage>
           </FormControl>
           <Box>
             <Button w='137px' type='submit' variant='primary' mr='22px'>
               Save
             </Button>
             <Button w='105px' variant='secondary' onClick={reset}>
-              Cancel
+              Clear
             </Button>
           </Box>
         </form>

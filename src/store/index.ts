@@ -1,6 +1,9 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import storage from 'redux-persist/lib/storage';
 import userReducer from '../feature/userSlice';
+import projectsReducer from '../feature/projectsSlice';
+import clientsReducer from '../feature/clientsSlice';
+import usersReducer from '../feature/allUserSlice';
 import persistReducer from 'redux-persist/es/persistReducer';
 import {
   persistStore,
@@ -12,9 +15,13 @@ import {
   REHYDRATE,
 } from 'redux-persist';
 import { PersistConfig } from '../interfaces/storeInterface';
+import { useDispatch } from 'react-redux';
 
 const reducers = combineReducers({
   user: userReducer,
+  allUsers: usersReducer,
+  allProjects: projectsReducer,
+  allClients: clientsReducer,
 });
 
 const persistConfig: PersistConfig = {
@@ -35,4 +42,5 @@ export const store = configureStore({
 
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
+export const useAppDispatch: () => AppDispatch = useDispatch;
 export const persistor = persistStore(store);

@@ -150,7 +150,7 @@ const ReportFilterForm = () => {
                   name='clientName'
                   placeholder='Select'
                   fontSize='14px'
-                  color='textLightMid'
+                  color='grayLight'
                   textStyle='sourceSansProRegular'
                   lineHeight='17.6px'
                   bg='white'
@@ -187,13 +187,13 @@ const ReportFilterForm = () => {
                     alignItems='center'
                     p='10px 0'
                     bg='grayColor'
-                    color='textLightMid'
+                    color='grayLight'
                   >
                     <AiOutlineCalendar fontSize='20px' />
                   </Stack>
                   <Box
                     flexBasis='70%'
-                    color='textLightMid'
+                    color='grayLight'
                     fontSize='12px'
                     textStyle='sourceSansProRegular'
                   >
@@ -223,13 +223,13 @@ const ReportFilterForm = () => {
                     alignItems='center'
                     p='10px 0'
                     bg='grayColor'
-                    color='textLightMid'
+                    color='grayLight'
                   >
                     <AiOutlineCalendar fontSize='20px' />
                   </Stack>
                   <Box
                     flexBasis='70%'
-                    color='textLightMid'
+                    color='grayLight'
                     fontSize='12px'
                     textStyle='sourceSansProRegular'
                   >
@@ -274,7 +274,7 @@ const ReportFilterForm = () => {
                   fontSize='14px'
                   lineHeight='17.6px'
                   bg='white'
-                  color='textLightMid'
+                  color='grayLight'
                   textStyle='sourceSansProRegular'
                   onChange={selecttHandler}
                 >
@@ -301,7 +301,7 @@ const ReportFilterForm = () => {
                   fontSize='14px'
                   lineHeight='17.6px'
                   bg='white'
-                  color='textLightMid'
+                  color='grayLight'
                   textStyle='sourceSansProRegular'
                   onChange={selecttHandler}
                 >
@@ -325,7 +325,7 @@ const ReportFilterForm = () => {
                   height='38px'
                   fontSize='14px'
                   bg='white'
-                  color='textLightMid'
+                  color='grayLight'
                   textStyle='sourceSansProRegular'
                   lineHeight='17.6px'
                   onChange={selecttHandler}

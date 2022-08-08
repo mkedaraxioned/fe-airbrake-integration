@@ -3,21 +3,62 @@ import {
   Breadcrumb,
   BreadcrumbItem,
   Button,
+  Drawer,
+  DrawerBody,
+  DrawerCloseButton,
+  DrawerContent,
+  DrawerOverlay,
   Flex,
   Heading,
   HStack,
   Text,
-  VStack,
+  useDisclosure,
 } from '@chakra-ui/react';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import RecurringProjectTasks from '../../components/recurringProjectTask';
 import RecurringProjectArchive from '../../components/recurringProjectArchive';
 import { ReactComponent as EditSvg } from '../../assets/images/edit.svg';
 import { ReactComponent as ManageSvg } from '../../assets/images/manage.svg';
 import { ReactComponent as ReportSvg } from '../../assets/images/report.svg';
+import { useParams } from 'react-router';
+import { _get } from '../../utils/api';
+import NewProjectForm from '../../components/newProjectForm';
 
 const ProjectTaskDetails = () => {
+  const [projectData, setProjectData] = useState<any>();
+  const { projectId } = useParams();
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
+  useEffect(() => {
+    getProject();
+  }, [projectId]);
+
+  const getProject = async () => {
+    try {
+      if (projectId) {
+        const res = await _get(`api/projects/${projectId}`);
+        setProjectData(res.data.project);
+      }
+    } catch (error) {
+      return error;
+    }
+  };
+
+  const ModalBox = () => {
+    return (
+      <Drawer isOpen={isOpen} size='lg' placement='right' onClose={onClose}>
+        <DrawerOverlay />
+        <DrawerContent overflowY='scroll' w='588px !important'>
+          <DrawerCloseButton zIndex='10' mt='10px' mr='10px' />
+          <DrawerBody>
+            <NewProjectForm onClose={onClose} projectId={projectId} />
+          </DrawerBody>
+        </DrawerContent>
+      </Drawer>
+    );
+  };
+
   return (
     <Box>
       <Box p='15px 55px 80px' className='wrapper'>
@@ -34,18 +75,18 @@ const ProjectTaskDetails = () => {
             <Link to='/projects'>Projects</Link>
           </BreadcrumbItem>
           <BreadcrumbItem color='textLight'>
-            <Text>Harvest</Text>
+            <Text>{projectData?.title}</Text>
           </BreadcrumbItem>
         </Breadcrumb>
         <Flex justifyContent='space-between'>
-          <VStack align='center' justifyContent='center'>
+          <Box>
             <Text
               fontSize='14px'
               color='textGray'
               textStyle='sourceSansProRegular'
               lineHeight='17.6px'
             >
-              Harvest
+              {projectData?.client.name}
             </Text>
             <Heading
               as='h2'
@@ -55,9 +96,9 @@ const ProjectTaskDetails = () => {
               fontSize='22px'
               lineHeight='27.65px'
             >
-              123V
+              {projectData?.title}
             </Heading>
-          </VStack>
+          </Box>
           <HStack>
             <Button w='137px' mr='10px' variant='secondary'>
               <Flex alignItems='center'>
@@ -67,7 +108,7 @@ const ProjectTaskDetails = () => {
                 </Text>
               </Flex>
             </Button>
-            <Button w='137px' variant='secondary'>
+            <Button w='137px' variant='secondary' onClick={onOpen}>
               <Flex alignItems='center'>
                 <EditSvg />
                 <Text pt='3px' pl='8px'>
@@ -76,11 +117,13 @@ const ProjectTaskDetails = () => {
               </Flex>
             </Button>
             <Button w='137px' ml='18px !important' variant='primary'>
-              <Link to='/projects/harvest/manage'>
+              <Link to={`/projects/${projectId}/manage`}>
                 <Flex alignItems='center'>
                   <ManageSvg />
                   <Text pt='3px' pl='8px'>
-                    Manage Task
+                    {projectData?.type === 'FIXED'
+                      ? 'Manage Phase'
+                      : 'Manage Task'}
                   </Text>
                 </Flex>
               </Link>
@@ -112,6 +155,7 @@ const ProjectTaskDetails = () => {
           <RecurringProjectArchive />
         </Box>
       </Box>
+      <ModalBox />
     </Box>
   );
 };

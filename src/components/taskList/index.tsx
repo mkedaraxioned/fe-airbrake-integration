@@ -17,11 +17,12 @@ const TaskList = () => {
           </Heading>
           <Heading
             as='h3'
+            pr='35px'
             fontSize='18px'
             lineHeight='22.63px'
             textStyle='sourceSansProBold'
           >
-            7:30 hours
+            07:30
           </Heading>
         </HStack>
       </Box>
@@ -29,7 +30,7 @@ const TaskList = () => {
         <HStack
           p='0 33px 5px 0'
           justifyContent='space-between'
-          color='textLightMid'
+          color='grayLight'
         >
           <Heading
             as='h4'
@@ -39,7 +40,9 @@ const TaskList = () => {
           >
             ClearForMe Ongoing Retainer
           </Heading>
-          <Text textStyle='sourceSansProBold'>4:00 hours</Text>
+          <Text pr='5px' textStyle='sourceSansProBold'>
+            04:00
+          </Text>
         </HStack>
         <Box>
           <TimeCard />
@@ -50,7 +53,7 @@ const TaskList = () => {
         <HStack
           p='0 33px 5px 0'
           justifyContent='space-between'
-          color='textLightMid'
+          color='grayLight'
         >
           <Heading
             as='h4'
@@ -60,7 +63,9 @@ const TaskList = () => {
           >
             ClearForMe Ongoing Retainer
           </Heading>
-          <Text textStyle='sourceSansProBold'>4:00 hours</Text>
+          <Text pr='5px' textStyle='sourceSansProBold'>
+            04:00
+          </Text>
         </HStack>
         <Box>
           <TimeCard />

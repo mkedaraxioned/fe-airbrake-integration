@@ -7,17 +7,45 @@ import {
   Text,
   UnorderedList,
 } from '@chakra-ui/react';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import Calendar from '../../components/calender';
 import TaskList from '../../components/taskList';
 import TimeLogFrom from '../../components/timeLogForm';
+import { allUsers } from '../../feature/allUserSlice';
+import { allClients } from '../../feature/clientsSlice';
+import { allProjects } from '../../feature/projectsSlice';
+import { _get } from '../../utils/api';
 
 const Dashboard = () => {
-  const [recentProject, setRecentProject] = useState('');
+  const [formData, setFormData] = useState({
+    date: new Date(),
+    projectId: '',
+    milestoneId: '',
+    taskId: '',
+    logTime: '',
+    comments: '',
+    billingType: false,
+  });
 
+  const dispatch = useDispatch();
   const showDetailsHandle = (dayStr: string) => {
-    console.log(dayStr);
+    setFormData({ ...formData, date: new Date(dayStr) });
   };
+
+  useEffect(() => {
+    fetchClientsProjects();
+  }, []);
+
+  const fetchClientsProjects = async () => {
+    const clientRes = await _get('api/clients');
+    const projectsRes = await _get('api/projects');
+    const usersRes = await _get('api/users/all');
+    dispatch(allProjects(projectsRes.data?.projects));
+    dispatch(allClients(clientRes.data?.clients));
+    dispatch(allUsers(usersRes.data?.users));
+  };
+
   return (
     <Box>
       <Flex justifyContent='center'>
@@ -44,7 +72,7 @@ const Dashboard = () => {
             >
               Add a new entry
             </Heading>
-            <TimeLogFrom recentProject={recentProject} />
+            <TimeLogFrom formData={formData} setFormData={setFormData} />
           </Box>
           <Box mt='30px'>
             <TaskList />
@@ -74,7 +102,6 @@ const Dashboard = () => {
                   alignItems='center'
                   key={index}
                   cursor='pointer'
-                  onClick={() => setRecentProject('WordPress Maintenance')}
                 >
                   <Box mr='18px'>
                     <Avatar w='30px' h='30px' />
@@ -108,9 +135,6 @@ const Dashboard = () => {
               display='flex'
               alignItems='center'
               cursor='pointer'
-              onClick={() =>
-                setRecentProject('ClearForMe Ongoing Retainer Agreement')
-              }
             >
               <Box mr='18px'>
                 <Avatar w='30px' h='30px' />

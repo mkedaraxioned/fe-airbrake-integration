@@ -7,9 +7,15 @@ interface Props {
   items: MemberObj[];
   recentProject?: string;
   onChange: (item: MemberObj) => void;
+  placeholder: string;
 }
 
-const AutoCompleteElem = ({ onChange, items, recentProject }: Props) => {
+const AutoCompleteElem = ({
+  placeholder,
+  onChange,
+  items,
+  recentProject,
+}: Props) => {
   const formatResult = (item: MemberObj) => {
     return (
       <>
@@ -19,13 +25,14 @@ const AutoCompleteElem = ({ onChange, items, recentProject }: Props) => {
       </>
     );
   };
+
   return (
     <div>
       <ReactSearchAutocomplete
         items={items}
         onSelect={onChange}
         formatResult={formatResult}
-        placeholder={recentProject ? recentProject : 'Search here...'}
+        placeholder={recentProject || placeholder}
         showIcon={false}
         styling={{
           height: '40px',
