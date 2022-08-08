@@ -128,9 +128,12 @@ const Header = () => {
                     Clients
                   </Text>
                 </ListItem>
-                <ListItem margin='0 15px' fontSize='18px' lineHeight='23px'>
-                  <Link to='/projects'>Projects</Link>
-                </ListItem>
+                {(user.profile.role === 'ADMIN' ||
+                  user.profile.role === 'NORMAL') && (
+                  <ListItem margin='0 15px' fontSize='18px' lineHeight='23px'>
+                    <Link to='/projects'>Projects</Link>
+                  </ListItem>
+                )}
                 <ListItem margin='0 15px' fontSize='18px' lineHeight='23px'>
                   <Link to='/team'>Team</Link>
                 </ListItem>

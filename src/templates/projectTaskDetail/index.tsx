@@ -45,20 +45,6 @@ const ProjectTaskDetails = () => {
     }
   };
 
-  const ModalBox = () => {
-    return (
-      <Drawer isOpen={isOpen} size='lg' placement='right' onClose={onClose}>
-        <DrawerOverlay />
-        <DrawerContent overflowY='scroll' w='588px !important'>
-          <DrawerCloseButton zIndex='10' mt='10px' mr='10px' />
-          <DrawerBody>
-            <NewProjectForm onClose={onClose} projectId={projectId} />
-          </DrawerBody>
-        </DrawerContent>
-      </Drawer>
-    );
-  };
-
   return (
     <Box>
       <Box p='15px 55px 80px' className='wrapper'>
@@ -100,7 +86,7 @@ const ProjectTaskDetails = () => {
             </Heading>
           </Box>
           <HStack>
-            <Button w='137px' mr='10px' variant='secondary'>
+            <Button w='137px' variant='secondary'>
               <Flex alignItems='center'>
                 <ReportSvg />
                 <Text pt='3px' pl='8px'>
@@ -108,23 +94,11 @@ const ProjectTaskDetails = () => {
                 </Text>
               </Flex>
             </Button>
-            <Button w='137px' variant='secondary' onClick={onOpen}>
-              <Flex alignItems='center'>
-                <EditSvg />
-                <Text pt='3px' pl='8px'>
-                  Edit Project
-                </Text>
-              </Flex>
-            </Button>
-            <Button w='137px' ml='18px !important' variant='primary'>
+            <Button w='150px' ml='10px !important' variant='primary'>
               <Link to={`/projects/${projectId}/manage`}>
                 <Flex alignItems='center'>
                   <ManageSvg />
-                  <Text pt='3px' pl='8px'>
-                    {projectData?.type === 'FIXED'
-                      ? 'Manage Phase'
-                      : 'Manage Task'}
-                  </Text>
+                  <Text pl='8px'>Manage Milestone</Text>
                 </Flex>
               </Link>
             </Button>
@@ -155,7 +129,6 @@ const ProjectTaskDetails = () => {
           <RecurringProjectArchive />
         </Box>
       </Box>
-      <ModalBox />
     </Box>
   );
 };
