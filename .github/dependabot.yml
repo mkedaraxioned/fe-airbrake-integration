@@ -19,7 +19,7 @@ updates:
     target-branch: "master"
     # Labels on pull requests for version updates only
     labels:
-      - "npm dependency"
+      - "dependencies"
     # Add assignees
     assignees:
       - "yvipinaxioned"
