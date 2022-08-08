@@ -15,8 +15,8 @@ updates:
       timezone: "America/New_York"
     # Allow up to 10 open pull requests for npm dependencies
     open-pull-requests-limit: 10
-    # to npm package against the `feature-cfm-module-updates` branch
-    target-branch: "main"
+    # to npm package against the `master` branch
+    target-branch: "master"
     # Labels on pull requests for version updates only
     labels:
       - "npm dependency"
