@@ -10,30 +10,23 @@ import {
   DrawerOverlay,
   Flex,
   Heading,
-  HStack,
   Text,
   useDisclosure,
 } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ReactComponent as EditSvg } from '../../assets/images/edit.svg';
-import { ReactComponent as ManageTaskSvg } from '../../assets/images/manage_task.svg';
 import { useParams } from 'react-router';
 import { _get } from '../../utils/api';
 import FixedProjectManage from '../../components/fixedProjectManage';
-import CreateMilestone from '../../components/createMilestone';
 import RecurringProjectManage from '../../components/recurringProjectManage';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../store';
+
 import NewProjectForm from '../../components/newProjectForm';
 
 const ManageTask = () => {
   const { projectId } = useParams();
   const [projectData, setProjectData] = useState<any>();
 
-  const { projects } = useSelector((state: RootState) => state.allProjects);
-
-  const project = projects?.find(({ id }: { id: string }) => id === projectId);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   useEffect(() => {

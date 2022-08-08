@@ -3,32 +3,23 @@ import {
   Breadcrumb,
   BreadcrumbItem,
   Button,
-  Drawer,
-  DrawerBody,
-  DrawerCloseButton,
-  DrawerContent,
-  DrawerOverlay,
   Flex,
   Heading,
   HStack,
   Text,
-  useDisclosure,
 } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import RecurringProjectTasks from '../../components/recurringProjectTask';
 import RecurringProjectArchive from '../../components/recurringProjectArchive';
-import { ReactComponent as EditSvg } from '../../assets/images/edit.svg';
 import { ReactComponent as ManageSvg } from '../../assets/images/manage.svg';
 import { ReactComponent as ReportSvg } from '../../assets/images/report.svg';
 import { useParams } from 'react-router';
 import { _get } from '../../utils/api';
-import NewProjectForm from '../../components/newProjectForm';
 
 const ProjectTaskDetails = () => {
   const [projectData, setProjectData] = useState<any>();
   const { projectId } = useParams();
-  const { isOpen, onOpen, onClose } = useDisclosure();
 
   useEffect(() => {
     getProject();
