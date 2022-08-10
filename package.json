@@ -64,7 +64,7 @@
   "devDependencies": {
     "@types/jquery": "^3.5.14",
     "@types/react-datepicker": "^4.4.2",
-    "@typescript-eslint/eslint-plugin": "^5.32.0",
+    "@typescript-eslint/eslint-plugin": "^5.33.0",
     "@typescript-eslint/parser": "^5.16.0",
     "eslint": "^7.32.0",
     "eslint-config-standard": "^16.0.3",
