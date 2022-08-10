@@ -252,6 +252,7 @@ const NewProjectForm = ({ onClose, projectId }: Props) => {
         textStyle='sourceSansProBold'
         fontSize='22px'
         lineHeight='27.65px'
+        color='textColor'
       >
         Add a new project
       </Heading>
@@ -264,13 +265,13 @@ const NewProjectForm = ({ onClose, projectId }: Props) => {
             pointerEvents={projectId ? 'none' : 'auto'}
           >
             <FormLabel fontSize='14px' lineHeight='17.6px' fontWeight='600'>
-              Select Client
+              Select client
             </FormLabel>
             <Select
               id='select_project'
               name='clientId'
               value={formData.clientId}
-              placeholder='Select'
+              placeholder='Please select client'
               fontSize='14px'
               lineHeight='17.6px'
               color='grayLight'
@@ -290,13 +291,14 @@ const NewProjectForm = ({ onClose, projectId }: Props) => {
           </FormControl>
           <FormControl p='8px 0' isInvalid={errMsg?.title ? true : false}>
             <FormLabel fontSize='14px' lineHeight='17.6px' fontWeight='600'>
-              Project Name
+              Project name
             </FormLabel>
             <Input
               type='text'
               name='title'
               placeholder='Please enter project name'
               fontSize='14px'
+              color='extraLightBlack'
               lineHeight='17.6px'
               onChange={inputHandler}
               value={formData.title}
@@ -307,9 +309,10 @@ const NewProjectForm = ({ onClose, projectId }: Props) => {
             p='8px 0'
             opacity={projectId ? '.3' : '1'}
             pointerEvents={projectId ? 'none' : 'auto'}
+            color='extraLightBlack'
           >
             <FormLabel fontSize='14px' lineHeight='17.6px' fontWeight='600'>
-              Select project Type
+              Select project type
             </FormLabel>
             <Flex>
               <Box mr='20px'>
@@ -331,7 +334,7 @@ const NewProjectForm = ({ onClose, projectId }: Props) => {
               <Box>
                 <CustomRadio
                   onChange={radioHandler}
-                  lable='Retainer (Granular)'
+                  lable='Retainer (granular)'
                   value='RETAINER_GRANULAR'
                   isChecked={
                     formData.type === 'RETAINER_GRANULAR' ? true : false
@@ -489,7 +492,7 @@ const NewProjectForm = ({ onClose, projectId }: Props) => {
             <AutoCompleteElem
               onChange={selectMember}
               items={allUsers}
-              placeholder={'Select member'}
+              placeholder={'Select members from the list'}
             />
             <AvatarGroup mt='15px' flexWrap='wrap' w='60%'>
               {selectedUsers.length > 0 &&

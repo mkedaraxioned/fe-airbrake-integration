@@ -10,29 +10,23 @@ import {
   DrawerOverlay,
   Flex,
   Heading,
-  HStack,
   Text,
   useDisclosure,
 } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ReactComponent as EditSvg } from '../../assets/images/edit.svg';
-import { ReactComponent as ManageTaskSvg } from '../../assets/images/manage_task.svg';
 import { useParams } from 'react-router';
 import { _get } from '../../utils/api';
 import FixedProjectManage from '../../components/fixedProjectManage';
-import CreateMilestone from '../../components/createMilestone';
 import RecurringProjectManage from '../../components/recurringProjectManage';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../store';
+
+import NewProjectForm from '../../components/newProjectForm';
 
 const ManageTask = () => {
   const { projectId } = useParams();
   const [projectData, setProjectData] = useState<any>();
 
-  const { projects } = useSelector((state: RootState) => state.allProjects);
-
-  const project = projects?.find(({ id }: { id: string }) => id === projectId);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   useEffect(() => {
@@ -51,13 +45,7 @@ const ManageTask = () => {
         <DrawerContent overflowY='scroll' w='588px !important'>
           <DrawerCloseButton zIndex='10' mt='10px' mr='10px' />
           <DrawerBody>
-            {projectId && (
-              <CreateMilestone
-                onClose={onClose}
-                name={project?.title}
-                projectId={projectId}
-              />
-            )}
+            <NewProjectForm onClose={onClose} projectId={projectId} />
           </DrawerBody>
         </DrawerContent>
       </Drawer>
@@ -110,34 +98,19 @@ const ManageTask = () => {
               {projectData?.title}
             </Heading>
           </Box>
-          <HStack>
-            {projectData?.type === 'FIXED' && (
-              <Button w='170px' onClick={onOpen} variant='secondary'>
-                <EditSvg />
-                <Text pt='2px' pl='8px'>
-                  Create Milestone
-                </Text>
-              </Button>
-            )}
-            <Box>
-              <Button w='137px' margin='0 10px' variant='secondary'>
-                <EditSvg />
-                <Text pt='2px' pl='8px'>
-                  Edit Project
-                </Text>
-              </Button>
-            </Box>
+          <Box>
             <Button
-              type='submit'
-              w={projectData?.type === 'FIXED' ? '147px' : '137px'}
-              variant='primary'
+              w='137px'
+              margin='0 10px'
+              variant='secondary'
+              onClick={onOpen}
             >
-              <ManageTaskSvg />
+              <EditSvg />
               <Text pt='2px' pl='8px'>
-                {projectData?.type === 'FIXED' ? 'Manage Phase' : 'Manage Task'}
+                Edit Project
               </Text>
             </Button>
-          </HStack>
+          </Box>
         </Flex>
         <Box p='30px 0'>
           <Box pos='relative'>

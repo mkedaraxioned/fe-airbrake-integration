@@ -112,10 +112,23 @@ const NewClient = ({ onClose }: Prop) => {
             <FormErrorMessage>{errMsg?.name}</FormErrorMessage>
           </FormControl>
           <Box pt='22px'>
-            <Button w='137px' type='submit' variant='primary' mr='22px'>
+            <Button
+              w='110px'
+              fontSize='15px'
+              h='38px'
+              type='submit'
+              variant='primary'
+              mr='22px'
+            >
               Save
             </Button>
-            <Button w='105px' variant='secondary' onClick={reset}>
+            <Button
+              w='105px'
+              h='38px'
+              variant='secondary'
+              onClick={reset}
+              fontSize='15px'
+            >
               Clear
             </Button>
           </Box>

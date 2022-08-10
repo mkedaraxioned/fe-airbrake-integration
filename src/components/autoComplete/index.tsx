@@ -40,12 +40,12 @@ const AutoCompleteElem = ({
           borderRadius: '5px',
           backgroundColor: 'white',
           boxShadow: 'none',
-          color: '#676767',
+          color: '#696969',
           fontSize: '14px',
           fontFamily: 'Source Sans Pro',
           iconColor: '#676767',
           lineColor: '#E2E8F0',
-          placeholderColor: '#676767',
+          placeholderColor: '#696969',
           zIndex: 2,
         }}
       />

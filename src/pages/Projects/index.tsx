@@ -132,14 +132,14 @@ const Projects = () => {
           rounded='md'
         >
           <TabList pb='2px' borderBottom='1px'>
-            <TabsButton>My Projects</TabsButton>
             <TabsButton>All Projects</TabsButton>
+            <TabsButton>My Projects</TabsButton>
           </TabList>
           <TabPanels>
             <TabPanel p='30px 22px'>
               {clientSet?.length > 0 &&
                 clientSet?.map((client) => {
-                  const projectPerClient = myProjects?.filter(
+                  const projectPerClient = projects?.filter(
                     (project: { clientId: string }) =>
                       project.clientId === client.id,
                   );
@@ -155,7 +155,7 @@ const Projects = () => {
             <TabPanel p='30px 22px'>
               {clientSet?.length > 0 &&
                 clientSet?.map((client) => {
-                  const projectPerClient = projects?.filter(
+                  const projectPerClient = myProjects?.filter(
                     (project: { clientId: string }) =>
                       project.clientId === client.id,
                   );

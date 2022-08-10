@@ -54,6 +54,7 @@ export const costomTheme = extendTheme({
     bgGray: '#ECECEC',
     inputBg: '#F3F6F9',
     bgGrayLight: '#F9FAFC',
+    extraLightBlack: '#696969',
   },
   components: {
     Button,
