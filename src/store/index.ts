@@ -4,6 +4,7 @@ import userReducer from '../feature/userSlice';
 import projectsReducer from '../feature/projectsSlice';
 import clientsReducer from '../feature/clientsSlice';
 import usersReducer from '../feature/allUserSlice';
+import entriesReducer from '../feature/entriesSlice';
 import persistReducer from 'redux-persist/es/persistReducer';
 import {
   persistStore,
@@ -22,6 +23,7 @@ const reducers = combineReducers({
   allUsers: usersReducer,
   allProjects: projectsReducer,
   allClients: clientsReducer,
+  entryDetails: entriesReducer,
 });
 
 const persistConfig: PersistConfig = {

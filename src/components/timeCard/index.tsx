@@ -1,8 +1,16 @@
 import { Box, Text } from '@chakra-ui/react';
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { ReactComponent as DeleteSvg } from '../../assets/images/delete.svg';
+import { getSelectedEntry } from '../../feature/entriesSlice';
+import { Task } from '../../interfaces/timeCard';
+interface TaskDetails {
+  task: Task;
+}
 
-const TimeCard = () => {
+const TimeCard = ({ task }: TaskDetails) => {
+  const dispatch = useDispatch();
+
   const [isVisible, setIsVisible] = useState(false);
   const over = () => {
     setIsVisible(true);
@@ -11,10 +19,21 @@ const TimeCard = () => {
   const out = () => {
     setIsVisible(false);
   };
+
+  const editSelected = () => {
+    dispatch(
+      getSelectedEntry({
+        taskId: task.taskId,
+        projectId: task.projectId,
+      }),
+    );
+  };
+
   return (
     <Box
       p='11px 40px 11px 20px'
       m='10px 0'
+      cursor='pointer'
       pos='relative'
       rounded='md'
       display='flex'
@@ -25,15 +44,19 @@ const TimeCard = () => {
       lineHeight='17.6px'
       onMouseOver={over}
       onMouseOut={out}
+      onDoubleClick={() => {
+        console.log(task.name);
+        editSelected;
+      }}
     >
       <Box textStyle='sourceSansProRegular'>
-        <Text color='textColor'>Milestone / Activity / Task</Text>
+        <Text color='textColor'>{task.name}</Text>
         <Text fontSize='12px' lineHeight='15.08px' color='textLight'>
-          Notes / Comments
+          {task.comments}
         </Text>
       </Box>
       <Text color='grayLight' textStyle='sourceSansProBold'>
-        01:00
+        {task.timeLogged}
       </Text>
       <Box
         pos='absolute'
