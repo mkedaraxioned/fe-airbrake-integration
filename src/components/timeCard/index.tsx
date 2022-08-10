@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router';
 import { ReactComponent as DeleteSvg } from '../../assets/images/delete.svg';
 import { Task } from '../../interfaces/timeCard';
+import { scrollToTop } from '../../utils/common';
 interface TaskDetails {
   task: Task;
 }
@@ -34,7 +35,10 @@ const TimeCard = ({ task }: TaskDetails) => {
       lineHeight='17.6px'
       onMouseOver={over}
       onMouseOut={out}
-      onDoubleClick={() => navigate(`/dashboard/${task.taskId}`)}
+      onDoubleClick={() => {
+        navigate(`/dashboard/${task.timecardId}}`);
+        scrollToTop();
+      }}
     >
       <Box textStyle='sourceSansProRegular'>
         <Text color='textColor'>{task.name}</Text>

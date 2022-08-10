@@ -1,22 +1,21 @@
 import { Box, Heading, HStack, Text } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
-import { timecardsData } from '../../constants/entries';
 import { Task, Timecards } from '../../interfaces/timeCard';
 import { _get } from '../../utils/api';
 import TimeCard from '../timeCard';
 
 const TaskList = () => {
   const [timeCardDetails, setTimeCardDetails] = useState<Timecards>();
-  const fetchEntries = async () => {
-    const res = await _get(`/api/timecards`);
+  const fetchEntries = async (date: string) => {
+    /**
+     * TODO: add dynamic dates from calender
+     */
+    const res = await _get(`api/timecards/timelog?startDate=${date}`);
     setTimeCardDetails(res.data.timecardsData);
   };
 
-  const projectDetails = timecardsData.timecardsData;
-
   useEffect(() => {
-    // fetchEntries();
-    projectDetails && setTimeCardDetails(projectDetails);
+    fetchEntries('2022-08-08');
   }, []);
 
   return (
@@ -38,12 +37,12 @@ const TaskList = () => {
             lineHeight='22.63px'
             textStyle='sourceSansProBold'
           >
-            {projectDetails.totalHours}
+            {timeCardDetails?.totalHours}
           </Heading>
         </HStack>
       </Box>
-      {Array.isArray(projectDetails.projects) &&
-        projectDetails.projects.map((project, i) => {
+      {Array.isArray(timeCardDetails?.projects) &&
+        timeCardDetails?.projects.map((project, i) => {
           return (
             <Box p={i === 0 ? '15px 0 10px' : undefined} key={project.name}>
               <HStack
