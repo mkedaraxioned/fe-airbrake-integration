@@ -14,3 +14,9 @@ export const utilClientName = (arr: any) => {
   });
   return newArr;
 };
+
+export const scrollToTop = () =>
+  window.scrollTo({
+    top: 0,
+    behavior: 'smooth',
+  });

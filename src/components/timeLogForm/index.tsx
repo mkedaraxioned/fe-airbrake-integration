@@ -14,9 +14,10 @@ import {
 } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
+import { useParams } from 'react-router';
 import { TimelogFormError } from '../../interfaces/timelogForm';
 import { RootState } from '../../store';
-import { _post } from '../../utils/api';
+import { _get, _post } from '../../utils/api';
 import { timeStringValidate } from '../../utils/validation';
 import CustomSelect from '../customSelect';
 
@@ -36,6 +37,8 @@ interface Props {
 }
 
 const TimeLogFrom = ({ formData, setFormData }: Props) => {
+  const timeCardId = useParams();
+
   const [projectType, setProjectType] = useState<string>('');
 
   const [taskNode, setTaskNode] = useState([]);
@@ -127,6 +130,33 @@ const TimeLogFrom = ({ formData, setFormData }: Props) => {
       billingType: false,
     });
   };
+
+  const fetchTaskDetail = async (id: string) => {
+    try {
+      const res = await _get(`api/timecards/${id}`);
+      const task = res.data.timecard;
+      /**
+       * TODO: add loading states
+       */
+      setFormData({
+        date: task.date,
+        projectId: task?.projectId,
+        taskId: task?.taskId,
+        milestoneId: task?.milestoneId,
+        logTime: task?.logTime,
+        comments: task?.comments,
+        billingType: task.billingType,
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  useEffect(() => {
+    if (timeCardId.id) {
+      fetchTaskDetail(timeCardId.id);
+    }
+  }, [timeCardId.id]);
 
   const formHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
