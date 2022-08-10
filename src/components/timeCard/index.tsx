@@ -1,15 +1,14 @@
 import { Box, Text } from '@chakra-ui/react';
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router';
 import { ReactComponent as DeleteSvg } from '../../assets/images/delete.svg';
-import { getSelectedEntry } from '../../feature/entriesSlice';
 import { Task } from '../../interfaces/timeCard';
 interface TaskDetails {
   task: Task;
 }
 
 const TimeCard = ({ task }: TaskDetails) => {
-  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const [isVisible, setIsVisible] = useState(false);
   const over = () => {
@@ -18,15 +17,6 @@ const TimeCard = ({ task }: TaskDetails) => {
 
   const out = () => {
     setIsVisible(false);
-  };
-
-  const editSelected = () => {
-    dispatch(
-      getSelectedEntry({
-        taskId: task.taskId,
-        projectId: task.projectId,
-      }),
-    );
   };
 
   return (
@@ -44,10 +34,7 @@ const TimeCard = ({ task }: TaskDetails) => {
       lineHeight='17.6px'
       onMouseOver={over}
       onMouseOut={out}
-      onDoubleClick={() => {
-        console.log(task.name);
-        editSelected;
-      }}
+      onDoubleClick={() => navigate(`/dashboard/${task.taskId}`)}
     >
       <Box textStyle='sourceSansProRegular'>
         <Text color='textColor'>{task.name}</Text>

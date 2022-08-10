@@ -4,7 +4,7 @@ import userReducer from '../feature/userSlice';
 import projectsReducer from '../feature/projectsSlice';
 import clientsReducer from '../feature/clientsSlice';
 import usersReducer from '../feature/allUserSlice';
-import entriesReducer from '../feature/entriesSlice';
+import timeLogReducer from '../feature/timeLog';
 import persistReducer from 'redux-persist/es/persistReducer';
 import {
   persistStore,
@@ -23,7 +23,7 @@ const reducers = combineReducers({
   allUsers: usersReducer,
   allProjects: projectsReducer,
   allClients: clientsReducer,
-  entryDetails: entriesReducer,
+  timeCardsData: timeLogReducer,
 });
 
 const persistConfig: PersistConfig = {

@@ -1,16 +1,23 @@
 import { Box, Heading, HStack, Text } from '@chakra-ui/react';
-import React from 'react';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../store';
+import React, { useEffect, useState } from 'react';
+import { timecardsData } from '../../constants/entries';
+import { Task, Timecards } from '../../interfaces/timeCard';
+import { _get } from '../../utils/api';
 import TimeCard from '../timeCard';
 
 const TaskList = () => {
-  const projects = useSelector(
-    (state: RootState) => state.entryDetails.entries.projects,
-  );
-  const totalHours = useSelector(
-    (state: RootState) => state.entryDetails.entries.totalHours,
-  );
+  const [timeCardDetails, setTimeCardDetails] = useState<Timecards>();
+  const fetchEntries = async () => {
+    const res = await _get(`/api/timecards`);
+    setTimeCardDetails(res.data.timecardsData);
+  };
+
+  const projectDetails = timecardsData.timecardsData;
+
+  useEffect(() => {
+    // fetchEntries();
+    projectDetails && setTimeCardDetails(projectDetails);
+  }, []);
 
   return (
     <Box p='17px 0'>
@@ -31,12 +38,12 @@ const TaskList = () => {
             lineHeight='22.63px'
             textStyle='sourceSansProBold'
           >
-            {totalHours}
+            {projectDetails.totalHours}
           </Heading>
         </HStack>
       </Box>
-      {Array.isArray(projects) &&
-        projects.map((project, i) => {
+      {Array.isArray(projectDetails.projects) &&
+        projectDetails.projects.map((project, i) => {
           return (
             <Box p={i === 0 ? '15px 0 10px' : undefined} key={project.name}>
               <HStack
@@ -56,7 +63,7 @@ const TaskList = () => {
               </HStack>
               <Box>
                 {Array.isArray(project?.tasks) &&
-                  project?.tasks.map((task) => (
+                  project?.tasks.map((task: Task) => (
                     <TimeCard key={task.taskId} task={task} />
                   ))}
               </Box>
