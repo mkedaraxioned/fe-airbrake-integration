@@ -3,32 +3,23 @@ import {
   Breadcrumb,
   BreadcrumbItem,
   Button,
-  Drawer,
-  DrawerBody,
-  DrawerCloseButton,
-  DrawerContent,
-  DrawerOverlay,
   Flex,
   Heading,
   HStack,
   Text,
-  useDisclosure,
 } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import RecurringProjectTasks from '../../components/recurringProjectTask';
 import RecurringProjectArchive from '../../components/recurringProjectArchive';
-import { ReactComponent as EditSvg } from '../../assets/images/edit.svg';
 import { ReactComponent as ManageSvg } from '../../assets/images/manage.svg';
 import { ReactComponent as ReportSvg } from '../../assets/images/report.svg';
 import { useParams } from 'react-router';
 import { _get } from '../../utils/api';
-import NewProjectForm from '../../components/newProjectForm';
 
 const ProjectTaskDetails = () => {
   const [projectData, setProjectData] = useState<any>();
   const { projectId } = useParams();
-  const { isOpen, onOpen, onClose } = useDisclosure();
 
   useEffect(() => {
     getProject();
@@ -43,20 +34,6 @@ const ProjectTaskDetails = () => {
     } catch (error) {
       return error;
     }
-  };
-
-  const ModalBox = () => {
-    return (
-      <Drawer isOpen={isOpen} size='lg' placement='right' onClose={onClose}>
-        <DrawerOverlay />
-        <DrawerContent overflowY='scroll' w='588px !important'>
-          <DrawerCloseButton zIndex='10' mt='10px' mr='10px' />
-          <DrawerBody>
-            <NewProjectForm onClose={onClose} projectId={projectId} />
-          </DrawerBody>
-        </DrawerContent>
-      </Drawer>
-    );
   };
 
   return (
@@ -100,7 +77,7 @@ const ProjectTaskDetails = () => {
             </Heading>
           </Box>
           <HStack>
-            <Button w='137px' mr='10px' variant='secondary'>
+            <Button w='137px' variant='secondary'>
               <Flex alignItems='center'>
                 <ReportSvg />
                 <Text pt='3px' pl='8px'>
@@ -108,23 +85,11 @@ const ProjectTaskDetails = () => {
                 </Text>
               </Flex>
             </Button>
-            <Button w='137px' variant='secondary' onClick={onOpen}>
-              <Flex alignItems='center'>
-                <EditSvg />
-                <Text pt='3px' pl='8px'>
-                  Edit Project
-                </Text>
-              </Flex>
-            </Button>
-            <Button w='137px' ml='18px !important' variant='primary'>
+            <Button w='150px' ml='10px !important' variant='primary'>
               <Link to={`/projects/${projectId}/manage`}>
                 <Flex alignItems='center'>
                   <ManageSvg />
-                  <Text pt='3px' pl='8px'>
-                    {projectData?.type === 'FIXED'
-                      ? 'Manage Phase'
-                      : 'Manage Task'}
-                  </Text>
+                  <Text pl='8px'>Manage Milestone</Text>
                 </Flex>
               </Link>
             </Button>
@@ -155,7 +120,6 @@ const ProjectTaskDetails = () => {
           <RecurringProjectArchive />
         </Box>
       </Box>
-      <ModalBox />
     </Box>
   );
 };
