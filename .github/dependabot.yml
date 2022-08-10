@@ -28,7 +28,7 @@ updates:
       - "yvipinaxioned"
     ignore:
        - dependency-name: "react"
-       - dependency-name: "react-redux"
+       - dependency-name: "react-dom"
        - dependency-name: "react-redux"
        - dependency-name: "react-router"
        - dependency-name: "chakra-ui/react"
