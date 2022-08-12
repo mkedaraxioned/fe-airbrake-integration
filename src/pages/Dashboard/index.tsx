@@ -51,7 +51,10 @@ const Dashboard = () => {
       <Flex justifyContent='center'>
         <Box flexBasis='31%' bg='bgLight'>
           <Box w='323px' mt='40px' mr='50px' ml='auto'>
-            <Calendar showDetailsHandle={showDetailsHandle} />
+            <Calendar
+              showDetailsHandle={showDetailsHandle}
+              formDate={formData.date}
+            />
           </Box>
         </Box>
         <Box

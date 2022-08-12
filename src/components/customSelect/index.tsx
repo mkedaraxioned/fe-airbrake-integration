@@ -169,8 +169,6 @@ const CustomSelect = ({ onChange }: Props) => {
   return (
     <Box>
       <Select
-        // getOptionLabel={(option) => option.name}
-        // getOptionValue={(option) => option.id}
         onChange={onChange}
         options={sortOptions}
         styles={customStyles}

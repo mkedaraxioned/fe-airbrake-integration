@@ -7,14 +7,15 @@ import {
   Input,
   ListItem,
   Text,
+  Tooltip,
   UnorderedList,
   useToast,
 } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 import { AiOutlinePlusCircle } from 'react-icons/ai';
-import { FaCheck } from 'react-icons/fa';
 import { useParams } from 'react-router';
 import { ReactComponent as DeleteSvg } from '../../assets/images/delete.svg';
+import { ReactComponent as CheckSvg } from '../../assets/images/check.svg';
 import { _get, _patch, _post } from '../../utils/api';
 import { timeStringValidate } from '../../utils/validation';
 
@@ -42,6 +43,8 @@ const FixedProjectManage = () => {
   const [fixedFormData, setFixedFormData] = useState<any>({
     phase: [],
   });
+  const [milestoneIndex, setMilestoneIndex] = useState<null | number>(null);
+
   const { projectId } = useParams();
   const toast = useToast();
 
@@ -76,6 +79,13 @@ const FixedProjectManage = () => {
     setFixedFormData({
       phase: [...fixedFormData.phase, { title: '', budget: '' }],
     });
+  };
+
+  const focusHandler = (index: number) => {
+    setMilestoneIndex(index);
+  };
+  const blurHandler = () => {
+    setMilestoneIndex(null);
   };
 
   const removePhaseControls = async (
@@ -207,6 +217,8 @@ const FixedProjectManage = () => {
                             placeholder='Enter Phase'
                             value={_.title}
                             name='title'
+                            onFocus={() => focusHandler(index)}
+                            onBlur={blurHandler}
                             onChange={(e) => handleInputChange(e, index)}
                           />
                           {errMessage.id === index && (
@@ -233,9 +245,12 @@ const FixedProjectManage = () => {
                           <Input
                             type='text'
                             placeholder='Hrs'
+                            p='2px'
                             textStyle='inputTextStyle'
                             value={_.budget}
                             name='budget'
+                            onFocus={() => focusHandler(index)}
+                            onBlur={blurHandler}
                             onChange={(e) => handleInputChange(e, index)}
                             textAlign='center'
                           />
@@ -251,17 +266,24 @@ const FixedProjectManage = () => {
                             </FormErrorMessage>
                           )}
                         </FormControl>
-                        <Flex>
-                          <Box
-                            cursor='pointer'
-                            onClick={() => removePhaseControls(_.id, index)}
-                          >
-                            <DeleteSvg />
-                          </Box>
-                          <button type='submit'>
-                            <FaCheck />
-                          </button>
-                        </Flex>
+                        {milestoneIndex === index && (
+                          <Flex alignItems='center'>
+                            <Tooltip label='Delete'>
+                              <Box
+                                pr='10px'
+                                cursor='pointer'
+                                onClick={() => removePhaseControls(_.id, index)}
+                              >
+                                <DeleteSvg />
+                              </Box>
+                            </Tooltip>
+                            <Tooltip label='Save'>
+                              <button type='submit'>
+                                <CheckSvg />
+                              </button>
+                            </Tooltip>
+                          </Flex>
+                        )}
                       </HStack>
                     </form>
                   </ListItem>

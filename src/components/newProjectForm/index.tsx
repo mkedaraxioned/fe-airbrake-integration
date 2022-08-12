@@ -86,7 +86,6 @@ const NewProjectForm = ({ onClose, projectId }: Props) => {
   const fetchProject = async () => {
     if (projectId) {
       const res = await _get(`api/projects/${projectId}`);
-      console.log(res.data.project, 'resres');
       if (res.data) {
         setFormData({
           clientId: res.data.project.clientId,
@@ -183,7 +182,7 @@ const NewProjectForm = ({ onClose, projectId }: Props) => {
     setSelectedUsers(userArr);
     setMember(null);
   };
-  console.log(formData, 'formData');
+
   const reset = () => {
     setFormData({
       clientId: '',
