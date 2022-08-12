@@ -10,7 +10,6 @@ interface TaskDetails {
 
 const TimeCard = ({ task }: TaskDetails) => {
   const navigate = useNavigate();
-
   const [isVisible, setIsVisible] = useState(false);
   const over = () => {
     setIsVisible(true);
@@ -36,7 +35,7 @@ const TimeCard = ({ task }: TaskDetails) => {
       onMouseOver={over}
       onMouseOut={out}
       onDoubleClick={() => {
-        navigate(`/dashboard/${task.timecardId}}`);
+        navigate(`/dashboard/${task.timecardId}`);
         scrollToTop();
       }}
     >
