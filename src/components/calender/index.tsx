@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   format,
   subMonths,
@@ -6,34 +6,30 @@ import {
   startOfWeek,
   addDays,
   isSameDay,
-  startOfMonth,
   endOfWeek,
   isSameMonth,
+  startOfMonth,
+  hoursToMinutes,
   isAfter,
   getMonth,
 } from 'date-fns';
-import { Box, Button, Flex, Text } from '@chakra-ui/react';
+import { Box, Button, Flex, Text, Tooltip } from '@chakra-ui/react';
 import { HiOutlineChevronLeft, HiOutlineChevronRight } from 'react-icons/hi';
 import { endOfMonth } from 'date-fns/esm';
+import { _get } from '../../utils/api';
 
 interface Props {
   showDetailsHandle: (dayStr: string) => void;
+  formDate: Date;
 }
 
-const Calendar = ({ showDetailsHandle }: Props) => {
+const Calendar = ({ showDetailsHandle, formDate }: Props) => {
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState(new Date());
-
-  const loggedHourData = [
-    { date: '06/05/2022', loggedTime: 5 },
-    { date: '06/02/2022', loggedTime: 8 },
-    { date: '05/02/2022', loggedTime: 6 },
-    { date: '06/06/2022', loggedTime: 8 },
-    { date: '06/08/2022', loggedTime: 8 },
-    { date: '05/05/2022', loggedTime: 6 },
-    { date: '05/18/2022', loggedTime: 8 },
-  ];
-
+  const [loggedTimeData, setLoggedTimeData] = useState([]);
+  useEffect(() => {
+    fetchTimelogsPerMonths();
+  }, [currentMonth, formDate]);
   const changeMonthHandle = (btnType: string) => {
     if (btnType === 'prev') {
       setCurrentMonth(subMonths(currentMonth, 1));
@@ -46,6 +42,34 @@ const Calendar = ({ showDetailsHandle }: Props) => {
   const onDateClickHandle = (day: Date, dayStr: string) => {
     setSelectedDate(day);
     showDetailsHandle(dayStr);
+  };
+  const startDate = format(startOfMonth(currentMonth), 'yyyy-MM-dd');
+  const endDate = format(endOfMonth(currentMonth), 'yyyy-MM-dd');
+
+  const totalTimeData = (arr: any) => {
+    const newArr: any = [];
+    let totalTime = 0;
+    arr?.filter((item: any) => {
+      const i = newArr.findIndex(
+        (x: any) =>
+          new Date(x.date).toISOString().substr(0, 10) ===
+          new Date(item.date).toISOString().substr(0, 10),
+      );
+      totalTime += hoursToMinutes(parseInt(item.totalTime.replace(':', '.')));
+
+      if (i <= -1) {
+        newArr.push({ date: item.date, totalTime });
+      }
+      return null;
+    });
+    return newArr;
+  };
+
+  const fetchTimelogsPerMonths = async () => {
+    const res = await _get(
+      `api/timecards/range?startDate=${startDate}&endDate=${endDate}`,
+    );
+    setLoggedTimeData(totalTimeData(res?.data.timelogRange));
   };
 
   const renderHeader = () => {
@@ -102,7 +126,6 @@ const Calendar = ({ showDetailsHandle }: Props) => {
     }
     return <Box display='flex'>{days}</Box>;
   };
-
   const renderCells = () => {
     const monthStart = startOfMonth(currentMonth);
     const monthEnd = endOfMonth(monthStart);
@@ -111,7 +134,6 @@ const Calendar = ({ showDetailsHandle }: Props) => {
 
     const dateFormat = 'd';
     const rows = [];
-
     let days = [];
     let day = startDate;
     let formattedDate = '';
@@ -123,50 +145,66 @@ const Calendar = ({ showDetailsHandle }: Props) => {
         const curTime = new Date().getTime();
         const month = getMonth(day);
         let bgColorVal = '';
-        loggedHourData.forEach((value) => {
-          if (
-            new Date(value.date).getTime() === day.getTime() &&
-            value.loggedTime >= 8
-          ) {
-            bgColorVal = '#DCEDC8';
-          } else if (
-            new Date(value.date).getTime() === day.getTime() &&
-            value.loggedTime < 8
-          ) {
-            bgColorVal = '#FFECB3';
-          }
-        });
+        let toolTiplabel = '';
+        loggedTimeData.length > 0 &&
+          loggedTimeData.forEach(
+            (value: { date: string; totalTime: number }) => {
+              if (
+                format(new Date(value.date.substr(0, 10)), 'yyyy-MM-dd') ===
+                format(new Date(day), 'yyyy-MM-dd')
+              ) {
+                toolTiplabel = new Date(value.totalTime * 60 * 1000)
+                  .toISOString()
+                  .substr(11, 5);
+              }
+              if (
+                format(new Date(value.date.substr(0, 10)), 'yyyy-MM-dd') ===
+                  format(new Date(day), 'yyyy-MM-dd') &&
+                value.totalTime >= 480
+              ) {
+                bgColorVal = '#FFECB3';
+              } else if (
+                format(new Date(value.date.substr(0, 10)), 'yyyy-MM-dd') ===
+                  format(new Date(day), 'yyyy-MM-dd') &&
+                value.totalTime < 480
+              ) {
+                bgColorVal = '#DCEDC8';
+              }
+            },
+          );
         days.push(
-          <Box
-            w='46px'
-            h='46px'
-            lineHeight='46px'
-            bg={`${
-              isSameDay(day, selectedDate)
-                ? 'btnPurple'
-                : !isAfter(new Date(), day)
-                ? '#E2E8F066'
-                : bgColorVal
-            }`}
-            color={`${
-              month !== currentMonth.getMonth() || !isAfter(new Date(), day)
-                ? 'textLight'
-                : isSameDay(day, selectedDate)
-                ? 'white'
-                : 'textColor'
-            }`}
-            pointerEvents={`${getTime > curTime ? 'none' : 'auto'}`}
-            cursor={`${getTime > curTime ? 'not-allowed' : 'pointer'}`}
-            key={i}
-            onClick={() => {
-              const dayStr = format(cloneDay, 'dd-MM-yyyy');
-              onDateClickHandle(cloneDay, dayStr);
-            }}
-          >
-            <Text as='span' fontSize='12px' lineHeight='14.52px'>
-              {formattedDate}
-            </Text>
-          </Box>,
+          <Tooltip label={toolTiplabel}>
+            <Box
+              w='46px'
+              h='46px'
+              lineHeight='46px'
+              bg={`${
+                isSameDay(day, selectedDate)
+                  ? 'btnPurple'
+                  : !isAfter(new Date(), day)
+                  ? '#E2E8F066'
+                  : bgColorVal
+              }`}
+              color={`${
+                month !== currentMonth.getMonth() || !isAfter(new Date(), day)
+                  ? 'textLight'
+                  : isSameDay(day, selectedDate)
+                  ? 'white'
+                  : 'textColor'
+              }`}
+              pointerEvents={`${getTime > curTime ? 'none' : 'auto'}`}
+              cursor={`${getTime > curTime ? 'not-allowed' : 'pointer'}`}
+              key={i}
+              onClick={() => {
+                const dayStr = format(cloneDay, 'MM-dd-yyyy');
+                onDateClickHandle(cloneDay, dayStr);
+              }}
+            >
+              <Text as='span' fontSize='12px' lineHeight='14.52px'>
+                {formattedDate}
+              </Text>
+            </Box>
+          </Tooltip>,
         );
         day = addDays(day, 1);
       }

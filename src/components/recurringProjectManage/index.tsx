@@ -8,6 +8,7 @@ import {
   ListItem,
   StackDivider,
   Text,
+  Tooltip,
   UnorderedList,
   useToast,
 } from '@chakra-ui/react';
@@ -15,6 +16,7 @@ import React, { useEffect, useState } from 'react';
 import { AiOutlinePlusCircle } from 'react-icons/ai';
 import CustomCheckbox from '../customCheckBox';
 import { ReactComponent as DeleteSvg } from '../../assets/images/delete.svg';
+import { ReactComponent as CheckSvg } from '../../assets/images/check.svg';
 import { timeStringValidate } from '../../utils/validation';
 import { _get, _patch, _post } from '../../utils/api';
 import { useParams } from 'react-router';
@@ -37,16 +39,22 @@ const RecurringProjectManage = () => {
   });
   const [milestoneErr, setMilestoneErr] = useState<Err>({});
   const [taskErr, setTaskErr] = useState<Err>({});
-  const [isVisibleIndex, setIsVisibleIndex] = useState(0);
+  const [isVisibleIndex, setIsVisibleIndex] = useState<null | number>(null);
+  const [taskIndex, setTaskIndex] = useState<null | number>(null);
   const { tasks, milestone } = recurringFormData;
   const { projectId } = useParams();
   const toast = useToast();
   const over = (index: number) => {
     setIsVisibleIndex(index);
   };
-
+  const focusHandler = (index: number) => {
+    setTaskIndex(index);
+  };
+  const blurHandler = () => {
+    setTaskIndex(null);
+  };
   const out = () => {
-    setIsVisibleIndex(0);
+    setIsVisibleIndex(null);
   };
 
   const addTaskControls = () => {
@@ -69,7 +77,6 @@ const RecurringProjectManage = () => {
     }
   };
 
-  console.log(projectId, 'projectId');
   const removeTaskControls = async (id: string, taskIndex: number) => {
     const filterTask = recurringFormData.tasks.filter(
       (_: { title: string; budget: string }, index: number) =>
@@ -264,7 +271,6 @@ const RecurringProjectManage = () => {
           <UnorderedList m='0'>
             {milestone?.length > 0 &&
               milestone.map((_: any, index: any) => {
-                console.log(_, '__');
                 return (
                   <form
                     key={index}
@@ -335,9 +341,13 @@ const RecurringProjectManage = () => {
                           )}
                         </FormControl>
                       </Flex>
-                      <Box>
-                        <button type='submit'>Save</button>
-                      </Box>
+                      <Tooltip label='Save'>
+                        <Box pl='10px'>
+                          <button type='submit'>
+                            <CheckSvg />
+                          </button>
+                        </Box>
+                      </Tooltip>
                     </ListItem>
                   </form>
                 );
@@ -351,20 +361,20 @@ const RecurringProjectManage = () => {
       <Box p='22px 0'>
         <Flex w='562px' justifyContent='space-between'>
           <HStack
-            flexBasis='69%'
-            justifyContent='space-between'
+            flexBasis='72%'
             color='grayLight'
             textStyle='sourceSansProBold'
             fontSize='14px'
             lineHeight='17.6px'
           >
-            <Text>Task/Activity name</Text>
+            <Text m='0 !important'>Archive</Text>
+            <Text pr='30%'>Task/Activity name</Text>
             <Text fontWeight='400' textDecor='underline'>
               View archive tasks
             </Text>
           </HStack>
           <HStack
-            flexBasis='26%'
+            flexBasis='20%'
             justifyContent='space-between'
             color='grayLight'
             textStyle='sourceSansProBold'
@@ -372,7 +382,6 @@ const RecurringProjectManage = () => {
             lineHeight='17.6px'
           >
             <Text>Budget Hrs</Text>
-            <Text m='0 !important'>Archive</Text>
           </HStack>
         </Flex>
         <Box pos='relative'>
@@ -388,7 +397,6 @@ const RecurringProjectManage = () => {
                 },
                 index: number,
               ) => {
-                console.log(_, 'taskstaskstasks');
                 return (
                   !_.isDeleted &&
                   !_.isArchieved && (
@@ -404,6 +412,13 @@ const RecurringProjectManage = () => {
                         onMouseOut={out}
                       >
                         <HStack pos='relative'>
+                          <Tooltip label='Archive'>
+                            <Box p='0 15px 0 10px'>
+                              <CustomCheckbox
+                                onChange={(e: any) => checkHandler(e, _.id)}
+                              />
+                            </Box>
+                          </Tooltip>
                           <FormControl
                             w='387px'
                             mr='20px'
@@ -418,6 +433,8 @@ const RecurringProjectManage = () => {
                               textStyle='inputTextStyle'
                               placeholder='Enter Task'
                               value={_.title}
+                              onFocus={() => focusHandler(index)}
+                              onBlur={blurHandler}
                               name='title'
                               onChange={(e) => handleInputChange(e, index)}
                             />
@@ -434,7 +451,7 @@ const RecurringProjectManage = () => {
                           </FormControl>
                           <FormControl
                             w='60px'
-                            mr='37px !important'
+                            mr='10px !important'
                             isInvalid={
                               taskErr?.budgetEr && taskErr?.id === index
                                 ? true
@@ -447,6 +464,8 @@ const RecurringProjectManage = () => {
                               textStyle='inputTextStyle'
                               value={_.budget}
                               name='budget'
+                              onFocus={() => focusHandler(index)}
+                              onBlur={blurHandler}
                               onChange={(e) => handleInputChange(e, index)}
                               textAlign='center'
                             />
@@ -461,26 +480,31 @@ const RecurringProjectManage = () => {
                               </FormErrorMessage>
                             )}
                           </FormControl>
-                          <Box>
-                            <CustomCheckbox
-                              onChange={(e: any) => checkHandler(e, _.id)}
-                            />
-                          </Box>
-                          <Box
-                            display={
-                              isVisibleIndex === index ? 'block' : 'none'
-                            }
-                            pos='absolute'
-                            top='24%'
-                            right='-10px'
-                            cursor='pointer'
-                            onClick={() => removeTaskControls(_.id, index)}
-                          >
-                            <DeleteSvg />
-                          </Box>
-                          <Box>
-                            <button type='submit'>save</button>
-                          </Box>
+                          <Tooltip label='Save'>
+                            <Box
+                              display={taskIndex === index ? 'block' : 'none'}
+                              pl='10px'
+                            >
+                              <button type='submit'>
+                                {' '}
+                                <CheckSvg />
+                              </button>
+                            </Box>
+                          </Tooltip>
+                          <Tooltip label='Delete'>
+                            <Box
+                              display={
+                                isVisibleIndex === index ? 'block' : 'none'
+                              }
+                              pos='absolute'
+                              top='23%'
+                              right='32px'
+                              cursor='pointer'
+                              onClick={() => removeTaskControls(_.id, index)}
+                            >
+                              <DeleteSvg />
+                            </Box>
+                          </Tooltip>
                         </HStack>
                       </ListItem>
                     </form>
