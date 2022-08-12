@@ -50,9 +50,7 @@ const RecurringProjectManage = () => {
   const focusHandler = (index: number) => {
     setTaskIndex(index);
   };
-  const blurHandler = () => {
-    setTaskIndex(null);
-  };
+
   const out = () => {
     setIsVisibleIndex(null);
   };
@@ -451,7 +449,6 @@ const RecurringProjectManage = () => {
                               placeholder='Enter Task'
                               value={_.title}
                               onFocus={() => focusHandler(index)}
-                              onBlur={blurHandler}
                               name='title'
                               onChange={(e) => handleInputChange(e, index)}
                             />
@@ -482,7 +479,6 @@ const RecurringProjectManage = () => {
                               value={_.budget}
                               name='budget'
                               onFocus={() => focusHandler(index)}
-                              onBlur={blurHandler}
                               onChange={(e) => handleInputChange(e, index)}
                               textAlign='center'
                             />
