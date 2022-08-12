@@ -1,22 +1,42 @@
-import { Box, Heading, HStack, Text } from '@chakra-ui/react';
+import { Box, Heading, HStack, Text, useToast } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { Task, Timecards } from '../../interfaces/timeCard';
+import { RootState } from '../../store';
 import { _get } from '../../utils/api';
+import { formateDate } from '../../utils/common';
 import TimeCard from '../timeCard';
 
 const TaskList = () => {
+  const toast = useToast();
   const [timeCardDetails, setTimeCardDetails] = useState<Timecards>();
+  const [hasError, setHasError] = useState<boolean>(false);
+  const { currentSelectedDate } = useSelector(
+    (state: RootState) => state.timeCard,
+  );
   const fetchEntries = async (date: string) => {
-    /**
-     * TODO: add dynamic dates from calender
-     */
-    const res = await _get(`api/timecards/timelog?startDate=${date}`);
-    setTimeCardDetails(res.data.timecardsData);
+    try {
+      const res = await _get(`api/timecards/timelog?startDate=${date}`);
+      setTimeCardDetails(res?.data.timecardsData);
+      setHasError(false);
+    } catch (error) {
+      error && setHasError(true);
+      toast({
+        title: 'Entry Logs Detail',
+        description: 'No Entries logged for selected date.',
+        status: 'error',
+        duration: 2000,
+        position: 'top-right',
+        isClosable: true,
+      });
+    }
   };
 
   useEffect(() => {
-    fetchEntries('2022-08-08');
-  }, []);
+    if (currentSelectedDate) {
+      fetchEntries(formateDate(currentSelectedDate));
+    }
+  }, [currentSelectedDate]);
 
   return (
     <Box p='17px 0'>
@@ -30,18 +50,30 @@ const TaskList = () => {
           >
             Entries logged
           </Heading>
-          <Heading
-            as='h3'
-            pr='35px'
-            fontSize='18px'
-            lineHeight='22.63px'
-            textStyle='sourceSansProBold'
-          >
-            {timeCardDetails?.totalHours}
-          </Heading>
+          {!hasError && (
+            <Heading
+              as='h3'
+              pr='35px'
+              fontSize='18px'
+              lineHeight='22.63px'
+              textStyle='sourceSansProBold'
+            >
+              {timeCardDetails?.totalHours}
+            </Heading>
+          )}
         </HStack>
       </Box>
-      {Array.isArray(timeCardDetails?.projects) &&
+      {hasError ? (
+        <Heading
+          as='h4'
+          fontSize='18px'
+          lineHeight='22.63px'
+          textStyle='sourceSansProBold'
+        >
+          No Entries logged for selected date.
+        </Heading>
+      ) : (
+        Array.isArray(timeCardDetails?.projects) &&
         timeCardDetails?.projects.map((project, i) => {
           return (
             <Box p={i === 0 ? '15px 0 10px' : undefined} key={project.name}>
@@ -68,7 +100,8 @@ const TaskList = () => {
               </Box>
             </Box>
           );
-        })}
+        })
+      )}
     </Box>
   );
 };

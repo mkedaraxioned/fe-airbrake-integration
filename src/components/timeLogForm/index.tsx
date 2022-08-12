@@ -19,6 +19,7 @@ import { useParams } from 'react-router';
 import { TimelogFormError } from '../../interfaces/timelogForm';
 import { RootState } from '../../store';
 import { _get, _post } from '../../utils/api';
+import { convertMinutes } from '../../utils/common';
 import { timeStringValidate } from '../../utils/validation';
 import CustomSelect from '../customSelect';
 
@@ -136,26 +137,26 @@ const TimeLogFrom = ({ formData, setFormData }: Props) => {
   const fetchTaskDetail = async (id: string) => {
     try {
       const res = await _get(`api/timecards/${id}`);
-      const task = res.data.timecard;
-      /**
-       * TODO: add loading states
-       */
-      setFormData({
-        date: task.date,
-        projectId: task?.projectId,
-        taskId: task?.taskId,
-        milestoneId: task?.milestoneId,
-        logTime: task?.logTime,
-        comments: task?.comments,
-        billingType: task.billingType,
-      });
+      const task = res?.data.timecard;
+      if (task) {
+        setFormData({
+          ...formData,
+          date: task.date,
+          projectId: task.projectId,
+          taskId: task?.taskId,
+          milestoneId: task.milestoneId,
+          logTime: convertMinutes(task.logTime),
+          comments: task.comments,
+          billingType: task.billingType,
+        });
+      }
     } catch (err) {
       console.log(err);
     }
   };
 
   useEffect(() => {
-    if (timeCardId.id) {
+    if (timeCardId?.id) {
       fetchTaskDetail(timeCardId.id);
     }
   }, [timeCardId.id]);

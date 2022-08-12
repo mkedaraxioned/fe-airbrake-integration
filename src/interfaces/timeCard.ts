@@ -16,7 +16,7 @@ export interface Task {
   projectId: string;
   isBillable: boolean;
   name: string;
-  comments?: string;
+  comments: string;
   minutesLogged?: number;
   timeLogged: string;
 }
