@@ -60,7 +60,7 @@ const RecurringProjectManage = () => {
   const addTaskControls = () => {
     setRecurringFormData({
       ...recurringFormData,
-      tasks: [...recurringFormData.tasks, { title: '', budget: '' }],
+      tasks: [{ title: '', budget: '' }, ...recurringFormData.tasks],
     });
   };
   useEffect(() => {
@@ -256,7 +256,7 @@ const RecurringProjectManage = () => {
       alignItems='flex-start'
       divider={<StackDivider />}
     >
-      <Box p='22px 0'>
+      <Box flexBasis='43%' p='22px 0'>
         <Flex
           justifyContent='space-between'
           color='grayLight'
@@ -289,8 +289,7 @@ const RecurringProjectManage = () => {
                           }
                         >
                           <Input
-                            w='387px'
-                            mr='32px'
+                            w='350px'
                             textStyle='inputTextStyle'
                             type='text'
                             name='title'
@@ -311,7 +310,7 @@ const RecurringProjectManage = () => {
                           )}
                         </FormControl>
                         <FormControl
-                          w='114px'
+                          w='100px'
                           pos='relative'
                           isInvalid={
                             milestoneErr?.budgetEr && milestoneErr?.id === index
@@ -321,7 +320,9 @@ const RecurringProjectManage = () => {
                         >
                           <Input
                             type='text'
+                            p='2px'
                             textStyle='inputTextStyle'
+                            placeholder='Hrs'
                             value={_.budget}
                             name='budget'
                             onChange={(e) =>
@@ -361,20 +362,36 @@ const RecurringProjectManage = () => {
       <Box p='22px 0'>
         <Flex w='562px' justifyContent='space-between'>
           <HStack
-            flexBasis='72%'
+            flexBasis='70%'
             color='grayLight'
             textStyle='sourceSansProBold'
             fontSize='14px'
             lineHeight='17.6px'
           >
-            <Text m='0 !important'>Archive</Text>
-            <Text pr='30%'>Task/Activity name</Text>
-            <Text fontWeight='400' textDecor='underline'>
-              View archive tasks
+            <Text pr='34%' pl='30px'>
+              Task/Activity name
             </Text>
+            <Box
+              display='flex'
+              alignItems='center'
+              textStyle='inputTextStyle'
+              cursor='pointer'
+            >
+              <AiOutlinePlusCircle />
+              <Text
+                ml='5px'
+                textStyle='inputTextStyle'
+                onClick={addTaskControls}
+                _hover={{
+                  textDecor: 'underline',
+                }}
+              >
+                Add new task
+              </Text>
+            </Box>
           </HStack>
           <HStack
-            flexBasis='20%'
+            flexBasis='29%'
             justifyContent='space-between'
             color='grayLight'
             textStyle='sourceSansProBold'
@@ -413,15 +430,15 @@ const RecurringProjectManage = () => {
                       >
                         <HStack pos='relative'>
                           <Tooltip label='Archive'>
-                            <Box p='0 15px 0 10px'>
+                            <Box pr='5px'>
                               <CustomCheckbox
                                 onChange={(e: any) => checkHandler(e, _.id)}
                               />
                             </Box>
                           </Tooltip>
                           <FormControl
-                            w='387px'
-                            mr='20px'
+                            w='350px'
+                            mr='10px !important'
                             isInvalid={
                               taskErr?.titleEr && taskErr?.id === index
                                 ? true
@@ -450,7 +467,7 @@ const RecurringProjectManage = () => {
                             )}
                           </FormControl>
                           <FormControl
-                            w='60px'
+                            w='80px'
                             mr='10px !important'
                             isInvalid={
                               taskErr?.budgetEr && taskErr?.id === index
@@ -480,17 +497,13 @@ const RecurringProjectManage = () => {
                               </FormErrorMessage>
                             )}
                           </FormControl>
-                          <Tooltip label='Save'>
-                            <Box
-                              display={taskIndex === index ? 'block' : 'none'}
-                              pl='10px'
-                            >
-                              <button type='submit'>
-                                {' '}
-                                <CheckSvg />
-                              </button>
-                            </Box>
-                          </Tooltip>
+
+                          <Box display={taskIndex === index ? 'block' : 'none'}>
+                            <button type='submit'>
+                              {' '}
+                              <CheckSvg />
+                            </button>
+                          </Box>
                           <Tooltip label='Delete'>
                             <Box
                               display={
@@ -498,7 +511,7 @@ const RecurringProjectManage = () => {
                               }
                               pos='absolute'
                               top='23%'
-                              right='32px'
+                              right='15px'
                               cursor='pointer'
                               onClick={() => removeTaskControls(_.id, index)}
                             >
@@ -514,25 +527,14 @@ const RecurringProjectManage = () => {
             )}
           </UnorderedList>
         </Box>
-        <Box
-          pt='20px'
-          display='flex'
-          alignItems='center'
+        <Text
+          pl='30px'
+          fontWeight='400'
+          textDecor='underline'
           textStyle='inputTextStyle'
-          cursor='pointer'
         >
-          <AiOutlinePlusCircle />
-          <Text
-            ml='5px'
-            textStyle='inputTextStyle'
-            onClick={addTaskControls}
-            _hover={{
-              textDecor: 'underline',
-            }}
-          >
-            Add new task
-          </Text>
-        </Box>
+          View archive tasks
+        </Text>
       </Box>
     </HStack>
   );

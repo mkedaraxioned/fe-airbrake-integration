@@ -77,7 +77,7 @@ const FixedProjectManage = () => {
 
   const addPhaseControls = () => {
     setFixedFormData({
-      phase: [...fixedFormData.phase, { title: '', budget: '' }],
+      phase: [{ title: '', budget: '' }, ...fixedFormData.phase],
     });
   };
 
@@ -167,6 +167,24 @@ const FixedProjectManage = () => {
             lineHeight='17.6px'
           >
             <Text>Milestones Name</Text>
+            <Box
+              display='flex'
+              alignItems='center'
+              textStyle='inputTextStyle'
+              cursor='pointer'
+            >
+              <AiOutlinePlusCircle />
+              <Text
+                ml='5px'
+                textStyle='inputTextStyle'
+                onClick={addPhaseControls}
+                _hover={{
+                  textDecor: 'underline',
+                }}
+              >
+                Add new Phase
+              </Text>
+            </Box>
           </HStack>
           <HStack
             flexBasis='26%'
@@ -194,7 +212,7 @@ const FixedProjectManage = () => {
             ) => {
               return (
                 !_.isDeleted && (
-                  <ListItem m='20px 0' key={index}>
+                  <ListItem m='10px 0 18px' key={index}>
                     <form
                       onSubmit={(e) =>
                         formHandler(e, _.id, _.title, _.budget, index)
@@ -292,25 +310,6 @@ const FixedProjectManage = () => {
             },
           )}
         </UnorderedList>
-      </Box>
-      <Box
-        pt='15px'
-        display='flex'
-        alignItems='center'
-        textStyle='inputTextStyle'
-        cursor='pointer'
-      >
-        <AiOutlinePlusCircle />
-        <Text
-          ml='5px'
-          textStyle='inputTextStyle'
-          onClick={addPhaseControls}
-          _hover={{
-            textDecor: 'underline',
-          }}
-        >
-          Add new Phase
-        </Text>
       </Box>
     </Box>
   );

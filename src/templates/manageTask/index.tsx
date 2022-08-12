@@ -112,17 +112,7 @@ const ManageTask = () => {
             </Button>
           </Box>
         </Flex>
-        <Box p='30px 0'>
-          <Box pos='relative'>
-            <Text
-              color='textColor'
-              textStyle='sourceSansProBold'
-              fontSize='18px'
-              lineHeight='22.63px'
-            >
-              Manage
-            </Text>
-          </Box>
+        <Box p='8px 0'>
           {projectData?.type === 'FIXED' ? (
             <FixedProjectManage />
           ) : (

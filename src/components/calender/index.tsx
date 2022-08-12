@@ -38,7 +38,6 @@ const Calendar = ({ showDetailsHandle, formDate }: Props) => {
       setCurrentMonth(addMonths(currentMonth, 1));
     }
   };
-
   const onDateClickHandle = (day: Date, dayStr: string) => {
     setSelectedDate(day);
     showDetailsHandle(dayStr);
@@ -46,30 +45,11 @@ const Calendar = ({ showDetailsHandle, formDate }: Props) => {
   const startDate = format(startOfMonth(currentMonth), 'yyyy-MM-dd');
   const endDate = format(endOfMonth(currentMonth), 'yyyy-MM-dd');
 
-  const totalTimeData = (arr: any) => {
-    const newArr: any = [];
-    let totalTime = 0;
-    arr?.filter((item: any) => {
-      const i = newArr.findIndex(
-        (x: any) =>
-          new Date(x.date).toISOString().substr(0, 10) ===
-          new Date(item.date).toISOString().substr(0, 10),
-      );
-      totalTime += hoursToMinutes(parseInt(item.totalTime.replace(':', '.')));
-
-      if (i <= -1) {
-        newArr.push({ date: item.date, totalTime });
-      }
-      return null;
-    });
-    return newArr;
-  };
-
   const fetchTimelogsPerMonths = async () => {
     const res = await _get(
       `api/timecards/range?startDate=${startDate}&endDate=${endDate}`,
     );
-    setLoggedTimeData(totalTimeData(res?.data.timelogRange));
+    setLoggedTimeData(res?.data.timelogRange);
   };
 
   const renderHeader = () => {
@@ -126,12 +106,12 @@ const Calendar = ({ showDetailsHandle, formDate }: Props) => {
     }
     return <Box display='flex'>{days}</Box>;
   };
+
   const renderCells = () => {
     const monthStart = startOfMonth(currentMonth);
     const monthEnd = endOfMonth(monthStart);
     const startDate = startOfWeek(monthStart);
     const endDate = endOfWeek(monthEnd);
-
     const dateFormat = 'd';
     const rows = [];
     let days = [];
@@ -148,25 +128,24 @@ const Calendar = ({ showDetailsHandle, formDate }: Props) => {
         let toolTiplabel = '';
         loggedTimeData.length > 0 &&
           loggedTimeData.forEach(
-            (value: { date: string; totalTime: number }) => {
+            (value: { date: string; totalTime: string }) => {
               if (
                 format(new Date(value.date.substr(0, 10)), 'yyyy-MM-dd') ===
                 format(new Date(day), 'yyyy-MM-dd')
               ) {
-                toolTiplabel = new Date(value.totalTime * 60 * 1000)
-                  .toISOString()
-                  .substr(11, 5);
+                toolTiplabel = value.totalTime;
               }
+
               if (
                 format(new Date(value.date.substr(0, 10)), 'yyyy-MM-dd') ===
                   format(new Date(day), 'yyyy-MM-dd') &&
-                value.totalTime >= 480
+                hoursToMinutes(parseFloat(value.totalTime)) >= 480
               ) {
                 bgColorVal = '#FFECB3';
               } else if (
                 format(new Date(value.date.substr(0, 10)), 'yyyy-MM-dd') ===
                   format(new Date(day), 'yyyy-MM-dd') &&
-                value.totalTime < 480
+                hoursToMinutes(parseFloat(value.totalTime)) < 480
               ) {
                 bgColorVal = '#DCEDC8';
               }
