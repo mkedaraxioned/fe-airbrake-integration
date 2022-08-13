@@ -116,7 +116,7 @@ const ManageTask = () => {
           {projectData?.type === 'FIXED' ? (
             <FixedProjectManage />
           ) : (
-            <RecurringProjectManage />
+            <RecurringProjectManage projectType={projectData?.type} />
           )}
         </Box>
       </Box>

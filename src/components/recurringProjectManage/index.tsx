@@ -32,7 +32,7 @@ interface Err {
   id?: number | null;
 }
 
-const RecurringProjectManage = () => {
+const RecurringProjectManage = ({ projectType }: { projectType: string }) => {
   const [recurringFormData, setRecurringFormData] = useState<any>({
     tasks: [{ title: '', budget: '' }],
     milestone: [],
@@ -357,181 +357,185 @@ const RecurringProjectManage = () => {
           Load older entries
         </Text>
       </Box>
-      <Box p='22px 0'>
-        <Flex w='562px' justifyContent='space-between'>
-          <HStack
-            flexBasis='70%'
-            color='grayLight'
-            textStyle='sourceSansProBold'
-            fontSize='14px'
-            lineHeight='17.6px'
-          >
-            <Text pr='34%' pl='30px'>
-              Task/Activity name
-            </Text>
-            <Box
-              display='flex'
-              alignItems='center'
-              textStyle='inputTextStyle'
-              cursor='pointer'
+      {projectType === 'RETAINER_GRANULAR' && (
+        <Box p='22px 0'>
+          <Flex w='562px' justifyContent='space-between'>
+            <HStack
+              flexBasis='70%'
+              color='grayLight'
+              textStyle='sourceSansProBold'
+              fontSize='14px'
+              lineHeight='17.6px'
             >
-              <AiOutlinePlusCircle />
-              <Text
-                ml='5px'
-                textStyle='inputTextStyle'
-                onClick={addTaskControls}
-                _hover={{
-                  textDecor: 'underline',
-                }}
-              >
-                Add new task
+              <Text pr='34%' pl='30px'>
+                Task/Activity name
               </Text>
-            </Box>
-          </HStack>
-          <HStack
-            flexBasis='29%'
-            justifyContent='space-between'
-            color='grayLight'
-            textStyle='sourceSansProBold'
-            fontSize='14px'
-            lineHeight='17.6px'
-          >
-            <Text>Budget Hrs</Text>
-          </HStack>
-        </Flex>
-        <Box pos='relative'>
-          <UnorderedList listStyleType='none' m='0'>
-            {tasks?.map(
-              (
-                _: {
-                  title: string;
-                  budget: string;
-                  id: string;
-                  isDeleted: boolean;
-                  isArchieved: boolean;
-                },
-                index: number,
-              ) => {
-                return (
-                  !_.isDeleted &&
-                  !_.isArchieved && (
-                    <form
-                      key={index}
-                      onSubmit={(e) =>
-                        taskFormHandler(e, _.id, _.title, _.budget, index)
-                      }
-                    >
-                      <ListItem
-                        m='20px 0'
-                        onMouseOver={() => over(index)}
-                        onMouseOut={out}
+              <Box
+                display='flex'
+                alignItems='center'
+                textStyle='inputTextStyle'
+                cursor='pointer'
+              >
+                <AiOutlinePlusCircle />
+                <Text
+                  ml='5px'
+                  textStyle='inputTextStyle'
+                  onClick={addTaskControls}
+                  _hover={{
+                    textDecor: 'underline',
+                  }}
+                >
+                  Add new task
+                </Text>
+              </Box>
+            </HStack>
+            <HStack
+              flexBasis='29%'
+              justifyContent='space-between'
+              color='grayLight'
+              textStyle='sourceSansProBold'
+              fontSize='14px'
+              lineHeight='17.6px'
+            >
+              <Text>Budget Hrs</Text>
+            </HStack>
+          </Flex>
+          <Box pos='relative'>
+            <UnorderedList listStyleType='none' m='0'>
+              {tasks?.map(
+                (
+                  _: {
+                    title: string;
+                    budget: string;
+                    id: string;
+                    isDeleted: boolean;
+                    isArchieved: boolean;
+                  },
+                  index: number,
+                ) => {
+                  return (
+                    !_.isDeleted &&
+                    !_.isArchieved && (
+                      <form
+                        key={index}
+                        onSubmit={(e) =>
+                          taskFormHandler(e, _.id, _.title, _.budget, index)
+                        }
                       >
-                        <HStack pos='relative'>
-                          <Tooltip label='Archive'>
-                            <Box pr='5px'>
-                              <CustomCheckbox
-                                onChange={(e: any) => checkHandler(e, _.id)}
-                              />
-                            </Box>
-                          </Tooltip>
-                          <FormControl
-                            w='350px'
-                            mr='10px !important'
-                            isInvalid={
-                              taskErr?.titleEr && taskErr?.id === index
-                                ? true
-                                : false
-                            }
-                          >
-                            <Input
-                              type='text'
-                              textStyle='inputTextStyle'
-                              placeholder='Enter Task'
-                              value={_.title}
-                              onFocus={() => focusHandler(index)}
-                              name='title'
-                              onChange={(e) => handleInputChange(e, index)}
-                            />
-                            {taskErr.id === index && (
-                              <FormErrorMessage
-                                pos='absolute'
-                                width='192px'
-                                bottom='-18px'
-                                fontSize='12px'
-                              >
-                                {taskErr?.titleEr}
-                              </FormErrorMessage>
-                            )}
-                          </FormControl>
-                          <FormControl
-                            w='80px'
-                            mr='10px !important'
-                            isInvalid={
-                              taskErr?.budgetEr && taskErr?.id === index
-                                ? true
-                                : false
-                            }
-                          >
-                            <Input
-                              type='text'
-                              placeholder='Hrs'
-                              textStyle='inputTextStyle'
-                              value={_.budget}
-                              name='budget'
-                              onFocus={() => focusHandler(index)}
-                              onChange={(e) => handleInputChange(e, index)}
-                              textAlign='center'
-                            />
-                            {taskErr.id === index && (
-                              <FormErrorMessage
-                                pos='absolute'
-                                width='192px'
-                                bottom='-18px'
-                                fontSize='12px'
-                              >
-                                {taskErr?.budgetEr}
-                              </FormErrorMessage>
-                            )}
-                          </FormControl>
-
-                          <Box display={taskIndex === index ? 'block' : 'none'}>
-                            <button type='submit'>
-                              {' '}
-                              <CheckSvg />
-                            </button>
-                          </Box>
-                          <Tooltip label='Delete'>
-                            <Box
-                              display={
-                                isVisibleIndex === index ? 'block' : 'none'
+                        <ListItem
+                          m='20px 0'
+                          onMouseOver={() => over(index)}
+                          onMouseOut={out}
+                        >
+                          <HStack pos='relative'>
+                            <Tooltip label='Archive'>
+                              <Box pr='5px'>
+                                <CustomCheckbox
+                                  onChange={(e: any) => checkHandler(e, _.id)}
+                                />
+                              </Box>
+                            </Tooltip>
+                            <FormControl
+                              w='350px'
+                              mr='10px !important'
+                              isInvalid={
+                                taskErr?.titleEr && taskErr?.id === index
+                                  ? true
+                                  : false
                               }
-                              pos='absolute'
-                              top='23%'
-                              right='15px'
-                              cursor='pointer'
-                              onClick={() => removeTaskControls(_.id, index)}
                             >
-                              <DeleteSvg />
+                              <Input
+                                type='text'
+                                textStyle='inputTextStyle'
+                                placeholder='Enter Task'
+                                value={_.title}
+                                onFocus={() => focusHandler(index)}
+                                name='title'
+                                onChange={(e) => handleInputChange(e, index)}
+                              />
+                              {taskErr.id === index && (
+                                <FormErrorMessage
+                                  pos='absolute'
+                                  width='192px'
+                                  bottom='-18px'
+                                  fontSize='12px'
+                                >
+                                  {taskErr?.titleEr}
+                                </FormErrorMessage>
+                              )}
+                            </FormControl>
+                            <FormControl
+                              w='80px'
+                              mr='10px !important'
+                              isInvalid={
+                                taskErr?.budgetEr && taskErr?.id === index
+                                  ? true
+                                  : false
+                              }
+                            >
+                              <Input
+                                type='text'
+                                placeholder='Hrs'
+                                textStyle='inputTextStyle'
+                                value={_.budget}
+                                name='budget'
+                                onFocus={() => focusHandler(index)}
+                                onChange={(e) => handleInputChange(e, index)}
+                                textAlign='center'
+                              />
+                              {taskErr.id === index && (
+                                <FormErrorMessage
+                                  pos='absolute'
+                                  width='192px'
+                                  bottom='-18px'
+                                  fontSize='12px'
+                                >
+                                  {taskErr?.budgetEr}
+                                </FormErrorMessage>
+                              )}
+                            </FormControl>
+
+                            <Box
+                              display={taskIndex === index ? 'block' : 'none'}
+                            >
+                              <button type='submit'>
+                                {' '}
+                                <CheckSvg />
+                              </button>
                             </Box>
-                          </Tooltip>
-                        </HStack>
-                      </ListItem>
-                    </form>
-                  )
-                );
-              },
-            )}
-          </UnorderedList>
+                            <Tooltip label='Delete'>
+                              <Box
+                                display={
+                                  isVisibleIndex === index ? 'block' : 'none'
+                                }
+                                pos='absolute'
+                                top='23%'
+                                right='15px'
+                                cursor='pointer'
+                                onClick={() => removeTaskControls(_.id, index)}
+                              >
+                                <DeleteSvg />
+                              </Box>
+                            </Tooltip>
+                          </HStack>
+                        </ListItem>
+                      </form>
+                    )
+                  );
+                },
+              )}
+            </UnorderedList>
+          </Box>
+          <Text
+            pl='30px'
+            fontWeight='400'
+            textDecor='underline'
+            textStyle='inputTextStyle'
+          >
+            View archive tasks
+          </Text>
         </Box>
-        <Text
-          pl='30px'
-          fontWeight='400'
-          textDecor='underline'
-          textStyle='inputTextStyle'
-        >
-          View archive tasks
-        </Text>
-      </Box>
+      )}
     </HStack>
   );
 };
