@@ -24,15 +24,20 @@ const CustomSelect = ({ onChange }: Props) => {
       ? {
           label: elem.title,
           value: elem.id,
-          clientName: client?.name,
-          clientId: client?.id,
+          clientName: client.name,
+          clientId: client.id,
         }
-      : null;
+      : {
+          label: elem.title,
+          value: elem.id,
+          clientName: null, // TODO: modify this logic once dev is back
+          clientId: null,
+        };
   });
 
   const sortOptions = optionsData?.sort(
     (a: { clientName: string }, b: { clientName: string }) =>
-      a?.clientName.toLowerCase() > b?.clientName.toLowerCase() ? 1 : -1,
+      a?.clientName?.toLowerCase() > b?.clientName?.toLowerCase() ? 1 : -1,
   );
 
   const utilClientName = (arr: any) => {
