@@ -89,7 +89,7 @@ const ProjectTaskDetails = () => {
               <Link to={`/projects/${projectId}/manage`}>
                 <Flex alignItems='center'>
                   <ManageSvg />
-                  <Text pl='8px'>Manage Milestone</Text>
+                  <Text pl='8px'>Edit Milestone</Text>
                 </Flex>
               </Link>
             </Button>

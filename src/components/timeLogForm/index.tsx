@@ -12,6 +12,7 @@ import {
   Text,
   useToast,
 } from '@chakra-ui/react';
+import { format } from 'date-fns';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { TimelogFormError } from '../../interfaces/timelogForm';
@@ -21,10 +22,10 @@ import { timeStringValidate } from '../../utils/validation';
 import CustomSelect from '../customSelect';
 
 export interface TimeLogFormData {
-  date: Date;
+  date: Date | string;
   projectId: string;
   milestoneId: string;
-  taskId: string;
+  taskId?: string;
   logTime: string;
   comments: string;
   billingType: boolean;
@@ -78,6 +79,7 @@ const TimeLogFrom = ({ formData, setFormData }: Props) => {
   const selecttHandler = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
+
   const inputHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -103,8 +105,8 @@ const TimeLogFrom = ({ formData, setFormData }: Props) => {
     if (!projectId) {
       errors.projectName = 'Please select project ';
     }
-    if (!taskId) {
-      errors.task = 'Please Retainer month ';
+    if (!taskId && projectType !== 'FIXED') {
+      errors.task = 'Please select task ';
     }
     if (!comments) {
       errors.comments = 'Please enter comments ';
@@ -127,14 +129,25 @@ const TimeLogFrom = ({ formData, setFormData }: Props) => {
       billingType: false,
     });
   };
-
   const formHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
       setErrorMsg(fieldValidation());
       const notValid = fieldValidation();
+      const payload: TimeLogFormData = {
+        billingType: formData.billingType,
+        comments: formData.comments,
+        date: format(new Date(formData.date), "yyyy-MM-dd'T'hh:mm:ss"),
+        logTime: formData.logTime,
+        milestoneId: formData.milestoneId,
+        projectId: formData.projectId,
+      };
+      if (formData.taskId) {
+        payload.taskId = formData.taskId;
+      }
+      console.log(payload, 'payload');
       if (Object.values(notValid).length <= 0) {
-        await _post('api/timecards', formData);
+        await _post('api/timecards', payload);
         toast({
           title: 'Project',
           description: 'Timecard created successfully.',
@@ -176,30 +189,6 @@ const TimeLogFrom = ({ formData, setFormData }: Props) => {
           <CustomSelect onChange={selectProject} />
           <FormErrorMessage>{errorMsg?.projectName}</FormErrorMessage>
         </FormControl>
-        {/* <Box>
-          <Text
-            pb='8px'
-            color='grayLight'
-            fontSize='14px'
-            lineHeight='17.6px'
-            textStyle='sourceSansProBold'
-          >
-            Milestone
-          </Text>
-          <Text
-            rounded='md'
-            p='10px 16px'
-            border='1px'
-            borderColor='borderColor'
-            bg='inputBg'
-            color='grayLight'
-            fontSize='14px'
-            lineHeight='17.6px'
-            textStyle='sourceSansProRegular'
-          >
-            Month 41 (4 April - 3 May)
-          </Text>
-        </Box> */}
         <FormControl m='14px 0' isInvalid={errorMsg?.task ? true : false}>
           <FormLabel
             htmlFor='task'
