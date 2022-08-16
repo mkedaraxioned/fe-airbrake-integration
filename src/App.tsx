@@ -40,7 +40,7 @@ export const App = () => {
                 path='/projects/:projectId/manage/'
                 element={<ManageTask />}
               />
-              <Route path='/dashboard/:id/' element={<Dashboard />} />
+              <Route path='/dashboard/:timeCardId/' element={<Dashboard />} />
             </>
           ) : (
             <Route path='/login' element={<Login />} />

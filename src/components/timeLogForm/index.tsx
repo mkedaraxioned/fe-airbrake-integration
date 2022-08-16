@@ -39,7 +39,7 @@ interface Props {
 }
 
 const TimeLogFrom = ({ formData, setFormData }: Props) => {
-  const timeCardId = useParams();
+  const { timeCardId } = useParams();
 
   const [projectType, setProjectType] = useState<string>('');
 
@@ -156,10 +156,10 @@ const TimeLogFrom = ({ formData, setFormData }: Props) => {
   };
 
   useEffect(() => {
-    if (timeCardId?.id) {
-      fetchTaskDetail(timeCardId.id);
+    if (timeCardId) {
+      fetchTaskDetail(timeCardId);
     }
-  }, [timeCardId.id]);
+  }, [timeCardId]);
 
   const formHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
