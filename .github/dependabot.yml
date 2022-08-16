@@ -33,6 +33,3 @@ updates:
        - dependency-name: "react-router"
        - dependency-name: "chakra-ui/react"
        - dependency-name: "testing-library/react"
-    update-types:
-      - "minor"
-      - "patch"
