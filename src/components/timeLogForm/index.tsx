@@ -14,12 +14,14 @@ import {
 } from '@chakra-ui/react';
 import { format } from 'date-fns';
 import React, { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router';
+import { setTimeCardDetails } from '../../feature/timeCardSlice';
 import { TimelogFormError } from '../../interfaces/timelogForm';
 import { RootState } from '../../store';
 import { _get, _post } from '../../utils/api';
-import { convertMinutes } from '../../utils/common';
+import { convertMinutes, formateDate } from '../../utils/common';
 import { timeStringValidate } from '../../utils/validation';
 import CustomSelect from '../customSelect';
 
@@ -40,6 +42,10 @@ interface Props {
 
 const TimeLogFrom = ({ formData, setFormData }: Props) => {
   const { timeCardId } = useParams();
+  const dispatch = useDispatch();
+  const { currentSelectedDate } = useSelector(
+    (state: RootState) => state.timeCard,
+  );
 
   const [projectType, setProjectType] = useState<string>('');
 
@@ -179,16 +185,19 @@ const TimeLogFrom = ({ formData, setFormData }: Props) => {
       }
       console.log(payload, 'payload');
       if (Object.values(notValid).length <= 0) {
-        await _post('api/timecards', payload);
-        toast({
-          title: 'Project',
-          description: 'Timecard created successfully.',
-          status: 'success',
-          duration: 2000,
-          position: 'top-right',
-          isClosable: true,
-        });
-        reset();
+        const res = await _post('api/timecards', payload);
+        if (res?.status === 201) {
+          toast({
+            title: 'Project',
+            description: 'Timecard created successfully.',
+            status: 'success',
+            duration: 2000,
+            position: 'top-right',
+            isClosable: true,
+          });
+          reset();
+          fetchEntries(formateDate(currentSelectedDate));
+        }
       }
     } catch (error: any) {
       toast({
@@ -199,6 +208,24 @@ const TimeLogFrom = ({ formData, setFormData }: Props) => {
         position: 'top-right',
         isClosable: true,
       });
+    }
+  };
+
+  const fetchEntries = async (date: string) => {
+    try {
+      const res = await _get(`api/timecards/timelog?startDate=${date}`);
+      dispatch(setTimeCardDetails(res?.data.timecardsData));
+    } catch (err: any) {
+      if (err.response.status === 404) {
+        toast({
+          title: 'Entry Logs Detail',
+          description: err?.response?.data?.error,
+          status: 'error',
+          duration: 2000,
+          position: 'top-right',
+          isClosable: true,
+        });
+      }
     }
   };
 
