@@ -77,15 +77,12 @@ const FixedProjectManage = () => {
 
   const addPhaseControls = () => {
     setFixedFormData({
-      phase: [...fixedFormData.phase, { title: '', budget: '' }],
+      phase: [{ title: '', budget: '' }, ...fixedFormData.phase],
     });
   };
 
   const focusHandler = (index: number) => {
     setMilestoneIndex(index);
-  };
-  const blurHandler = () => {
-    setMilestoneIndex(null);
   };
 
   const removePhaseControls = async (
@@ -167,6 +164,24 @@ const FixedProjectManage = () => {
             lineHeight='17.6px'
           >
             <Text>Milestones Name</Text>
+            <Box
+              display='flex'
+              alignItems='center'
+              textStyle='inputTextStyle'
+              cursor='pointer'
+            >
+              <AiOutlinePlusCircle />
+              <Text
+                ml='5px'
+                textStyle='inputTextStyle'
+                onClick={addPhaseControls}
+                _hover={{
+                  textDecor: 'underline',
+                }}
+              >
+                Add new Phase
+              </Text>
+            </Box>
           </HStack>
           <HStack
             flexBasis='26%'
@@ -194,7 +209,7 @@ const FixedProjectManage = () => {
             ) => {
               return (
                 !_.isDeleted && (
-                  <ListItem m='20px 0' key={index}>
+                  <ListItem m='10px 0 18px' key={index}>
                     <form
                       onSubmit={(e) =>
                         formHandler(e, _.id, _.title, _.budget, index)
@@ -218,7 +233,6 @@ const FixedProjectManage = () => {
                             value={_.title}
                             name='title'
                             onFocus={() => focusHandler(index)}
-                            onBlur={blurHandler}
                             onChange={(e) => handleInputChange(e, index)}
                           />
                           {errMessage.id === index && (
@@ -250,7 +264,6 @@ const FixedProjectManage = () => {
                             value={_.budget}
                             name='budget'
                             onFocus={() => focusHandler(index)}
-                            onBlur={blurHandler}
                             onChange={(e) => handleInputChange(e, index)}
                             textAlign='center'
                           />
@@ -292,25 +305,6 @@ const FixedProjectManage = () => {
             },
           )}
         </UnorderedList>
-      </Box>
-      <Box
-        pt='15px'
-        display='flex'
-        alignItems='center'
-        textStyle='inputTextStyle'
-        cursor='pointer'
-      >
-        <AiOutlinePlusCircle />
-        <Text
-          ml='5px'
-          textStyle='inputTextStyle'
-          onClick={addPhaseControls}
-          _hover={{
-            textDecor: 'underline',
-          }}
-        >
-          Add new Phase
-        </Text>
       </Box>
     </Box>
   );

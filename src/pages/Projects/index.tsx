@@ -47,7 +47,7 @@ const Projects = () => {
 
   const fetchMyProjects = async () => {
     try {
-      const res = await _get('api/projects/user');
+      const res = await _get('api/users/projects');
       setMyProjects(res.data.projects);
     } catch (err) {
       return err;

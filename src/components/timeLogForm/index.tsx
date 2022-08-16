@@ -24,10 +24,10 @@ import { timeStringValidate } from '../../utils/validation';
 import CustomSelect from '../customSelect';
 
 export interface TimeLogFormData {
-  date: Date;
+  date: Date | string;
   projectId: string;
   milestoneId: string;
-  taskId: string;
+  taskId?: string;
   logTime: string;
   comments: string;
   billingType: boolean;
@@ -166,15 +166,18 @@ const TimeLogFrom = ({ formData, setFormData }: Props) => {
     try {
       setErrorMsg(fieldValidation());
       const notValid = fieldValidation();
-      const payload = {
+      const payload: TimeLogFormData = {
         billingType: formData.billingType,
         comments: formData.comments,
         date: format(new Date(formData.date), "yyyy-MM-dd'T'hh:mm:ss"),
         logTime: formData.logTime,
         milestoneId: formData.milestoneId,
         projectId: formData.projectId,
-        taskId: formData.taskId,
       };
+      if (formData.taskId) {
+        payload.taskId = formData.taskId;
+      }
+      console.log(payload, 'payload');
       if (Object.values(notValid).length <= 0) {
         await _post('api/timecards', payload);
         toast({
@@ -185,7 +188,7 @@ const TimeLogFrom = ({ formData, setFormData }: Props) => {
           position: 'top-right',
           isClosable: true,
         });
-        // reset();
+        reset();
       }
     } catch (error: any) {
       toast({
