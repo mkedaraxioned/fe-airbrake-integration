@@ -11,8 +11,7 @@ import TimeCard from '../timeCard';
 const TaskList = () => {
   const toast = useToast();
   const dispatch = useDispatch();
-  // const [timeCardDetails, setTimeCardDetails] = useState<Timecards>();
-  // const [hasError, setHasError] = useState<boolean>(false);
+
   const { currentSelectedDate, timeCardDetails } = useSelector(
     (state: RootState) => state.timeCard,
   );
@@ -23,7 +22,7 @@ const TaskList = () => {
       dispatch(setTimeCardDetails(res?.data.timecardsData));
     } catch (err: any) {
       if (err.response.status === 404) {
-        dispatch(setTimeCardDetails([]));
+        dispatch(setTimeCardDetails(null));
         toast({
           title: 'Entry Logs Detail',
           description: err?.response?.data?.error,
@@ -42,7 +41,7 @@ const TaskList = () => {
     }
   }, [currentSelectedDate]);
 
-  return (
+  return timeCardDetails ? (
     <Box p='17px 0'>
       <Box>
         <HStack justifyContent='space-between' color='textColor'>
@@ -54,7 +53,6 @@ const TaskList = () => {
           >
             Entries logged
           </Heading>
-          {/* {!hasError && ( */}
           <Heading
             as='h3'
             pr='35px'
@@ -64,56 +62,40 @@ const TaskList = () => {
           >
             {timeCardDetails?.totalHours}
           </Heading>
-          {/* )} */}
         </HStack>
       </Box>
-      {
-        // {hasError ? (
-        //   <Heading
-        //     as='h4'
-        //     fontSize='18px'
-        //     lineHeight='22.63px'
-        //     textStyle='sourceSansProBold'
-        //   >
-        //     No Entries logged for selected date.
-        //   </Heading>
-        // ) : (
-        Array.isArray(timeCardDetails?.projects)
-          ? timeCardDetails?.projects.map((project, i) => {
-              return (
-                <Box p={i === 0 ? '15px 0 10px' : undefined} key={project.name}>
-                  <HStack
-                    p='0 33px 5px 0'
-                    justifyContent='space-between'
-                    color='textLightMid'
+      {Array.isArray(timeCardDetails?.projects)
+        ? timeCardDetails?.projects.map((project, i) => {
+            return (
+              <Box p={i === 0 ? '15px 0 10px' : undefined} key={project.name}>
+                <HStack
+                  p='0 33px 5px 0'
+                  justifyContent='space-between'
+                  color='textLightMid'
+                >
+                  <Heading
+                    as='h4'
+                    fontSize='18px'
+                    lineHeight='22.63px'
+                    textStyle='sourceSansProBold'
                   >
-                    <Heading
-                      as='h4'
-                      fontSize='18px'
-                      lineHeight='22.63px'
-                      textStyle='sourceSansProBold'
-                    >
-                      {project.name}
-                    </Heading>
-                    <Text textStyle='sourceSansProBold'>
-                      {project.totalTime}
-                    </Text>
-                  </HStack>
-                  <Box>
-                    {Array.isArray(project?.tasks)
-                      ? project?.tasks.map((task: Task) => (
-                          <TimeCard key={task.taskId} task={task} />
-                        ))
-                      : null}
-                  </Box>
+                    {project.name}
+                  </Heading>
+                  <Text textStyle='sourceSansProBold'>{project.totalTime}</Text>
+                </HStack>
+                <Box>
+                  {Array.isArray(project?.tasks)
+                    ? project?.tasks.map((task: Task) => (
+                        <TimeCard key={task.taskId} task={task} />
+                      ))
+                    : null}
                 </Box>
-              );
-            })
-          : null
-        // )}
-      }
+              </Box>
+            );
+          })
+        : null}
     </Box>
-  );
+  ) : null;
 };
 
 export default TaskList;

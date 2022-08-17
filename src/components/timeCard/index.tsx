@@ -62,7 +62,7 @@ const TimeCard = ({ task }: TaskDetails) => {
       dispatch(setTimeCardDetails(res?.data.timecardsData));
     } catch (err: any) {
       if (err.response.status === 404) {
-        dispatch(setTimeCardDetails({}));
+        dispatch(setTimeCardDetails(null));
       }
     }
   };
