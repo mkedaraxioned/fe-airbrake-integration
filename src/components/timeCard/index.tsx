@@ -2,6 +2,7 @@ import { Box, Text, useToast } from '@chakra-ui/react';
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
+import { useParams } from 'react-router';
 import { useNavigate } from 'react-router';
 import { ReactComponent as DeleteSvg } from '../../assets/images/delete.svg';
 import { setTimeCardDetails } from '../../feature/timeCardSlice';
@@ -16,11 +17,13 @@ interface TaskDetails {
 const TimeCard = ({ task }: TaskDetails) => {
   const toast = useToast();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { timeCardId } = useParams();
+
   const { currentSelectedDate } = useSelector(
     (state: RootState) => state.timeCard,
   );
 
-  const navigate = useNavigate();
   const [isVisible, setIsVisible] = useState(false);
   const over = () => {
     setIsVisible(true);
@@ -30,15 +33,16 @@ const TimeCard = ({ task }: TaskDetails) => {
     setIsVisible(false);
   };
 
+  const redirectToHome = (id: any) => id === timeCardId && navigate(`/`);
+
   const fetchTaskDetail = async (id: string | undefined) => {
     try {
       if (id) {
-        console.log(id);
         const res = await _patch(`api/timecards/${id}`, { isDeleted: true });
-        console.log({ res });
         if (res.status === 200) {
           const del = await _del(`api/timecards/${id}`);
           if (del?.status === 200) {
+            redirectToHome(id);
             toast({
               title: 'Entry Logs Detail',
               description: del?.data?.message,
