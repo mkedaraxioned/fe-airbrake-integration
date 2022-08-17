@@ -235,7 +235,7 @@ const TimeLogFrom = ({ formData, setFormData }: Props) => {
             id='task'
             name='milestoneId'
             value={formData.milestoneId}
-            placeholder='Select'
+            placeholder='Select milestone'
             fontSize='14px'
             lineHeight='17.6px'
             color='grayLight'
@@ -270,7 +270,7 @@ const TimeLogFrom = ({ formData, setFormData }: Props) => {
               id='task'
               name='taskId'
               value={formData.taskId}
-              placeholder='Select'
+              placeholder='Select task'
               fontSize='14px'
               lineHeight='17.6px'
               color='grayLight'
@@ -314,6 +314,8 @@ const TimeLogFrom = ({ formData, setFormData }: Props) => {
               <Input
                 w='50%'
                 h='38px'
+                p='0'
+                textAlign='center'
                 id='add_time'
                 boxSizing='border-box'
                 type='text'
@@ -321,7 +323,7 @@ const TimeLogFrom = ({ formData, setFormData }: Props) => {
                 name='logTime'
                 onChange={inputHandler}
                 border='none'
-                placeholder='88:88'
+                placeholder='07:30'
                 fontSize='14px'
                 textStyle='sourceSansProRegular'
                 lineHeight='17.6px'
@@ -364,7 +366,7 @@ const TimeLogFrom = ({ formData, setFormData }: Props) => {
               textStyle='sourceSansProRegular'
               onChange={inputHandler}
               name='comments'
-              placeholder='Please describe the activity'
+              placeholder='Describe the activity'
               fontSize='14px'
               lineHeight='17.6px'
             />

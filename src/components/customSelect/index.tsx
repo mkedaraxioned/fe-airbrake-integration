@@ -164,7 +164,7 @@ const CustomSelect = ({ onChange }: Props) => {
             fontSize='14px'
             textStyle='sourceSansProRegular'
           >
-            Not found
+            No matching results
           </Text>
         )}
       </Box>
@@ -177,7 +177,7 @@ const CustomSelect = ({ onChange }: Props) => {
         onChange={onChange}
         options={sortOptions}
         styles={customStyles}
-        placeholder='Search project'
+        placeholder='Select project'
         components={{ MenuList: CustomMenuList }}
       />
     </Box>
