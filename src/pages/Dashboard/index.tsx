@@ -72,6 +72,7 @@ const Dashboard = () => {
               lineHeight='27.65px'
               color='textColor'
               textStyle='sourceSansProBold'
+              mb='15px'
             >
               Add a new entry
             </Heading>

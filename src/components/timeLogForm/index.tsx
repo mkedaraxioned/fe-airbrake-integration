@@ -233,29 +233,28 @@ const TimeLogFrom = ({ formData, setFormData }: Props) => {
   return (
     <Box>
       <form onSubmit={formHandler}>
-        <FormControl
-          m='12px 0 15px'
-          isInvalid={errorMsg?.projectName ? true : false}
-        >
+        <FormControl mb='18px' isInvalid={errorMsg?.projectName ? true : false}>
           <FormLabel
             htmlFor='select_project'
             color='grayLight'
             fontSize='14px'
             lineHeight='17.6px'
             textStyle='sourceSansProBold'
+            mb='6px'
           >
             Project
           </FormLabel>
           <CustomSelect onChange={selectProject} />
           <FormErrorMessage>{errorMsg?.projectName}</FormErrorMessage>
         </FormControl>
-        <FormControl m='14px 0' isInvalid={errorMsg?.task ? true : false}>
+        <FormControl mb='18px' isInvalid={errorMsg?.task ? true : false}>
           <FormLabel
             htmlFor='task'
             color='grayLight'
             fontSize='14px'
             lineHeight='17.6px'
             textStyle='sourceSansProBold'
+            mb='6px'
           >
             Milestone
           </FormLabel>
@@ -284,13 +283,14 @@ const TimeLogFrom = ({ formData, setFormData }: Props) => {
           <FormErrorMessage>{errorMsg?.task}</FormErrorMessage>
         </FormControl>
         {projectType !== 'FIXED' && (
-          <FormControl m='14px 0' isInvalid={errorMsg?.task ? true : false}>
+          <FormControl mb='18px' isInvalid={errorMsg?.task ? true : false}>
             <FormLabel
               htmlFor='task'
               color='grayLight'
               fontSize='14px'
               lineHeight='17.6px'
               textStyle='sourceSansProBold'
+              mb='6px'
             >
               Task
             </FormLabel>
@@ -317,7 +317,7 @@ const TimeLogFrom = ({ formData, setFormData }: Props) => {
             <FormErrorMessage>{errorMsg?.task}</FormErrorMessage>
           </FormControl>
         )}
-        <HStack justifyContent='space-between' m='14px 0'>
+        <HStack justifyContent='space-between' mb='18px'>
           <FormControl
             w='143px'
             mr='10px'
@@ -330,6 +330,7 @@ const TimeLogFrom = ({ formData, setFormData }: Props) => {
               fontSize='14px'
               lineHeight='17.6px'
               textStyle='sourceSansProBold'
+              mb='6px'
             >
               Time
             </FormLabel>
@@ -383,6 +384,7 @@ const TimeLogFrom = ({ formData, setFormData }: Props) => {
               fontSize='14px'
               lineHeight='17.6px'
               textStyle='sourceSansProBold'
+              mb='6px'
             >
               Comments
             </FormLabel>
@@ -401,7 +403,7 @@ const TimeLogFrom = ({ formData, setFormData }: Props) => {
             </FormErrorMessage>
           </FormControl>
         </HStack>
-        <FormControl pt='5px'>
+        <FormControl mb='18px'>
           <Checkbox
             onChange={checkboxHandler}
             _checked={{
@@ -416,7 +418,7 @@ const TimeLogFrom = ({ formData, setFormData }: Props) => {
             </Text>
           </Checkbox>
         </FormControl>
-        <Box pt='10px'>
+        <Box>
           <Button w='137px' type='submit' variant='primary' mr='22px'>
             Add Entry
           </Button>
