@@ -1,6 +1,7 @@
 import { Box, Heading, HStack, Text, useToast } from '@chakra-ui/react';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router';
 import { setTimeCardDetails } from '../../feature/timeCardSlice';
 import { Task } from '../../interfaces/timeCard';
 import { RootState } from '../../store';
@@ -10,6 +11,8 @@ import TimeCard from '../timeCard';
 
 const TaskList = () => {
   const toast = useToast();
+  const navigate = useNavigate();
+
   const dispatch = useDispatch();
 
   const { currentSelectedDate, timeCardDetails } = useSelector(
@@ -18,6 +21,7 @@ const TaskList = () => {
 
   const fetchEntries = async (date: string) => {
     try {
+      navigate('/');
       const res = await _get(`api/timecards/timelog?startDate=${date}`);
       dispatch(setTimeCardDetails(res?.data.timecardsData));
     } catch (err: any) {

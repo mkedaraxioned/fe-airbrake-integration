@@ -62,6 +62,7 @@ const TimeCard = ({ task }: TaskDetails) => {
 
   const fetchEntries = async (date: string) => {
     try {
+      navigate('/');
       const res = await _get(`api/timecards/timelog?startDate=${date}`);
       dispatch(setTimeCardDetails(res?.data.timecardsData));
     } catch (err: any) {

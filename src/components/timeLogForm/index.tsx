@@ -16,23 +16,32 @@ import { format } from 'date-fns';
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
-import { useParams } from 'react-router';
+import { useNavigate, useParams } from 'react-router';
 import { setTimeCardDetails } from '../../feature/timeCardSlice';
 import { TimelogFormError } from '../../interfaces/timelogForm';
 import { RootState } from '../../store';
-import { _get, _post } from '../../utils/api';
+import { _get, _patch, _post } from '../../utils/api';
 import { convertMinutes, formateDate } from '../../utils/common';
 import { timeStringValidate } from '../../utils/validation';
 import CustomSelect from '../customSelect';
 
 export interface TimeLogFormData {
   date: Date | string;
-  projectId: string;
+  projectId?: string;
   milestoneId: string;
   taskId?: string;
   logTime: string;
   comments: string;
   billingType: boolean;
+}
+
+export interface updateData {
+  projectId?: string;
+  milestoneId?: string;
+  taskId?: string;
+  logTime?: string;
+  comments?: string;
+  billingType?: boolean;
 }
 
 interface Props {
@@ -43,6 +52,7 @@ interface Props {
 const TimeLogFrom = ({ formData, setFormData }: Props) => {
   const { timeCardId } = useParams();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { currentSelectedDate } = useSelector(
     (state: RootState) => state.timeCard,
   );
@@ -138,6 +148,7 @@ const TimeLogFrom = ({ formData, setFormData }: Props) => {
       comments: '',
       billingType: false,
     });
+    navigate('/');
   };
 
   const fetchTaskDetail = async (id: string) => {
@@ -180,16 +191,35 @@ const TimeLogFrom = ({ formData, setFormData }: Props) => {
         milestoneId: formData.milestoneId,
         projectId: formData.projectId,
       };
+
+      const updatePayload: updateData = {
+        billingType: formData.billingType,
+        comments: formData.comments,
+        logTime: formData.logTime,
+        milestoneId: formData.milestoneId,
+        projectId: formData.projectId,
+        taskId: formData.taskId,
+      };
+
       if (formData.taskId) {
         payload.taskId = formData.taskId;
       }
-      console.log(payload, 'payload');
+
       if (Object.values(notValid).length <= 0) {
-        const res = await _post('api/timecards', payload);
-        if (res?.status === 201) {
+        let res;
+        if (timeCardId) {
+          res = await _patch(`api/timecards/${timeCardId}`, updatePayload);
+        } else {
+          res = await _post('api/timecards', payload);
+        }
+        if (res?.status === 201 || res?.status === 200) {
           toast({
             title: 'Project',
-            description: 'Timecard created successfully.',
+            description: `${
+              timeCardId
+                ? 'Timecard updated successfully.'
+                : 'Timecard created successfully.'
+            }`,
             status: 'success',
             duration: 2000,
             position: 'top-right',
@@ -213,6 +243,7 @@ const TimeLogFrom = ({ formData, setFormData }: Props) => {
 
   const fetchEntries = async (date: string) => {
     try {
+      navigate('/');
       const res = await _get(`api/timecards/timelog?startDate=${date}`);
       dispatch(setTimeCardDetails(res?.data.timecardsData));
     } catch (err: any) {
@@ -408,6 +439,7 @@ const TimeLogFrom = ({ formData, setFormData }: Props) => {
         <FormControl mb='18px'>
           <Checkbox
             onChange={checkboxHandler}
+            isChecked={formData.billingType}
             _checked={{
               '.chakra-checkbox__control': {
                 backgroundColor: 'btnPurple',
@@ -422,7 +454,7 @@ const TimeLogFrom = ({ formData, setFormData }: Props) => {
         </FormControl>
         <Box>
           <Button w='137px' type='submit' variant='primary' mr='22px'>
-            Add Entry
+            {timeCardId ? 'Update Entry' : 'Add Entry'}
           </Button>
           <Button w='105px' variant='secondary' onClick={reset}>
             Cancel
