@@ -85,6 +85,14 @@ const CustomSelect = ({ onChange }: Props) => {
         color: '#676464',
       },
     }),
+    placeholder: (provided: any) => {
+      return {
+        ...provided,
+        fontSize: '13.5px',
+        textStyle: 'sourceSansProRegular',
+        color: '#363636',
+      };
+    },
     menu: (provided: any) => {
       return {
         ...provided,
@@ -164,7 +172,7 @@ const CustomSelect = ({ onChange }: Props) => {
             fontSize='14px'
             textStyle='sourceSansProRegular'
           >
-            Not found
+            No matching results
           </Text>
         )}
       </Box>
@@ -177,7 +185,7 @@ const CustomSelect = ({ onChange }: Props) => {
         onChange={onChange}
         options={sortOptions}
         styles={customStyles}
-        placeholder='Search project'
+        placeholder='Select project'
         components={{ MenuList: CustomMenuList }}
       />
     </Box>
