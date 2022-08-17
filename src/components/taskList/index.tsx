@@ -23,6 +23,7 @@ const TaskList = () => {
       dispatch(setTimeCardDetails(res?.data.timecardsData));
     } catch (err: any) {
       if (err.response.status === 404) {
+        dispatch(setTimeCardDetails([]));
         toast({
           title: 'Entry Logs Detail',
           description: err?.response?.data?.error,
@@ -34,12 +35,6 @@ const TaskList = () => {
       }
     }
   };
-
-  useEffect(() => {
-    if (currentSelectedDate) {
-      fetchEntries(formateDate(currentSelectedDate));
-    }
-  }, []);
 
   useEffect(() => {
     if (currentSelectedDate) {
@@ -83,34 +78,38 @@ const TaskList = () => {
         //     No Entries logged for selected date.
         //   </Heading>
         // ) : (
-        Array.isArray(timeCardDetails?.projects) &&
-          timeCardDetails?.projects.map((project, i) => {
-            return (
-              <Box p={i === 0 ? '15px 0 10px' : undefined} key={project.name}>
-                <HStack
-                  p='0 33px 5px 0'
-                  justifyContent='space-between'
-                  color='textLightMid'
-                >
-                  <Heading
-                    as='h4'
-                    fontSize='18px'
-                    lineHeight='22.63px'
-                    textStyle='sourceSansProBold'
+        Array.isArray(timeCardDetails?.projects)
+          ? timeCardDetails?.projects.map((project, i) => {
+              return (
+                <Box p={i === 0 ? '15px 0 10px' : undefined} key={project.name}>
+                  <HStack
+                    p='0 33px 5px 0'
+                    justifyContent='space-between'
+                    color='textLightMid'
                   >
-                    {project.name}
-                  </Heading>
-                  <Text textStyle='sourceSansProBold'>{project.totalTime}</Text>
-                </HStack>
-                <Box>
-                  {Array.isArray(project?.tasks) &&
-                    project?.tasks.map((task: Task) => (
-                      <TimeCard key={task.taskId} task={task} />
-                    ))}
+                    <Heading
+                      as='h4'
+                      fontSize='18px'
+                      lineHeight='22.63px'
+                      textStyle='sourceSansProBold'
+                    >
+                      {project.name}
+                    </Heading>
+                    <Text textStyle='sourceSansProBold'>
+                      {project.totalTime}
+                    </Text>
+                  </HStack>
+                  <Box>
+                    {Array.isArray(project?.tasks)
+                      ? project?.tasks.map((task: Task) => (
+                          <TimeCard key={task.taskId} task={task} />
+                        ))
+                      : null}
+                  </Box>
                 </Box>
-              </Box>
-            );
-          })
+              );
+            })
+          : null
         // )}
       }
     </Box>

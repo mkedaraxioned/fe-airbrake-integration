@@ -217,6 +217,7 @@ const TimeLogFrom = ({ formData, setFormData }: Props) => {
       dispatch(setTimeCardDetails(res?.data.timecardsData));
     } catch (err: any) {
       if (err.response.status === 404) {
+        dispatch(setTimeCardDetails({}));
         toast({
           title: 'Entry Logs Detail',
           description: err?.response?.data?.error,
