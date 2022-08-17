@@ -85,6 +85,14 @@ const CustomSelect = ({ onChange }: Props) => {
         color: '#676464',
       },
     }),
+    placeholder: (provided: any) => {
+      return {
+        ...provided,
+        fontSize: '13.5px',
+        textStyle: 'sourceSansProRegular',
+        color: '#363636',
+      };
+    },
     menu: (provided: any) => {
       return {
         ...provided,
