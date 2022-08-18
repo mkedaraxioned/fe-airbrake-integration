@@ -43,8 +43,8 @@ const NewProjectForm = ({ onClose, projectId }: Props) => {
     clientId: '',
     title: '',
     type: 'FIXED',
-    startDate: format(new Date(), "yyyy-MM-dd'T'hh:mm:ss"),
-    endDate: format(new Date(), "yyyy-MM-dd'T'hh:mm:ss"),
+    startDate: format(new Date(), 'yyyy-MM-dd'),
+    endDate: format(new Date(), 'yyyy-MM-dd'),
     billingType: false,
     members: [],
   });
@@ -108,7 +108,7 @@ const NewProjectForm = ({ onClose, projectId }: Props) => {
     if (formData.type !== 'FIXED') {
       setFormData({
         ...formData,
-        endDate: format(new Date(createdDate), "yyyy-MM-dd'T'hh:mm:ss"),
+        endDate: format(new Date(createdDate), 'yyyy-MM-dd'),
       });
     }
   };
@@ -188,7 +188,7 @@ const NewProjectForm = ({ onClose, projectId }: Props) => {
       clientId: '',
       title: '',
       type: 'FIXED',
-      startDate: format(new Date(), "yyyy-MM-dd'T'hh:mm:ss"),
+      startDate: format(new Date(), 'yyyy-MM-dd'),
       endDate: null,
       billingType: false,
       members: [],
@@ -381,10 +381,7 @@ const NewProjectForm = ({ onClose, projectId }: Props) => {
                     onChange={(date: Date) =>
                       setFormData({
                         ...formData,
-                        startDate: format(
-                          new Date(date),
-                          "yyyy-MM-dd'T'hh:mm:ss",
-                        ),
+                        startDate: format(new Date(date), 'yyyy-MM-dd'),
                       })
                     }
                     placeholderText='MM/DD/YYYY'
@@ -433,10 +430,7 @@ const NewProjectForm = ({ onClose, projectId }: Props) => {
                       onChange={(date: Date) =>
                         setFormData({
                           ...formData,
-                          endDate: format(
-                            new Date(date),
-                            "yyyy-MM-dd'T'hh:mm:ss",
-                          ),
+                          endDate: format(new Date(date), "yyyy-MM-dd'T"),
                         })
                       }
                       placeholderText='MM/DD/YYYY'

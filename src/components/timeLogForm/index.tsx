@@ -186,7 +186,7 @@ const TimeLogFrom = ({ formData, setFormData }: Props) => {
       const payload: TimeLogFormData = {
         billingType: formData.billingType,
         comments: formData.comments,
-        date: format(new Date(formData.date), "yyyy-MM-dd'T'hh:mm:ss"),
+        date: format(new Date(formData.date), 'yyyy-MM-dd'),
         logTime: formData.logTime,
         milestoneId: formData.milestoneId,
         projectId: formData.projectId,
@@ -207,6 +207,7 @@ const TimeLogFrom = ({ formData, setFormData }: Props) => {
 
       if (Object.values(notValid).length <= 0) {
         let res;
+        console.log({ payload });
         if (timeCardId) {
           res = await _patch(`api/timecards/${timeCardId}`, updatePayload);
         } else {
