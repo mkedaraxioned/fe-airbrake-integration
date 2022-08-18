@@ -234,7 +234,26 @@ const Calendar = ({ showDetailsHandle, formDate }: Props) => {
               : format(selectedDate, 'EEEE')
           }, ${format(selectedDate, 'MMMM do')}`}
         </Text>
-        {!isSameMonth(currentMonth, new Date()) && (
+        {isSameMonth(currentMonth, new Date()) &&
+        isSameDay(new Date(), selectedDate) ? (
+          <Button
+            height='30px'
+            variant='primary'
+            background='#F3F6F9'
+            color='#B0B0B1'
+            border={'none'}
+            _hover={{
+              background: '#F3F6F9',
+              color: '#B0B0B1',
+            }}
+            _focus={{
+              boxShadow: 'none',
+            }}
+            disabled
+          >
+            Today
+          </Button>
+        ) : (
           <Button height='30px' onClick={setTodaysDate} variant='primary'>
             Today
           </Button>
