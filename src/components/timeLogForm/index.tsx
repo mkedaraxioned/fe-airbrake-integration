@@ -245,19 +245,19 @@ const TimeLogFrom = ({ formData, setFormData }: Props) => {
     try {
       navigate('/');
       const res = await _get(`api/timecards/timelog?startDate=${date}`);
-      dispatch(setTimeCardDetails(res?.data.timecardsData));
+      if (res.data.timecardsData)
+        return dispatch(setTimeCardDetails(res?.data.timecardsData));
+      dispatch(setTimeCardDetails(null));
+      toast({
+        title: 'Entry Logs Detail',
+        description: 'Nothing logged for selected date',
+        status: 'error',
+        duration: 2000,
+        position: 'top-right',
+        isClosable: true,
+      });
     } catch (err: any) {
-      if (err.response.status === 404) {
-        dispatch(setTimeCardDetails(null));
-        toast({
-          title: 'Entry Logs Detail',
-          description: err?.response?.data?.error,
-          status: 'error',
-          duration: 2000,
-          position: 'top-right',
-          isClosable: true,
-        });
-      }
+      console.log(err);
     }
   };
 

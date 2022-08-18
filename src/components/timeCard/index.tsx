@@ -64,11 +64,11 @@ const TimeCard = ({ task }: TaskDetails) => {
     try {
       navigate('/');
       const res = await _get(`api/timecards/timelog?startDate=${date}`);
-      dispatch(setTimeCardDetails(res?.data.timecardsData));
+      if (res.data.timecardsData)
+        return dispatch(setTimeCardDetails(res?.data.timecardsData));
+      dispatch(setTimeCardDetails(null));
     } catch (err: any) {
-      if (err.response.status === 404) {
-        dispatch(setTimeCardDetails(null));
-      }
+      console.log(err);
     }
   };
 
