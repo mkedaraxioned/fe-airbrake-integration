@@ -436,7 +436,7 @@ const TimeLogFrom = ({ formData, setFormData }: Props) => {
             </FormErrorMessage>
           </FormControl>
         </HStack>
-        <FormControl mb='18px'>
+        <FormControl mb='15px'>
           <Checkbox
             onChange={checkboxHandler}
             isChecked={formData.billingType}
