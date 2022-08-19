@@ -1,7 +1,9 @@
 import { Box, Text } from '@chakra-ui/react';
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import Select, { components } from 'react-select';
+import { updateSelectedProject } from '../../feature/timeCardSlice';
 import { RootState } from '../../store';
 
 export interface Options {
@@ -13,9 +15,12 @@ interface Props {
   onChange: (item: any) => void;
 }
 const CustomSelect = ({ onChange }: Props) => {
+  const dispatch = useDispatch();
   const [noDataFound, setNoDataFound] = useState<boolean>(false);
   const { projects } = useSelector((state: RootState) => state.allProjects);
   const { clients } = useSelector((state: RootState) => state.allClients);
+  const { selectedProject } = useSelector((state: RootState) => state.timeCard);
+
   const optionsData = projects.map((elem: any) => {
     const client = clients?.find(
       ({ id }: { id: string }) => id === elem.clientId,
@@ -179,11 +184,17 @@ const CustomSelect = ({ onChange }: Props) => {
     );
   };
 
+  const handleChange = (val: any) => {
+    onChange && onChange(val);
+    dispatch(updateSelectedProject(val));
+  };
+
   return (
     <Box>
       <Select
-        onChange={onChange}
+        onChange={handleChange}
         options={sortOptions}
+        value={selectedProject}
         styles={customStyles}
         placeholder='Select project'
         components={{ MenuList: CustomMenuList }}

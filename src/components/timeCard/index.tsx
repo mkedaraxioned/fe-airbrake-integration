@@ -2,10 +2,9 @@ import { Box, Text, useToast } from '@chakra-ui/react';
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
-import { useParams } from 'react-router';
-import { useNavigate } from 'react-router';
+import { useParams, useNavigate } from 'react-router';
 import { ReactComponent as DeleteSvg } from '../../assets/images/delete.svg';
-import { setTimeCardDetails } from '../../feature/timeCardSlice';
+import { updateTimeCardDetails } from '../../feature/timeCardSlice';
 import { Task } from '../../interfaces/timeCard';
 import { RootState } from '../../store';
 import { _del, _get, _patch } from '../../utils/api';
@@ -65,8 +64,8 @@ const TimeCard = ({ task }: TaskDetails) => {
       navigate('/');
       const res = await _get(`api/timecards/timelog?startDate=${date}`);
       if (res.data.timecardsData)
-        return dispatch(setTimeCardDetails(res?.data.timecardsData));
-      dispatch(setTimeCardDetails(null));
+        return dispatch(updateTimeCardDetails(res?.data.timecardsData));
+      dispatch(updateTimeCardDetails(null));
     } catch (err: any) {
       console.log(err);
     }

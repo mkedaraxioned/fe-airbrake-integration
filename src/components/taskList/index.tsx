@@ -2,7 +2,7 @@ import { Box, Heading, HStack, Text, useToast } from '@chakra-ui/react';
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router';
-import { setTimeCardDetails } from '../../feature/timeCardSlice';
+import { updateTimeCardDetails } from '../../feature/timeCardSlice';
 import { Task } from '../../interfaces/timeCard';
 import { RootState } from '../../store';
 import { _get } from '../../utils/api';
@@ -24,9 +24,9 @@ const TaskList = () => {
       navigate('/');
       const res = await _get(`api/timecards/timelog?startDate=${date}`);
       if (res.data.timecardsData)
-        return dispatch(setTimeCardDetails(res?.data.timecardsData));
+        return dispatch(updateTimeCardDetails(res?.data.timecardsData));
 
-      dispatch(setTimeCardDetails(null));
+      dispatch(updateTimeCardDetails(null));
       toast({
         title: 'Entry Logs Detail',
         description: 'Nothing logged for selected date',

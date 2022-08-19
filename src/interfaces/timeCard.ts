@@ -20,3 +20,10 @@ export interface Task {
   minutesLogged?: number;
   timeLogged: string;
 }
+
+export interface Project {
+  clientId: string;
+  clientName: string;
+  label: string;
+  value: string;
+}

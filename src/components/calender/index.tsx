@@ -18,7 +18,7 @@ import { HiOutlineChevronLeft, HiOutlineChevronRight } from 'react-icons/hi';
 import { endOfMonth } from 'date-fns/esm';
 import { _get } from '../../utils/api';
 import { useDispatch } from 'react-redux';
-import { addSelectedDate } from '../../feature/timeCardSlice';
+import { updateSelectedDate } from '../../feature/timeCardSlice';
 
 interface Props {
   showDetailsHandle: (dayStr: string) => void;
@@ -43,7 +43,7 @@ const Calendar = ({ showDetailsHandle, formDate }: Props) => {
   };
   const onDateClickHandle = (day: Date, dayStr: string) => {
     setSelectedDate(day);
-    dispatch(addSelectedDate(day));
+    dispatch(updateSelectedDate(day));
     showDetailsHandle(dayStr);
   };
   const startDate = format(startOfMonth(currentMonth), 'yyyy-MM-dd');
@@ -209,7 +209,7 @@ const Calendar = ({ showDetailsHandle, formDate }: Props) => {
 
   const setTodaysDate = () => {
     setSelectedDate(new Date());
-    dispatch(addSelectedDate(new Date()));
+    dispatch(updateSelectedDate(new Date()));
     setCurrentMonth(new Date());
     showDetailsHandle(format(new Date(), 'dd-MM-yyyy'));
   };

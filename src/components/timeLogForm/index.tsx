@@ -17,7 +17,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router';
-import { setTimeCardDetails } from '../../feature/timeCardSlice';
+import { updateTimeCardDetails } from '../../feature/timeCardSlice';
 import { TimelogFormError } from '../../interfaces/timelogForm';
 import { RootState } from '../../store';
 import { _get, _patch, _post } from '../../utils/api';
@@ -28,6 +28,7 @@ import CustomSelect from '../customSelect';
 export interface TimeLogFormData {
   date: Date | string;
   projectId?: string;
+  clientId?: string;
   milestoneId: string;
   taskId?: string;
   logTime: string;
@@ -37,6 +38,7 @@ export interface TimeLogFormData {
 
 export interface updateData {
   projectId?: string;
+  clientId?: string;
   milestoneId?: string;
   taskId?: string;
   logTime?: string;
@@ -53,18 +55,18 @@ const TimeLogFrom = ({ formData, setFormData }: Props) => {
   const { timeCardId } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { currentSelectedDate } = useSelector(
+  const toast = useToast();
+
+  const [projectType, setProjectType] = useState<string>('');
+  const [taskNode, setTaskNode] = useState([]);
+  const [milestoneData, setMilestoneData] = useState([]);
+  const [errorMsg, setErrorMsg] = useState<TimelogFormError>();
+
+  const { projects } = useSelector((state: RootState) => state.allProjects);
+  const { currentSelectedDate, selectedProject } = useSelector(
     (state: RootState) => state.timeCard,
   );
 
-  const [projectType, setProjectType] = useState<string>('');
-
-  const [taskNode, setTaskNode] = useState([]);
-  const [milestoneData, setMilestoneData] = useState([]);
-
-  const [errorMsg, setErrorMsg] = useState<TimelogFormError>();
-  const { projects } = useSelector((state: RootState) => state.allProjects);
-  const toast = useToast();
   useEffect(() => {
     selectOptionData();
   }, [formData.projectId]);
@@ -189,7 +191,9 @@ const TimeLogFrom = ({ formData, setFormData }: Props) => {
         date: format(new Date(formData.date), 'yyyy-MM-dd'),
         logTime: formData.logTime,
         milestoneId: formData.milestoneId,
+        taskId: formData.taskId,
         projectId: formData.projectId,
+        clientId: selectedProject?.clientId,
       };
 
       const updatePayload: updateData = {
@@ -197,8 +201,9 @@ const TimeLogFrom = ({ formData, setFormData }: Props) => {
         comments: formData.comments,
         logTime: formData.logTime,
         milestoneId: formData.milestoneId,
-        projectId: formData.projectId,
         taskId: formData.taskId,
+        projectId: formData.projectId,
+        clientId: selectedProject?.clientId,
       };
 
       if (formData.taskId) {
@@ -207,7 +212,7 @@ const TimeLogFrom = ({ formData, setFormData }: Props) => {
 
       if (Object.values(notValid).length <= 0) {
         let res;
-        console.log({ payload });
+        console.log(payload.projectId, selectedProject, updatePayload);
         if (timeCardId) {
           res = await _patch(`api/timecards/${timeCardId}`, updatePayload);
         } else {
@@ -247,8 +252,8 @@ const TimeLogFrom = ({ formData, setFormData }: Props) => {
       navigate('/');
       const res = await _get(`api/timecards/timelog?startDate=${date}`);
       if (res.data.timecardsData)
-        return dispatch(setTimeCardDetails(res?.data.timecardsData));
-      dispatch(setTimeCardDetails(null));
+        return dispatch(updateTimeCardDetails(res?.data.timecardsData));
+      dispatch(updateTimeCardDetails(null));
       toast({
         title: 'Entry Logs Detail',
         description: 'Nothing logged for selected date',
