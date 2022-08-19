@@ -17,38 +17,21 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router';
-import { EPROJECTType } from '../../constants/enum';
+import { EProjectType } from '../../constants/enum';
 import {
   updateSelectedProject,
   updateTimeCardDetails,
 } from '../../feature/timeCardSlice';
-import { TimelogFormError } from '../../interfaces/timelogForm';
+import {
+  TimelogFormError,
+  TimeLogFormData,
+} from '../../interfaces/timelogForm';
 import { RootState } from '../../store';
 import { _get, _patch, _post } from '../../utils/api';
 import { convertMinutes, formateDate } from '../../utils/common';
 import { timeStringValidate } from '../../utils/validation';
 import CustomSelect from '../customSelect';
-
-export interface TimeLogFormData {
-  date: Date | string;
-  projectId?: string;
-  clientId?: string;
-  milestoneId: string;
-  taskId?: string;
-  logTime: string;
-  comments: string;
-  billingType: boolean;
-}
-
-export interface updateData {
-  projectId?: string;
-  clientId?: string;
-  milestoneId?: string;
-  taskId?: string;
-  logTime?: string;
-  comments?: string;
-  billingType?: boolean;
-}
+import { resetFormData, resetTimeLogError } from './helperConstants';
 
 interface Props {
   formData: TimeLogFormData;
@@ -61,10 +44,10 @@ const TimeLogFrom = ({ formData, setFormData }: Props) => {
   const navigate = useNavigate();
   const toast = useToast();
 
-  const [projectType, setProjectType] = useState<string>('');
+  const [projectType, setProjectType] = useState<EProjectType | null>(null);
   const [taskNode, setTaskNode] = useState([]);
   const [milestoneData, setMilestoneData] = useState([]);
-  const [errorMsg, setErrorMsg] = useState<TimelogFormError>();
+  const [errorMsg, setErrorMsg] = useState<TimelogFormError>({});
 
   const { projects } = useSelector((state: RootState) => state.allProjects);
   const { currentSelectedDate, selectedProject } = useSelector(
@@ -99,7 +82,6 @@ const TimeLogFrom = ({ formData, setFormData }: Props) => {
       setTaskNode(project.tasks);
       setMilestoneData(project.milestones);
       setProjectType(project.type);
-      console.log(project.type);
     }
   };
 
@@ -132,7 +114,8 @@ const TimeLogFrom = ({ formData, setFormData }: Props) => {
     if (!projectId) {
       errors.projectName = 'Please select project ';
     }
-    if (!taskId && projectType !== EPROJECTType.FIXED) {
+    // projectType  === 'RETAINER_GRANULAR' || projectType === 'RETAINER' ? true : false
+    if (!taskId && projectType !== EProjectType.FIXED) {
       errors.task = 'Please select task ';
     }
     if (!comments) {
@@ -146,15 +129,9 @@ const TimeLogFrom = ({ formData, setFormData }: Props) => {
   };
 
   const reset = () => {
-    setFormData({
-      date: new Date(),
-      projectId: '',
-      taskId: '',
-      milestoneId: '',
-      logTime: '',
-      comments: '',
-      billingType: false,
-    });
+    setFormData(resetFormData);
+    setErrorMsg(resetTimeLogError);
+    setProjectType(null);
     dispatch(updateSelectedProject(null));
     navigate('/');
   };
@@ -191,10 +168,10 @@ const TimeLogFrom = ({ formData, setFormData }: Props) => {
     try {
       setErrorMsg(fieldValidation());
       const notValid = fieldValidation();
-      const payload: TimeLogFormData = {
+      let payload;
+      payload = {
         billingType: formData.billingType,
         comments: formData.comments,
-        date: format(new Date(formData.date), 'yyyy-MM-dd'),
         logTime: formData.logTime,
         milestoneId: formData.milestoneId,
         taskId: formData.taskId,
@@ -202,15 +179,12 @@ const TimeLogFrom = ({ formData, setFormData }: Props) => {
         clientId: selectedProject?.clientId,
       };
 
-      const updatePayload: updateData = {
-        billingType: formData.billingType,
-        comments: formData.comments,
-        logTime: formData.logTime,
-        milestoneId: formData.milestoneId,
-        taskId: formData.taskId,
-        projectId: formData.projectId,
-        clientId: selectedProject?.clientId,
-      };
+      if (!timeCardId) {
+        payload = {
+          ...payload,
+          date: format(new Date(formData.date), 'yyyy-MM-dd'),
+        };
+      }
 
       if (formData.taskId) {
         payload.taskId = formData.taskId;
@@ -218,9 +192,8 @@ const TimeLogFrom = ({ formData, setFormData }: Props) => {
 
       if (Object.values(notValid).length <= 0) {
         let res;
-        console.log(payload.projectId, selectedProject, updatePayload);
         if (timeCardId) {
-          res = await _patch(`api/timecards/${timeCardId}`, updatePayload);
+          res = await _patch(`api/timecards/${timeCardId}`, payload);
         } else {
           res = await _post('api/timecards', payload);
         }
@@ -284,25 +257,29 @@ const TimeLogFrom = ({ formData, setFormData }: Props) => {
             lineHeight='17.6px'
             textStyle='sourceSansProBold'
             mb='6px'
+            cursor={'pointer'}
           >
             Project
           </FormLabel>
-          <CustomSelect onChange={selectProject} />
-          <FormErrorMessage>{errorMsg?.projectName}</FormErrorMessage>
+          <CustomSelect linkLabel={'select_project'} onChange={selectProject} />
+          <FormErrorMessage mt='6px' fontSize='12px'>
+            {errorMsg?.projectName}
+          </FormErrorMessage>
         </FormControl>
         <FormControl mb='18px' isInvalid={errorMsg?.task ? true : false}>
           <FormLabel
-            htmlFor='task'
+            htmlFor='select_milestone'
             color='grayLight'
             fontSize='14px'
             lineHeight='17.6px'
             textStyle='sourceSansProBold'
             mb='6px'
+            cursor={'pointer'}
           >
             Milestone
           </FormLabel>
           <Select
-            id='task'
+            id='select_milestone'
             name='milestoneId'
             value={formData.milestoneId}
             placeholder='Select milestone'
@@ -311,7 +288,12 @@ const TimeLogFrom = ({ formData, setFormData }: Props) => {
             color='grayLight'
             textStyle='sourceSansProRegular'
             onChange={selecttHandler}
-            isDisabled={projectType !== EPROJECTType.FIXED ? true : false}
+            isDisabled={
+              projectType === EProjectType.RETAINER_GRANULAR ||
+              projectType === EProjectType.RETAINER
+                ? true
+                : false
+            }
           >
             {milestoneData.length > 0 &&
               milestoneData.map(
@@ -324,49 +306,58 @@ const TimeLogFrom = ({ formData, setFormData }: Props) => {
                 },
               )}
           </Select>
-          <FormErrorMessage>{errorMsg?.task}</FormErrorMessage>
+          <FormErrorMessage mt='6px' fontSize='12px'>
+            {errorMsg?.task}
+          </FormErrorMessage>
         </FormControl>
-        {projectType === EPROJECTType.RETAINER_GRANULAR && (
-          <FormControl mb='18px' isInvalid={errorMsg?.task ? true : false}>
-            <FormLabel
-              htmlFor='task'
-              color='grayLight'
-              fontSize='14px'
-              lineHeight='17.6px'
-              textStyle='sourceSansProBold'
-              mb='6px'
-            >
-              Task
-            </FormLabel>
-            <Select
-              id='task'
-              name='taskId'
-              value={formData.taskId}
-              placeholder='Select task'
-              fontSize='14px'
-              lineHeight='17.6px'
-              color='grayLight'
-              textStyle='sourceSansProRegular'
-              onChange={selecttHandler}
-            >
-              {taskNode.length > 0 &&
-                taskNode.map((task: { id: string; title: string }, index) => {
-                  return (
-                    <option value={task.id} key={index}>
-                      {task.title}
-                    </option>
-                  );
-                })}
-            </Select>
-            <FormErrorMessage>{errorMsg?.task}</FormErrorMessage>
-          </FormControl>
-        )}
+        {projectType !== EProjectType.FIXED &&
+          projectType !== EProjectType.RETAINER && (
+            <FormControl mb='18px' isInvalid={errorMsg?.task ? true : false}>
+              <FormLabel
+                htmlFor='select_task'
+                color='grayLight'
+                fontSize='14px'
+                lineHeight='17.6px'
+                textStyle='sourceSansProBold'
+                mb='6px'
+                cursor={'pointer'}
+              >
+                Task
+              </FormLabel>
+              <Select
+                id='select_task'
+                name='taskId'
+                value={formData.taskId}
+                placeholder='Select task'
+                fontSize='14px'
+                lineHeight='17.6px'
+                color='grayLight'
+                textStyle='sourceSansProRegular'
+                onChange={selecttHandler}
+                cursor={'pointer'}
+              >
+                {taskNode.length > 0 &&
+                  taskNode.map((task: { id: string; title: string }, index) => {
+                    return (
+                      <option value={task.id} key={index}>
+                        {task.title}
+                      </option>
+                    );
+                  })}
+              </Select>
+              <FormErrorMessage mt='6px' fontSize='12px'>
+                {errorMsg?.task}
+              </FormErrorMessage>
+            </FormControl>
+          )}
         <HStack justifyContent='space-between' mb='18px'>
           <FormControl
-            w='143px'
+            w='40%'
+            maxWidth='160px'
             mr='10px'
             pos='relative'
             isInvalid={errorMsg?.logTime ? true : false}
+            mb={errorMsg?.logTime ? '18px' : 0}
           >
             <FormLabel
               htmlFor='add_time'
@@ -375,6 +366,7 @@ const TimeLogFrom = ({ formData, setFormData }: Props) => {
               lineHeight='17.6px'
               textStyle='sourceSansProBold'
               mb='6px'
+              cursor={'pointer'}
             >
               Time
             </FormLabel>
@@ -396,6 +388,9 @@ const TimeLogFrom = ({ formData, setFormData }: Props) => {
                 name='logTime'
                 onChange={inputHandler}
                 border={errorMsg?.logTime ? '1px' : 'none'}
+                _focus={{
+                  boxShadow: '0 0 0 2px #3182ce',
+                }}
                 placeholder='07:30'
                 fontSize='14px'
                 textStyle='sourceSansProRegular'
@@ -415,7 +410,12 @@ const TimeLogFrom = ({ formData, setFormData }: Props) => {
                 Hours
               </Text>
             </Flex>
-            <FormErrorMessage pos='absolute' bottom='-18px'>
+            <FormErrorMessage
+              pos='absolute'
+              bottom='-18px'
+              mt='6px'
+              fontSize='12px'
+            >
               {errorMsg?.logTime}
             </FormErrorMessage>
           </FormControl>
@@ -423,18 +423,21 @@ const TimeLogFrom = ({ formData, setFormData }: Props) => {
             w='70%'
             pos='relative'
             isInvalid={errorMsg?.comments ? true : false}
+            mb={errorMsg?.comments ? '18px !important' : 0}
           >
             <FormLabel
-              htmlFor='select_task'
+              htmlFor='comment'
               color='grayLight'
               fontSize='14px'
               lineHeight='17.6px'
               textStyle='sourceSansProBold'
               mb='6px'
+              cursor={'pointer'}
             >
               Comments
             </FormLabel>
             <Input
+              id='comment'
               type='text'
               value={formData.comments}
               textStyle='sourceSansProRegular'
@@ -444,7 +447,12 @@ const TimeLogFrom = ({ formData, setFormData }: Props) => {
               fontSize='14px'
               lineHeight='17.6px'
             />
-            <FormErrorMessage pos='absolute' bottom='-18px'>
+            <FormErrorMessage
+              pos='absolute'
+              bottom='-18px'
+              mt='6px'
+              fontSize='12px'
+            >
               {errorMsg?.comments}
             </FormErrorMessage>
           </FormControl>

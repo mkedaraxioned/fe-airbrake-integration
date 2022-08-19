@@ -1,4 +1,4 @@
-export enum EPROJECTType {
+export enum EProjectType {
   RETAINER_GRANULAR = 'RETAINER_GRANULAR',
   RETAINER = 'RETAINER',
   FIXED = 'FIXED',
