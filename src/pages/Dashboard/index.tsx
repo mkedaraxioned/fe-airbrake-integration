@@ -58,7 +58,7 @@ const Dashboard = () => {
           </Box>
         </Box>
         <Box
-          p='40px 55px 0'
+          p={{ lg: '40px 45px 0', '2xl': '40px 55px 0' }}
           borderLeft='1px'
           borderRight='1px'
           borderColor='borderColor'

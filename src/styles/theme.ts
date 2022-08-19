@@ -4,6 +4,12 @@ import Radio from './radioButtonStyleComponent';
 import { styles as globalStyle } from './globalStyle';
 import { textStyle } from './textStyle';
 
+const breakpoints = {
+  lg: '960px',
+  xl: '1200px',
+  '2xl': '1536px',
+};
+
 export const costomTheme = extendTheme({
   styles: {
     global: {
@@ -16,6 +22,7 @@ export const costomTheme = extendTheme({
   textStyles: {
     ...textStyle,
   },
+  breakpoints,
   radii: {
     none: '0',
     sm: '0.125rem',

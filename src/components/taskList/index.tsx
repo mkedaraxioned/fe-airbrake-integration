@@ -21,7 +21,7 @@ const TaskList = () => {
 
   const fetchEntries = async (date: string) => {
     try {
-      navigate('/');
+      navigate('/'); // remove for not updating query param when another date is selected
       const res = await _get(`api/timecards/timelog?startDate=${date}`);
       if (res.data.timecardsData)
         return dispatch(updateTimeCardDetails(res?.data.timecardsData));
