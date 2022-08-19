@@ -34,7 +34,7 @@ const TimeCard = ({ task }: TaskDetails) => {
 
   const redirectToHome = (id: any) => id === timeCardId && navigate(`/`);
 
-  const fetchTaskDetail = async (id: string | undefined) => {
+  const deleteTask = async (id: string | undefined) => {
     try {
       if (id) {
         const res = await _patch(`api/timecards/${id}`, { isDeleted: true });
@@ -72,7 +72,7 @@ const TimeCard = ({ task }: TaskDetails) => {
   };
 
   const deleteEntry = () => {
-    fetchTaskDetail(task.timecardId);
+    deleteTask(task.timecardId);
   };
 
   return (

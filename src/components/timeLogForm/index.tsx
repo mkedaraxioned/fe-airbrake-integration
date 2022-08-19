@@ -17,7 +17,11 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router';
-import { updateTimeCardDetails } from '../../feature/timeCardSlice';
+import { EPROJECTType } from '../../constants/enum';
+import {
+  updateSelectedProject,
+  updateTimeCardDetails,
+} from '../../feature/timeCardSlice';
 import { TimelogFormError } from '../../interfaces/timelogForm';
 import { RootState } from '../../store';
 import { _get, _patch, _post } from '../../utils/api';
@@ -82,7 +86,7 @@ const TimeLogFrom = ({ formData, setFormData }: Props) => {
     } else {
       setErrorMsg({
         ...errorMsg,
-        ['logTime']: 'Please enter valid time',
+        ['logTime']: 'Invalid time',
       });
     }
   }, [formData.logTime]);
@@ -95,6 +99,7 @@ const TimeLogFrom = ({ formData, setFormData }: Props) => {
       setTaskNode(project.tasks);
       setMilestoneData(project.milestones);
       setProjectType(project.type);
+      console.log(project.type);
     }
   };
 
@@ -127,14 +132,14 @@ const TimeLogFrom = ({ formData, setFormData }: Props) => {
     if (!projectId) {
       errors.projectName = 'Please select project ';
     }
-    if (!taskId && projectType !== 'FIXED') {
+    if (!taskId && projectType !== EPROJECTType.FIXED) {
       errors.task = 'Please select task ';
     }
     if (!comments) {
       errors.comments = 'Please enter comments ';
     }
     if (!logTime || timeStringValidate(formData.logTime)) {
-      errors.logTime = 'Please enter valid time';
+      errors.logTime = 'Invalid time';
     }
 
     return errors;
@@ -150,6 +155,7 @@ const TimeLogFrom = ({ formData, setFormData }: Props) => {
       comments: '',
       billingType: false,
     });
+    dispatch(updateSelectedProject(null));
     navigate('/');
   };
 
@@ -305,6 +311,7 @@ const TimeLogFrom = ({ formData, setFormData }: Props) => {
             color='grayLight'
             textStyle='sourceSansProRegular'
             onChange={selecttHandler}
+            isDisabled={projectType !== EPROJECTType.FIXED ? true : false}
           >
             {milestoneData.length > 0 &&
               milestoneData.map(
@@ -319,7 +326,7 @@ const TimeLogFrom = ({ formData, setFormData }: Props) => {
           </Select>
           <FormErrorMessage>{errorMsg?.task}</FormErrorMessage>
         </FormControl>
-        {projectType !== 'FIXED' && (
+        {projectType === EPROJECTType.RETAINER_GRANULAR && (
           <FormControl mb='18px' isInvalid={errorMsg?.task ? true : false}>
             <FormLabel
               htmlFor='task'
@@ -388,7 +395,7 @@ const TimeLogFrom = ({ formData, setFormData }: Props) => {
                 value={formData.logTime}
                 name='logTime'
                 onChange={inputHandler}
-                border='none'
+                border={errorMsg?.logTime ? '1px' : 'none'}
                 placeholder='07:30'
                 fontSize='14px'
                 textStyle='sourceSansProRegular'
