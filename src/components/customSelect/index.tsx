@@ -13,8 +13,9 @@ export interface Options {
 
 interface Props {
   onChange: (item: any) => void;
+  linkLabel: string;
 }
-const CustomSelect = ({ onChange }: Props) => {
+const CustomSelect = ({ onChange, linkLabel }: Props) => {
   const dispatch = useDispatch();
   const [noDataFound, setNoDataFound] = useState<boolean>(false);
   const { projects } = useSelector((state: RootState) => state.allProjects);
@@ -192,6 +193,7 @@ const CustomSelect = ({ onChange }: Props) => {
   return (
     <Box>
       <Select
+        id={linkLabel}
         onChange={handleChange}
         options={sortOptions}
         value={selectedProject}
