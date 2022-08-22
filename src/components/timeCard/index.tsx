@@ -1,13 +1,14 @@
-import { Box, Text, useToast } from '@chakra-ui/react';
+import { Box, Text, useToast, VStack } from '@chakra-ui/react';
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import { useParams, useNavigate } from 'react-router';
 import { ReactComponent as DeleteSvg } from '../../assets/images/delete.svg';
+import { ReactComponent as EditSvg } from '../../assets/images/edit.svg';
 import { updateTimeCardDetails } from '../../feature/timeCardSlice';
 import { Task } from '../../interfaces/timeCard';
 import { RootState } from '../../store';
-import { _del, _get, _patch } from '../../utils/api';
+import { _del, _get, _put } from '../../utils/api';
 import { formateDate, scrollToTop } from '../../utils/common';
 interface TaskDetails {
   task: Task;
@@ -37,7 +38,7 @@ const TimeCard = ({ task }: TaskDetails) => {
   const deleteTask = async (id: string | undefined) => {
     try {
       if (id) {
-        const res = await _patch(`api/timecards/${id}`, { isDeleted: true });
+        const res = await _put(`api/timecards/${id}`, { isDeleted: true });
         if (res.status === 200) {
           const del = await _del(`api/timecards/${id}`);
           if (del?.status === 200) {
@@ -75,45 +76,48 @@ const TimeCard = ({ task }: TaskDetails) => {
     deleteTask(task.timecardId);
   };
 
+  const editEntry = () => {
+    navigate(`/dashboard/${task.timecardId}`);
+    scrollToTop();
+  };
+
   return (
     <Box
-      p='11px 40px 11px 20px'
-      m='10px 0'
+      minH='80px'
+      p='11px 35px 11px 20px'
+      m='12px 0'
       cursor='pointer'
       pos='relative'
       rounded='md'
       display='flex'
       alignItems='center'
       justifyContent='space-between'
-      bg='bgPrimary'
+      bg='bgCard'
       fontSize='14px'
       lineHeight='17.6px'
       onMouseOver={over}
       onMouseOut={out}
-      onDoubleClick={() => {
-        navigate(`/dashboard/${task.timecardId}`);
-        scrollToTop();
-      }}
     >
-      <Box textStyle='sourceSansProRegular'>
+      <Box width='80%' textStyle='sourceSansProRegular'>
         <Text color='textColor'>{task.name}</Text>
-        <Text fontSize='12px' lineHeight='15.08px' color='textLight'>
+        <Text fontSize='12px' lineHeight='15.08px' color='textLogC'>
           {task.comments}
         </Text>
       </Box>
       <Text color='grayLight' textStyle='sourceSansProBold'>
         {task.timeLogged}
       </Text>
-      <Box
+      <VStack
         pos='absolute'
-        top='35%'
-        right='15px'
+        top='12%'
+        right='-12px'
         display={isVisible ? 'block' : 'none'}
         cursor='pointer'
-        color='grayLight'
+        spacing='4px'
       >
+        <EditSvg title='Edit Entry' onClick={editEntry} />
         <DeleteSvg title='Delete Entry' onClick={deleteEntry} />
-      </Box>
+      </VStack>
     </Box>
   );
 };

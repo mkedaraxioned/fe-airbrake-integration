@@ -27,7 +27,7 @@ import {
   TimeLogFormData,
 } from '../../interfaces/timelogForm';
 import { RootState } from '../../store';
-import { _get, _patch, _post } from '../../utils/api';
+import { _get, _patch, _post, _put } from '../../utils/api';
 import { convertMinutes, formateDate } from '../../utils/common';
 import { timeStringValidate } from '../../utils/validation';
 import CustomSelect from '../customSelect';
@@ -205,7 +205,7 @@ const TimeLogFrom = ({ formData, setFormData }: Props) => {
       if (Object.values(notValid).length <= 0) {
         let res;
         if (timeCardId) {
-          res = await _patch(`api/timecards/${timeCardId}`, payload);
+          res = await _put(`api/timecards/${timeCardId}`, payload);
         } else {
           res = await _post('api/timecards', payload);
         }
