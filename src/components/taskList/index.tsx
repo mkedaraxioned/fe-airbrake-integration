@@ -10,7 +10,6 @@ import { formateDate } from '../../utils/common';
 import TimeCard from '../timeCard';
 
 const TaskList = () => {
-  const toast = useToast();
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
@@ -27,14 +26,6 @@ const TaskList = () => {
         return dispatch(setTimeCardDetails(res?.data.timecardsData));
 
       dispatch(setTimeCardDetails(null));
-      toast({
-        title: 'Entry Logs Detail',
-        description: 'Nothing logged for selected date',
-        status: 'error',
-        duration: 2000,
-        position: 'top-right',
-        isClosable: true,
-      });
     } catch (err: any) {
       console.log(err);
     }

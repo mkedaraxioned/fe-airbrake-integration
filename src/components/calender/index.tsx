@@ -42,8 +42,8 @@ const Calendar = ({ showDetailsHandle, formDate }: Props) => {
     }
   };
   const onDateClickHandle = (day: Date, dayStr: string) => {
-    setSelectedDate(day);
     dispatch(addSelectedDate(day));
+    setSelectedDate(day);
     showDetailsHandle(dayStr);
   };
   const startDate = format(startOfMonth(currentMonth), 'yyyy-MM-dd');
@@ -92,7 +92,8 @@ const Calendar = ({ showDetailsHandle, formDate }: Props) => {
   const renderDays = () => {
     const dateFormat = 'EEEEE';
     const days = [];
-    const startDate = startOfWeek(currentMonth, { weekStartsOn: 0 });
+    const startDateVal = startOfWeek(currentMonth, { weekStartsOn: 0 });
+
     for (let i = 0; i < 7; i++) {
       days.push(
         <Box
@@ -100,11 +101,11 @@ const Calendar = ({ showDetailsHandle, formDate }: Props) => {
           h='46px'
           fontSize='14px'
           color='grayLight'
-          key={i}
+          key={`${i}${format(addDays(startDateVal, i), dateFormat)}`}
           textStyle='sourceSansProBold'
           lineHeight='46px'
         >
-          {format(addDays(startDate, i), dateFormat)}
+          {format(addDays(startDateVal, i), dateFormat)}
         </Box>,
       );
     }
@@ -114,14 +115,21 @@ const Calendar = ({ showDetailsHandle, formDate }: Props) => {
   const renderCells = () => {
     const monthStart = startOfMonth(currentMonth);
     const monthEnd = endOfMonth(monthStart);
-    const startDate = startOfWeek(monthStart);
-    const endDate = endOfWeek(monthEnd);
+    const startDateCell = startOfWeek(monthStart);
+    const endDateCell = endOfWeek(monthEnd);
     const dateFormat = 'd';
     const rows = [];
     let days = [];
-    let day = startDate;
+    let day = startDateCell;
+
     let formattedDate = '';
-    while (day <= endDate) {
+
+    const hoursToDecimal = (val: string) => {
+      const arr = val.split(':');
+      return parseInt(arr[0], 10) * 1 + parseInt(arr[1], 10) / 60;
+    };
+
+    while (day <= endDateCell) {
       for (let i = 0; i < 7; i++) {
         formattedDate = format(day, dateFormat);
         const cloneDay = day;
@@ -130,6 +138,7 @@ const Calendar = ({ showDetailsHandle, formDate }: Props) => {
         const month = getMonth(day);
         let bgColorVal = '';
         let toolTiplabel = '';
+
         loggedTimeData.length > 0 &&
           loggedTimeData.forEach(
             (value: { date: string; totalTime: string }) => {
@@ -139,24 +148,23 @@ const Calendar = ({ showDetailsHandle, formDate }: Props) => {
               ) {
                 toolTiplabel = value.totalTime;
               }
-
               if (
                 format(new Date(value.date.substr(0, 10)), 'yyyy-MM-dd') ===
                   format(new Date(day), 'yyyy-MM-dd') &&
-                hoursToMinutes(parseFloat(value.totalTime)) >= 480
+                hoursToMinutes(hoursToDecimal(value.totalTime)) < 450
               ) {
                 bgColorVal = '#FFECB3';
               } else if (
                 format(new Date(value.date.substr(0, 10)), 'yyyy-MM-dd') ===
                   format(new Date(day), 'yyyy-MM-dd') &&
-                hoursToMinutes(parseFloat(value.totalTime)) < 480
+                hoursToMinutes(hoursToDecimal(value.totalTime)) >= 450
               ) {
                 bgColorVal = '#DCEDC8';
               }
             },
           );
         days.push(
-          <Tooltip label={toolTiplabel}>
+          <Tooltip label={toolTiplabel && `${toolTiplabel} Hrs`}>
             <Box
               w='46px'
               h='46px'
@@ -177,7 +185,7 @@ const Calendar = ({ showDetailsHandle, formDate }: Props) => {
               }`}
               pointerEvents={`${getTime > curTime ? 'none' : 'auto'}`}
               cursor={`${getTime > curTime ? 'not-allowed' : 'pointer'}`}
-              key={i}
+              key={`${day.getTime()}${i}`}
               onClick={() => {
                 const dayStr = format(cloneDay, 'MM-dd-yyyy');
                 onDateClickHandle(cloneDay, dayStr);

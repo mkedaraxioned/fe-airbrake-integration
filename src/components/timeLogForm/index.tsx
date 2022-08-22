@@ -249,14 +249,6 @@ const TimeLogFrom = ({ formData, setFormData }: Props) => {
       if (res.data.timecardsData)
         return dispatch(setTimeCardDetails(res?.data.timecardsData));
       dispatch(setTimeCardDetails(null));
-      toast({
-        title: 'Entry Logs Detail',
-        description: 'Nothing logged for selected date',
-        status: 'error',
-        duration: 2000,
-        position: 'top-right',
-        isClosable: true,
-      });
     } catch (err: any) {
       console.log(err);
     }
