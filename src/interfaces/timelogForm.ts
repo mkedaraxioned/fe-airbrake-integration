@@ -9,6 +9,7 @@ export interface TimelogForm {
 export interface TimelogFormError {
   date?: string;
   projectName?: string;
+  milestone?: string;
   task?: string;
   logTime?: string;
   comments?: string;

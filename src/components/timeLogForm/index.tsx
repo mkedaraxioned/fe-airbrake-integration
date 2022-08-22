@@ -105,8 +105,8 @@ const TimeLogFrom = ({ formData, setFormData }: Props) => {
 
   const fieldValidation = () => {
     const errors: TimelogFormError = {};
-    const { date, projectId, taskId, logTime, comments } = formData;
-
+    const { date, projectId, taskId, milestoneId, logTime, comments } =
+      formData;
     if (new Date(date).getTime() > new Date().getTime()) {
       errors.date = "Can't logged time for future date";
     }
@@ -114,8 +114,20 @@ const TimeLogFrom = ({ formData, setFormData }: Props) => {
     if (!projectId) {
       errors.projectName = 'Please select project ';
     }
-    // projectType  === 'RETAINER_GRANULAR' || projectType === 'RETAINER' ? true : false
-    if (!taskId && projectType !== EProjectType.FIXED) {
+
+    if (
+      !milestoneId &&
+      projectType !== EProjectType.RETAINER_GRANULAR &&
+      projectType !== EProjectType.RETAINER
+    ) {
+      errors.milestone = 'Please select milestone ';
+    }
+
+    if (
+      !taskId &&
+      projectType !== EProjectType.FIXED &&
+      projectType !== EProjectType.RETAINER
+    ) {
       errors.task = 'Please select task ';
     }
     if (!comments) {
@@ -174,7 +186,7 @@ const TimeLogFrom = ({ formData, setFormData }: Props) => {
         comments: formData.comments,
         logTime: formData.logTime,
         milestoneId: formData.milestoneId,
-        taskId: formData.taskId,
+        taskId: formData?.taskId,
         projectId: formData.projectId,
         clientId: selectedProject?.clientId,
       };
@@ -258,7 +270,7 @@ const TimeLogFrom = ({ formData, setFormData }: Props) => {
             {errorMsg?.projectName}
           </FormErrorMessage>
         </FormControl>
-        <FormControl mb='18px' isInvalid={errorMsg?.task ? true : false}>
+        <FormControl mb='18px' isInvalid={errorMsg?.milestone ? true : false}>
           <FormLabel
             htmlFor='select_milestone'
             color='grayLight'
@@ -299,7 +311,7 @@ const TimeLogFrom = ({ formData, setFormData }: Props) => {
               )}
           </Select>
           <FormErrorMessage mt='6px' fontSize='12px'>
-            {errorMsg?.task}
+            {errorMsg?.milestone}
           </FormErrorMessage>
         </FormControl>
         {projectType !== EProjectType.FIXED &&
