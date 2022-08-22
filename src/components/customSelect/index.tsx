@@ -1,7 +1,6 @@
 import { Box, Text } from '@chakra-ui/react';
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Select, { components } from 'react-select';
 import { updateSelectedProject } from '../../feature/timeCardSlice';
 import { RootState } from '../../store';
@@ -14,8 +13,9 @@ export interface Options {
 interface Props {
   onChange: (item: any) => void;
   linkLabel: string;
+  notValid: boolean;
 }
-const CustomSelect = ({ onChange, linkLabel }: Props) => {
+const CustomSelect = ({ onChange, linkLabel, notValid }: Props) => {
   const dispatch = useDispatch();
   const [noDataFound, setNoDataFound] = useState<boolean>(false);
   const { projects } = useSelector((state: RootState) => state.allProjects);
@@ -78,7 +78,8 @@ const CustomSelect = ({ onChange, linkLabel }: Props) => {
     }),
     control: () => ({
       padding: '4px 0',
-      border: '1px solid #E2E8F0',
+      border: `1px solid ${notValid ? '#E53E3E' : '#E2E8F0'}`,
+      boxShadow: `${notValid ? '0 0 0 1px #E53E3E' : 'none'}`,
       display: 'flex',
       borderRadius: '5px',
       fontSize: '14px',

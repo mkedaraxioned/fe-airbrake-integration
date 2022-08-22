@@ -265,7 +265,11 @@ const TimeLogFrom = ({ formData, setFormData }: Props) => {
           >
             Project
           </FormLabel>
-          <CustomSelect linkLabel={'select_project'} onChange={selectProject} />
+          <CustomSelect
+            linkLabel={'select_project'}
+            onChange={selectProject}
+            notValid={errorMsg?.projectName ? true : false}
+          />
           <FormErrorMessage mt='6px' fontSize='12px'>
             {errorMsg?.projectName}
           </FormErrorMessage>
