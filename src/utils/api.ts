@@ -28,6 +28,15 @@ export const _patch = (url: string, payload: any) => {
   });
 };
 
+export const _put = (url: string, payload: any) => {
+  return axios.put(`${variables.BACKEND_URL}${url}`, payload, {
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
+    },
+  });
+};
+
 export const _del = (url: string) => {
   return axios.delete(`${variables.BACKEND_URL}${url}`, {
     headers: {

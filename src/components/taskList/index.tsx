@@ -38,25 +38,24 @@ const TaskList = () => {
   }, [currentSelectedDate]);
 
   return (
-    <Box p='17px 0'>
-      <Box>
-        <HStack justifyContent='space-between' color='textColor'>
+    <Box>
+      <Box backgroundColor='bgLog' p='16px' mb='12px' borderRadius='5px'>
+        <HStack justifyContent='space-between' color='textLogH'>
           <Heading
             as='h3'
-            fontSize='22px'
-            lineHeight='27.65px'
+            fontSize='16px'
+            lineHeight='20.11px'
             textStyle='sourceSansProBold'
           >
-            Entries logged
+            Total Logged Hours
           </Heading>
           <Heading
             as='h3'
-            pr='35px'
-            fontSize='18px'
-            lineHeight='22.63px'
+            fontSize='16px'
+            lineHeight='20.11px'
             textStyle='sourceSansProBold'
           >
-            {timeCardDetails ? timeCardDetails?.totalHours : '00:00'}
+            {timeCardDetails ? timeCardDetails?.totalHours : '00:00'} Hrs
           </Heading>
         </HStack>
       </Box>
@@ -65,7 +64,7 @@ const TaskList = () => {
             return (
               <Box p={i === 0 ? '15px 0 10px' : undefined} key={project.name}>
                 <HStack
-                  p='0 33px 5px 0'
+                  p='0 16px 0 0'
                   justifyContent='space-between'
                   color='textLightMid'
                 >
@@ -77,7 +76,9 @@ const TaskList = () => {
                   >
                     {project.name}
                   </Heading>
-                  <Text textStyle='sourceSansProBold'>{project.totalTime}</Text>
+                  <Text textStyle='sourceSansProBold'>
+                    {project.totalTime} Hrs
+                  </Text>
                 </HStack>
                 <Box>
                   {Array.isArray(project?.tasks)
