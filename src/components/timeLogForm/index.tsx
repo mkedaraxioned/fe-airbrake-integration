@@ -175,6 +175,16 @@ const TimeLogFrom = ({ formData, setFormData }: Props) => {
     }
   }, [timeCardId]);
 
+  const updateStateProps = {
+    borderColor: `${timeCardId ? '#4657CE' : '#E2E8F0'}`,
+    boxShadow: `${timeCardId ? '0 0 0 0.5px #4657ce' : 'none'}`,
+  };
+
+  const updateStatePropsTime = {
+    ...updateStateProps,
+    boxShadow: `${timeCardId ? '0 0 0 1.5px #4657ce' : 'none'}`,
+  };
+
   const formHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
@@ -268,6 +278,7 @@ const TimeLogFrom = ({ formData, setFormData }: Props) => {
           <CustomSelect
             linkLabel={'select_project'}
             onChange={selectProject}
+            updateStateProps={updateStateProps}
             notValid={errorMsg?.projectName ? true : false}
           />
           <FormErrorMessage mt='6px' fontSize='12px'>
@@ -302,6 +313,7 @@ const TimeLogFrom = ({ formData, setFormData }: Props) => {
                 ? true
                 : false
             }
+            {...updateStateProps}
           >
             {milestoneData.length > 0 &&
               milestoneData.map(
@@ -343,6 +355,7 @@ const TimeLogFrom = ({ formData, setFormData }: Props) => {
                 textStyle='sourceSansProRegular'
                 onChange={selecttHandler}
                 cursor={'pointer'}
+                {...updateStateProps}
               >
                 {taskNode.length > 0 &&
                   taskNode.map((task: { id: string; title: string }, index) => {
@@ -403,6 +416,7 @@ const TimeLogFrom = ({ formData, setFormData }: Props) => {
                 fontSize='14px'
                 textStyle='sourceSansProRegular'
                 lineHeight='17.6px'
+                {...updateStatePropsTime}
               />
               <Text
                 w='50%'
@@ -454,6 +468,7 @@ const TimeLogFrom = ({ formData, setFormData }: Props) => {
               placeholder='Describe the activity'
               fontSize='14px'
               lineHeight='17.6px'
+              {...updateStateProps}
             />
             <FormErrorMessage
               pos='absolute'

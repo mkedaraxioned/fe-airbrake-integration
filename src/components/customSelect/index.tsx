@@ -14,8 +14,17 @@ interface Props {
   onChange: (item: any) => void;
   linkLabel: string;
   notValid: boolean;
+  updateStateProps: {
+    borderColor: string;
+    boxShadow: string;
+  };
 }
-const CustomSelect = ({ onChange, linkLabel, notValid }: Props) => {
+const CustomSelect = ({
+  onChange,
+  linkLabel,
+  notValid,
+  updateStateProps,
+}: Props) => {
   const dispatch = useDispatch();
   const [noDataFound, setNoDataFound] = useState<boolean>(false);
   const { projects } = useSelector((state: RootState) => state.allProjects);
@@ -78,8 +87,20 @@ const CustomSelect = ({ onChange, linkLabel, notValid }: Props) => {
     }),
     control: () => ({
       padding: '4px 0',
-      border: `1px solid ${notValid ? '#E53E3E' : '#E2E8F0'}`,
-      boxShadow: `${notValid ? '0 0 0 1px #E53E3E' : 'none'}`,
+      border: `1px solid ${
+        notValid
+          ? '#E53E3E'
+          : updateStateProps
+          ? updateStateProps.borderColor
+          : '#E2E8F0'
+      }`,
+      boxShadow: `${
+        notValid
+          ? '0 0 0 1px #E53E3E'
+          : updateStateProps
+          ? updateStateProps.boxShadow
+          : 'none'
+      }`,
       display: 'flex',
       borderRadius: '5px',
       fontSize: '14px',
