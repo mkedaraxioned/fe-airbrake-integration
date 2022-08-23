@@ -24,7 +24,6 @@ import React from 'react';
 import { FaClock } from 'react-icons/fa';
 import { AiOutlineSearch } from 'react-icons/ai';
 import { Link, useNavigate } from 'react-router-dom';
-import { ColorModeSwitcher } from '../../ColorModeSwitcher';
 import { userLogout } from '../../feature/userSlice';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../store';
@@ -166,17 +165,12 @@ const Header = () => {
                           Dashboard
                         </Link>{' '}
                       </MenuItem>
-                      <MenuItem> Setting </MenuItem>
+                      <MenuItem> Settings </MenuItem>
                     </>
                   ) : null}
                 </MenuGroup>
                 <MenuGroup>
-                  <MenuItem onClick={logOut}>Log Out</MenuItem>
-                </MenuGroup>
-                <MenuGroup>
-                  <MenuItem>
-                    <ColorModeSwitcher />
-                  </MenuItem>
+                  <MenuItem onClick={logOut}>Sign Out</MenuItem>
                 </MenuGroup>
               </MenuList>
             </Menu>

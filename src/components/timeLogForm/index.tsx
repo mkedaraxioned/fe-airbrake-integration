@@ -27,7 +27,7 @@ import {
   TimeLogFormData,
 } from '../../interfaces/timelogForm';
 import { RootState } from '../../store';
-import { _get, _patch, _post, _put } from '../../utils/api';
+import { _get, _post, _put } from '../../utils/api';
 import { convertMinutes, formateDate } from '../../utils/common';
 import { timeStringValidate } from '../../utils/validation';
 import CustomSelect from '../customSelect';
