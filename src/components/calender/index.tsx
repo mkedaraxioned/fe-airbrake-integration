@@ -145,7 +145,7 @@ const Calendar = ({ showDetailsHandle, formDate }: Props) => {
         let bgColorVal = '';
         let toolTiplabel = '';
 
-        loggedTimeData.length > 0 &&
+        Array.isArray(loggedTimeData) &&
           loggedTimeData.forEach(
             (value: { date: string; totalTime: string }) => {
               if (
