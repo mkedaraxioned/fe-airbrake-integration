@@ -159,13 +159,13 @@ const Calendar = ({ showDetailsHandle, formDate }: Props) => {
                   format(new Date(day), 'yyyy-MM-dd') &&
                 hoursToMinutes(hoursToDecimal(value.totalTime)) < 450
               ) {
-                bgColorVal = '#FFECB3';
+                bgColorVal = '#FFE5A1';
               } else if (
                 format(new Date(value.date.substr(0, 10)), 'yyyy-MM-dd') ===
                   format(new Date(day), 'yyyy-MM-dd') &&
                 hoursToMinutes(hoursToDecimal(value.totalTime)) >= 450
               ) {
-                bgColorVal = '#DCEDC8';
+                bgColorVal = '#AEF2E2';
               }
             },
           );

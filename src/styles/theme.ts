@@ -66,6 +66,8 @@ export const costomTheme = extendTheme({
     extraLightBlack: '#696969',
     bgLog: '#CDF6ED',
     bgCard: '#F5F7F8',
+    bilColor: '#00B894',
+    nbilColor: '#EB3839',
   },
   components: {
     Button,

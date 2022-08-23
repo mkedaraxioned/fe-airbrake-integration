@@ -84,7 +84,7 @@ const TimeCard = ({ task }: TaskDetails) => {
   return (
     <Box
       minH='80px'
-      p='11px 35px 11px 20px'
+      p='11px 25px 11px 20px'
       m='12px 0'
       cursor='pointer'
       pos='relative'
@@ -100,13 +100,24 @@ const TimeCard = ({ task }: TaskDetails) => {
     >
       <Box width='80%' textStyle='sourceSansProRegular'>
         <Text color='textColor'>{task.name}</Text>
-        <Text fontSize='12px' lineHeight='15.08px' color='textLogC'>
+        <Text fontSize='14px' lineHeight='17.6px' color='textLogC'>
           {task.comments}
         </Text>
       </Box>
-      <Text color='grayLight' textStyle='sourceSansProBold'>
-        {task.timeLogged}
-      </Text>
+      <VStack alignItems='flex-end' spacing='2px'>
+        {task.isBillable ? (
+          <Text color='bilColor' textStyle='sourceSansProRegular'>
+            Billable
+          </Text>
+        ) : (
+          <Text color='nbilColor' textStyle='sourceSansProRegular'>
+            Non-Billable
+          </Text>
+        )}
+        <Text color='grayLight' textStyle='sourceSansProBold'>
+          {task.timeLogged}
+        </Text>
+      </VStack>
       <VStack
         pos='absolute'
         top='12%'

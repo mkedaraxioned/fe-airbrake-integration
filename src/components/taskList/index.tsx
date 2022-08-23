@@ -39,20 +39,20 @@ const TaskList = () => {
 
   return (
     <Box>
-      <Box backgroundColor='bgLog' p='16px' mb='12px' borderRadius='5px'>
-        <HStack justifyContent='space-between' color='textLogH'>
+      <Box mb='7px'>
+        <HStack width='95%' justifyContent='space-between' color='greyLight'>
           <Heading
             as='h3'
-            fontSize='16px'
-            lineHeight='20.11px'
+            fontSize='18px'
+            lineHeight='20px'
             textStyle='sourceSansProBold'
           >
             Total Logged Hours
           </Heading>
           <Heading
             as='h3'
-            fontSize='16px'
-            lineHeight='20.11px'
+            fontSize='18px'
+            lineHeight='20px'
             textStyle='sourceSansProBold'
           >
             {timeCardDetails ? timeCardDetails?.totalHours : '00:00'} Hrs
@@ -64,19 +64,24 @@ const TaskList = () => {
             return (
               <Box p={i === 0 ? '15px 0 10px' : undefined} key={project.name}>
                 <HStack
-                  p='0 16px 0 0'
+                  // p='0 16px 0 0'
                   justifyContent='space-between'
                   color='textLightMid'
+                  width='95%'
                 >
                   <Heading
                     as='h4'
-                    fontSize='18px'
-                    lineHeight='22.63px'
-                    textStyle='sourceSansProBold'
+                    fontSize='16px'
+                    lineHeight='20.11px'
+                    textStyle='sourceSansProRegular'
                   >
                     {project.name}
                   </Heading>
-                  <Text textStyle='sourceSansProBold'>
+                  <Text
+                    fontSize='16px'
+                    lineHeight='20.11px'
+                    textStyle='sourceSansProRegular'
+                  >
                     {project.totalTime} Hrs
                   </Text>
                 </HStack>
