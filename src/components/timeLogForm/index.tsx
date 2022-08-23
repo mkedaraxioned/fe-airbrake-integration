@@ -313,6 +313,7 @@ const TimeLogFrom = ({ formData, setFormData }: Props) => {
                 ? true
                 : false
             }
+            cursor={'pointer'}
             {...updateStateProps}
           >
             {milestoneData.length > 0 &&

@@ -105,6 +105,7 @@ const CustomSelect = ({
       borderRadius: '5px',
       fontSize: '14px',
       lineHeight: '17.6px',
+      cursor: 'pointer',
     }),
     dropdownIndicator: () => ({
       padding: '5px 10px 0',
