@@ -14,8 +14,7 @@ import {
 } from '@chakra-ui/react';
 import { format } from 'date-fns';
 import React, { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router';
 import { EProjectType } from '../../constants/enum';
 import {
@@ -27,7 +26,7 @@ import {
   TimeLogFormData,
 } from '../../interfaces/timelogForm';
 import { RootState } from '../../store';
-import { _get, _patch, _post, _put } from '../../utils/api';
+import { _get, _post, _put } from '../../utils/api';
 import { convertMinutes, formateDate } from '../../utils/common';
 import { timeStringValidate } from '../../utils/validation';
 import CustomSelect from '../customSelect';
