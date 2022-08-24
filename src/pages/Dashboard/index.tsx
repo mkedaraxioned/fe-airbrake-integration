@@ -48,7 +48,7 @@ const Dashboard = () => {
 
   return (
     <Box>
-      <Flex justifyContent='center'>
+      <Flex minH='calc(100vh - 78px)' justifyContent='center'>
         <Box flexBasis='31%' bg='bgLight'>
           <Box w='323px' mt='40px' mr='50px' ml='auto'>
             <Calendar

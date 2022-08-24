@@ -64,7 +64,6 @@ const TaskList = () => {
             return (
               <Box p={i === 0 ? '15px 0 10px' : undefined} key={project.name}>
                 <HStack
-                  // p='0 16px 0 0'
                   justifyContent='space-between'
                   color='textLightMid'
                   width='95%'

@@ -273,7 +273,7 @@ const NewProjectForm = ({ onClose, projectId }: Props) => {
               placeholder='Please select client'
               fontSize='14px'
               lineHeight='17.6px'
-              color='grayLight'
+              color='extraLightBlack'
               textStyle='sourceSansProRegular'
               onChange={selecttHandler}
             >
@@ -298,6 +298,7 @@ const NewProjectForm = ({ onClose, projectId }: Props) => {
               placeholder='Please enter project name'
               fontSize='14px'
               color='extraLightBlack'
+              _placeholder={{ color: 'extraLightBlack' }}
               lineHeight='17.6px'
               onChange={inputHandler}
               value={formData.title}
@@ -465,7 +466,7 @@ const NewProjectForm = ({ onClose, projectId }: Props) => {
                 },
               }}
             >
-              <Text fontSize='14px' color='grayLight'>
+              <Text fontSize='14px' color='extraLightBlack'>
                 Billable
               </Text>
             </Checkbox>
