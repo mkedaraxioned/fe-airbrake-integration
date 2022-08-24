@@ -13,7 +13,7 @@ import {
   useToast,
 } from '@chakra-ui/react';
 import { format } from 'date-fns';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router';
 import { EProjectType } from '../../constants/enum';
@@ -142,8 +142,9 @@ const TimeLogFrom = ({ formData, setFormData }: Props) => {
   const reset = () => {
     setFormData(resetFormData);
     setErrorMsg(resetTimeLogError);
+    setMilestoneData([]);
     setProjectType(null);
-    dispatch(updateSelectedProject(null));
+    setFormData({ ...resetFormData, projectId: '' });
     navigate('/');
   };
 
@@ -173,6 +174,20 @@ const TimeLogFrom = ({ formData, setFormData }: Props) => {
       fetchTaskDetail(timeCardId);
     }
   }, [timeCardId]);
+
+  const renderSelect = useCallback(() => {
+    return (
+      <CustomSelect
+        linkLabel={'select_project'}
+        onChange={selectProject}
+        updateStateProps={updateStateProps}
+        notValid={errorMsg?.projectName ? true : false}
+        formData={formData}
+      />
+    );
+  }, [formData]);
+
+  console.log(formData, 'dnyanu');
 
   const updateStateProps = {
     borderColor: `${timeCardId ? '#4657CE' : '#E2E8F0'}`,
@@ -274,12 +289,7 @@ const TimeLogFrom = ({ formData, setFormData }: Props) => {
           >
             Project
           </FormLabel>
-          <CustomSelect
-            linkLabel={'select_project'}
-            onChange={selectProject}
-            updateStateProps={updateStateProps}
-            notValid={errorMsg?.projectName ? true : false}
-          />
+          {renderSelect()}
           <FormErrorMessage mt='6px' fontSize='12px'>
             {errorMsg?.projectName}
           </FormErrorMessage>

@@ -18,19 +18,21 @@ interface Props {
     borderColor: string;
     boxShadow: string;
   };
+  formData: any;
 }
 const CustomSelect = ({
   onChange,
   linkLabel,
   notValid,
   updateStateProps,
+  formData,
 }: Props) => {
   const dispatch = useDispatch();
   const [noDataFound, setNoDataFound] = useState<boolean>(false);
   const { projects } = useSelector((state: RootState) => state.allProjects);
   const { clients } = useSelector((state: RootState) => state.allClients);
   const { selectedProject } = useSelector((state: RootState) => state.timeCard);
-
+  console.log(selectedProject, 'selectedProject');
   const optionsData = projects.map((elem: any) => {
     const client = clients?.find(
       ({ id }: { id: string }) => id === elem.clientId,
@@ -207,19 +209,20 @@ const CustomSelect = ({
       </Box>
     );
   };
-
+  const selectedValue = sortOptions.find(
+    (val: any) => val.value === formData.projectId,
+  );
   const handleChange = (val: any) => {
     onChange && onChange(val);
     dispatch(updateSelectedProject(val));
   };
-
   return (
     <Box>
       <Select
         id={linkLabel}
         onChange={handleChange}
         options={sortOptions}
-        value={selectedProject}
+        value={selectedValue || { value: '', label: 'Select project' }}
         styles={customStyles}
         placeholder='Select project'
         components={{ MenuList: CustomMenuList }}
