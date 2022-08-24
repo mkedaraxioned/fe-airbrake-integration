@@ -431,7 +431,7 @@ const NewProjectForm = ({ onClose, projectId }: Props) => {
                       onChange={(date: Date) =>
                         setFormData({
                           ...formData,
-                          endDate: format(new Date(date), "yyyy-MM-dd'T"),
+                          endDate: format(new Date(date), 'yyyy-MM-dd'),
                         })
                       }
                       placeholderText='MM/DD/YYYY'
