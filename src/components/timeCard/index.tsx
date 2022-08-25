@@ -5,9 +5,9 @@ import { useDispatch } from 'react-redux';
 import { useParams, useNavigate } from 'react-router';
 import { ReactComponent as DeleteSvg } from '../../assets/images/delete.svg';
 import { ReactComponent as EditSvg } from '../../assets/images/edit.svg';
-import { updateTimeCardDetails } from '../../feature/timeCardSlice';
+import { updateTimeCardDetails } from '../../redux/reducers/timeCardSlice';
 import { Task } from '../../interfaces/timeCard';
-import { RootState } from '../../store';
+import { RootState } from '../../redux';
 import { _del, _get, _put } from '../../utils/api';
 import { formateDate, scrollToTop } from '../../utils/common';
 interface TaskDetails {

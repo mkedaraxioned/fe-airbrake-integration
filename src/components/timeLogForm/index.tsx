@@ -20,12 +20,12 @@ import { EProjectType } from '../../constants/enum';
 import {
   updateSelectedProject,
   updateTimeCardDetails,
-} from '../../feature/timeCardSlice';
+} from '../../redux/reducers/timeCardSlice';
 import {
   TimelogFormError,
   TimeLogFormData,
 } from '../../interfaces/timelogForm';
-import { RootState } from '../../store';
+import { RootState } from '../../redux';
 import { _get, _post, _put } from '../../utils/api';
 import { convertMinutes, formateDate } from '../../utils/common';
 import { timeStringValidate } from '../../utils/validation';

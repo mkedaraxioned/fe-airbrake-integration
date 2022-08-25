@@ -31,7 +31,7 @@ import CustomRadio from '../customRadio';
 import { _get, _patch, _post } from '../../utils/api';
 import { add, format } from 'date-fns';
 import { useDispatch } from 'react-redux';
-import { allProjects } from '../../feature/projectsSlice';
+import { allProjects } from '../../redux/reducers/projectsSlice';
 
 interface Props {
   onClose: () => void;

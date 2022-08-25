@@ -18,8 +18,8 @@ import { HiOutlineChevronLeft, HiOutlineChevronRight } from 'react-icons/hi';
 import { endOfMonth } from 'date-fns/esm';
 import { _get } from '../../utils/api';
 import { useDispatch, useSelector } from 'react-redux';
-import { updateSelectedDate } from '../../feature/timeCardSlice';
-import { RootState } from '../../store';
+import { updateSelectedDate } from './../../redux/reducers/timeCardSlice';
+import { RootState } from '../../redux';
 
 interface Props {
   showDetailsHandle: (dayStr: string) => void;
@@ -49,7 +49,7 @@ const Calendar = ({ showDetailsHandle, formDate }: Props) => {
   };
   const onDateClickHandle = (day: Date, dayStr: string) => {
     setSelectedDate(day);
-    dispatch(updateSelectedDate(day));
+    dispatch(updateSelectedDate(day.toISOString()));
     showDetailsHandle(dayStr);
   };
   const startDate = format(startOfMonth(currentMonth), 'yyyy-MM-dd');
@@ -223,7 +223,7 @@ const Calendar = ({ showDetailsHandle, formDate }: Props) => {
 
   const setTodaysDate = () => {
     setSelectedDate(new Date());
-    dispatch(updateSelectedDate(new Date()));
+    dispatch(updateSelectedDate(new Date().toISOString()));
     setCurrentMonth(new Date());
     showDetailsHandle(format(new Date(), 'dd-MM-yyyy'));
   };

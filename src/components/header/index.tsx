@@ -24,9 +24,9 @@ import React from 'react';
 import { FaClock } from 'react-icons/fa';
 import { AiOutlineSearch } from 'react-icons/ai';
 import { Link, useNavigate } from 'react-router-dom';
-import { userLogout } from '../../feature/userSlice';
+import { userLogout } from '../../redux/reducers/userSlice';
 import { useSelector, useDispatch } from 'react-redux';
-import { RootState } from '../../store';
+import { RootState } from '../../redux';
 import NewClient from '../addClient';
 
 const Header = () => {
