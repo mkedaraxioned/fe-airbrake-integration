@@ -33,7 +33,7 @@ export const convertMinutes = (minuteTime: number) => {
   return hours + ':' + minutes;
 };
 
-export const formateDate = (date: Date) => {
+export const formateDate = (date: Date | string) => {
   const pad = (s: any) => (s < 10 ? '0' + s : s);
   const d = new Date(date);
   return [d.getFullYear(), pad(d.getMonth() + 1), pad(d.getDate())].join('-');
