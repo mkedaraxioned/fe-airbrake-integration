@@ -25,7 +25,7 @@ import { Link } from 'react-router-dom';
 import TabsButton from '../../components/tabButton';
 import ProjectList from '../../components/projectList';
 import { _get } from '../../utils/api';
-import { RootState } from '../../store';
+import { RootState } from '../../redux';
 import { useSelector } from 'react-redux';
 import { ClientSet, utilClientName } from '../../utils/common';
 import AutoCompleteElem from '../../components/autoComplete';

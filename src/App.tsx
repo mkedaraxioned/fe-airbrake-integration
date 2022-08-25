@@ -8,9 +8,10 @@ import Login from './pages/Login';
 import Projects from './pages/Projects';
 import Reports from './pages/reports';
 import Team from './pages/Team';
-import { RootState } from './store';
+import { RootState } from './redux';
 import ManageTask from './templates/manageTask';
 import ProjectTaskDetails from './templates/projectTaskDetail';
+
 export const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const user = useSelector((state: RootState) => state.user);
