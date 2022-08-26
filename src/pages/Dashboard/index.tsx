@@ -46,7 +46,7 @@ const Dashboard = () => {
     dispatch(allClients(clientRes.data?.clients));
     dispatch(allUsers(usersRes.data?.users));
   };
-
+  console.log(formData.date, 'Dnyae');
   return (
     <Box>
       <Flex justifyContent='center'>
@@ -55,6 +55,8 @@ const Dashboard = () => {
             <Calendar
               showDetailsHandle={showDetailsHandle}
               formDate={formData.date}
+              setFormData={setFormData}
+              formData={formData}
             />
           </Box>
         </Box>

@@ -23,9 +23,16 @@ import { updateSelectedDate } from '../../feature/timeCardSlice';
 interface Props {
   showDetailsHandle: (dayStr: string) => void;
   formDate: Date;
+  setFormData: any;
+  formData: any;
 }
 
-const Calendar = ({ showDetailsHandle, formDate }: Props) => {
+const Calendar = ({
+  showDetailsHandle,
+  formDate,
+  setFormData,
+  formData,
+}: Props) => {
   const dispatch = useDispatch();
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState(new Date());
@@ -217,9 +224,7 @@ const Calendar = ({ showDetailsHandle, formDate }: Props) => {
 
   const setTodaysDate = () => {
     setSelectedDate(new Date());
-    dispatch(updateSelectedDate(new Date()));
-    setCurrentMonth(new Date());
-    showDetailsHandle(format(new Date(), 'dd-MM-yyyy'));
+    setFormData({ ...formData, date: new Date() });
   };
 
   return (
