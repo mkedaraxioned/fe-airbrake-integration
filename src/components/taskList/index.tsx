@@ -1,30 +1,27 @@
 import { Box, Heading, HStack, Text } from '@chakra-ui/react';
+import { format } from 'date-fns';
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router';
 import { updateTimeCardDetails } from '../../redux/reducers/timeCardSlice';
 import { Project, Task } from '../../interfaces/timeCard';
 import { RootState } from '../../redux';
 import { _get } from '../../utils/api';
-import { formateDate } from '../../utils/common';
 import TimeCard from '../timeCard';
 
-const TaskList = () => {
-  const navigate = useNavigate();
+interface Props {
+  formData: any;
+}
 
+const TaskList = ({ formData }: Props) => {
   const dispatch = useDispatch();
 
-  const { currentSelectedDate, timeCardDetails } = useSelector(
-    (state: RootState) => state.timeCard,
-  );
+  const { timeCardDetails } = useSelector((state: RootState) => state.timeCard);
 
   const fetchEntries = async (date: string) => {
     try {
-      navigate('/'); // remove for not updating query param when another date is selected
       const res = await _get(`api/timecards/timelog?startDate=${date}`);
       if (res.data.timecardsData)
         return dispatch(updateTimeCardDetails(res?.data.timecardsData));
-
       dispatch(updateTimeCardDetails(null));
     } catch (err: any) {
       console.log(err);
@@ -32,10 +29,10 @@ const TaskList = () => {
   };
 
   useEffect(() => {
-    if (currentSelectedDate) {
-      fetchEntries(formateDate(currentSelectedDate));
+    if (formData.date) {
+      fetchEntries(format(new Date(formData.date), 'yyyy-MM-dd'));
     }
-  }, [currentSelectedDate]);
+  }, [formData.date]);
 
   return (
     <Box>
@@ -64,7 +61,6 @@ const TaskList = () => {
             return (
               <Box p={i === 0 ? '15px 0 10px' : undefined} key={project.name}>
                 <HStack
-                  // p='0 16px 0 0'
                   justifyContent='space-between'
                   color='textLightMid'
                   width='95%'
@@ -88,7 +84,11 @@ const TaskList = () => {
                 <Box>
                   {Array.isArray(project?.tasks)
                     ? project?.tasks.map((task: Task) => (
-                        <TimeCard key={task.taskId} task={task} />
+                        <TimeCard
+                          key={task.taskId}
+                          task={task}
+                          formData={formData}
+                        />
                       ))
                     : null}
                 </Box>

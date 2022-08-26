@@ -14,22 +14,81 @@ import {
   Text,
   Th,
   Thead,
+  useToast,
   Tr,
 } from '@chakra-ui/react';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { User } from '../../interfaces/team';
+import { _get, _patch } from '../../utils/api';
 
 const Team = () => {
-  const [checked, setChecked] = useState(false);
-  const switchHandler = (role: string) => {
-    setChecked(true);
-    let myVar = '';
-    if (role === 'admin') {
-      myVar = 'normal';
-    } else {
-      myVar = 'admin';
+  const toast = useToast();
+  const [loading, setLoading] = useState(false);
+  const [allUsers, setAllUsers] = useState([]);
+
+  const switchHandler = async (user: User) => {
+    try {
+      if (user?.role === 'ADMIN') {
+        setLoading(true);
+        const res = await _patch(`api/users/${user?.id}`, { role: 'NORMAL' });
+        if (res.status === 200) {
+          setLoading(false);
+          toast({
+            title: 'Status',
+            description: 'Admin Access Removed',
+            status: 'error',
+            duration: 2000,
+            position: 'top-right',
+            isClosable: true,
+          });
+        }
+      } else if (user?.role === 'NORMAL') {
+        setLoading(true);
+        const res = await _patch(`api/users/${user?.id}`, { role: 'ADMIN' });
+        if (res.status === 200) {
+          setLoading(false);
+          toast({
+            title: 'Status',
+            description: 'Admin Access Given',
+            status: 'success',
+            duration: 2000,
+            position: 'top-right',
+            isClosable: true,
+          });
+        }
+      }
+    } catch (err) {
+      return err;
     }
-    console.log(myVar);
+  };
+
+  useEffect(() => {
+    if (!loading) {
+      fetchAllUser();
+      countAdmins();
+    }
+  }, [loading]);
+
+  const fetchAllUser = async () => {
+    try {
+      const res = await _get('api/users/all');
+      setAllUsers(res.data.users);
+    } catch (err) {
+      return err;
+    }
+  };
+
+  const countAdmins = () => {
+    let admins = 0;
+    if (allUsers.length > 0) {
+      allUsers.forEach((user: User) => {
+        if (user?.role === 'ADMIN') {
+          admins = admins + 1;
+        }
+      });
+      return admins;
+    }
   };
 
   return (
@@ -50,12 +109,12 @@ const Team = () => {
           <Text p='2px 0'>
             There are{' '}
             <Text as='span' fontWeight='bold'>
-              8 people
+              {allUsers && allUsers.length} people
             </Text>{' '}
             on this account,
             <Text as='span' fontWeight='bold'>
               {' '}
-              7{' '}
+              {countAdmins()}{' '}
             </Text>
             are admin.
           </Text>
@@ -64,85 +123,40 @@ const Team = () => {
             <Table variant='simple'>
               <Thead>
                 <Tr>
-                  <Th>NAME</Th>
-                  <Th>EMAIL ADDRESS</Th>
-                  <Th>ADMIN</Th>
+                  <Th fontSize='14px' textTransform='capitalize'>
+                    Name
+                  </Th>
+                  <Th fontSize='14px' textTransform='capitalize'>
+                    Email Address
+                  </Th>
+                  <Th fontSize='14px' textTransform='capitalize'>
+                    Admin
+                  </Th>
                 </Tr>
               </Thead>
               <Tbody>
-                <Tr>
-                  <Td>
-                    <HStack alignItems='center'>
-                      <Box w='24px' h='24px' mr='5px'>
-                        <Avatar w='full' h='full' />
-                      </Box>
-                      <Text as='span'>Vipin</Text>
-                    </HStack>
-                  </Td>
-                  <Td>vipiny@axioned.com</Td>
-                  <Td>
-                    <Switch />
-                  </Td>
-                </Tr>
-                <Tr>
-                  <Td>
-                    <HStack alignItems='center'>
-                      <Box w='24px' h='24px' mr='5px'>
-                        <Avatar w='full' h='full' />
-                      </Box>
-                      <Text as='span'>Vipin</Text>
-                    </HStack>
-                  </Td>
-                  <Td>vipiny@axioned.com</Td>
-                  <Td>
-                    <Switch
-                      isChecked={checked ? true : false}
-                      onChange={() => switchHandler('admin')}
-                    />
-                  </Td>
-                </Tr>
-                <Tr>
-                  <Td>
-                    <HStack alignItems='center'>
-                      <Box w='24px' h='24px' mr='5px'>
-                        <Avatar w='full' h='full' />
-                      </Box>
-                      <Text as='span'>Vipin</Text>
-                    </HStack>
-                  </Td>
-                  <Td>vipiny@axioned.com</Td>
-                  <Td>
-                    <Switch />
-                  </Td>
-                </Tr>
-                <Tr>
-                  <Td>
-                    <HStack alignItems='center'>
-                      <Box w='24px' h='24px' mr='5px'>
-                        <Avatar w='full' h='full' />
-                      </Box>
-                      <Text as='span'>Vipin</Text>
-                    </HStack>
-                  </Td>
-                  <Td>vipiny@axioned.com</Td>
-                  <Td>
-                    <Switch />
-                  </Td>
-                </Tr>
-                <Tr>
-                  <Td>
-                    <HStack alignItems='center'>
-                      <Box w='24px' h='24px' mr='5px'>
-                        <Avatar w='full' h='full' />
-                      </Box>
-                      <Text as='span'>Vipin</Text>
-                    </HStack>
-                  </Td>
-                  <Td>vipiny@axioned.com</Td>
-                  <Td>
-                    <Switch onChange={() => switchHandler('normal')} />
-                  </Td>
-                </Tr>
+                {Array.isArray(allUsers) &&
+                  allUsers.map((user: User) => (
+                    <Tr key={user?.id}>
+                      <Td>
+                        <HStack alignItems='center'>
+                          <Box w='24px' h='24px' mr='5px'>
+                            <Avatar w='full' h='full' />
+                          </Box>
+                          <Text fontSize='14px' as='span'>
+                            {user?.name}
+                          </Text>
+                        </HStack>
+                      </Td>
+                      <Td fontSize='14px'>{user?.email}</Td>
+                      <Td>
+                        <Switch
+                          isChecked={user?.role === 'ADMIN' ? true : false}
+                          onChange={() => switchHandler(user)}
+                        />
+                      </Td>
+                    </Tr>
+                  ))}
               </Tbody>
             </Table>
           </TableContainer>

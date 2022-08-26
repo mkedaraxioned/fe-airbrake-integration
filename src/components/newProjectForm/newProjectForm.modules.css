@@ -5,6 +5,7 @@
   position: relative;
   z-index: 3;
   font-size: 14px;
+  color: #696969;
 }
 .date_picker_react .react-datepicker-popper {
   z-index: 5 !important;

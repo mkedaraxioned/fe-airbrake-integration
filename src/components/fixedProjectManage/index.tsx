@@ -153,157 +153,158 @@ const FixedProjectManage = () => {
 
   return (
     <Box padding='15px 0'>
-      {fixedFormData.phase.length > 0 && (
-        <Flex w='562px' justifyContent='space-between'>
-          <HStack
-            flexBasis='69%'
-            justifyContent='space-between'
-            color='grayLight'
-            textStyle='sourceSansProBold'
-            fontSize='14px'
-            lineHeight='17.6px'
+      <Flex w='562px' justifyContent='space-between'>
+        <HStack
+          flexBasis='69%'
+          justifyContent='space-between'
+          color='grayLight'
+          textStyle='sourceSansProBold'
+          fontSize='14px'
+          lineHeight='17.6px'
+        >
+          <Text>Milestones Name</Text>
+          <Box
+            display='flex'
+            alignItems='center'
+            textStyle='inputTextStyle'
+            cursor='pointer'
           >
-            <Text>Milestones Name</Text>
-            <Box
-              display='flex'
-              alignItems='center'
+            <AiOutlinePlusCircle />
+            <Text
+              ml='5px'
               textStyle='inputTextStyle'
-              cursor='pointer'
+              onClick={addPhaseControls}
+              _hover={{
+                textDecor: 'underline',
+              }}
             >
-              <AiOutlinePlusCircle />
-              <Text
-                ml='5px'
-                textStyle='inputTextStyle'
-                onClick={addPhaseControls}
-                _hover={{
-                  textDecor: 'underline',
-                }}
-              >
-                Add new Phase
-              </Text>
-            </Box>
-          </HStack>
-          <HStack
-            flexBasis='26%'
-            justifyContent='space-between'
-            color='grayLight'
-            textStyle='sourceSansProBold'
-            fontSize='14px'
-            lineHeight='17.6px'
-          >
-            <Text>Budget Hrs</Text>
-          </HStack>
-        </Flex>
-      )}
+              Add new Phase
+            </Text>
+          </Box>
+        </HStack>
+        <HStack
+          flexBasis='26%'
+          justifyContent='space-between'
+          color='grayLight'
+          textStyle='sourceSansProBold'
+          fontSize='14px'
+          lineHeight='17.6px'
+        >
+          <Text>Budget Hrs</Text>
+        </HStack>
+      </Flex>
       <Box pos='relative'>
         <UnorderedList listStyleType='none' m='0'>
-          {fixedFormData.phase.map(
-            (
-              _: {
-                title: string;
-                budget: string;
-                id?: string;
-                isDeleted: boolean;
-              },
-              index: number,
-            ) => {
-              return (
-                !_.isDeleted && (
-                  <ListItem m='10px 0 18px' key={index}>
-                    <form
-                      onSubmit={(e) =>
-                        formHandler(e, _.id, _.title, _.budget, index)
-                      }
-                    >
-                      <HStack pos='relative'>
-                        <FormControl
-                          pos='relative'
-                          w='387px'
-                          mr='20px'
-                          isInvalid={
-                            errMessage?.titleEr && errMessage?.id === index
-                              ? true
-                              : false
-                          }
-                        >
-                          <Input
-                            type='text'
-                            textStyle='inputTextStyle'
-                            placeholder='Enter Phase'
-                            value={_.title}
-                            name='title'
-                            onFocus={() => focusHandler(index)}
-                            onChange={(e) => handleInputChange(e, index)}
-                          />
-                          {errMessage.id === index && (
-                            <FormErrorMessage
-                              pos='absolute'
-                              width='192px'
-                              bottom='-18px'
-                              fontSize='12px'
-                            >
-                              {errMessage?.titleEr}
-                            </FormErrorMessage>
-                          )}
-                        </FormControl>
-                        <FormControl
-                          w='60px'
-                          pos='relative'
-                          mr='10px !important'
-                          isInvalid={
-                            errMessage?.budgetEr && errMessage?.id === index
-                              ? true
-                              : false
-                          }
-                        >
-                          <Input
-                            type='text'
-                            placeholder='Hrs'
-                            p='2px'
-                            textStyle='inputTextStyle'
-                            value={_.budget}
-                            name='budget'
-                            onFocus={() => focusHandler(index)}
-                            onChange={(e) => handleInputChange(e, index)}
-                            textAlign='center'
-                          />
-                          {errMessage.id === index && (
-                            <FormErrorMessage
-                              pos='absolute'
-                              width='192px'
-                              bottom='-18px'
-                              left='-40px'
-                              fontSize='12px'
-                            >
-                              {errMessage?.budgetEr}
-                            </FormErrorMessage>
-                          )}
-                        </FormControl>
-                        {milestoneIndex === index && (
-                          <Flex alignItems='center'>
-                            <Tooltip label='Delete'>
-                              <Box
-                                pr='10px'
-                                cursor='pointer'
-                                onClick={() => removePhaseControls(_.id, index)}
+          {fixedFormData.phase.length > 0 &&
+            fixedFormData.phase.map(
+              (
+                _: {
+                  title: string;
+                  budget: string;
+                  id?: string;
+                  isDeleted: boolean;
+                },
+                index: number,
+              ) => {
+                return (
+                  !_.isDeleted && (
+                    <ListItem m='10px 0 18px' key={index}>
+                      <form
+                        onSubmit={(e) =>
+                          formHandler(e, _.id, _.title, _.budget, index)
+                        }
+                      >
+                        <HStack pos='relative'>
+                          <FormControl
+                            pos='relative'
+                            w='387px'
+                            mr='20px'
+                            isInvalid={
+                              errMessage?.titleEr && errMessage?.id === index
+                                ? true
+                                : false
+                            }
+                          >
+                            <Input
+                              type='text'
+                              textStyle='inputTextStyle'
+                              placeholder='Enter Phase'
+                              value={_.title}
+                              name='title'
+                              onFocus={() => focusHandler(index)}
+                              onChange={(e) => handleInputChange(e, index)}
+                            />
+                            {errMessage.id === index && (
+                              <FormErrorMessage
+                                pos='absolute'
+                                width='192px'
+                                bottom='-18px'
+                                fontSize='12px'
                               >
-                                <DeleteSvg />
-                              </Box>
-                            </Tooltip>
-                            <Tooltip label='Save'>
-                              <button type='submit'>
-                                <CheckSvg />
-                              </button>
-                            </Tooltip>
-                          </Flex>
-                        )}
-                      </HStack>
-                    </form>
-                  </ListItem>
-                )
-              );
-            },
-          )}
+                                {errMessage?.titleEr}
+                              </FormErrorMessage>
+                            )}
+                          </FormControl>
+                          <FormControl
+                            w='60px'
+                            pos='relative'
+                            mr='10px !important'
+                            isInvalid={
+                              errMessage?.budgetEr && errMessage?.id === index
+                                ? true
+                                : false
+                            }
+                          >
+                            <Input
+                              type='text'
+                              placeholder='Hrs'
+                              p='2px'
+                              textStyle='inputTextStyle'
+                              value={_.budget}
+                              name='budget'
+                              onFocus={() => focusHandler(index)}
+                              onChange={(e) => handleInputChange(e, index)}
+                              textAlign='center'
+                            />
+                            {errMessage.id === index && (
+                              <FormErrorMessage
+                                pos='absolute'
+                                width='192px'
+                                bottom='-18px'
+                                left='-40px'
+                                fontSize='12px'
+                              >
+                                {errMessage?.budgetEr}
+                              </FormErrorMessage>
+                            )}
+                          </FormControl>
+                          {milestoneIndex === index && (
+                            <Flex alignItems='center'>
+                              <Tooltip label='Delete'>
+                                <Box
+                                  pr='10px'
+                                  cursor='pointer'
+                                  onClick={() =>
+                                    removePhaseControls(_.id, index)
+                                  }
+                                >
+                                  <DeleteSvg />
+                                </Box>
+                              </Tooltip>
+                              <Tooltip label='Save'>
+                                <button type='submit'>
+                                  <CheckSvg />
+                                </button>
+                              </Tooltip>
+                            </Flex>
+                          )}
+                        </HStack>
+                      </form>
+                    </ListItem>
+                  )
+                );
+              },
+            )}
         </UnorderedList>
       </Box>
     </Box>

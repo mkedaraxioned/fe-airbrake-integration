@@ -9,6 +9,7 @@ import {
 } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { useParams } from 'react-router';
 import Calendar from '../../components/calender';
 import TaskList from '../../components/taskList';
 import TimeLogFrom from '../../components/timeLogForm';
@@ -27,7 +28,7 @@ const Dashboard = () => {
     comments: '',
     billingType: false,
   });
-
+  const { timeCardId } = useParams();
   const dispatch = useDispatch();
   const showDetailsHandle = (dayStr: string) => {
     setFormData({ ...formData, date: new Date(dayStr) });
@@ -45,15 +46,17 @@ const Dashboard = () => {
     dispatch(allClients(clientRes.data?.clients));
     dispatch(allUsers(usersRes.data?.users));
   };
-
+  console.log(formData.date, 'Dnyae');
   return (
     <Box>
-      <Flex justifyContent='center'>
+      <Flex minH='calc(100vh - 78px)' justifyContent='center'>
         <Box flexBasis='31%' bg='bgLight'>
           <Box w='323px' mt='40px' mr='50px' ml='auto'>
             <Calendar
               showDetailsHandle={showDetailsHandle}
               formDate={formData.date}
+              setFormData={setFormData}
+              formData={formData}
             />
           </Box>
         </Box>
@@ -74,12 +77,12 @@ const Dashboard = () => {
               textStyle='sourceSansProBold'
               mb='15px'
             >
-              Add a new entry
+              {timeCardId ? 'Edit entry' : 'Add a new entry'}
             </Heading>
             <TimeLogFrom formData={formData} setFormData={setFormData} />
           </Box>
           <Box mt='26px'>
-            <TaskList />
+            <TaskList formData={formData} />
           </Box>
         </Box>
         <Box p='40px 0 0 47px' flexBasis='33%'>

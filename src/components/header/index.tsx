@@ -160,12 +160,15 @@ const Header = () => {
                     <>
                       <MenuItem> Account </MenuItem>
                       <MenuItem>
-                        {' '}
-                        <Link to='dashboard' className='menu-anchor'>
+                        <Link to='/dashboard' className='menu-anchor'>
                           Dashboard
-                        </Link>{' '}
+                        </Link>
                       </MenuItem>
-                      <MenuItem> Settings </MenuItem>
+                      <MenuItem>
+                        <Link to='/setting' className='menu-anchor'>
+                          Settings
+                        </Link>
+                      </MenuItem>
                     </>
                   ) : null}
                 </MenuGroup>

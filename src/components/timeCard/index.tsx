@@ -1,28 +1,24 @@
 import { Box, Text, useToast, VStack } from '@chakra-ui/react';
+import { format } from 'date-fns';
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import { useParams, useNavigate } from 'react-router';
 import { ReactComponent as DeleteSvg } from '../../assets/images/delete.svg';
 import { ReactComponent as EditSvg } from '../../assets/images/edit.svg';
 import { updateTimeCardDetails } from '../../redux/reducers/timeCardSlice';
 import { Task } from '../../interfaces/timeCard';
-import { RootState } from '../../redux';
 import { _del, _get, _put } from '../../utils/api';
-import { formateDate, scrollToTop } from '../../utils/common';
+import { scrollToTop } from '../../utils/common';
 interface TaskDetails {
   task: Task;
+  formData: any;
 }
 
-const TimeCard = ({ task }: TaskDetails) => {
+const TimeCard = ({ task, formData }: TaskDetails) => {
   const toast = useToast();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { timeCardId } = useParams();
-
-  const { currentSelectedDate } = useSelector(
-    (state: RootState) => state.timeCard,
-  );
 
   const [isVisible, setIsVisible] = useState(false);
   const over = () => {
@@ -51,7 +47,7 @@ const TimeCard = ({ task }: TaskDetails) => {
               position: 'top-right',
               isClosable: true,
             });
-            fetchEntries(formateDate(currentSelectedDate));
+            fetchEntries(format(new Date(formData.date), 'yyyy/MM/dd'));
           }
         }
       }
@@ -59,7 +55,6 @@ const TimeCard = ({ task }: TaskDetails) => {
       console.log(err);
     }
   };
-
   const fetchEntries = async (date: string) => {
     try {
       navigate('/');
@@ -98,7 +93,7 @@ const TimeCard = ({ task }: TaskDetails) => {
       onMouseOver={over}
       onMouseOut={out}
     >
-      <Box width='80%' textStyle='sourceSansProRegular'>
+      <Box width='70%' textStyle='sourceSansProRegular'>
         <Text color='textColor'>{task.name}</Text>
         <Text fontSize='14px' lineHeight='17.6px' color='textLogC'>
           {task.comments}
