@@ -73,7 +73,6 @@ const FixedProjectManage = () => {
   const fetchProject = async () => {
     const res = await _get(`api/projects/${projectId}`);
     setFixedFormData({ phase: [...res.data.project.milestones] });
-    console.log(res.data, 'resres');
   };
 
   const addPhaseControls = () => {

@@ -13,21 +13,18 @@ import {
   useToast,
 } from '@chakra-ui/react';
 import { format } from 'date-fns';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router';
 import { EProjectType } from '../../constants/enum';
-import {
-  updateSelectedProject,
-  updateTimeCardDetails,
-} from '../../feature/timeCardSlice';
+import { updateTimeCardDetails } from '../../feature/timeCardSlice';
 import {
   TimelogFormError,
   TimeLogFormData,
 } from '../../interfaces/timelogForm';
 import { RootState } from '../../store';
 import { _get, _post, _put } from '../../utils/api';
-import { convertMinutes, formateDate } from '../../utils/common';
+import { convertMinutes } from '../../utils/common';
 import { timeStringValidate } from '../../utils/validation';
 import CustomSelect from '../customSelect';
 import { resetFormData, resetTimeLogError } from './helperConstants';
@@ -49,9 +46,7 @@ const TimeLogFrom = ({ formData, setFormData }: Props) => {
   const [errorMsg, setErrorMsg] = useState<TimelogFormError>({});
 
   const { projects } = useSelector((state: RootState) => state.allProjects);
-  const { currentSelectedDate, selectedProject } = useSelector(
-    (state: RootState) => state.timeCard,
-  );
+  const { selectedProject } = useSelector((state: RootState) => state.timeCard);
 
   useEffect(() => {
     selectOptionData();
@@ -142,8 +137,9 @@ const TimeLogFrom = ({ formData, setFormData }: Props) => {
   const reset = () => {
     setFormData(resetFormData);
     setErrorMsg(resetTimeLogError);
+    setMilestoneData([]);
     setProjectType(null);
-    dispatch(updateSelectedProject(null));
+    setFormData({ ...resetFormData, projectId: '' });
     navigate('/');
   };
 
@@ -174,6 +170,18 @@ const TimeLogFrom = ({ formData, setFormData }: Props) => {
     }
   }, [timeCardId]);
 
+  const renderSelect = useCallback(() => {
+    return (
+      <CustomSelect
+        linkLabel={'select_project'}
+        onChange={selectProject}
+        updateStateProps={updateStateProps}
+        notValid={errorMsg?.projectName ? true : false}
+        formData={formData}
+      />
+    );
+  }, [formData]);
+
   const updateStateProps = {
     borderColor: `${timeCardId ? '#4657CE' : '#E2E8F0'}`,
     boxShadow: `${timeCardId ? '0 0 0 0.5px #4657ce' : 'none'}`,
@@ -189,8 +197,7 @@ const TimeLogFrom = ({ formData, setFormData }: Props) => {
     try {
       setErrorMsg(fieldValidation());
       const notValid = fieldValidation();
-      let payload;
-      payload = {
+      const payload = {
         billingType: formData.billingType,
         comments: formData.comments,
         logTime: formData.logTime,
@@ -200,13 +207,6 @@ const TimeLogFrom = ({ formData, setFormData }: Props) => {
         clientId: selectedProject?.clientId,
       };
 
-      if (!timeCardId) {
-        payload = {
-          ...payload,
-          date: format(new Date(formData.date), 'yyyy-MM-dd'),
-        };
-      }
-
       if (formData.taskId) {
         payload.taskId = formData.taskId;
       }
@@ -214,9 +214,15 @@ const TimeLogFrom = ({ formData, setFormData }: Props) => {
       if (Object.values(notValid).length <= 0) {
         let res;
         if (timeCardId) {
-          res = await _put(`api/timecards/${timeCardId}`, payload);
+          res = await _put(`api/timecards/${timeCardId}`, {
+            ...payload,
+            date: format(new Date(formData.date), 'yyyy-MM-dd'),
+          });
         } else {
-          res = await _post('api/timecards', payload);
+          res = await _post('api/timecards', {
+            ...payload,
+            date: format(new Date(formData.date), 'yyyy-MM-dd'),
+          });
         }
         if (res?.status === 201 || res?.status === 200) {
           toast({
@@ -232,7 +238,7 @@ const TimeLogFrom = ({ formData, setFormData }: Props) => {
             isClosable: true,
           });
           reset();
-          fetchEntries(formateDate(currentSelectedDate));
+          fetchEntries(format(new Date(formData.date), 'yyyy-MM-dd'));
         }
       }
     } catch (error: any) {
@@ -274,12 +280,7 @@ const TimeLogFrom = ({ formData, setFormData }: Props) => {
           >
             Project
           </FormLabel>
-          <CustomSelect
-            linkLabel={'select_project'}
-            onChange={selectProject}
-            updateStateProps={updateStateProps}
-            notValid={errorMsg?.projectName ? true : false}
-          />
+          {renderSelect()}
           <FormErrorMessage mt='6px' fontSize='12px'>
             {errorMsg?.projectName}
           </FormErrorMessage>
@@ -330,47 +331,46 @@ const TimeLogFrom = ({ formData, setFormData }: Props) => {
             {errorMsg?.milestone}
           </FormErrorMessage>
         </FormControl>
-        {projectType !== EProjectType.FIXED &&
-          projectType !== EProjectType.RETAINER && (
-            <FormControl mb='18px' isInvalid={errorMsg?.task ? true : false}>
-              <FormLabel
-                htmlFor='select_task'
-                color='grayLight'
-                fontSize='14px'
-                lineHeight='17.6px'
-                textStyle='sourceSansProBold'
-                mb='6px'
-                cursor={'pointer'}
-              >
-                Task
-              </FormLabel>
-              <Select
-                id='select_task'
-                name='taskId'
-                value={formData.taskId}
-                placeholder='Select task'
-                fontSize='14px'
-                lineHeight='17.6px'
-                color='grayLight'
-                textStyle='sourceSansProRegular'
-                onChange={selecttHandler}
-                cursor={'pointer'}
-                {...updateStateProps}
-              >
-                {taskNode.length > 0 &&
-                  taskNode.map((task: { id: string; title: string }, index) => {
-                    return (
-                      <option value={task.id} key={index}>
-                        {task.title}
-                      </option>
-                    );
-                  })}
-              </Select>
-              <FormErrorMessage mt='6px' fontSize='12px'>
-                {errorMsg?.task}
-              </FormErrorMessage>
-            </FormControl>
-          )}
+        {projectType == EProjectType.RETAINER_GRANULAR && (
+          <FormControl mb='18px' isInvalid={errorMsg?.task ? true : false}>
+            <FormLabel
+              htmlFor='select_task'
+              color='grayLight'
+              fontSize='14px'
+              lineHeight='17.6px'
+              textStyle='sourceSansProBold'
+              mb='6px'
+              cursor={'pointer'}
+            >
+              Task
+            </FormLabel>
+            <Select
+              id='select_task'
+              name='taskId'
+              value={formData.taskId}
+              placeholder='Select task'
+              fontSize='14px'
+              lineHeight='17.6px'
+              color='grayLight'
+              textStyle='sourceSansProRegular'
+              onChange={selecttHandler}
+              cursor={'pointer'}
+              {...updateStateProps}
+            >
+              {taskNode.length > 0 &&
+                taskNode.map((task: { id: string; title: string }, index) => {
+                  return (
+                    <option value={task.id} key={index}>
+                      {task.title}
+                    </option>
+                  );
+                })}
+            </Select>
+            <FormErrorMessage mt='6px' fontSize='12px'>
+              {errorMsg?.task}
+            </FormErrorMessage>
+          </FormControl>
+        )}
         <HStack justifyContent='space-between' mb='18px'>
           <FormControl
             w='40%'

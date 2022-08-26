@@ -80,7 +80,11 @@ const NewProjectForm = ({ onClose, projectId }: Props) => {
 
   const fetchAllClients = async () => {
     const res = await _get('api/clients/');
-    setAllClient(res.data.clients);
+    const sortClient = res.data.clients.sort(
+      (a: { name: string }, b: { name: string }) =>
+        a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1,
+    );
+    setAllClient(sortClient);
   };
 
   const fetchProject = async () => {

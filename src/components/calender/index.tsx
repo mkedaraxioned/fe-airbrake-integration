@@ -17,24 +17,25 @@ import { Box, Button, Flex, Text, Tooltip } from '@chakra-ui/react';
 import { HiOutlineChevronLeft, HiOutlineChevronRight } from 'react-icons/hi';
 import { endOfMonth } from 'date-fns/esm';
 import { _get } from '../../utils/api';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { updateSelectedDate } from '../../feature/timeCardSlice';
-import { RootState } from '../../store';
 
 interface Props {
   showDetailsHandle: (dayStr: string) => void;
   formDate: Date;
+  setFormData: any;
+  formData: any;
 }
 
-const Calendar = ({ showDetailsHandle, formDate }: Props) => {
+const Calendar = ({
+  showDetailsHandle,
+  formDate,
+  setFormData,
+  formData,
+}: Props) => {
   const dispatch = useDispatch();
-  const { currentSelectedDate } = useSelector(
-    (state: RootState) => state.timeCard,
-  );
   const [currentMonth, setCurrentMonth] = useState(new Date());
-  const [selectedDate, setSelectedDate] = useState(
-    new Date(currentSelectedDate),
-  );
+  const [selectedDate, setSelectedDate] = useState(new Date());
   const [loggedTimeData, setLoggedTimeData] = useState([]);
   useEffect(() => {
     fetchTimelogsPerMonths();
@@ -223,9 +224,7 @@ const Calendar = ({ showDetailsHandle, formDate }: Props) => {
 
   const setTodaysDate = () => {
     setSelectedDate(new Date());
-    dispatch(updateSelectedDate(new Date()));
-    setCurrentMonth(new Date());
-    showDetailsHandle(format(new Date(), 'dd-MM-yyyy'));
+    setFormData({ ...formData, date: new Date() });
   };
 
   return (
