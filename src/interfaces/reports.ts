@@ -1,12 +1,9 @@
 export interface FilterFormData {
-  clientName: string;
-  personName: string;
-  projectName: string;
+  clientId: string;
+  userId: string;
+  projectId: string;
+  billableType: string;
   groupBy: string;
   startDate: Date | null;
   endDate: Date | null;
-  include: {
-    billable: string;
-    nonBillable: string;
-  };
 }

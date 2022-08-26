@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import CustomRadio from '../../components/customRadio';
 import DatePicker from 'react-datepicker';
@@ -25,30 +25,35 @@ import {
   add,
   endOfMonth,
   endOfYear,
+  format,
   lastDayOfWeek,
   startOfMonth,
   startOfWeek,
   startOfYear,
 } from 'date-fns';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../store';
 
 const ReportFilterForm = () => {
   const [formData, setFormData] = useState<FilterFormData>({
-    clientName: '',
-    personName: '',
-    projectName: '',
+    clientId: '',
+    userId: '',
+    projectId: '',
     groupBy: 'client',
+    billableType: 'nonBillable',
     startDate: new Date(),
     endDate: null,
-    include: {
-      billable: '',
-      nonBillable: '',
-    },
   });
+
+  const [searchQueryValues, setSearchQueryValues] = useState<any>({});
 
   const [dateFormat, setDateFormat] = useState({
     fixed: true,
     custom: false,
   });
+  const { allClients, allProjects, allUsers } = useSelector(
+    (state: RootState) => state,
+  );
 
   const thisWeekFirstDate = startOfWeek(new Date());
   const thisWeekLastDate = lastDayOfWeek(new Date());
@@ -61,10 +66,59 @@ const ReportFilterForm = () => {
   const thisYearFirstDate = startOfYear(new Date());
   const thisYearLastDate = endOfYear(new Date());
 
+  useEffect(() => {
+    getQueryParamsValues();
+  }, []);
+
   const changeDateFormat = (val: string) => {
     val === 'fixed'
       ? setDateFormat({ fixed: true, custom: false })
       : setDateFormat({ fixed: false, custom: true });
+  };
+
+  const insertUrlParam = (key: string, value: string) => {
+    if (window && window.history.pushState) {
+      const searchParams = new URLSearchParams(window.location.search);
+      searchParams.set(key, value);
+      const newurl =
+        window.location.protocol +
+        '//' +
+        window.location.host +
+        window.location.pathname +
+        '?' +
+        searchParams.toString();
+      window.history.pushState({ path: newurl }, '', newurl);
+    }
+  };
+
+  const getQueryParamsValues = () => {
+    const params = new URLSearchParams(window.location.search);
+    const obj: any = {};
+    params.forEach((value, key) => {
+      if (key === 'endDate' || key === 'startDate') {
+        obj[key] = new Date(value);
+      } else {
+        obj[key] = value;
+      }
+    });
+    if (obj) {
+      setSearchQueryValues({
+        ...obj,
+      });
+      setFormData({ ...formData, ...obj });
+    }
+    if (obj.startDate) {
+      setSearchQueryValues({
+        ...obj,
+        startDate: format(obj.startDate, 'yyyy-MM-dd'),
+      });
+    }
+    if (obj.endDate) {
+      setSearchQueryValues({
+        ...obj,
+        endDate: format(obj.endDate, 'yyyy-MM-dd'),
+      });
+    }
   };
 
   const selecttHandler = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -76,15 +130,17 @@ const ReportFilterForm = () => {
   };
 
   const checkboxHandler = (e: any) => {
-    e.target.checked
-      ? setFormData({
-          ...formData,
-          include: { ...formData.include, [e.target.name]: e.target.value },
-        })
-      : setFormData({
-          ...formData,
-          include: { ...formData.include, [e.target.name]: '' },
-        });
+    if (e.target.checked) {
+      setFormData({
+        ...formData,
+        [e.target.name]: e.target.value,
+      });
+    } else {
+      setFormData({
+        ...formData,
+        [e.target.name]: '',
+      });
+    }
   };
 
   const selectDateHandler = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -124,7 +180,51 @@ const ReportFilterForm = () => {
 
   const formHandler = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(formData);
+    const {
+      startDate,
+      endDate,
+      groupBy,
+      billableType,
+      clientId,
+      userId,
+      projectId,
+    } = formData;
+    if (startDate) {
+      insertUrlParam('startDate', format(startDate as Date, 'yyyy-MM-dd'));
+    } else {
+      insertUrlParam('startDate', '');
+    }
+    if (endDate) {
+      insertUrlParam('endDate', format(endDate as Date, 'yyyy-MM-dd'));
+    } else {
+      insertUrlParam('endDate', '');
+    }
+    if (groupBy) {
+      insertUrlParam('groupBy', groupBy);
+    } else {
+      insertUrlParam('groupBy', '');
+    }
+    if (billableType) {
+      insertUrlParam('billableType', billableType);
+    } else {
+      insertUrlParam('billableType', '');
+    }
+    if (clientId) {
+      insertUrlParam('clientId', clientId);
+    } else {
+      insertUrlParam('clientId', '');
+    }
+    if (userId) {
+      insertUrlParam('userId', userId);
+    } else {
+      insertUrlParam('userId', '');
+    }
+    if (projectId) {
+      insertUrlParam('projectId', projectId);
+    } else {
+      insertUrlParam('projectId', '');
+    }
+    getQueryParamsValues();
   };
 
   return (
@@ -137,7 +237,7 @@ const ReportFilterForm = () => {
           justifyContent='space-between'
           bg='bgSecondary'
         >
-          <Box pr='15px' flexBasis='26%'>
+          <Box pr='15px' flexBasis='27%'>
             <FormControl>
               <FormLabel m='5px 0' className='form_label' fontWeight='600'>
                 Date range
@@ -200,9 +300,10 @@ const ReportFilterForm = () => {
                     <DatePicker
                       selected={formData.startDate}
                       dateFormat='dd/MM/yyyy'
-                      onChange={(date: Date) =>
-                        setFormData({ ...formData, startDate: date })
-                      }
+                      onChange={(date: Date) => {
+                        setFormData({ ...formData, startDate: date });
+                        insertUrlParam('startDate', format(date, 'yyyy-MM-dd'));
+                      }}
                       placeholderText='DD/MM/YYYY'
                       className='date_picker_react'
                       disabled={!dateFormat.custom}
@@ -236,9 +337,10 @@ const ReportFilterForm = () => {
                     <DatePicker
                       selected={formData.endDate}
                       dateFormat='dd/MM/yyyy'
-                      onChange={(date: Date) =>
-                        setFormData({ ...formData, endDate: date })
-                      }
+                      onChange={(date: Date) => {
+                        setFormData({ ...formData, endDate: date });
+                        insertUrlParam('endDate', format(date, 'yyyy-MM-dd'));
+                      }}
                       placeholderText='DD/MM/YYYY'
                       className='date_picker_react'
                       disabled={!dateFormat.custom}
@@ -257,7 +359,7 @@ const ReportFilterForm = () => {
           <Flex
             pr='15px'
             pl='15px'
-            flexBasis='51%'
+            flexBasis='50%'
             justifyContent='space-between'
           >
             <Box flexBasis='47.5%'>
@@ -267,8 +369,8 @@ const ReportFilterForm = () => {
                 </FormLabel>
                 <Select
                   id='select_project'
-                  name='clientName'
-                  value={formData.clientName}
+                  name='clientId'
+                  value={formData.clientId}
                   placeholder='All Clients'
                   height='38px'
                   fontSize='14px'
@@ -278,10 +380,19 @@ const ReportFilterForm = () => {
                   textStyle='sourceSansProRegular'
                   onChange={selecttHandler}
                 >
-                  <option value={'ClearForMe Ongoing Retainer Agreement'}>
-                    ClearForMe Ongoing Retainer Agreement
-                  </option>
-                  <option value={'Project 2'}>Project 2</option>
+                  {allClients?.clients
+                    .sort((a: { name: string }, b: { name: string }) =>
+                      a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1,
+                    )
+                    .map(
+                      (client: { id: string; name: string }, index: number) => {
+                        return (
+                          <option value={client.id} key={index}>
+                            {client.name}
+                          </option>
+                        );
+                      },
+                    )}
                 </Select>
               </FormControl>
               <FormControl>
@@ -294,8 +405,8 @@ const ReportFilterForm = () => {
                 </FormLabel>
                 <Select
                   id='select_project'
-                  name='personName'
-                  value={formData.personName}
+                  name='userId'
+                  value={formData.userId}
                   placeholder='All people'
                   height='38px'
                   fontSize='14px'
@@ -305,22 +416,31 @@ const ReportFilterForm = () => {
                   textStyle='sourceSansProRegular'
                   onChange={selecttHandler}
                 >
-                  <option value={'ClearForMe Ongoing Retainer Agreement'}>
-                    ClearForMe Ongoing Retainer Agreement
-                  </option>
-                  <option value={'Project 2'}>Project 2</option>
+                  {allUsers?.users
+                    .sort((a: { name: string }, b: { name: string }) =>
+                      a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1,
+                    )
+                    .map(
+                      (user: { name: string; id: string }, index: number) => {
+                        return (
+                          <option value={user.id} key={index}>
+                            {user.name}
+                          </option>
+                        );
+                      },
+                    )}
                 </Select>
               </FormControl>
             </Box>
-            <Box flexBasis='47.5%'>
+            <Box flexBasis='47%'>
               <FormControl pb='15px'>
                 <FormLabel m='5px 0' className='form_label' fontWeight='600'>
                   Select project
                 </FormLabel>
                 <Select
                   id='select_project'
-                  name='projectName'
-                  value={formData.projectName}
+                  name='projectId'
+                  value={formData.projectId}
                   placeholder='All Clients'
                   height='38px'
                   fontSize='14px'
@@ -330,10 +450,26 @@ const ReportFilterForm = () => {
                   lineHeight='17.6px'
                   onChange={selecttHandler}
                 >
-                  <option value={'ClearForMe Ongoing Retainer Agreement'}>
-                    ClearForMe Ongoing Retainer Agreement
-                  </option>
-                  <option value={'Project 2'}>Project 2</option>
+                  {allProjects?.projects
+                    .filter(
+                      (project: { clientId: string }) =>
+                        project.clientId === formData.clientId,
+                    )
+                    .sort((a: { title: string }, b: { title: string }) =>
+                      a.title.toLowerCase() > b.title.toLowerCase() ? 1 : -1,
+                    )
+                    .map(
+                      (
+                        project: { id: string; title: string },
+                        index: number,
+                      ) => {
+                        return (
+                          <option value={project.id} key={index}>
+                            {project.title}
+                          </option>
+                        );
+                      },
+                    )}
                 </Select>
               </FormControl>
               <FormControl>
@@ -367,7 +503,7 @@ const ReportFilterForm = () => {
             border='1px'
             borderColor='borderColor'
           />
-          <Box pl='15px' flexBasis='17%'>
+          <Box pl='11px' flexBasis='18%'>
             <FormControl>
               <FormLabel className='form_label' fontWeight='600'>
                 Include
@@ -375,10 +511,11 @@ const ReportFilterForm = () => {
               <Flex className='form_label'>
                 <Checkbox
                   value='billable'
-                  name='billable'
-                  checked={
-                    formData.include.billable === 'billable' ? true : false
+                  name='billableType'
+                  isChecked={
+                    formData.billableType === 'billable' ? true : false
                   }
+                  checked={formData.billableType === 'billable' ? true : false}
                   onChange={checkboxHandler}
                 >
                   <Text fontSize='14px' lineHeight='17.6px'>
@@ -387,12 +524,13 @@ const ReportFilterForm = () => {
                 </Checkbox>
                 <Checkbox
                   pl='18px'
-                  name='nonBillable'
+                  name='billableType'
                   value='nonBillable'
+                  isChecked={
+                    formData.billableType === 'nonBillable' ? true : false
+                  }
                   checked={
-                    formData.include.nonBillable === 'nonBillable'
-                      ? true
-                      : false
+                    formData.billableType === 'nonBillable' ? true : false
                   }
                   onChange={checkboxHandler}
                 >
@@ -414,6 +552,7 @@ const ReportFilterForm = () => {
           </Box>
         </Flex>
       </form>
+      <div>{JSON.stringify(searchQueryValues)}</div>
     </Box>
   );
 };
