@@ -28,6 +28,7 @@ import {
 
 import { baseSlice } from './apis';
 import { dashboard } from './apis/dashboard';
+import { user } from './apis/user';
 
 const persistConfig: PersistConfig = {
   key: 'root',
@@ -46,13 +47,14 @@ export const store = configureStore({
     timeCard: timeCardReducer,
     [baseSlice.reducerPath]: baseSlice.reducer,
     [dashboard.reducerPath]: dashboard.reducer,
+    [user.reducerPath]: user.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
-    }).concat([baseSlice.middleware, dashboard.middleware]),
+    }).concat([baseSlice.middleware, dashboard.middleware, user.middleware]),
 });
 
 // listener for rtk query stored data
