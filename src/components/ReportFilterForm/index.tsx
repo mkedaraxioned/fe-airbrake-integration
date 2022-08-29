@@ -110,13 +110,13 @@ const ReportFilterForm = () => {
     if (obj.startDate) {
       setSearchQueryValues({
         ...obj,
-        startDate: format(obj.startDate, 'yyyy-MM-dd'),
+        startDate: format(obj.startDate as Date, 'yyyy-MM-dd'),
       });
     }
     if (obj.endDate) {
       setSearchQueryValues({
         ...obj,
-        endDate: format(obj.endDate, 'yyyy-MM-dd'),
+        endDate: format(obj.endDate as Date, 'yyyy-MM-dd'),
       });
     }
   };
@@ -261,12 +261,25 @@ const ReportFilterForm = () => {
                   onChange={selectDateHandler}
                 >
                   <option value='thisMonth'>
-                    This month: July 1 - July 31
+                    This month: {format(thisMonthFirstDate, 'MMM dd')} -{' '}
+                    {format(thisMonthLastDate, 'MMM dd')}
                   </option>
-                  <option value='lastMonth'>Last month: Jun 1 - Jun 30</option>
-                  <option value='thisWeek'>This week: July 11 - July 17</option>
-                  <option value='lastWeek'>Last week: July 4 - July 10</option>
-                  <option value='thisYear'>This year: Jan 1 - Dec 31</option>
+                  <option value='lastMonth'>
+                    Last month: {format(lastMonthFirstDate, 'MMM dd')} -{' '}
+                    {format(lastMonthLastDate, 'MMM dd')}
+                  </option>
+                  <option value='thisWeek'>
+                    This week: {format(thisWeekFirstDate, 'MMM dd')} -{' '}
+                    {format(thisWeekLastDate, 'MMM dd')}
+                  </option>
+                  <option value='lastWeek'>
+                    Last week: {format(LastWeekFirstDate, 'MMM dd')} -{' '}
+                    {format(LastWeekLastDate, 'MMM dd')}
+                  </option>
+                  <option value='thisYear'>
+                    This year: {format(thisYearFirstDate, 'MMM dd')} -{' '}
+                    {format(thisYearLastDate, 'MMM dd')}
+                  </option>
                 </Select>
               </HStack>
             </FormControl>
@@ -302,7 +315,6 @@ const ReportFilterForm = () => {
                       dateFormat='dd/MM/yyyy'
                       onChange={(date: Date) => {
                         setFormData({ ...formData, startDate: date });
-                        insertUrlParam('startDate', format(date, 'yyyy-MM-dd'));
                       }}
                       placeholderText='DD/MM/YYYY'
                       className='date_picker_react'
