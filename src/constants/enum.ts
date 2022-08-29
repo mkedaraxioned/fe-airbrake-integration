@@ -3,3 +3,8 @@ export enum EProjectType {
   RETAINER = 'RETAINER',
   FIXED = 'FIXED',
 }
+
+export enum ERole {
+  ADMIN = 'ADMIN',
+  NORMAL = 'NORMAL',
+}

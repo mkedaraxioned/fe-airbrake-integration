@@ -28,6 +28,7 @@ import { userLogout } from '../../redux/reducers/userSlice';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../redux';
 import NewClient from '../addClient';
+import { ERole } from '../../constants/enum';
 
 const Header = () => {
   const user = useSelector((state: RootState) => state.user);
@@ -115,7 +116,7 @@ const Header = () => {
             </Box>
           </Flex>
           <Flex alignItems='center'>
-            {user.profile.role === 'ADMIN' ? (
+            {user.profile.role === ERole.ADMIN ? (
               <UnorderedList
                 display='flex'
                 listStyleType='none'
@@ -127,8 +128,8 @@ const Header = () => {
                     Clients
                   </Text>
                 </ListItem>
-                {(user.profile.role === 'ADMIN' ||
-                  user.profile.role === 'NORMAL') && (
+                {(user.profile.role === ERole.ADMIN ||
+                  user.profile.role === ERole.NORMAL) && (
                   <ListItem margin='0 15px' fontSize='18px' lineHeight='23px'>
                     <Link to='/projects'>Projects</Link>
                   </ListItem>
@@ -156,7 +157,7 @@ const Header = () => {
                   <MenuItem pointerEvents='none'>
                     <Text fontWeight='bold'>{user.profile.name}</Text>
                   </MenuItem>
-                  {user.profile.role === 'ADMIN' ? (
+                  {user.profile.role === ERole.ADMIN ? (
                     <>
                       <MenuItem> Account </MenuItem>
                       <MenuItem>

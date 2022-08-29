@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Center, Heading, Text, VStack } from '@chakra-ui/react';
+import { Container, Heading, Text, VStack } from '@chakra-ui/react';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../redux';
 
