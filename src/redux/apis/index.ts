@@ -14,5 +14,6 @@ export const baseSlice = createApi({
       return headers;
     },
   }),
+  // eslint-disable-next-line
   endpoints: (builder) => ({}),
 });
