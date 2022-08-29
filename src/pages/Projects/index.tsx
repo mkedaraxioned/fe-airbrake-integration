@@ -4,6 +4,7 @@ import {
   Breadcrumb,
   BreadcrumbItem,
   Button,
+  Checkbox,
   Drawer,
   DrawerBody,
   DrawerCloseButton,
@@ -13,16 +14,16 @@ import {
   Heading,
   HStack,
   Select,
-  TabList,
-  TabPanel,
-  TabPanels,
-  Tabs,
   Text,
   useDisclosure,
 } from '@chakra-ui/react';
 import NewProjectForm from '../../components/newProjectForm';
-import { Link } from 'react-router-dom';
-import TabsButton from '../../components/tabButton';
+import {
+  createSearchParams,
+  Link,
+  useNavigate,
+  useSearchParams,
+} from 'react-router-dom';
 import ProjectList from '../../components/projectList';
 import { _get } from '../../utils/api';
 import { RootState } from '../../store';
@@ -31,11 +32,20 @@ import { ClientSet, utilClientName } from '../../utils/common';
 import AutoCompleteElem from '../../components/autoComplete';
 
 const Projects = () => {
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [clientSet, setClientSet] = useState<ClientSet[]>([]);
   const [myProjects, setMyProjects] = useState([]);
   const { projects } = useSelector((state: RootState) => state.allProjects);
   const { clients } = useSelector((state: RootState) => state.allClients);
+  const user = useSelector((state: RootState) => state.user);
+  const [checked, setChecked] = useState(true);
+  const [type, setType] = useState('');
+  const [filterVar, setFilterVar] = useState({ checked: 'true' });
+  const [filterPro, setFilterPro] = useState([]);
+  const [filterClient, setFilterClient] = useState<ClientSet[]>([]);
+  const [selectClient, setSelectClient] = useState('');
 
   useEffect(() => {
     unqClients();
@@ -44,6 +54,57 @@ const Projects = () => {
   useEffect(() => {
     fetchMyProjects();
   }, []);
+
+  useEffect(() => {
+    if (checked) {
+      setFilterPro(myProjects);
+    } else {
+      setFilterPro(projects);
+    }
+  }, [checked, myProjects]);
+
+  useEffect(() => {
+    if (clientSet.length > 0) {
+      if (selectClient === '') {
+        setFilterClient(clientSet);
+      } else {
+        const selected = clientSet?.filter(
+          (client) => client?.id === selectClient,
+        );
+        setFilterClient(selected);
+      }
+    }
+  }, [clientSet, selectClient]);
+
+  const handleCheck = () => {
+    setChecked(!checked);
+    setFilterVar({ ...filterVar, checked: `${!checked}` });
+    navigate({
+      pathname: '/projects',
+      search: `?${createSearchParams({
+        ...filterVar,
+        checked: `${!checked}`,
+      })}`,
+    });
+  };
+
+  const handleSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    if (e.currentTarget.value === 'none') {
+      setType('');
+    } else {
+      setType(e.currentTarget.value);
+    }
+  };
+
+  const handleInput = (ele: any) => {
+    console.log(ele, 'ele');
+
+    if (!ele) {
+      setSelectClient('');
+    } else {
+      setSelectClient(ele.id);
+    }
+  };
 
   const fetchMyProjects = async () => {
     try {
@@ -98,78 +159,60 @@ const Projects = () => {
           >
             Project list
           </Heading>
-          <HStack>
+          <HStack spacing='20px'>
+            <Checkbox
+              fontSize='14px'
+              isChecked={checked}
+              onChange={handleCheck}
+              isDisabled={user.profile.role === 'ADMIN' ? false : true}
+            >
+              <Text as='span' color='grayLight' fontSize='14px'>
+                My Projects
+              </Text>
+            </Checkbox>
             <Box w='186px'>
               <AutoCompleteElem
-                onChange={(ele: any) => console.log(ele)}
+                onChange={(ele: any) => handleInput(ele)}
                 items={clients}
                 placeholder={'Search client'}
               />
             </Box>
             <Select
-              placeholder='Select project type'
               w='186px'
               color='grayLight'
               fontSize='14px'
               textStyle='sourceSansProRegular'
+              onChange={(e) => handleSelect(e)}
             >
+              <option value='none'>Select project type</option>
               <option value='FIXED'>Fixed</option>
               <option value='RETAINER_GRANULAR'>Retainer Granular</option>
               <option value='RETAINER'>Retainer</option>
             </Select>
             <Box>
-              <Button w='138px' ml='10px' variant='primary' onClick={onOpen}>
+              <Button w='138px' variant='primary' onClick={onOpen}>
                 New project
               </Button>
             </Box>
           </HStack>
         </Flex>
-        <Tabs
-          isLazy
-          border='1px'
-          mt='38px'
-          borderColor='borderColor'
-          rounded='md'
-        >
-          <TabList pb='2px' borderBottom='1px'>
-            <TabsButton>All Projects</TabsButton>
-            <TabsButton>My Projects</TabsButton>
-          </TabList>
-          <TabPanels>
-            <TabPanel p='30px 22px'>
-              {clientSet?.length > 0 &&
-                clientSet?.map((client) => {
-                  const projectPerClient = projects?.filter(
-                    (project: { clientId: string }) =>
-                      project.clientId === client.id,
-                  );
-                  return (
-                    <ProjectList
-                      key={client.id}
-                      clientName={client.name}
-                      projects={projectPerClient}
-                    />
-                  );
-                })}
-            </TabPanel>
-            <TabPanel p='30px 22px'>
-              {clientSet?.length > 0 &&
-                clientSet?.map((client) => {
-                  const projectPerClient = myProjects?.filter(
-                    (project: { clientId: string }) =>
-                      project.clientId === client.id,
-                  );
-                  return (
-                    <ProjectList
-                      key={client.id}
-                      clientName={client.name}
-                      projects={projectPerClient}
-                    />
-                  );
-                })}
-            </TabPanel>
-          </TabPanels>
-        </Tabs>
+        <Box p='30px 22px'>
+          {filterClient?.length > 0 &&
+            filterClient?.map((client) => {
+              const projectPerClient = filterPro?.filter(
+                (project: { clientId: string }) =>
+                  project.clientId === client.id,
+              );
+              return (
+                <ProjectList
+                  key={client.id}
+                  clientName={client.name}
+                  projects={projectPerClient}
+                  type={type}
+                />
+              );
+            })}
+        </Box>
       </Box>
       <ModalBox />
     </Box>

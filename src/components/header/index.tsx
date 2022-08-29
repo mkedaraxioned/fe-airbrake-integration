@@ -115,29 +115,28 @@ const Header = () => {
             </Box>
           </Flex>
           <Flex alignItems='center'>
-            {user.profile.role === 'ADMIN' ? (
-              <UnorderedList
-                display='flex'
-                listStyleType='none'
-                textStyle='sourceSansProBold'
-                color='textColor'
-              >
-                <ListItem margin='0 15px' fontSize='18px' lineHeight='23px'>
-                  <Text onClick={onOpen} cursor='pointer'>
-                    Clients
-                  </Text>
-                </ListItem>
-                {(user.profile.role === 'ADMIN' ||
-                  user.profile.role === 'NORMAL') && (
+            <UnorderedList
+              display='flex'
+              listStyleType='none'
+              textStyle='sourceSansProBold'
+              color='textColor'
+            >
+              <ListItem margin='0 15px' fontSize='18px' lineHeight='23px'>
+                <Link to='/projects'>Projects</Link>
+              </ListItem>
+              {user.profile.role === 'ADMIN' ? (
+                <>
                   <ListItem margin='0 15px' fontSize='18px' lineHeight='23px'>
-                    <Link to='/projects'>Projects</Link>
+                    <Text onClick={onOpen} cursor='pointer'>
+                      Clients
+                    </Text>
                   </ListItem>
-                )}
-                <ListItem margin='0 15px' fontSize='18px' lineHeight='23px'>
-                  <Link to='/team'>Team</Link>
-                </ListItem>
-              </UnorderedList>
-            ) : null}
+                  <ListItem margin='0 15px' fontSize='18px' lineHeight='23px'>
+                    <Link to='/team'>Team</Link>
+                  </ListItem>
+                </>
+              ) : null}
+            </UnorderedList>
             <Menu>
               <MenuButton
                 ml='30px'

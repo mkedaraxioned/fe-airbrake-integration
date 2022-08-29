@@ -18,14 +18,17 @@ import {
   Tr,
 } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { User } from '../../interfaces/team';
+import { RootState } from '../../store';
 import { _get, _patch } from '../../utils/api';
 
 const Team = () => {
   const toast = useToast();
   const [loading, setLoading] = useState(false);
   const [allUsers, setAllUsers] = useState([]);
+  const currentUser = useSelector((state: RootState) => state.user);
 
   const switchHandler = async (user: User) => {
     try {
@@ -153,6 +156,11 @@ const Team = () => {
                         <Switch
                           isChecked={user?.role === 'ADMIN' ? true : false}
                           onChange={() => switchHandler(user)}
+                          isDisabled={
+                            currentUser.profile.name === user.name
+                              ? true
+                              : false
+                          }
                         />
                       </Td>
                     </Tr>
