@@ -47,7 +47,7 @@ const TimeCard = ({ task, formData }: TaskDetails) => {
               position: 'top-right',
               isClosable: true,
             });
-            fetchEntries(format(new Date(formData.date), 'yyyy/MM/dd'));
+            fetchEntries(format(new Date(formData.date), 'yyyy-MM-dd'));
           }
         }
       }

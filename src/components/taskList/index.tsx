@@ -71,7 +71,7 @@ const TaskList = ({ formData }: Props) => {
                     lineHeight='20.11px'
                     textStyle='sourceSansProRegular'
                   >
-                    {project.name}
+                    {`${project.client} - ${project.name}`}
                   </Heading>
                   <Text
                     fontSize='16px'
