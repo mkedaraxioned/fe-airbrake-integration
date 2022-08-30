@@ -32,7 +32,7 @@ import {
   startOfYear,
 } from 'date-fns';
 import { useSelector } from 'react-redux';
-import { RootState } from '../../store';
+import { RootState } from '../../redux';
 
 const ReportFilterForm = () => {
   const [formData, setFormData] = useState<FilterFormData>({

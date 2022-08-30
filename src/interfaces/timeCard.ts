@@ -7,6 +7,7 @@ export interface Project {
   name: string;
   tasks: Task[];
   totalTime: string;
+  client?: string;
 }
 
 export interface Task {
