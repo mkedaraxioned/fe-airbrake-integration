@@ -57,7 +57,7 @@ const TaskList = ({ formData }: Props) => {
         </HStack>
       </Box>
       {Array.isArray(timeCardDetails?.projects)
-        ? timeCardDetails?.projects.map((project, i) => {
+        ? timeCardDetails?.projects.map((project: any, i) => {
             return (
               <Box p={i === 0 ? '15px 0 10px' : undefined} key={project.name}>
                 <HStack
@@ -71,7 +71,7 @@ const TaskList = ({ formData }: Props) => {
                     lineHeight='20.11px'
                     textStyle='sourceSansProRegular'
                   >
-                    {project.name}
+                    {`${project.client} - ${project.name}`}
                   </Heading>
                   <Text
                     fontSize='16px'

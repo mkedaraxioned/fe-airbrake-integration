@@ -174,6 +174,13 @@ const NewProjectForm = ({ onClose, projectId }: Props) => {
       errors.endDate = 'Please enter end date';
     }
 
+    if (
+      new Date(formData.startDate as string).getTime() >
+      new Date(formData.endDate as string).getTime()
+    ) {
+      errors.endDate = 'End date should be greater than start date.';
+    }
+
     if (members.length <= 0) {
       errors.members = 'Please select team members';
     }

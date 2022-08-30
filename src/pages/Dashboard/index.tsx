@@ -46,7 +46,7 @@ const Dashboard = () => {
     dispatch(allClients(clientRes.data?.clients));
     dispatch(allUsers(usersRes.data?.users));
   };
-  console.log(formData.date, 'Dnyae');
+
   return (
     <Box>
       <Flex minH='calc(100vh - 78px)' justifyContent='center'>
