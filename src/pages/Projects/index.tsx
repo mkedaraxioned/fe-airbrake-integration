@@ -22,7 +22,7 @@ import NewProjectForm from '../../components/newProjectForm';
 import { Link, useSearchParams } from 'react-router-dom';
 import ProjectList from '../../components/projectList';
 import { _get } from '../../utils/api';
-import { RootState } from '../../store';
+import { RootState } from '../../redux';
 import { useSelector } from 'react-redux';
 import { ClientSet, utilClientName } from '../../utils/common';
 

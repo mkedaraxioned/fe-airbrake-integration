@@ -17,9 +17,6 @@ import { Box, Button, Flex, Text, Tooltip } from '@chakra-ui/react';
 import { HiOutlineChevronLeft, HiOutlineChevronRight } from 'react-icons/hi';
 import { endOfMonth } from 'date-fns/esm';
 import { _get } from '../../utils/api';
-import { useDispatch } from 'react-redux';
-import { updateSelectedDate } from '../../feature/timeCardSlice';
-
 interface Props {
   showDetailsHandle: (dayStr: string) => void;
   formDate: Date;
@@ -33,7 +30,6 @@ const Calendar = ({
   setFormData,
   formData,
 }: Props) => {
-  const dispatch = useDispatch();
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [loggedTimeData, setLoggedTimeData] = useState([]);
@@ -50,7 +46,6 @@ const Calendar = ({
   };
   const onDateClickHandle = (day: Date, dayStr: string) => {
     setSelectedDate(day);
-    dispatch(updateSelectedDate(day));
     showDetailsHandle(dayStr);
   };
   const startDate = format(startOfMonth(currentMonth), 'yyyy-MM-dd');

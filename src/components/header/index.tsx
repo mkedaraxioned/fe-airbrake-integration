@@ -24,10 +24,11 @@ import React from 'react';
 import { FaClock } from 'react-icons/fa';
 import { AiOutlineSearch } from 'react-icons/ai';
 import { Link, useNavigate } from 'react-router-dom';
-import { userLogout } from '../../feature/userSlice';
+import { userLogout } from '../../redux/reducers/userSlice';
 import { useSelector, useDispatch } from 'react-redux';
-import { RootState } from '../../store';
+import { RootState } from '../../redux';
 import NewClient from '../addClient';
+import { ERole } from '../../constants/enum';
 
 const Header = () => {
   const user = useSelector((state: RootState) => state.user);
@@ -115,28 +116,29 @@ const Header = () => {
             </Box>
           </Flex>
           <Flex alignItems='center'>
-            <UnorderedList
-              display='flex'
-              listStyleType='none'
-              textStyle='sourceSansProBold'
-              color='textColor'
-            >
-              <ListItem margin='0 15px' fontSize='18px' lineHeight='23px'>
-                <Link to='/projects'>Projects</Link>
-              </ListItem>
-              {user.profile.role === 'ADMIN' ? (
-                <>
+            {user.profile.role === ERole.ADMIN ? (
+              <UnorderedList
+                display='flex'
+                listStyleType='none'
+                textStyle='sourceSansProBold'
+                color='textColor'
+              >
+                <ListItem margin='0 15px' fontSize='18px' lineHeight='23px'>
+                  <Text onClick={onOpen} cursor='pointer'>
+                    Clients
+                  </Text>
+                </ListItem>
+                {(user.profile.role === ERole.ADMIN ||
+                  user.profile.role === ERole.NORMAL) && (
                   <ListItem margin='0 15px' fontSize='18px' lineHeight='23px'>
-                    <Text onClick={onOpen} cursor='pointer'>
-                      Clients
-                    </Text>
+                    <Link to='/projects'>Projects</Link>
                   </ListItem>
-                  <ListItem margin='0 15px' fontSize='18px' lineHeight='23px'>
-                    <Link to='/team'>Team</Link>
-                  </ListItem>
-                </>
-              ) : null}
-            </UnorderedList>
+                )}
+                <ListItem margin='0 15px' fontSize='18px' lineHeight='23px'>
+                  <Link to='/team'>Team</Link>
+                </ListItem>
+              </UnorderedList>
+            ) : null}
             <Menu>
               <MenuButton
                 ml='30px'
@@ -155,16 +157,19 @@ const Header = () => {
                   <MenuItem pointerEvents='none'>
                     <Text fontWeight='bold'>{user.profile.name}</Text>
                   </MenuItem>
-                  {user.profile.role === 'ADMIN' ? (
+                  {user.profile.role === ERole.ADMIN ? (
                     <>
                       <MenuItem> Account </MenuItem>
                       <MenuItem>
-                        {' '}
-                        <Link to='dashboard' className='menu-anchor'>
+                        <Link to='/dashboard' className='menu-anchor'>
                           Dashboard
-                        </Link>{' '}
+                        </Link>
                       </MenuItem>
-                      <MenuItem> Settings </MenuItem>
+                      <MenuItem>
+                        <Link to='/setting' className='menu-anchor'>
+                          Settings
+                        </Link>
+                      </MenuItem>
                     </>
                   ) : null}
                 </MenuGroup>

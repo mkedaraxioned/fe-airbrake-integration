@@ -1,14 +1,14 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Project, Timecards } from '../interfaces/timeCard';
+import { Project, Timecards } from '../../interfaces/timeCard';
 
 export interface TimeCardState {
-  currentSelectedDate: Date;
+  currentSelectedDate: string;
   timeCardDetails: Timecards | null;
   selectedProject: Project | null;
 }
 
 const initialState: TimeCardState = {
-  currentSelectedDate: new Date(),
+  currentSelectedDate: new Date().toISOString(),
   timeCardDetails: null,
   selectedProject: null,
 };

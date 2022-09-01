@@ -11,7 +11,7 @@ import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { ReactComponent as CalenderIcon1 } from '../../assets/images/calenderIcon1.svg';
 import { ReactComponent as CalenderIcon2 } from '../../assets/images/calenderIcon2.svg';
-import { RootState } from '../../store';
+import { RootState } from '../../redux';
 
 interface Props {
   project: any;

@@ -13,9 +13,9 @@ import { useParams } from 'react-router';
 import Calendar from '../../components/calender';
 import TaskList from '../../components/taskList';
 import TimeLogFrom from '../../components/timeLogForm';
-import { allUsers } from '../../feature/allUserSlice';
-import { allClients } from '../../feature/clientsSlice';
-import { allProjects } from '../../feature/projectsSlice';
+import { allUsers } from '../../redux/reducers/allUserSlice';
+import { allClients } from '../../redux/reducers/clientsSlice';
+import { allProjects } from '../../redux/reducers/projectsSlice';
 import { _get } from '../../utils/api';
 
 const Dashboard = () => {
@@ -46,7 +46,7 @@ const Dashboard = () => {
     dispatch(allClients(clientRes.data?.clients));
     dispatch(allUsers(usersRes.data?.users));
   };
-  console.log(formData.date, 'Dnyae');
+
   return (
     <Box>
       <Flex minH='calc(100vh - 78px)' justifyContent='center'>

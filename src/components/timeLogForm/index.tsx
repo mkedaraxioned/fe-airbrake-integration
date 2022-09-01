@@ -17,12 +17,12 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router';
 import { EProjectType } from '../../constants/enum';
-import { updateTimeCardDetails } from '../../feature/timeCardSlice';
+import { updateTimeCardDetails } from '../../redux/reducers/timeCardSlice';
 import {
   TimelogFormError,
   TimeLogFormData,
 } from '../../interfaces/timelogForm';
-import { RootState } from '../../store';
+import { RootState } from '../../redux';
 import { _get, _post, _put } from '../../utils/api';
 import { convertMinutes } from '../../utils/common';
 import { timeStringValidate } from '../../utils/validation';

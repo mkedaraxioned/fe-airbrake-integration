@@ -7,10 +7,12 @@ import Dashboard from './pages/Dashboard';
 import Login from './pages/Login';
 import Projects from './pages/Projects';
 import Reports from './pages/reports';
+import Setting from './pages/Setting';
 import Team from './pages/Team';
-import { RootState } from './store';
+import { RootState } from './redux';
 import ManageTask from './templates/manageTask';
 import ProjectTaskDetails from './templates/projectTaskDetail';
+
 export const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const user = useSelector((state: RootState) => state.user);
@@ -28,6 +30,7 @@ export const App = () => {
             <>
               <Route path='/' element={<Dashboard />} />
               <Route path='/dashboard' element={<Dashboard />} />
+              <Route path='/setting' element={<Setting />} />
               <Route path='/add-client' element={<AddClient />} />
               <Route path='/team' element={<Team />} />
               <Route path='/projects' element={<Projects />} />

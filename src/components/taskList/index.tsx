@@ -2,9 +2,9 @@ import { Box, Heading, HStack, Text } from '@chakra-ui/react';
 import { format } from 'date-fns';
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { updateTimeCardDetails } from '../../feature/timeCardSlice';
-import { Task } from '../../interfaces/timeCard';
-import { RootState } from '../../store';
+import { updateTimeCardDetails } from '../../redux/reducers/timeCardSlice';
+import { Project, Task } from '../../interfaces/timeCard';
+import { RootState } from '../../redux';
 import { _get } from '../../utils/api';
 import TimeCard from '../timeCard';
 
@@ -57,7 +57,7 @@ const TaskList = ({ formData }: Props) => {
         </HStack>
       </Box>
       {Array.isArray(timeCardDetails?.projects)
-        ? timeCardDetails?.projects.map((project, i) => {
+        ? timeCardDetails?.projects.map((project: Project, i: number) => {
             return (
               <Box p={i === 0 ? '15px 0 10px' : undefined} key={project.name}>
                 <HStack
@@ -71,7 +71,7 @@ const TaskList = ({ formData }: Props) => {
                     lineHeight='20.11px'
                     textStyle='sourceSansProRegular'
                   >
-                    {project.name}
+                    {`${project.client} - ${project.name}`}
                   </Heading>
                   <Text
                     fontSize='16px'

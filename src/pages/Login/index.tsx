@@ -9,7 +9,7 @@ import {
   VStack,
 } from '@chakra-ui/react';
 import { useDispatch } from 'react-redux';
-import { userLogin } from '../../feature/userSlice';
+import { userLogin } from '../../redux/reducers/userSlice';
 import { useNavigate } from 'react-router';
 import loginImg from '../../assets/images/loginImg.png';
 import axionedLogo from '../../assets/images/axionedLogo.png';

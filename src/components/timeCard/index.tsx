@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux';
 import { useParams, useNavigate } from 'react-router';
 import { ReactComponent as DeleteSvg } from '../../assets/images/delete.svg';
 import { ReactComponent as EditSvg } from '../../assets/images/edit.svg';
-import { updateTimeCardDetails } from '../../feature/timeCardSlice';
+import { updateTimeCardDetails } from '../../redux/reducers/timeCardSlice';
 import { Task } from '../../interfaces/timeCard';
 import { _del, _get, _put } from '../../utils/api';
 import { scrollToTop } from '../../utils/common';
@@ -47,7 +47,7 @@ const TimeCard = ({ task, formData }: TaskDetails) => {
               position: 'top-right',
               isClosable: true,
             });
-            fetchEntries(format(new Date(formData.date), 'yyyy/MM/dd'));
+            fetchEntries(format(new Date(formData.date), 'yyyy-MM-dd'));
           }
         }
       }

@@ -2,8 +2,8 @@ import { Box, Text } from '@chakra-ui/react';
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Select, { components } from 'react-select';
-import { updateSelectedProject } from '../../feature/timeCardSlice';
-import { RootState } from '../../store';
+import { updateSelectedProject } from '../../redux/reducers/timeCardSlice';
+import { RootState } from '../../redux';
 
 export interface Options {
   id: string;

@@ -20,8 +20,9 @@ import {
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { ERole } from '../../constants/enum';
 import { User } from '../../interfaces/team';
-import { RootState } from '../../store';
+import { RootState } from '../../redux';
 import { _get, _patch } from '../../utils/api';
 
 const Team = () => {
@@ -32,9 +33,11 @@ const Team = () => {
 
   const switchHandler = async (user: User) => {
     try {
-      if (user?.role === 'ADMIN') {
+      if (user?.role === ERole.ADMIN) {
         setLoading(true);
-        const res = await _patch(`api/users/${user?.id}`, { role: 'NORMAL' });
+        const res = await _patch(`api/users/${user?.id}`, {
+          role: ERole.NORMAL,
+        });
         if (res.status === 200) {
           setLoading(false);
           toast({
@@ -46,9 +49,11 @@ const Team = () => {
             isClosable: true,
           });
         }
-      } else if (user?.role === 'NORMAL') {
+      } else if (user?.role === ERole.NORMAL) {
         setLoading(true);
-        const res = await _patch(`api/users/${user?.id}`, { role: 'ADMIN' });
+        const res = await _patch(`api/users/${user?.id}`, {
+          role: ERole.ADMIN,
+        });
         if (res.status === 200) {
           setLoading(false);
           toast({
@@ -86,7 +91,7 @@ const Team = () => {
     let admins = 0;
     if (allUsers.length > 0) {
       allUsers.forEach((user: User) => {
-        if (user?.role === 'ADMIN') {
+        if (user?.role === ERole.ADMIN) {
           admins = admins + 1;
         }
       });
@@ -154,7 +159,7 @@ const Team = () => {
                       <Td fontSize='14px'>{user?.email}</Td>
                       <Td>
                         <Switch
-                          isChecked={user?.role === 'ADMIN' ? true : false}
+                          isChecked={user?.role === ERole.ADMIN ? true : false}
                           onChange={() => switchHandler(user)}
                           isDisabled={
                             currentUser.profile.name === user.name
