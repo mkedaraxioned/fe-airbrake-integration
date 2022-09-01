@@ -13,26 +13,20 @@ import {
   Flex,
   Heading,
   HStack,
+  Input,
   Select,
   Text,
   useDisclosure,
 } from '@chakra-ui/react';
 import NewProjectForm from '../../components/newProjectForm';
-import {
-  createSearchParams,
-  Link,
-  useNavigate,
-  useSearchParams,
-} from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import ProjectList from '../../components/projectList';
 import { _get } from '../../utils/api';
 import { RootState } from '../../store';
 import { useSelector } from 'react-redux';
 import { ClientSet, utilClientName } from '../../utils/common';
-import AutoCompleteElem from '../../components/autoComplete';
 
 const Projects = () => {
-  const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [clientSet, setClientSet] = useState<ClientSet[]>([]);
@@ -40,12 +34,10 @@ const Projects = () => {
   const { projects } = useSelector((state: RootState) => state.allProjects);
   const { clients } = useSelector((state: RootState) => state.allClients);
   const user = useSelector((state: RootState) => state.user);
+  const [filterPro, setFilterPro] = useState([]);
   const [checked, setChecked] = useState(true);
   const [type, setType] = useState('');
-  const [filterVar, setFilterVar] = useState({ checked: 'true' });
-  const [filterPro, setFilterPro] = useState([]);
-  const [filterClient, setFilterClient] = useState<ClientSet[]>([]);
-  const [selectClient, setSelectClient] = useState('');
+  const [searchVal, setSearchVal] = useState('');
 
   useEffect(() => {
     unqClients();
@@ -53,57 +45,71 @@ const Projects = () => {
 
   useEffect(() => {
     fetchMyProjects();
+    if (
+      searchParams.get('checked') === '' ||
+      searchParams.get('checked') === 'true'
+    ) {
+      setChecked(true);
+    } else if (searchParams.get('checked') === 'false') {
+      setChecked(false);
+    }
+    if (searchParams.get('searchVal'))
+      setSearchVal(searchParams.get('searchVal') ?? '');
+
+    if (searchParams.get('type')) setType(searchParams.get('type') ?? '');
   }, []);
 
   useEffect(() => {
     if (checked) {
-      setFilterPro(myProjects);
+      filterFunctionality(myProjects);
     } else {
-      setFilterPro(projects);
+      filterFunctionality(projects);
     }
-  }, [checked, myProjects]);
+  }, [checked, type, searchVal, myProjects]);
 
-  useEffect(() => {
-    if (clientSet.length > 0) {
-      if (selectClient === '') {
-        setFilterClient(clientSet);
-      } else {
-        const selected = clientSet?.filter(
-          (client) => client?.id === selectClient,
-        );
-        setFilterClient(selected);
-      }
+  const filterFunctionality = (pro: any) => {
+    let temp = pro;
+    if (searchVal !== '') {
+      temp = temp?.filter(
+        (project: { title: string; client: any }) =>
+          project?.title.toLowerCase().includes(searchVal) ||
+          project?.client.name.toLowerCase().includes(searchVal),
+      );
     }
-  }, [clientSet, selectClient]);
+    if (type !== '' && type !== 'none') {
+      temp = temp?.filter((item: { type: string }) => item.type === type);
+    }
+    setFilterPro(temp);
+  };
+
+  const insertUrlParam = (key: string, value: string) => {
+    if (window && window.history.pushState) {
+      const params = new URLSearchParams(window.location.search);
+      params.set(key, value);
+      const newurl =
+        window.location.protocol +
+        '//' +
+        window.location.host +
+        window.location.pathname +
+        '?' +
+        params.toString();
+      window.history.pushState({ path: newurl }, '', newurl);
+    }
+  };
 
   const handleCheck = () => {
     setChecked(!checked);
-    setFilterVar({ ...filterVar, checked: `${!checked}` });
-    navigate({
-      pathname: '/projects',
-      search: `?${createSearchParams({
-        ...filterVar,
-        checked: `${!checked}`,
-      })}`,
-    });
+    insertUrlParam('checked', `${!checked}`);
   };
 
   const handleSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    if (e.currentTarget.value === 'none') {
-      setType('');
-    } else {
-      setType(e.currentTarget.value);
-    }
+    setType(e.currentTarget.value);
+    insertUrlParam('type', e.currentTarget.value);
   };
 
-  const handleInput = (ele: any) => {
-    console.log(ele, 'ele');
-
-    if (!ele) {
-      setSelectClient('');
-    } else {
-      setSelectClient(ele.id);
-    }
+  const handleInput = (ele: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchVal(ele.currentTarget.value);
+    insertUrlParam('searchVal', ele.currentTarget.value);
   };
 
   const fetchMyProjects = async () => {
@@ -124,6 +130,7 @@ const Projects = () => {
       setClientSet(sortArr);
     }
   };
+
   const ModalBox = () => {
     return (
       <Drawer isOpen={isOpen} size='lg' placement='right' onClose={onClose}>
@@ -171,9 +178,13 @@ const Projects = () => {
               </Text>
             </Checkbox>
             <Box w='186px'>
-              <AutoCompleteElem
-                onChange={(ele: any) => handleInput(ele)}
-                items={clients}
+              <Input
+                color='grayLight'
+                fontSize='14px'
+                textStyle='sourceSansProRegular'
+                _placeholder={{ color: 'grayLight' }}
+                value={searchVal}
+                onChange={(ele) => handleInput(ele)}
                 placeholder={'Search client'}
               />
             </Box>
@@ -182,6 +193,7 @@ const Projects = () => {
               color='grayLight'
               fontSize='14px'
               textStyle='sourceSansProRegular'
+              value={type}
               onChange={(e) => handleSelect(e)}
             >
               <option value='none'>Select project type</option>
@@ -197,8 +209,9 @@ const Projects = () => {
           </HStack>
         </Flex>
         <Box p='30px 22px'>
-          {filterClient?.length > 0 &&
-            filterClient?.map((client) => {
+          {filterPro?.length > 0 ? (
+            clientSet?.length > 0 &&
+            clientSet?.map((client) => {
               const projectPerClient = filterPro?.filter(
                 (project: { clientId: string }) =>
                   project.clientId === client.id,
@@ -208,10 +221,12 @@ const Projects = () => {
                   key={client.id}
                   clientName={client.name}
                   projects={projectPerClient}
-                  type={type}
                 />
               );
-            })}
+            })
+          ) : (
+            <Text>No Projects Found</Text>
+          )}
         </Box>
       </Box>
       <ModalBox />
