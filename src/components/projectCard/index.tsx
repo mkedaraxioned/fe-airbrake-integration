@@ -18,7 +18,9 @@ interface Props {
 }
 
 const ProjectCard = ({ project }: Props) => {
-  const { users } = useSelector((state: RootState) => state.allUsers);
+  const { users } = useSelector(
+    (state: RootState) => state.rootSlices.allUsers,
+  );
   return (
     <Box
       w='full'

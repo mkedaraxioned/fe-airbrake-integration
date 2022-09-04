@@ -52,7 +52,7 @@ const ReportFilterForm = () => {
     custom: false,
   });
   const { allClients, allProjects, allUsers } = useSelector(
-    (state: RootState) => state,
+    (state: RootState) => state.rootSlices,
   );
 
   const thisWeekFirstDate = startOfWeek(new Date());

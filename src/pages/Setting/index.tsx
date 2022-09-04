@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../redux';
 
 const Setting = () => {
-  const { profile } = useSelector((state: RootState) => state.user);
+  const { profile } = useSelector((state: RootState) => state.rootSlices.user);
 
   return (
     <Container mt={4}>
