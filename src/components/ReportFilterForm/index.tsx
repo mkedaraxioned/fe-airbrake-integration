@@ -31,29 +31,31 @@ import {
   startOfWeek,
   startOfYear,
 } from 'date-fns';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../redux';
+import {
+  useGetAllClientsQuery,
+  useGetAllProjectsQuery,
+  useGetAllUsersQuery,
+} from '../../redux/apis/dashboard';
 
-const ReportFilterForm = () => {
-  const [formData, setFormData] = useState<FilterFormData>({
-    clientId: '',
-    userId: '',
-    projectId: '',
-    groupBy: 'client',
-    billableType: 'nonBillable',
-    startDate: new Date(),
-    endDate: null,
-  });
+interface Props {
+  formData: FilterFormData;
+  setFormData: any;
+  searchQueryValues: any;
+  setSearchQueryValues: any;
+}
 
-  const [searchQueryValues, setSearchQueryValues] = useState<any>({});
-
+const ReportFilterForm = ({
+  formData,
+  setFormData,
+  setSearchQueryValues,
+}: Props) => {
   const [dateFormat, setDateFormat] = useState({
     fixed: true,
     custom: false,
   });
-  const { allClients, allProjects, allUsers } = useSelector(
-    (state: RootState) => state,
-  );
+  const { data: clientData } = useGetAllClientsQuery();
+  const { data: projectsData } = useGetAllProjectsQuery();
+  const { data: usersData } = useGetAllUsersQuery();
 
   const thisWeekFirstDate = startOfWeek(new Date());
   const thisWeekLastDate = lastDayOfWeek(new Date());
@@ -94,7 +96,9 @@ const ReportFilterForm = () => {
   const getQueryParamsValues = () => {
     const params = new URLSearchParams(window.location.search);
     const obj: any = {};
+    const searchParamsObj: any = {};
     params.forEach((value, key) => {
+      searchParamsObj[key] = value;
       if (key === 'endDate' || key === 'startDate') {
         obj[key] = new Date(value);
       } else {
@@ -102,21 +106,11 @@ const ReportFilterForm = () => {
       }
     });
     if (obj) {
-      setSearchQueryValues({
-        ...obj,
-      });
       setFormData({ ...formData, ...obj });
     }
-    if (obj.startDate) {
+    if (setSearchQueryValues) {
       setSearchQueryValues({
-        ...obj,
-        startDate: format(obj.startDate as Date, 'yyyy-MM-dd'),
-      });
-    }
-    if (obj.endDate) {
-      setSearchQueryValues({
-        ...obj,
-        endDate: format(obj.endDate as Date, 'yyyy-MM-dd'),
+        ...searchParamsObj,
       });
     }
   };
@@ -392,11 +386,9 @@ const ReportFilterForm = () => {
                   textStyle='sourceSansProRegular'
                   onChange={selecttHandler}
                 >
-                  {allClients?.clients
-                    .sort((a: { name: string }, b: { name: string }) =>
-                      a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1,
-                    )
-                    .map(
+                  {clientData &&
+                    clientData.clients.length > 0 &&
+                    clientData.clients.map(
                       (client: { id: string; name: string }, index: number) => {
                         return (
                           <option value={client.id} key={index}>
@@ -428,11 +420,9 @@ const ReportFilterForm = () => {
                   textStyle='sourceSansProRegular'
                   onChange={selecttHandler}
                 >
-                  {allUsers?.users
-                    .sort((a: { name: string }, b: { name: string }) =>
-                      a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1,
-                    )
-                    .map(
+                  {usersData &&
+                    usersData.users.length > 0 &&
+                    usersData.users.map(
                       (user: { name: string; id: string }, index: number) => {
                         return (
                           <option value={user.id} key={index}>
@@ -462,26 +452,28 @@ const ReportFilterForm = () => {
                   lineHeight='17.6px'
                   onChange={selecttHandler}
                 >
-                  {allProjects?.projects
-                    .filter(
-                      (project: { clientId: string }) =>
-                        project.clientId === formData.clientId,
-                    )
-                    .sort((a: { title: string }, b: { title: string }) =>
-                      a.title.toLowerCase() > b.title.toLowerCase() ? 1 : -1,
-                    )
-                    .map(
-                      (
-                        project: { id: string; title: string },
-                        index: number,
-                      ) => {
-                        return (
-                          <option value={project.id} key={index}>
-                            {project.title}
-                          </option>
-                        );
-                      },
-                    )}
+                  {projectsData &&
+                    projectsData.projects.length > 0 &&
+                    projectsData.projects
+                      .filter(
+                        (project: { clientId: string }) =>
+                          project.clientId === formData.clientId,
+                      )
+                      .sort((a: { title: string }, b: { title: string }) =>
+                        a.title.toLowerCase() > b.title.toLowerCase() ? 1 : -1,
+                      )
+                      .map(
+                        (
+                          project: { id: string; title: string },
+                          index: number,
+                        ) => {
+                          return (
+                            <option value={project.id} key={index}>
+                              {project.title}
+                            </option>
+                          );
+                        },
+                      )}
                 </Select>
               </FormControl>
               <FormControl>
@@ -564,7 +556,6 @@ const ReportFilterForm = () => {
           </Box>
         </Flex>
       </form>
-      <div>{JSON.stringify(searchQueryValues)}</div>
     </Box>
   );
 };

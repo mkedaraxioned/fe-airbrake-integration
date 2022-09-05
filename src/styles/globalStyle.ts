@@ -29,6 +29,13 @@ export const styles = {
     '.date_row:last-child div': {
       borderBottom: 'none',
     },
+    '.date_row .selectedDate': {
+      paddingTop: '4px',
+      border: '2px solid #4657CE !important',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
   },
   '.react-datepicker-popper': {
     zIndex: '4 !important',
