@@ -16,13 +16,18 @@ import { ReactComponent as ManageSvg } from '../../assets/images/manage.svg';
 import { ReactComponent as ReportSvg } from '../../assets/images/report.svg';
 import { useParams } from 'react-router';
 import { _get } from '../../utils/api';
+import { useGetSelectedProjectQuery } from '../../redux/apis/project';
 
 const ProjectTaskDetails = () => {
   const [projectData, setProjectData] = useState<any>();
   const { projectId } = useParams();
 
+  const { data, isLoading } = useGetSelectedProjectQuery(projectId, {
+    skip: !projectId,
+  });
+
   useEffect(() => {
-    getProject();
+    !isLoading && setProjectData(data?.clients[0]);
   }, [projectId]);
 
   const getProject = async () => {
@@ -52,7 +57,7 @@ const ProjectTaskDetails = () => {
             <Link to='/projects'>Projects</Link>
           </BreadcrumbItem>
           <BreadcrumbItem color='textLight'>
-            <Text>{projectData?.title}</Text>
+            <Text>{projectData?.projects[0].name}</Text>
           </BreadcrumbItem>
         </Breadcrumb>
         <Flex justifyContent='space-between'>
@@ -63,7 +68,7 @@ const ProjectTaskDetails = () => {
               textStyle='sourceSansProRegular'
               lineHeight='17.6px'
             >
-              {projectData?.client.name}
+              {projectData?.name}
             </Text>
             <Heading
               as='h2'
@@ -73,7 +78,7 @@ const ProjectTaskDetails = () => {
               fontSize='22px'
               lineHeight='27.65px'
             >
-              {projectData?.title}
+              {projectData?.projects[0].name}
             </Heading>
           </Box>
           <HStack>
@@ -106,8 +111,12 @@ const ProjectTaskDetails = () => {
               Task details
             </Text>
           </Box>
-          <RecurringProjectTasks />
-          <Box>
+          {projectData && (
+            <RecurringProjectTasks
+              milestoneList={projectData?.projects[0].milestones}
+            />
+          )}
+          {/* <Box>
             <Text
               color='textColor'
               textStyle='sourceSansProBold'
@@ -117,7 +126,7 @@ const ProjectTaskDetails = () => {
               Archived tasks (1)
             </Text>
           </Box>
-          <RecurringProjectArchive />
+          <RecurringProjectArchive /> */}
         </Box>
       </Box>
     </Box>

@@ -17,12 +17,20 @@ import { HiDotsHorizontal } from 'react-icons/hi';
 import { ReactComponent as EditGreyIcon } from '../../assets/images/editGreyIcon.svg';
 import { Link } from 'react-router-dom';
 import './taskDetail.modules.css';
+import { format } from 'date-fns';
+import { convertMinutes } from '../../utils/common';
 
 interface Props {
   displayBlock?: boolean;
+  milestone?: any;
 }
 
-const TaskDetail = ({ displayBlock }: Props) => {
+const TaskDetail = ({ displayBlock, milestone }: Props) => {
+  const formatTimeCardDate = 'EEEE, MMMM dd, yyyy';
+  // TODO: calculation
+  const calculateProgress = (actualHours: number, budget: number) => {
+    return ((actualHours * 100) / budget).toFixed(2);
+  };
   return (
     <Box
       m='20px 0 40px'
@@ -51,7 +59,7 @@ const TaskDetail = ({ displayBlock }: Props) => {
         lineHeight='17.6px'
       >
         <Flex justifyContent='space-between' flexBasis='50%'>
-          <Text>Retainer Month: 14th May- 13th June</Text>
+          <Text>{milestone?.name}</Text>
           <Text>Budget - 2.5</Text>
         </Flex>
         <Divider
@@ -67,18 +75,18 @@ const TaskDetail = ({ displayBlock }: Props) => {
           alignItems='center'
           flexBasis='50%'
         >
-          <Text>Actual - 2.5 Hrs</Text>
+          <Text>Actual - {convertMinutes(milestone?.logTime)} Hrs</Text>
           <Flex alignItems='center'>
             <Flex alignItems='center'>
               <Progress
-                value={80}
+                value={parseFloat(calculateProgress(milestone?.logTime, 2.5))}
                 w='200px'
                 rounded='full'
                 size='sm'
                 colorScheme='green'
                 bg='white'
               />
-              <Text pl='5px'>80%</Text>
+              <Text pl='5px'>{calculateProgress(milestone?.logTime, 2.5)}</Text>
             </Flex>
             <Text pl='43px'>
               <HiDotsHorizontal />
@@ -110,238 +118,92 @@ const TaskDetail = ({ displayBlock }: Props) => {
         borderRight='1px'
         borderColor='borderColor'
       >
-        <AccordionItem>
-          {({ isExpanded }) => (
-            <>
-              <h2>
-                <AccordionButton
-                  pt='15px'
-                  pb='15px'
-                  pl='25px'
-                  display='flex'
-                  justifyContent='space-between'
-                  color='grayLight'
-                  fontSize='14px'
-                  textStyle='sourceSansProRegular'
-                  lineHeight='17.6px'
-                  _focus={{
-                    outline: 'none',
-                    borderBottom: '1px',
-                    borderColor: 'borderColor',
-                  }}
-                >
-                  <Flex>
-                    <Box
-                      padding='2px 1px 1px '
-                      border='2px'
-                      borderColor='borderDark'
-                      mr='10px'
-                      color='borderDark'
-                    >
-                      {isExpanded ? (
-                        <FaMinus fontSize='10px' />
-                      ) : (
-                        <FaPlus fontSize='10px' />
-                      )}
-                    </Box>
-                    <Box>
-                      <Text textAlign='left'>Shritej B</Text>
-                    </Box>
-                  </Flex>
-                  <Box pl='22.2%'>
-                    <Text>2.5 Hrs</Text>
-                  </Box>
-                  <Box pr='15.4%'>
-                    <Text>22 January 2022</Text>
-                  </Box>
-                </AccordionButton>
-              </h2>
-              <AccordionPanel p={0}>
-                <List>
-                  <ListItem>
-                    <Flex
-                      p='15px 24px'
-                      borderTop='1px'
-                      borderColor='borderColor'
-                      fontSize='14px'
-                      lineHeight='17.6px'
-                      color='grayLight'
-                      textStyle='sourceSansProRegular'
-                    >
-                      <Flex flexBasis='50%' alignItems='center'>
-                        <Link to='/'>
-                          <EditGreyIcon />
-                        </Link>
-                        <Text pl='11px'>Tuesday, May 15, 2022</Text>
-                      </Flex>
-                      <Text pl='18px' flexBasis='50%'>
-                        25:00
-                      </Text>
-                    </Flex>
-                  </ListItem>
-                  <ListItem>
-                    <Flex
-                      p='15px 24px'
-                      borderTop='1px'
-                      borderColor='borderColor'
-                      fontSize='14px'
-                      lineHeight='17.6px'
-                      color='grayLight'
-                      textStyle='sourceSansProRegular'
-                    >
-                      <Flex flexBasis='50%' alignItems='center'>
-                        <Link to='/'>
-                          <EditGreyIcon />
-                        </Link>
-                        <Text pl='11px'>Tuesday, May 15, 2022</Text>
-                      </Flex>
-                      <Text pl='18px' flexBasis='50%'>
-                        25:00
-                      </Text>
-                    </Flex>
-                  </ListItem>
-                  <ListItem>
-                    <Flex
-                      p='15px 24px'
-                      borderTop='1px'
-                      borderColor='borderColor'
-                      fontSize='14px'
-                      lineHeight='17.6px'
-                      color='grayLight'
-                      textStyle='sourceSansProRegular'
-                    >
-                      <Flex flexBasis='50%' alignItems='center'>
-                        <Link to='/'>
-                          <EditGreyIcon />
-                        </Link>
-                        <Text pl='11px'>Tuesday, May 15, 2022</Text>
-                      </Flex>
-                      <Text pl='18px' flexBasis='50%'>
-                        25:00
-                      </Text>
-                    </Flex>
-                  </ListItem>
-                </List>
-              </AccordionPanel>
-            </>
-          )}
-        </AccordionItem>
-        <AccordionItem>
-          {({ isExpanded }) => (
-            <>
-              <h2>
-                <AccordionButton
-                  pt='15px'
-                  pb='15px'
-                  pl='25px'
-                  display='flex'
-                  justifyContent='space-between'
-                  color='grayLight'
-                  fontSize='14px'
-                  textStyle='sourceSansProRegular'
-                  lineHeight='17.6px'
-                  _focus={{
-                    outline: 'none',
-                    borderBottom: '1px',
-                    borderColor: 'borderColor',
-                  }}
-                >
-                  <Flex>
-                    <Box
-                      padding='2px 1px 1px '
-                      border='2px'
-                      borderColor='borderDark'
-                      mr='10px'
-                      color='borderDark'
-                    >
-                      {isExpanded ? (
-                        <FaMinus fontSize='10px' />
-                      ) : (
-                        <FaPlus fontSize='10px' />
-                      )}
-                    </Box>
-                    <Box>
-                      <Text textAlign='left'>Shritej B</Text>
-                    </Box>
-                  </Flex>
-                  <Box pl='22.2%'>
-                    <Text>2.5 Hrs</Text>
-                  </Box>
-                  <Box pr='15.4%'>
-                    <Text>22 January 2022</Text>
-                  </Box>
-                </AccordionButton>
-              </h2>
-              <AccordionPanel p={0}>
-                <List>
-                  <ListItem>
-                    <Flex
-                      p='15px 24px'
-                      borderTop='1px'
-                      borderColor='borderColor'
-                      fontSize='14px'
-                      lineHeight='17.6px'
-                      color='grayLight'
-                      textStyle='sourceSansProRegular'
-                    >
-                      <Flex flexBasis='50%' alignItems='center'>
-                        <Link to='/'>
-                          <EditGreyIcon />
-                        </Link>
-                        <Text pl='11px'>Tuesday, May 15, 2022</Text>
-                      </Flex>
-                      <Text pl='18px' flexBasis='50%'>
-                        25:00
-                      </Text>
-                    </Flex>
-                  </ListItem>
-                  <ListItem>
-                    <Flex
-                      p='15px 24px'
-                      borderTop='1px'
-                      borderColor='borderColor'
-                      fontSize='14px'
-                      lineHeight='17.6px'
-                      color='grayLight'
-                      textStyle='sourceSansProRegular'
-                    >
-                      <Flex flexBasis='50%' alignItems='center'>
-                        <Link to='/'>
-                          <EditGreyIcon />
-                        </Link>
-                        <Text pl='11px'>Tuesday, May 15, 2022</Text>
-                      </Flex>
-                      <Text pl='18px' flexBasis='50%'>
-                        25:00
-                      </Text>
-                    </Flex>
-                  </ListItem>
-                  <ListItem>
-                    <Flex
-                      p='15px 24px'
-                      borderTop='1px'
-                      borderColor='borderColor'
-                      fontSize='14px'
-                      lineHeight='17.6px'
-                      color='grayLight'
-                      textStyle='sourceSansProRegular'
-                    >
-                      <Flex flexBasis='50%' alignItems='center'>
-                        <Link to='/'>
-                          <EditGreyIcon />
-                        </Link>
-                        <Text pl='11px'>Tuesday, May 15, 2022</Text>
-                      </Flex>
-                      <Text pl='18px' flexBasis='50%'>
-                        25:00
-                      </Text>
-                    </Flex>
-                  </ListItem>
-                </List>
-              </AccordionPanel>
-            </>
-          )}
-        </AccordionItem>
+        {milestone?.users.map(
+          (user: any, i: any) =>
+            user && (
+              <AccordionItem>
+                {({ isExpanded }) => (
+                  <>
+                    <h2>
+                      <AccordionButton
+                        pt='15px'
+                        pb='15px'
+                        pl='25px'
+                        display='flex'
+                        justifyContent='space-between'
+                        color='grayLight'
+                        fontSize='14px'
+                        textStyle='sourceSansProRegular'
+                        lineHeight='17.6px'
+                        _focus={{
+                          outline: 'none',
+                          borderBottom: '1px',
+                          borderColor: 'borderColor',
+                        }}
+                      >
+                        <Flex>
+                          <Box
+                            padding='2px 1px 1px '
+                            border='2px'
+                            borderColor='borderDark'
+                            mr='10px'
+                            color='borderDark'
+                          >
+                            {isExpanded ? (
+                              <FaMinus fontSize='10px' />
+                            ) : (
+                              <FaPlus fontSize='10px' />
+                            )}
+                          </Box>
+                          <Box>
+                            <Text textAlign='left'>{user?.name}</Text>
+                          </Box>
+                        </Flex>
+                        <Box pl='22.2%'>
+                          <Text>{convertMinutes(user?.logTime)} Hrs</Text>
+                        </Box>
+                        <Box pr='15.4%'>
+                          <Text>22 January 2022</Text>
+                        </Box>
+                      </AccordionButton>
+                    </h2>
+                    <AccordionPanel p={0}>
+                      <List>
+                        {user?.timecards?.map((activity: any) => (
+                          <ListItem key={activity.id}>
+                            <Flex
+                              p='15px 24px'
+                              borderTop='1px'
+                              borderColor='borderColor'
+                              fontSize='14px'
+                              lineHeight='17.6px'
+                              color='grayLight'
+                              textStyle='sourceSansProRegular'
+                            >
+                              <Flex flexBasis='50%' alignItems='center'>
+                                <Link to={`/dashboard/${activity.id}`}>
+                                  <EditGreyIcon />
+                                </Link>
+                                <Text pl='11px'>
+                                  {format(
+                                    new Date(activity.date),
+                                    formatTimeCardDate,
+                                  )}
+                                </Text>
+                              </Flex>
+                              <Text pl='18px' flexBasis='50%'>
+                                {convertMinutes(activity.logTime)}
+                              </Text>
+                            </Flex>
+                          </ListItem>
+                        ))}
+                      </List>
+                    </AccordionPanel>
+                  </>
+                )}
+              </AccordionItem>
+            ),
+        )}
       </Accordion>
     </Box>
   );

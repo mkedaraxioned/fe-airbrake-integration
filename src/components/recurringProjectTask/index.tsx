@@ -3,12 +3,14 @@ import React from 'react';
 import TaskDetail from '../taskDetail';
 import TaskDetailGranular from '../taskDetailGranular';
 
-const RecurringProjectTasks = () => {
+const RecurringProjectTasks = ({ milestoneList }: any) => {
   return (
     <Box>
-      <TaskDetail />
-      <TaskDetail />
-      <TaskDetailGranular />
+      {milestoneList.map(
+        (milestone: any, i: any) =>
+          milestone && <TaskDetail key={i} milestone={milestone} />,
+      )}
+      {/* <TaskDetailGranular /> */}
     </Box>
   );
 };
