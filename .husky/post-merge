@@ -2,6 +2,6 @@
 . "$(dirname -- "$0")/_/husky.sh"
 
 if ! git diff HEAD^ HEAD --exit-code -- ./package.json; then
-  echo "📦 package-lock.json changed. Running npm install to bring your dependencies up to date."
-  npm install
+  echo "📦 package-lock.json changed. Running npm ci to bring your dependencies up to date."
+  npm ci
 fi
