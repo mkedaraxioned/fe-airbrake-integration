@@ -17,17 +17,7 @@ export const styles = {
   },
   '.date_body': {
     '.date_row div': {
-      border: '.7px solid #E9F2F9',
-    },
-    '.date_row div:nth-of-type(7n)': {
-      borderRight: 'none',
-    },
-    '.date_row div:nth-of-type(1n)': {
-      borderLeft: 'none',
-      borderTop: 'none',
-    },
-    '.date_row:last-child div': {
-      borderBottom: 'none',
+      border: '1px solid #E9F2F9',
     },
     '.date_row .selectedDate': {
       paddingTop: '4px',
