@@ -29,8 +29,12 @@ const CustomSelect = ({
 }: Props) => {
   const dispatch = useDispatch();
   const [noDataFound, setNoDataFound] = useState<boolean>(false);
-  const { projects } = useSelector((state: RootState) => state.allProjects);
-  const { clients } = useSelector((state: RootState) => state.allClients);
+  const { projects } = useSelector(
+    (state: RootState) => state.rootSlices.allProjects,
+  );
+  const { clients } = useSelector(
+    (state: RootState) => state.rootSlices.allClients,
+  );
   const optionsData = projects.map((elem: any) => {
     const client = clients?.find(
       ({ id }: { id: string }) => id === elem.clientId,

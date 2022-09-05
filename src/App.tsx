@@ -15,7 +15,7 @@ import ProjectTaskDetails from './templates/projectTaskDetail';
 
 export const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const user = useSelector((state: RootState) => state.user);
+  const user = useSelector((state: RootState) => state.rootSlices.user);
 
   useEffect(() => {
     user.profile?.name ? setIsLoggedIn(true) : setIsLoggedIn(false);

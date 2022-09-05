@@ -31,9 +31,13 @@ const Projects = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [clientSet, setClientSet] = useState<ClientSet[]>([]);
   const [myProjects, setMyProjects] = useState([]);
-  const { projects } = useSelector((state: RootState) => state.allProjects);
-  const { clients } = useSelector((state: RootState) => state.allClients);
-  const user = useSelector((state: RootState) => state.user);
+  const { projects } = useSelector(
+    (state: RootState) => state.rootSlices.allProjects,
+  );
+  const { clients } = useSelector(
+    (state: RootState) => state.rootSlices.allClients,
+  );
+  const user = useSelector((state: RootState) => state.rootSlices.user);
   const [filterPro, setFilterPro] = useState([]);
   const [checked, setChecked] = useState(true);
   const [type, setType] = useState('');
