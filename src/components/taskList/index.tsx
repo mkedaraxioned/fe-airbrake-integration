@@ -15,7 +15,9 @@ interface Props {
 const TaskList = ({ formData }: Props) => {
   const dispatch = useDispatch();
 
-  const { timeCardDetails } = useSelector((state: RootState) => state.timeCard);
+  const { timeCardDetails } = useSelector(
+    (state: RootState) => state.rootSlices.timeCard,
+  );
 
   const fetchEntries = async (date: string) => {
     try {

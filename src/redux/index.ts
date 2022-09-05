@@ -4,7 +4,6 @@ import {
   useDispatch as useReduxDispatch,
   useSelector as useReduxSelector,
 } from 'react-redux';
-import persistReducer from 'redux-persist/es/persistReducer';
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
 import { setupListeners } from '@reduxjs/toolkit/dist/query';
 import {
@@ -30,6 +29,15 @@ import { baseSlice } from './apis';
 import { dashboard } from './apis/dashboard';
 import { user } from './apis/user';
 import { reportsApi } from './apis/reports';
+import persistCombineReducers from 'redux-persist/es/persistCombineReducers';
+
+const rootReducer = {
+  user: userReducer,
+  allUsers: allUserReducer,
+  allProjects: projectsReducer,
+  allClients: clientsReducer,
+  timeCard: timeCardReducer,
+};
 
 const persistConfig: PersistConfig = {
   key: 'root',
@@ -37,15 +45,11 @@ const persistConfig: PersistConfig = {
 };
 
 // persisting user data on localstorage
-const persistedUserReducer = persistReducer(persistConfig, userReducer);
+const persistedReducer = persistCombineReducers(persistConfig, rootReducer);
 
 export const store = configureStore({
   reducer: {
-    user: persistedUserReducer,
-    allUsers: allUserReducer,
-    allProjects: projectsReducer,
-    allClients: clientsReducer,
-    timeCard: timeCardReducer,
+    rootSlices: persistedReducer,
     [baseSlice.reducerPath]: baseSlice.reducer,
     [dashboard.reducerPath]: dashboard.reducer,
     [user.reducerPath]: user.reducer,

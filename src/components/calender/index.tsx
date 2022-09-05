@@ -270,7 +270,7 @@ const Calendar = ({
       {renderCells()}
       <Box pt='2px'>
         <Flex p='16px 0'>
-          <Flex alignItems='center' flexBasis='30%'>
+          <Flex alignItems='center' flexBasis='48%'>
             <Text width='14px' height='14px' border='2px solid #DBDBDB'></Text>
             <Text
               pl='8px'
@@ -281,7 +281,7 @@ const Calendar = ({
               No time logged
             </Text>
           </Flex>
-          <Flex alignItems='center' flexBasis='46%'>
+          <Flex alignItems='center' flexBasis='50%'>
             <Text width='14px' height='14px' bg='#FFE5A1'></Text>
             <Text
               pl='8px'
@@ -294,7 +294,7 @@ const Calendar = ({
           </Flex>
         </Flex>
         <Flex>
-          <Flex alignItems='center' flexBasis='30%'>
+          <Flex alignItems='center' flexBasis='48%'>
             <Text width='14px' height='14px' bg='#AEF2E2'></Text>
             <Text
               pl='8px'
@@ -305,7 +305,7 @@ const Calendar = ({
               Time logged
             </Text>
           </Flex>
-          <Flex alignItems='center' flexBasis='46%'>
+          <Flex alignItems='center' flexBasis='50%'>
             <Text width='14px' height='14px' border='2px solid #4657CE'></Text>
             <Text
               pl='8px'

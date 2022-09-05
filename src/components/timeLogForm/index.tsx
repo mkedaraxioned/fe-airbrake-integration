@@ -45,8 +45,12 @@ const TimeLogFrom = ({ formData, setFormData }: Props) => {
   const [milestoneData, setMilestoneData] = useState([]);
   const [errorMsg, setErrorMsg] = useState<TimelogFormError>({});
 
-  const { projects } = useSelector((state: RootState) => state.allProjects);
-  const { selectedProject } = useSelector((state: RootState) => state.timeCard);
+  const { projects } = useSelector(
+    (state: RootState) => state.rootSlices.allProjects,
+  );
+  const { selectedProject } = useSelector(
+    (state: RootState) => state.rootSlices.timeCard,
+  );
 
   useEffect(() => {
     selectOptionData();

@@ -29,7 +29,7 @@ const Team = () => {
   const toast = useToast();
   const [loading, setLoading] = useState(false);
   const [allUsers, setAllUsers] = useState([]);
-  const currentUser = useSelector((state: RootState) => state.user);
+  const currentUser = useSelector((state: RootState) => state.rootSlices.user);
 
   const switchHandler = async (user: User) => {
     try {

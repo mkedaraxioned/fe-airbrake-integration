@@ -31,7 +31,7 @@ import NewClient from '../addClient';
 import { ERole } from '../../constants/enum';
 
 const Header = () => {
-  const user = useSelector((state: RootState) => state.user);
+  const user = useSelector((state: RootState) => state.rootSlices.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { isOpen, onOpen, onClose } = useDisclosure();
