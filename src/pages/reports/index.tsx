@@ -8,6 +8,7 @@ import { ReactComponent as PrintReport } from '../../assets/images/printReportCS
 import { FilterFormData } from '../../interfaces/reports';
 import { useGetReportDataQuery } from '../../redux/apis/reports';
 import { format } from 'date-fns';
+import { getTimeInHours } from '../../utils/common';
 
 const Reports = () => {
   const [formData, setFormData] = useState<FilterFormData>({
@@ -122,7 +123,7 @@ const Reports = () => {
                       fontSize='14px'
                       lineHeight='17.6px'
                     >
-                      {client.logTime}
+                      {getTimeInHours(client.logTime)}
                     </Text>
                   </Flex>
                   <ClientAccordian projects={client.projects} />
