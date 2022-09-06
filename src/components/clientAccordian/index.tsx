@@ -8,10 +8,11 @@ import {
   Text,
 } from '@chakra-ui/react';
 import React from 'react';
-import { FaMinus, FaPlus } from 'react-icons/fa';
-import { Link } from 'react-router-dom';
+import { ReactComponent as PlusSvg } from '../../assets/images/plusSvg.svg';
+import { ReactComponent as MinusSvg } from '../../assets/images/minusSvg.svg';
+import ReportProjectDetails from '../ReportProjectDetails';
 
-const ClientAccordian = () => {
+const ClientAccordian = ({ projects }: any) => {
   return (
     <Box>
       <Accordion
@@ -20,188 +21,78 @@ const ClientAccordian = () => {
         borderRight='1px'
         borderColor='borderColor'
       >
-        <AccordionItem>
-          {({ isExpanded }) => (
-            <>
-              <h2>
-                <AccordionButton
-                  pt='15px'
-                  pb='15px'
-                  pl='25px'
-                  display='flex'
-                  justifyContent='space-between'
-                  color='grayLight'
-                  fontSize='14px'
-                  textStyle='sourceSansProRegular'
-                  lineHeight='17.6px'
-                  _focus={{
-                    outline: 'none',
-                    borderBottom: '0',
-                  }}
-                >
-                  <Flex>
-                    <Box
-                      padding='2px 1px 1px '
-                      border='2px'
-                      borderColor='borderDark'
-                      mr='10px'
-                      color='borderDark'
+        {projects?.map((project: any, index: number) => {
+          return (
+            <AccordionItem key={index}>
+              {({ isExpanded }) => (
+                <Box>
+                  <h2>
+                    <AccordionButton
+                      p='15px 50px'
+                      display='flex'
+                      justifyContent='space-between'
+                      color='grayLight'
+                      fontSize='14px'
+                      bg={isExpanded ? 'accordianParentBg' : ''}
+                      textStyle='sourceSansProRegular'
+                      lineHeight='17.6px'
+                      _hover={{
+                        backgroundColor: `${
+                          isExpanded ? 'accordianParentBg' : ''
+                        }`,
+                      }}
+                      _focus={{
+                        outline: 'none',
+                        borderBottom: '0',
+                      }}
                     >
-                      {isExpanded ? (
-                        <FaMinus fontSize='10px' />
-                      ) : (
-                        <FaPlus fontSize='10px' />
-                      )}
-                    </Box>
+                      <Flex>
+                        <Box mr='10px'>
+                          {isExpanded ? (
+                            <MinusSvg fontSize='10px' />
+                          ) : (
+                            <PlusSvg fontSize='10px' />
+                          )}
+                        </Box>
+                        <Box>
+                          <Text
+                            color={isExpanded ? 'white' : 'grayLight'}
+                            textStyle={
+                              isExpanded
+                                ? 'sourceSansProBold'
+                                : 'sourceSansProRegular'
+                            }
+                            fontSize='14px'
+                            lineHeight='17.6px'
+                          >
+                            {project.name}
+                          </Text>
+                        </Box>
+                      </Flex>
+                      <Box>
+                        <Text
+                          color={isExpanded ? 'white' : 'grayLight'}
+                          textStyle={
+                            isExpanded
+                              ? 'sourceSansProBold'
+                              : 'sourceSansProRegular'
+                          }
+                        >
+                          {project.logTime}
+                        </Text>
+                      </Box>
+                    </AccordionButton>
+                  </h2>
+                  <AccordionPanel p={0}>
                     <Box>
-                      <Text textAlign='left'>Axioned</Text>
+                      <ReportProjectDetails usersData={project.users} />
                     </Box>
-                  </Flex>
-                  <Box pr='10%'>
-                    <Text>25:00</Text>
-                  </Box>
-                </AccordionButton>
-              </h2>
-              <AccordionPanel p={0}>
-                <Flex
-                  p='7px 50px'
-                  borderTop='1px'
-                  borderColor='borderColor'
-                  justifyContent='space-between'
-                  bg='bgGrayLight'
-                  color='grayLight'
-                  fontSize='13px'
-                  fontWeight='600'
-                  lineHeight='16.34px'
-                >
-                  <Text>Project</Text>
-                  <Text pr='5.5%'>Time entered</Text>
-                </Flex>
-                <Flex
-                  p='15px 50px'
-                  borderTop='1px'
-                  borderColor='borderColor'
-                  color='grayLight'
-                  fontSize='14px'
-                  textStyle='sourceSansProRegular'
-                  lineHeight='17.6px'
-                  justifyContent='space-between'
-                >
-                  <Text _hover={{ textDecor: 'underline' }}>
-                    <Link to='/'>Axioned Website</Link>
-                  </Text>
-                  <Text pr='7.8%'>5:00</Text>
-                </Flex>
-                <Flex
-                  p='15px 50px'
-                  borderTop='1px'
-                  borderColor='borderColor'
-                  color='grayLight'
-                  fontSize='14px'
-                  textStyle='sourceSansProRegular'
-                  lineHeight='17.6px'
-                  justifyContent='space-between'
-                >
-                  <Text _hover={{ textDecor: 'underline' }}>
-                    <Link to='/'>Engineering</Link>
-                  </Text>
-                  <Text pr='7.8%'>5:00</Text>
-                </Flex>
-              </AccordionPanel>
-            </>
-          )}
-        </AccordionItem>
-        <AccordionItem>
-          {({ isExpanded }) => (
-            <>
-              <h2>
-                <AccordionButton
-                  pt='15px'
-                  pb='15px'
-                  pl='25px'
-                  display='flex'
-                  justifyContent='space-between'
-                  color='grayLight'
-                  fontSize='14px'
-                  textStyle='sourceSansProRegular'
-                  lineHeight='17.6px'
-                  _focus={{
-                    outline: 'none',
-                    borderBottom: '0',
-                  }}
-                >
-                  <Flex>
-                    <Box
-                      padding='2px 1px 1px '
-                      border='2px'
-                      borderColor='borderDark'
-                      mr='10px'
-                      color='borderDark'
-                    >
-                      {isExpanded ? (
-                        <FaMinus fontSize='10px' />
-                      ) : (
-                        <FaPlus fontSize='10px' />
-                      )}
-                    </Box>
-                    <Box>
-                      <Text textAlign='left'>Axioned</Text>
-                    </Box>
-                  </Flex>
-                  <Box pr='10%'>
-                    <Text>25:00</Text>
-                  </Box>
-                </AccordionButton>
-              </h2>
-              <AccordionPanel p={0}>
-                <Flex
-                  p='7px 50px'
-                  borderTop='1px'
-                  borderColor='borderColor'
-                  justifyContent='space-between'
-                  bg='bgGrayLight'
-                  color='grayLight'
-                  fontSize='13px'
-                  fontWeight='600'
-                  lineHeight='16.34px'
-                >
-                  <Text>Project</Text>
-                  <Text pr='5.5%'>Time entered</Text>
-                </Flex>
-                <Flex
-                  p='15px 50px'
-                  borderTop='1px'
-                  borderColor='borderColor'
-                  color='grayLight'
-                  fontSize='14px'
-                  textStyle='sourceSansProRegular'
-                  lineHeight='17.6px'
-                  justifyContent='space-between'
-                >
-                  <Text _hover={{ textDecor: 'underline' }}>
-                    <Link to='/'>Axioned Website</Link>
-                  </Text>
-                  <Text pr='7.8%'>5:00</Text>
-                </Flex>
-                <Flex
-                  p='15px 50px'
-                  borderTop='1px'
-                  borderColor='borderColor'
-                  color='grayLight'
-                  fontSize='14px'
-                  textStyle='sourceSansProRegular'
-                  lineHeight='17.6px'
-                  justifyContent='space-between'
-                >
-                  <Text _hover={{ textDecor: 'underline' }}>
-                    <Link to='/'>Engineering</Link>
-                  </Text>
-                  <Text pr='7.8%'>5:00</Text>
-                </Flex>
-              </AccordionPanel>
-            </>
-          )}
-        </AccordionItem>
+                  </AccordionPanel>
+                </Box>
+              )}
+            </AccordionItem>
+          );
+        })}
       </Accordion>
     </Box>
   );

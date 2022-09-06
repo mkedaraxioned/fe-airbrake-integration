@@ -1,11 +1,28 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Box, Breadcrumb, BreadcrumbItem, Flex, Text } from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
 import ReportFilterForm from '../../components/ReportFilterForm';
 import ClientAccordian from '../../components/clientAccordian';
-import { ReactComponent as ExportIcon } from '../../assets/images/exportIcon.svg';
+import { ReactComponent as ExportReport } from '../../assets/images/exportReportCSV.svg';
+import { ReactComponent as PrintReport } from '../../assets/images/printReportCSV.svg';
+import { FilterFormData } from '../../interfaces/reports';
+import { useGetReportDataQuery } from '../../redux/apis/reports';
+import { format } from 'date-fns';
 
 const Reports = () => {
+  const [formData, setFormData] = useState<FilterFormData>({
+    clientId: '',
+    userId: '',
+    projectId: '',
+    groupBy: 'client',
+    billableType: '',
+    startDate: new Date(),
+    endDate: new Date(),
+  });
+  const [searchQueryValues, setSearchQueryValues] = useState<any>({});
+  const { data: filteredData } = useGetReportDataQuery(searchQueryValues);
+  console.log(filteredData, 'data');
+
   return (
     <Box>
       <Box p='15px 55px 80px' className='wrapper'>
@@ -17,98 +34,98 @@ const Reports = () => {
             <Text color='textLight'>Projects</Text>
           </BreadcrumbItem>
         </Breadcrumb>
-        <Text
-          pb='28px'
-          color='textColor'
-          fontSize='22px'
-          textStyle='sourceSansProBold'
-          lineHeight='27.65px'
-        >
-          Reports
-        </Text>
-        <Box>
-          <ReportFilterForm />
-        </Box>
-        <Box pt='28px'>
+        <Flex justifyContent='space-between'>
           <Text
+            pb='28px'
             color='textColor'
             fontSize='22px'
             textStyle='sourceSansProBold'
             lineHeight='27.65px'
           >
-            July 01, 2022 - July 31, 2022
+            Reports
           </Text>
-          <Box pt='15px'>
-            <Text
-              color='textGray'
-              fontSize='14px'
-              textStyle='sourceSansProRegular'
-              lineHeight='17.6px'
-            >
-              Axioned
-            </Text>
-            <Text
-              color='textColor'
-              fontSize='22px'
-              textStyle='sourceSansProBold'
-              lineHeight='27.65px'
-            >
-              Axioned Website
-            </Text>
-          </Box>
-          <Flex
-            m='10px 0 5px'
-            justifyContent='space-between'
-            alignItems='center'
-            textStyle='sourceSansProBold'
-          >
-            <Text fontSize='18px' lineHeight='22.63px'>
-              Time entered for task
-            </Text>
-            <Box display='flex' justifyContent='flex-end' cursor='pointer'>
-              <ExportIcon />
+          <Flex textStyle='sourceSansProBold' color='reportCta'>
+            <Flex>
+              <PrintReport width='16px' />
               <Text
-                pl='5px'
-                color='textColor'
-                textAlign='right'
+                ml='8px'
+                mr='51px'
                 fontSize='14px'
+                textStyle='sourceSansProBold'
                 lineHeight='17.6px'
               >
                 Print report
               </Text>
-            </Box>
+            </Flex>
+            <Flex>
+              <ExportReport width='16px' />
+              <Text
+                ml='8px'
+                fontSize='14px'
+                textStyle='sourceSansProBold'
+                lineHeight='17.6px'
+              >
+                Export CSV
+              </Text>
+            </Flex>
           </Flex>
-          <Box>
-            <Flex
-              p='12px 25px'
-              bg='purple'
-              color='white'
-              fontSize='18px'
-              justifyContent='space-between'
-              textStyle='sourceSansProBold'
-            >
-              <Text lineHeight='22.63px'>
-                Results for July 01, 2022 - July 31, 2022 :
-              </Text>
-              <Text pr='9%' lineHeight='22.63px'>
-                100:00
-              </Text>
-            </Flex>
-            <Flex
-              p='8px 25px'
-              justifyContent='space-between'
-              bg='bgGray'
+        </Flex>
+        <Box>
+          <ReportFilterForm
+            formData={formData}
+            setFormData={setFormData}
+            searchQueryValues={searchQueryValues}
+            setSearchQueryValues={setSearchQueryValues}
+          />
+        </Box>
+        <Box pt='50px'>
+          {filteredData?.startDate && filteredData?.endDate && (
+            <Text
+              p='12px 33px'
+              bg='bgGrayLight'
               color='grayLight'
+              fontSize='18px'
               textStyle='sourceSansProBold'
-              fontSize='14px'
-              lineHeight='17.6px'
+              lineHeight='22.63px'
             >
-              <Text lineHeight='17.6px'>Client name</Text>
-              <Text pr='7.7%' lineHeight='17.6px'>
-                Time entered
-              </Text>
-            </Flex>
-            <ClientAccordian />
+              {filteredData?.startDate &&
+                filteredData?.endDate &&
+                `Results for ${format(
+                  new Date(filteredData?.startDate),
+                  'MMMM dd, yyyy',
+                )} - ${format(
+                  new Date(filteredData?.endDate),
+                  'MMMM dd, yyyy',
+                )}`}
+            </Text>
+          )}
+          <Box>
+            {filteredData?.clients?.map((client: any, index: number) => {
+              return (
+                <Box key={index}>
+                  <Flex justifyContent='space-between' p='8px 50px' bg='bgGray'>
+                    <Text
+                      color='grayLight'
+                      textStyle='sourceSansProBold'
+                      fontSize='14px'
+                      lineHeight='17.6px'
+                    >
+                      {client.name}
+                    </Text>
+                    <Text
+                      color='grayLight'
+                      textStyle='sourceSansProBold'
+                      fontSize='14px'
+                      lineHeight='17.6px'
+                    >
+                      {client.logTime}
+                    </Text>
+                  </Flex>
+                  <ClientAccordian projects={client.projects} />
+                </Box>
+              );
+            })}
+            <ClientAccordian projects={[]} />
           </Box>
         </Box>
       </Box>
