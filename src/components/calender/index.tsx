@@ -187,7 +187,6 @@ const Calendar = ({
               onClick={() => {
                 const dayStr = format(cloneDay, 'MM-dd-yyyy');
                 onDateClickHandle(cloneDay, dayStr);
-                setCurrentMonth(new Date(dayStr));
               }}
             >
               <Text as='span' fontSize='12px' lineHeight='14.52px'>
