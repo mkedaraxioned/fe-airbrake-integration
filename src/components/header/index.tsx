@@ -137,6 +137,9 @@ const Header = () => {
                 <ListItem margin='0 15px' fontSize='18px' lineHeight='23px'>
                   <Link to='/team'>Team</Link>
                 </ListItem>
+                <ListItem margin='0 15px' fontSize='18px' lineHeight='23px'>
+                  <Link to='/reports'>Reports</Link>
+                </ListItem>
               </UnorderedList>
             ) : null}
             <Menu>

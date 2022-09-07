@@ -17,17 +17,27 @@ export const styles = {
   },
   '.date_body': {
     '.date_row div': {
-      border: '.7px solid #E9F2F9',
+      border: '0  px solid #E9F2F9',
     },
     '.date_row div:nth-of-type(7n)': {
-      borderRight: 'none',
+      borderRight: '1px solid #E9F2F9',
     },
     '.date_row div:nth-of-type(1n)': {
-      borderLeft: 'none',
-      borderTop: 'none',
+      borderLeft: '1px solid #E9F2F9',
+      borderTop: '1px solid #E9F2F9',
     },
     '.date_row:last-child div': {
-      borderBottom: 'none',
+      borderBottom: '1px solid #E9F2F9',
+    },
+    '.date_row .selectedDate': {
+      paddingTop: '4px',
+      border: '2px solid #4657CE !important',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    '.date_row .selectedDate + div': {
+      borderLeft: 'none',
     },
   },
   '.react-datepicker-popper': {

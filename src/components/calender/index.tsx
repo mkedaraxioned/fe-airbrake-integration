@@ -33,6 +33,12 @@ const Calendar = ({
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [loggedTimeData, setLoggedTimeData] = useState([]);
+
+  const monthStart = startOfMonth(currentMonth);
+  const monthEnd = endOfMonth(monthStart);
+  const startDateCell = startOfWeek(monthStart);
+  const endDateCell = endOfWeek(monthEnd);
+
   useEffect(() => {
     fetchTimelogsPerMonths();
   }, [currentMonth, formDate]);
@@ -57,8 +63,8 @@ const Calendar = ({
     setSelectedDate(day);
     showDetailsHandle(dayStr);
   };
-  const startDate = format(startOfMonth(currentMonth), 'yyyy-MM-dd');
-  const endDate = format(endOfMonth(currentMonth), 'yyyy-MM-dd');
+  const startDate = format(startDateCell, 'yyyy-MM-dd');
+  const endDate = format(endDateCell, 'yyyy-MM-dd');
 
   const fetchTimelogsPerMonths = async () => {
     const res = await _get(
@@ -124,15 +130,10 @@ const Calendar = ({
   };
 
   const renderCells = () => {
-    const monthStart = startOfMonth(currentMonth);
-    const monthEnd = endOfMonth(monthStart);
-    const startDateCell = startOfWeek(monthStart);
-    const endDateCell = endOfWeek(monthEnd);
     const dateFormat = 'd';
     const rows = [];
     let days = [];
     let day = startDateCell;
-
     let formattedDate = '';
 
     const hoursToDecimal = (val: string) => {
@@ -164,13 +165,13 @@ const Calendar = ({
                   format(new Date(day), 'yyyy-MM-dd') &&
                 hoursToMinutes(hoursToDecimal(value.totalTime)) < 450
               ) {
-                bgColorVal = '#FFE5A1';
+                bgColorVal = '#AEF2E2';
               } else if (
                 format(new Date(value.date.substr(0, 10)), 'yyyy-MM-dd') ===
                   format(new Date(day), 'yyyy-MM-dd') &&
                 hoursToMinutes(hoursToDecimal(value.totalTime)) >= 450
               ) {
-                bgColorVal = '#AEF2E2';
+                bgColorVal = '#FFE5A1';
               }
             },
           );
@@ -180,19 +181,14 @@ const Calendar = ({
               w='46px'
               h='46px'
               lineHeight='46px'
-              bg={`${
-                isSameDay(day, selectedDate)
-                  ? 'btnPurple'
-                  : !isAfter(new Date(), day)
-                  ? '#E2E8F066'
-                  : bgColorVal
-              }`}
+              bg={`${!isAfter(new Date(), day) ? '#E2E8F066' : bgColorVal}`}
               color={`${
                 month !== currentMonth.getMonth() || !isAfter(new Date(), day)
                   ? 'textLight'
-                  : isSameDay(day, selectedDate)
-                  ? 'white'
                   : 'textColor'
+              }`}
+              className={`${
+                isSameDay(day, selectedDate) ? 'selectedDate' : ''
               }`}
               pointerEvents={`${getTime > curTime ? 'none' : 'auto'}`}
               cursor={`${getTime > curTime ? 'not-allowed' : 'pointer'}`}
@@ -228,6 +224,7 @@ const Calendar = ({
 
   const setTodaysDate = () => {
     setSelectedDate(new Date());
+    setCurrentMonth(new Date());
     setFormData({ ...formData, date: new Date() });
   };
 
@@ -279,6 +276,56 @@ const Calendar = ({
       {renderHeader()}
       {renderDays()}
       {renderCells()}
+      <Box pt='2px'>
+        <Flex p='16px 0'>
+          <Flex alignItems='center' flexBasis='48%'>
+            <Text width='14px' height='14px' border='2px solid #DBDBDB'></Text>
+            <Text
+              pl='8px'
+              textStyle='sourceSansProRegular'
+              fontSize='12px'
+              lineHeight='15.08px'
+            >
+              No time logged
+            </Text>
+          </Flex>
+          <Flex alignItems='center' flexBasis='50%'>
+            <Text width='14px' height='14px' bg='#FFE5A1'></Text>
+            <Text
+              pl='8px'
+              textStyle='sourceSansProRegular'
+              fontSize='12px'
+              lineHeight='15.08px'
+            >
+              Time logged partially
+            </Text>
+          </Flex>
+        </Flex>
+        <Flex>
+          <Flex alignItems='center' flexBasis='48%'>
+            <Text width='14px' height='14px' bg='#AEF2E2'></Text>
+            <Text
+              pl='8px'
+              textStyle='sourceSansProRegular'
+              fontSize='12px'
+              lineHeight='15.08px'
+            >
+              Time logged
+            </Text>
+          </Flex>
+          <Flex alignItems='center' flexBasis='50%'>
+            <Text width='14px' height='14px' border='2px solid #4657CE'></Text>
+            <Text
+              pl='8px'
+              textStyle='sourceSansProRegular'
+              fontSize='12px'
+              lineHeight='15.08px'
+            >
+              Selected date
+            </Text>
+          </Flex>
+        </Flex>
+      </Box>
     </Box>
   );
 };

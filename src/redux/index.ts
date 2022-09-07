@@ -15,6 +15,7 @@ import {
   REGISTER,
   REHYDRATE,
 } from 'redux-persist';
+import persistCombineReducers from 'redux-persist/es/persistCombineReducers';
 
 import { PersistConfig } from '../interfaces/storeInterface';
 import {
@@ -28,7 +29,7 @@ import {
 import { baseSlice } from './apis';
 import { dashboard } from './apis/dashboard';
 import { user } from './apis/user';
-import persistCombineReducers from 'redux-persist/es/persistCombineReducers';
+import { reportsApi } from './apis/reports';
 import { project } from './apis/project';
 
 const rootReducer = {
@@ -54,6 +55,7 @@ export const store = configureStore({
     [dashboard.reducerPath]: dashboard.reducer,
     [user.reducerPath]: user.reducer,
     [project.reducerPath]: project.reducer,
+    [reportsApi.reducerPath]: reportsApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
@@ -65,6 +67,7 @@ export const store = configureStore({
       dashboard.middleware,
       user.middleware,
       project.middleware,
+      reportsApi.middleware,
     ]),
 });
 
