@@ -1,6 +1,6 @@
 import { baseSlice } from '..';
 
-export const user = baseSlice.injectEndpoints({
+export const project = baseSlice.injectEndpoints({
   endpoints: (builder) => ({
     getSelectedProject: builder.query<any, any>({
       query: (id) => `/api/projects/${id}/report`,
@@ -9,4 +9,4 @@ export const user = baseSlice.injectEndpoints({
   overrideExisting: false,
 });
 
-export const { useGetSelectedProjectQuery } = user;
+export const { useGetSelectedProjectQuery } = project;

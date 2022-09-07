@@ -29,6 +29,7 @@ import { baseSlice } from './apis';
 import { dashboard } from './apis/dashboard';
 import { user } from './apis/user';
 import persistCombineReducers from 'redux-persist/es/persistCombineReducers';
+import { project } from './apis/project';
 
 const rootReducer = {
   user: userReducer,
@@ -52,13 +53,19 @@ export const store = configureStore({
     [baseSlice.reducerPath]: baseSlice.reducer,
     [dashboard.reducerPath]: dashboard.reducer,
     [user.reducerPath]: user.reducer,
+    [project.reducerPath]: project.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
-    }).concat([baseSlice.middleware, dashboard.middleware, user.middleware]),
+    }).concat([
+      baseSlice.middleware,
+      dashboard.middleware,
+      user.middleware,
+      project.middleware,
+    ]),
 });
 
 // listener for rtk query stored data
