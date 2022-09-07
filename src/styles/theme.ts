@@ -48,6 +48,9 @@ export const costomTheme = extendTheme({
     borderSecondary: '#E1E1E1',
     royalDarkBlue: '#2333A1',
     btnPurple: '#4657CE',
+    switchPurple: {
+      500: '#4657CE',
+    },
     purple: '#7A84CA',
     purpleDark: '#3E467E',
     purpleLight: '#D1D5EE',

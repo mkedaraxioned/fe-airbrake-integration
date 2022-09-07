@@ -32,22 +32,25 @@ const ProjectCard = ({ project }: Props) => {
     >
       <Link to={`/projects/${project.id}`}>
         <Flex
+          minH='61px'
           alignItems='center'
-          p='15px 22px'
+          p='10px 22px'
           justifyContent='space-between'
           borderBottom='1px'
           borderColor='borderColor'
         >
           <Text
-            color='textColor'
-            fontSize='18px'
+            color='grayLight'
+            fontSize='16px'
             textStyle='sourceSansProBold'
-            lineHeight='22.63px'
+            lineHeight='20.11px'
             textTransform='capitalize'
+            flexBasis='90%'
           >
             {project.title}
           </Text>
           <Tooltip
+            flexBasis='10%'
             label={
               project.type === 'FIXED'
                 ? 'Fixed'
@@ -75,7 +78,7 @@ const ProjectCard = ({ project }: Props) => {
             </Text>
           </Text>
           <Text
-            color='textColor'
+            color='grayLight'
             p='10px 0 5px'
             fontSize='14px'
             textStyle='sourceSansProBold'

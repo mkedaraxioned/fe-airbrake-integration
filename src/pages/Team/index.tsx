@@ -3,7 +3,6 @@ import {
   Box,
   Breadcrumb,
   BreadcrumbItem,
-  Divider,
   Heading,
   HStack,
   Switch,
@@ -42,8 +41,8 @@ const Team = () => {
           setLoading(false);
           toast({
             title: 'Status',
-            description: 'Admin Access Removed',
-            status: 'error',
+            description: `Admin access removed from ${user?.name}`,
+            status: 'success',
             duration: 2000,
             position: 'top-right',
             isClosable: true,
@@ -58,7 +57,7 @@ const Team = () => {
           setLoading(false);
           toast({
             title: 'Status',
-            description: 'Admin Access Given',
+            description: `Admin access given to ${user?.name}`,
             status: 'success',
             duration: 2000,
             position: 'top-right',
@@ -111,22 +110,9 @@ const Team = () => {
           </BreadcrumbItem>
         </Breadcrumb>
         <Box>
-          <Heading as='h2' fontSize='22px' lineHeight='33px'>
+          <Heading as='h2' fontSize='22px' lineHeight='33px' marginBottom='5px'>
             Your Team
           </Heading>
-          <Text p='2px 0'>
-            There are{' '}
-            <Text as='span' fontWeight='bold'>
-              {allUsers && allUsers.length} people
-            </Text>{' '}
-            on this account,
-            <Text as='span' fontWeight='bold'>
-              {' '}
-              {countAdmins()}{' '}
-            </Text>
-            are admin.
-          </Text>
-          <Divider m='25px 0' />
           <TableContainer bg='white' rounded='md'>
             <Table variant='simple'>
               <Thead>
@@ -159,6 +145,7 @@ const Team = () => {
                       <Td fontSize='14px'>{user?.email}</Td>
                       <Td>
                         <Switch
+                          colorScheme='switchPurple'
                           isChecked={user?.role === ERole.ADMIN ? true : false}
                           onChange={() => switchHandler(user)}
                           isDisabled={

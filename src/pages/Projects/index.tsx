@@ -160,7 +160,7 @@ const Projects = () => {
             <Text color='textLight'>Projects</Text>
           </BreadcrumbItem>
         </Breadcrumb>
-        <Flex justifyContent='space-between'>
+        <Flex justifyContent='space-between' alignItems='center'>
           <Heading
             as='h2'
             color='textColor'
@@ -200,7 +200,7 @@ const Projects = () => {
               value={type}
               onChange={(e) => handleSelect(e)}
             >
-              <option value='none'>Select project type</option>
+              <option value='none'>All project type</option>
               <option value='FIXED'>Fixed</option>
               <option value='RETAINER_GRANULAR'>Retainer Granular</option>
               <option value='RETAINER'>Retainer</option>
