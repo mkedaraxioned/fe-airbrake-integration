@@ -4,8 +4,13 @@ import { format } from 'date-fns';
 import { Link } from 'react-router-dom';
 import { convertMinutes } from '../../utils/common';
 import { ReactComponent as EditGreyIcon } from '../../assets/images/editGreyIcon.svg';
+import { ProjectActivity } from '../../interfaces/projectDetails';
 
-const UserRow = ({ activity }: any) => {
+interface Props {
+  activity: ProjectActivity;
+}
+
+const UserRow = ({ activity }: Props) => {
   const formatTimeCardDate = 'EEEE, MMMM dd, yyyy';
   return (
     <ListItem>

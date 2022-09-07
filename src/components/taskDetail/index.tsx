@@ -17,9 +17,14 @@ import './taskDetail.modules.css';
 import { convertMinutes, percentage } from '../../utils/common';
 import UserRow from './userRow';
 import { format } from 'date-fns';
+import {
+  ProjectActivity,
+  ProjectMileStone,
+  ProjectUser,
+} from '../../interfaces/projectDetails';
 interface Props {
   displayBlock?: boolean;
-  milestone?: any;
+  milestone?: ProjectMileStone;
 }
 
 const TaskDetail = ({ displayBlock, milestone }: Props) => {
@@ -52,7 +57,9 @@ const TaskDetail = ({ displayBlock, milestone }: Props) => {
       >
         <Flex justifyContent='space-between' flexBasis='50%'>
           <Text>{milestone?.name}</Text>
-          <Text>Budget - {convertMinutes(milestone?.budget)}</Text>
+          <Text>
+            Budget - {milestone?.budget && convertMinutes(milestone?.budget)}
+          </Text>
         </Flex>
         <Divider
           ml='10px'
@@ -67,11 +74,17 @@ const TaskDetail = ({ displayBlock, milestone }: Props) => {
           alignItems='center'
           flexBasis='50%'
         >
-          <Text>Actual - {convertMinutes(milestone?.logTime)} Hrs</Text>
+          <Text>
+            Actual - {milestone?.logTime && convertMinutes(milestone?.logTime)}{' '}
+            Hrs
+          </Text>
           <Flex alignItems='center'>
             <Flex alignItems='center'>
               <Progress
-                value={percentage(milestone?.logTime, milestone?.budget)}
+                value={
+                  milestone?.budget &&
+                  percentage(milestone?.logTime, milestone?.budget)
+                }
                 w={['80px', '100px', '100px', '150px', '200px']}
                 rounded='full'
                 size='sm'
@@ -79,7 +92,9 @@ const TaskDetail = ({ displayBlock, milestone }: Props) => {
                 bg='white'
               />
               <Text pl='5px'>
-                {percentage(milestone?.logTime, milestone?.budget)}%
+                {milestone?.budget &&
+                  percentage(milestone?.logTime, milestone?.budget)}
+                %
               </Text>
             </Flex>
             <Text pl='43px'>
@@ -112,12 +127,12 @@ const TaskDetail = ({ displayBlock, milestone }: Props) => {
         borderRight='1px'
         borderColor='borderColor'
       >
-        {milestone?.users.map((user: any, i: any) => {
+        {milestone?.users.map((user: ProjectUser, i: number) => {
           const updateDateFormat = 'dd MMM yyyy';
           const sortByLastUpdated =
             user?.timecards?.length > 1
               ? user.timecards
-                  .sort((a: any, b: any) =>
+                  .sort((a: ProjectActivity, b: ProjectActivity) =>
                     a.updateAt.localeCompare(b.updateAt),
                   )
                   .reverse()
@@ -175,10 +190,10 @@ const TaskDetail = ({ displayBlock, milestone }: Props) => {
                       <List>
                         {user?.timecards?.length > 1 ? (
                           user.timecards
-                            ?.sort((a: any, b: any) =>
+                            ?.sort((a: ProjectActivity, b: ProjectActivity) =>
                               a.date.localeCompare(b.date),
                             )
-                            ?.map((activity: any) => (
+                            ?.map((activity: ProjectActivity) => (
                               <UserRow
                                 key={activity.timecardId}
                                 activity={activity}
