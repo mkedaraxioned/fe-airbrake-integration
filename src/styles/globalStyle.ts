@@ -17,7 +17,17 @@ export const styles = {
   },
   '.date_body': {
     '.date_row div': {
-      border: '1px solid #E9F2F9',
+      border: '0  px solid #E9F2F9',
+    },
+    '.date_row div:nth-of-type(7n)': {
+      borderRight: '1px solid #E9F2F9',
+    },
+    '.date_row div:nth-of-type(1n)': {
+      borderLeft: '1px solid #E9F2F9',
+      borderTop: '1px solid #E9F2F9',
+    },
+    '.date_row:last-child div': {
+      borderBottom: '1px solid #E9F2F9',
     },
     '.date_row .selectedDate': {
       paddingTop: '4px',
@@ -25,6 +35,9 @@ export const styles = {
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
+    },
+    '.date_row .selectedDate + div': {
+      borderLeft: 'none',
     },
   },
   '.react-datepicker-popper': {
