@@ -44,6 +44,7 @@ const FixedProjectManage = () => {
     phase: [],
   });
   const [milestoneIndex, setMilestoneIndex] = useState<null | number>(null);
+  const [isVisibleIndex, setIsVisibleIndex] = useState<null | number>(null);
 
   const { projectId } = useParams();
   const toast = useToast();
@@ -51,6 +52,14 @@ const FixedProjectManage = () => {
   useEffect(() => {
     fetchProject();
   }, []);
+
+  const over = (index: number) => {
+    setIsVisibleIndex(index);
+  };
+
+  const out = () => {
+    setIsVisibleIndex(null);
+  };
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -212,7 +221,12 @@ const FixedProjectManage = () => {
               ) => {
                 return (
                   !_.isDeleted && (
-                    <ListItem m='10px 0 18px' key={index}>
+                    <ListItem
+                      m='10px 0 18px'
+                      key={index}
+                      onMouseOver={() => over(index)}
+                      onMouseOut={out}
+                    >
                       <form
                         onSubmit={(e) =>
                           formHandler(e, _.id, _.title, _.budget, index)
@@ -284,26 +298,27 @@ const FixedProjectManage = () => {
                               </FormErrorMessage>
                             )}
                           </FormControl>
-                          {milestoneIndex === index && (
-                            <Flex alignItems='center'>
-                              <Tooltip label='Delete'>
-                                <Box
-                                  pr='10px'
-                                  cursor='pointer'
-                                  onClick={() =>
-                                    removePhaseControls(_.id, index)
-                                  }
-                                >
-                                  <DeleteSvg />
-                                </Box>
-                              </Tooltip>
+                          <Flex alignItems='center'>
+                            <Tooltip label='Delete'>
+                              <Box
+                                display={
+                                  isVisibleIndex === index ? 'block' : 'none'
+                                }
+                                pr='10px'
+                                cursor='pointer'
+                                onClick={() => removePhaseControls(_.id, index)}
+                              >
+                                <DeleteSvg />
+                              </Box>
+                            </Tooltip>
+                            {milestoneIndex === index && (
                               <Tooltip label='Save'>
                                 <button type='submit'>
                                   <CheckSvg />
                                 </button>
                               </Tooltip>
-                            </Flex>
-                          )}
+                            )}
+                          </Flex>
                         </HStack>
                       </form>
                     </ListItem>
