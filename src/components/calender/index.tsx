@@ -51,7 +51,6 @@ const Calendar = ({
   }, [formDate]);
 
   const changeMonthHandle = (btnType: string) => {
-    console.log({ currentMonth });
     if (btnType === 'prev') {
       setCurrentMonth(subMonths(currentMonth, 1));
     }

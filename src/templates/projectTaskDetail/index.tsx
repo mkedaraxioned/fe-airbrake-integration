@@ -35,7 +35,6 @@ const ProjectTaskDetails = () => {
       if (projectId) {
         const res = await _get(`api/projects/${projectId}/report`);
         setProjectData(res.data.data);
-        console.log(res.data.data);
         setLoading(false);
       }
     } catch (error) {
@@ -119,6 +118,7 @@ const ProjectTaskDetails = () => {
               projectType={projectData.projectType}
             />
           )}
+          {/* TODO: Archive is pending */}
           {/* <Box>
             <Text
               color='textColor'
