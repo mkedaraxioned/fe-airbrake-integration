@@ -7,30 +7,22 @@ import {
   Divider,
   Flex,
   List,
-  ListItem,
   Progress,
   Text,
 } from '@chakra-ui/react';
 import React from 'react';
 import { FaMinus, FaPlus } from 'react-icons/fa';
 import { HiDotsHorizontal } from 'react-icons/hi';
-import { ReactComponent as EditGreyIcon } from '../../assets/images/editGreyIcon.svg';
-import { Link } from 'react-router-dom';
 import './taskDetail.modules.css';
+import { convertMinutes, percentage } from '../../utils/common';
+import UserRow from './userRow';
 import { format } from 'date-fns';
-import { convertMinutes } from '../../utils/common';
-
 interface Props {
   displayBlock?: boolean;
   milestone?: any;
 }
 
 const TaskDetail = ({ displayBlock, milestone }: Props) => {
-  const formatTimeCardDate = 'EEEE, MMMM dd, yyyy';
-  // TODO: calculation
-  const calculateProgress = (actualHours: number, budget: number) => {
-    return ((actualHours * 100) / budget).toFixed(2);
-  };
   return (
     <Box
       m='20px 0 40px'
@@ -60,7 +52,7 @@ const TaskDetail = ({ displayBlock, milestone }: Props) => {
       >
         <Flex justifyContent='space-between' flexBasis='50%'>
           <Text>{milestone?.name}</Text>
-          <Text>Budget - 2.5</Text>
+          <Text>Budget - {convertMinutes(milestone?.budget)}</Text>
         </Flex>
         <Divider
           ml='10px'
@@ -79,14 +71,16 @@ const TaskDetail = ({ displayBlock, milestone }: Props) => {
           <Flex alignItems='center'>
             <Flex alignItems='center'>
               <Progress
-                value={parseFloat(calculateProgress(milestone?.logTime, 2.5))}
-                w='200px'
+                value={percentage(milestone?.logTime, milestone?.budget)}
+                w={['80px', '100px', '100px', '150px', '200px']}
                 rounded='full'
                 size='sm'
                 colorScheme='green'
                 bg='white'
               />
-              <Text pl='5px'>{calculateProgress(milestone?.logTime, 2.5)}</Text>
+              <Text pl='5px'>
+                {percentage(milestone?.logTime, milestone?.budget)}%
+              </Text>
             </Flex>
             <Text pl='43px'>
               <HiDotsHorizontal />
@@ -103,14 +97,14 @@ const TaskDetail = ({ displayBlock, milestone }: Props) => {
         textStyle='sourceSansProBold'
         lineHeight='17.6px'
       >
-        <Flex flexBasis='50%'>
-          <Text>Name</Text>
-          <Text ml='18%'>Comments/Notes</Text>
-        </Flex>
-        <Flex pl='16px' flexBasis='50%'>
-          <Text>Hours</Text>
-          <Text ml='48%'>Last updated date</Text>
-        </Flex>
+        <Text flexBasis='25%'>Name</Text>
+        <Text flexBasis='45%'>Comments/Notes</Text>
+        <Text flexBasis='13%' textAlign={'right'}>
+          Hours
+        </Text>
+        <Text flexBasis='17%' textAlign={'right'}>
+          Last updated date
+        </Text>
       </Flex>
       <Accordion
         allowToggle
@@ -118,92 +112,89 @@ const TaskDetail = ({ displayBlock, milestone }: Props) => {
         borderRight='1px'
         borderColor='borderColor'
       >
-        {milestone?.users.map(
-          (user: any, i: any) =>
+        {milestone?.users.map((user: any, i: any) => {
+          const updateDateFormat = 'dd MMM yyyy';
+          const sortByLastUpdated =
+            user?.timecards?.length > 1
+              ? user.timecards
+                  .sort((a: any, b: any) =>
+                    a.updateAt.localeCompare(b.updateAt),
+                  )
+                  .reverse()
+              : user.timecards;
+          const formatUpdatedDate = format(
+            new Date(sortByLastUpdated[0].updateAt),
+            updateDateFormat,
+          );
+
+          return (
             user && (
-              <AccordionItem>
+              <AccordionItem key={i}>
                 {({ isExpanded }) => (
                   <>
-                    <h2>
-                      <AccordionButton
-                        pt='15px'
-                        pb='15px'
-                        pl='25px'
-                        display='flex'
-                        justifyContent='space-between'
-                        color='grayLight'
-                        fontSize='14px'
-                        textStyle='sourceSansProRegular'
-                        lineHeight='17.6px'
-                        _focus={{
-                          outline: 'none',
-                          borderBottom: '1px',
-                          borderColor: 'borderColor',
-                        }}
-                      >
-                        <Flex>
-                          <Box
-                            padding='2px 1px 1px '
-                            border='2px'
-                            borderColor='borderDark'
-                            mr='10px'
-                            color='borderDark'
-                          >
-                            {isExpanded ? (
-                              <FaMinus fontSize='10px' />
-                            ) : (
-                              <FaPlus fontSize='10px' />
-                            )}
-                          </Box>
-                          <Box>
-                            <Text textAlign='left'>{user?.name}</Text>
-                          </Box>
-                        </Flex>
-                        <Box pl='22.2%'>
-                          <Text>{convertMinutes(user?.logTime)} Hrs</Text>
+                    <AccordionButton
+                      p='15px 26px'
+                      display='flex'
+                      justifyContent='space-between'
+                      color='grayLight'
+                      fontSize='14px'
+                      textStyle='sourceSansProRegular'
+                      lineHeight='17.6px'
+                      _focus={{
+                        outline: 'none',
+                        borderBottom: '1px',
+                        borderColor: 'borderColor',
+                      }}
+                    >
+                      <Flex flexBasis={'70%'}>
+                        <Box
+                          padding='2px 1px 1px '
+                          border='2px'
+                          borderColor='borderDark'
+                          mr='10px'
+                          color='borderDark'
+                        >
+                          {isExpanded ? (
+                            <FaMinus fontSize='10px' />
+                          ) : (
+                            <FaPlus fontSize='10px' />
+                          )}
                         </Box>
-                        <Box pr='15.4%'>
-                          <Text>22 January 2022</Text>
+                        <Box>
+                          <Text textAlign='left'>{user?.name}</Text>
                         </Box>
-                      </AccordionButton>
-                    </h2>
+                      </Flex>
+                      <Text flexBasis={'13%'} textAlign={'right'}>
+                        {convertMinutes(user?.logTime)}
+                      </Text>
+                      <Text flexBasis={'17%'} textAlign={'right'}>
+                        {formatUpdatedDate}
+                      </Text>
+                    </AccordionButton>
                     <AccordionPanel p={0}>
                       <List>
-                        {user?.timecards?.map((activity: any) => (
-                          <ListItem key={activity.id}>
-                            <Flex
-                              p='15px 24px'
-                              borderTop='1px'
-                              borderColor='borderColor'
-                              fontSize='14px'
-                              lineHeight='17.6px'
-                              color='grayLight'
-                              textStyle='sourceSansProRegular'
-                            >
-                              <Flex flexBasis='50%' alignItems='center'>
-                                <Link to={`/dashboard/${activity.id}`}>
-                                  <EditGreyIcon />
-                                </Link>
-                                <Text pl='11px'>
-                                  {format(
-                                    new Date(activity.date),
-                                    formatTimeCardDate,
-                                  )}
-                                </Text>
-                              </Flex>
-                              <Text pl='18px' flexBasis='50%'>
-                                {convertMinutes(activity.logTime)}
-                              </Text>
-                            </Flex>
-                          </ListItem>
-                        ))}
+                        {user?.timecards?.length > 1 ? (
+                          user.timecards
+                            ?.sort((a: any, b: any) =>
+                              a.date.localeCompare(b.date),
+                            )
+                            ?.map((activity: any) => (
+                              <UserRow
+                                key={activity.timecardId}
+                                activity={activity}
+                              />
+                            ))
+                        ) : (
+                          <UserRow activity={user?.timecards[0]} />
+                        )}
                       </List>
                     </AccordionPanel>
                   </>
                 )}
               </AccordionItem>
-            ),
-        )}
+            )
+          );
+        })}
       </Accordion>
     </Box>
   );

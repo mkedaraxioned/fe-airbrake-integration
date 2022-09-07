@@ -19,22 +19,24 @@ import { _get } from '../../utils/api';
 import { useGetSelectedProjectQuery } from '../../redux/apis/project';
 
 const ProjectTaskDetails = () => {
+  const [isLoading, setLoading] = useState<boolean>(true);
   const [projectData, setProjectData] = useState<any>();
   const { projectId } = useParams();
 
-  const { data, isLoading } = useGetSelectedProjectQuery(projectId, {
-    skip: !projectId,
-  });
+  // TODO: invalidating tags pending, hence not using them
+  // const { data, isLoading } = useGetSelectedProjectQuery(projectId);
 
   useEffect(() => {
-    !isLoading && setProjectData(data?.clients[0]);
+    getProject();
   }, [projectId]);
 
   const getProject = async () => {
     try {
       if (projectId) {
-        const res = await _get(`api/projects/${projectId}`);
-        setProjectData(res.data.project);
+        const res = await _get(`api/projects/${projectId}/report`);
+        setProjectData(res.data.data);
+        console.log(res.data.data);
+        setLoading(false);
       }
     } catch (error) {
       return error;
@@ -43,7 +45,7 @@ const ProjectTaskDetails = () => {
 
   return (
     <Box>
-      <Box p='15px 55px 80px' className='wrapper'>
+      <Box p='15px 55px' className='wrapper'>
         <Breadcrumb
           m='15px 0'
           fontSize='14px'
@@ -57,7 +59,7 @@ const ProjectTaskDetails = () => {
             <Link to='/projects'>Projects</Link>
           </BreadcrumbItem>
           <BreadcrumbItem color='textLight'>
-            <Text>{projectData?.projects[0].name}</Text>
+            <Text>{projectData?.projectName}</Text>
           </BreadcrumbItem>
         </Breadcrumb>
         <Flex justifyContent='space-between'>
@@ -68,7 +70,7 @@ const ProjectTaskDetails = () => {
               textStyle='sourceSansProRegular'
               lineHeight='17.6px'
             >
-              {projectData?.name}
+              {projectData?.clientName}
             </Text>
             <Heading
               as='h2'
@@ -78,7 +80,7 @@ const ProjectTaskDetails = () => {
               fontSize='22px'
               lineHeight='27.65px'
             >
-              {projectData?.projects[0].name}
+              {projectData?.projectName}
             </Heading>
           </Box>
           <HStack>
@@ -113,7 +115,8 @@ const ProjectTaskDetails = () => {
           </Box>
           {projectData && (
             <RecurringProjectTasks
-              milestoneList={projectData?.projects[0].milestones}
+              milestoneList={projectData?.milestones}
+              projectType={projectData.projectType}
             />
           )}
           {/* <Box>
