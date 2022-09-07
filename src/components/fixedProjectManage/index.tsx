@@ -14,7 +14,7 @@ import {
 import React, { useEffect, useState } from 'react';
 import { AiOutlinePlusCircle } from 'react-icons/ai';
 import { useParams } from 'react-router';
-import { ReactComponent as DeleteSvg } from '../../assets/images/delete.svg';
+import { ReactComponent as DeleteSvg } from '../../assets/images/ProjectDelete.svg';
 import { ReactComponent as CheckSvg } from '../../assets/images/check.svg';
 import { _get, _patch, _post } from '../../utils/api';
 import { timeStringValidate } from '../../utils/validation';
@@ -83,6 +83,10 @@ const FixedProjectManage = () => {
 
   const focusHandler = (index: number) => {
     setMilestoneIndex(index);
+  };
+
+  const blurHandler = () => {
+    setMilestoneIndex(null);
   };
 
   const removePhaseControls = async (
@@ -232,6 +236,7 @@ const FixedProjectManage = () => {
                               value={_.title}
                               name='title'
                               onFocus={() => focusHandler(index)}
+                              onBlur={blurHandler}
                               onChange={(e) => handleInputChange(e, index)}
                             />
                             {errMessage.id === index && (
@@ -263,6 +268,7 @@ const FixedProjectManage = () => {
                               value={_.budget}
                               name='budget'
                               onFocus={() => focusHandler(index)}
+                              onBlur={blurHandler}
                               onChange={(e) => handleInputChange(e, index)}
                               textAlign='center'
                             />

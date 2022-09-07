@@ -85,14 +85,14 @@ const ProjectTaskDetails = () => {
                 </Text>
               </Flex>
             </Button>
-            <Button w='150px' ml='10px !important' variant='primary'>
-              <Link to={`/projects/${projectId}/manage`}>
+            <Link to={`/projects/${projectId}/manage`} title='Edit Milestone'>
+              <Button w='150px' ml='10px !important' variant='primary'>
                 <Flex alignItems='center'>
                   <ManageSvg />
                   <Text pl='8px'>Edit Milestone</Text>
                 </Flex>
-              </Link>
-            </Button>
+              </Button>
+            </Link>
           </HStack>
         </Flex>
         <Box p='30px 0'>
