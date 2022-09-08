@@ -94,10 +94,6 @@ const FixedProjectManage = () => {
     setMilestoneIndex(index);
   };
 
-  const blurHandler = () => {
-    setMilestoneIndex(null);
-  };
-
   const removePhaseControls = async (
     id: string | undefined,
     phaseIndex: number,
@@ -250,7 +246,6 @@ const FixedProjectManage = () => {
                               value={_.title}
                               name='title'
                               onFocus={() => focusHandler(index)}
-                              onBlur={blurHandler}
                               onChange={(e) => handleInputChange(e, index)}
                             />
                             {errMessage.id === index && (
@@ -282,7 +277,6 @@ const FixedProjectManage = () => {
                               value={_.budget}
                               name='budget'
                               onFocus={() => focusHandler(index)}
-                              onBlur={blurHandler}
                               onChange={(e) => handleInputChange(e, index)}
                               textAlign='center'
                             />

@@ -90,6 +90,7 @@ const NewProjectForm = ({ onClose, projectId }: Props) => {
   const fetchProject = async () => {
     if (projectId) {
       const res = await _get(`api/projects/${projectId}`);
+      console.log(res.data.project, 'resres');
       if (res.data) {
         setFormData({
           clientId: res.data.project.clientId,
@@ -217,8 +218,6 @@ const NewProjectForm = ({ onClose, projectId }: Props) => {
         if (projectId) {
           await _patch(`api/projects/${projectId}`, {
             ...formData,
-            tasks: [],
-            milestones: [],
           });
         } else {
           await _post('api/projects/', formData);
@@ -511,6 +510,7 @@ const NewProjectForm = ({ onClose, projectId }: Props) => {
                       src={memberData.avatar}
                       onClick={() => unselectMember(memberData.id)}
                       name={memberData.name}
+                      title={memberData.name}
                       cursor='pointer'
                     />
                   );

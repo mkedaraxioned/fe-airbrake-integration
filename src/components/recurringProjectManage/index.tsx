@@ -56,11 +56,6 @@ const RecurringProjectManage = ({ projectType }: { projectType: string }) => {
     setMilestoneIndex(index);
   };
 
-  const blurHandlerInput = () => {
-    setMilestoneIndex(null);
-    setTaskIndex(null);
-  };
-
   const out = () => {
     setIsVisibleIndex(null);
   };
@@ -303,7 +298,6 @@ const RecurringProjectManage = ({ projectType }: { projectType: string }) => {
                             name='title'
                             value={_.title}
                             onFocus={() => focusHandlerInput(index)}
-                            onBlur={blurHandlerInput}
                             onChange={(e) =>
                               handleInputChangeMilestone(e, index)
                             }
@@ -335,7 +329,6 @@ const RecurringProjectManage = ({ projectType }: { projectType: string }) => {
                             placeholder='Hrs'
                             value={_.budget}
                             onFocus={() => focusHandlerInput(index)}
-                            onBlur={blurHandlerInput}
                             name='budget'
                             onChange={(e) =>
                               handleInputChangeMilestone(e, index)
@@ -467,7 +460,6 @@ const RecurringProjectManage = ({ projectType }: { projectType: string }) => {
                                 placeholder='Enter Task'
                                 value={_.title}
                                 onFocus={() => focusHandler(index)}
-                                onBlur={blurHandlerInput}
                                 name='title'
                                 onChange={(e) => handleInputChange(e, index)}
                               />
@@ -498,7 +490,6 @@ const RecurringProjectManage = ({ projectType }: { projectType: string }) => {
                                 value={_.budget}
                                 name='budget'
                                 onFocus={() => focusHandler(index)}
-                                onBlur={blurHandlerInput}
                                 onChange={(e) => handleInputChange(e, index)}
                                 textAlign='center'
                               />
@@ -545,14 +536,6 @@ const RecurringProjectManage = ({ projectType }: { projectType: string }) => {
               )}
             </UnorderedList>
           </Box>
-          <Text
-            pl='30px'
-            fontWeight='400'
-            textDecor='underline'
-            textStyle='inputTextStyle'
-          >
-            View archive tasks
-          </Text>
         </Box>
       )}
     </HStack>
