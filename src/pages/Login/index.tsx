@@ -18,7 +18,6 @@ import { FcGoogle } from 'react-icons/fc';
 import { variables } from '../../constants/backend';
 import { useSearchParams } from 'react-router-dom';
 import { _get } from '../../utils/api';
-import useExitPrompt from '../../utils/useExitPrompt';
 import preventRefresh from '../../utils/preventRefresh';
 
 const Login = () => {
