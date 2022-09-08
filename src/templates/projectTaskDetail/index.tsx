@@ -6,7 +6,6 @@ import {
   Flex,
   Heading,
   HStack,
-  SkeletonText,
   Text,
 } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
