@@ -46,7 +46,6 @@ const Calendar = ({
   useEffect(() => {
     if (formDate) {
       setSelectedDate(new Date(formDate));
-      setCurrentMonth(new Date(formDate));
     }
   }, [formDate]);
 
