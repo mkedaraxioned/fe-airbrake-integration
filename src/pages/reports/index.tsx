@@ -104,12 +104,12 @@ const Reports = () => {
             </Text>
           )}
           <Box>
-            {filteredData?.data.clients?.length <= 0 ||
-              (filteredData?.data.users?.length <= 0 && (
-                <Box p='25px 35px'>
-                  <Text>No data found...</Text>
-                </Box>
-              ))}
+            {(filteredData?.data.clients?.length <= 0 ||
+              filteredData?.data.users?.length <= 0) && (
+              <Box p='25px 35px'>
+                <Text>No data found...</Text>
+              </Box>
+            )}
             {filteredData?.data.clients?.map((client: any, index: number) => {
               return (
                 <Box key={index}>
