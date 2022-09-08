@@ -130,7 +130,6 @@ const Reports = () => {
                 </Box>
               );
             })}
-            <ClientAccordian projects={[]} />
           </Box>
         </Box>
       </Box>

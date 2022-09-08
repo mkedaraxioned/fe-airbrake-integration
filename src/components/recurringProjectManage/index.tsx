@@ -15,7 +15,7 @@ import {
 import React, { useEffect, useState } from 'react';
 import { AiOutlinePlusCircle } from 'react-icons/ai';
 import CustomCheckbox from '../customCheckBox';
-import { ReactComponent as DeleteSvg } from '../../assets/images/delete.svg';
+import { ReactComponent as DeleteSvg } from '../../assets/images/ProjectDelete.svg';
 import { ReactComponent as CheckSvg } from '../../assets/images/check.svg';
 import { timeStringValidate } from '../../utils/validation';
 import { _get, _patch, _post } from '../../utils/api';
@@ -41,6 +41,7 @@ const RecurringProjectManage = ({ projectType }: { projectType: string }) => {
   const [taskErr, setTaskErr] = useState<Err>({});
   const [isVisibleIndex, setIsVisibleIndex] = useState<null | number>(null);
   const [taskIndex, setTaskIndex] = useState<null | number>(null);
+  const [milestoneIndex, setMilestoneIndex] = useState<null | number>(null);
   const { tasks, milestone } = recurringFormData;
   const { projectId } = useParams();
   const toast = useToast();
@@ -49,6 +50,15 @@ const RecurringProjectManage = ({ projectType }: { projectType: string }) => {
   };
   const focusHandler = (index: number) => {
     setTaskIndex(index);
+  };
+
+  const focusHandlerInput = (index: number) => {
+    setMilestoneIndex(index);
+  };
+
+  const blurHandlerInput = () => {
+    setMilestoneIndex(null);
+    setTaskIndex(null);
   };
 
   const out = () => {
@@ -292,6 +302,8 @@ const RecurringProjectManage = ({ projectType }: { projectType: string }) => {
                             type='text'
                             name='title'
                             value={_.title}
+                            onFocus={() => focusHandlerInput(index)}
+                            onBlur={blurHandlerInput}
                             onChange={(e) =>
                               handleInputChangeMilestone(e, index)
                             }
@@ -322,6 +334,8 @@ const RecurringProjectManage = ({ projectType }: { projectType: string }) => {
                             textStyle='inputTextStyle'
                             placeholder='Hrs'
                             value={_.budget}
+                            onFocus={() => focusHandlerInput(index)}
+                            onBlur={blurHandlerInput}
                             name='budget'
                             onChange={(e) =>
                               handleInputChangeMilestone(e, index)
@@ -341,7 +355,10 @@ const RecurringProjectManage = ({ projectType }: { projectType: string }) => {
                         </FormControl>
                       </Flex>
                       <Tooltip label='Save'>
-                        <Box pl='10px'>
+                        <Box
+                          pl='10px'
+                          display={milestoneIndex === index ? 'block' : 'none'}
+                        >
                           <button type='submit'>
                             <CheckSvg />
                           </button>
@@ -450,6 +467,7 @@ const RecurringProjectManage = ({ projectType }: { projectType: string }) => {
                                 placeholder='Enter Task'
                                 value={_.title}
                                 onFocus={() => focusHandler(index)}
+                                onBlur={blurHandlerInput}
                                 name='title'
                                 onChange={(e) => handleInputChange(e, index)}
                               />
@@ -480,6 +498,7 @@ const RecurringProjectManage = ({ projectType }: { projectType: string }) => {
                                 value={_.budget}
                                 name='budget'
                                 onFocus={() => focusHandler(index)}
+                                onBlur={blurHandlerInput}
                                 onChange={(e) => handleInputChange(e, index)}
                                 textAlign='center'
                               />

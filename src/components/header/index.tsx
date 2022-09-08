@@ -120,25 +120,31 @@ const Header = () => {
               <UnorderedList
                 display='flex'
                 listStyleType='none'
-                textStyle='sourceSansProBold'
+                textStyle='sourceSansProRegular'
                 color='textColor'
               >
-                <ListItem margin='0 15px' fontSize='18px' lineHeight='23px'>
-                  <Text onClick={onOpen} cursor='pointer'>
+                <ListItem margin='0 15px' fontSize='16px' lineHeight='1.5'>
+                  <Text onClick={onOpen} cursor='pointer' title='Client'>
                     Clients
                   </Text>
                 </ListItem>
                 {(user.profile.role === ERole.ADMIN ||
                   user.profile.role === ERole.NORMAL) && (
-                  <ListItem margin='0 15px' fontSize='18px' lineHeight='23px'>
-                    <Link to='/projects'>Projects</Link>
+                  <ListItem margin='0 15px' fontSize='16px' lineHeight='1.5'>
+                    <Link to='/projects' title='Project'>
+                      Projects
+                    </Link>
                   </ListItem>
                 )}
-                <ListItem margin='0 15px' fontSize='18px' lineHeight='23px'>
-                  <Link to='/team'>Team</Link>
+                <ListItem margin='0 15px' fontSize='16px' lineHeight='1.5'>
+                  <Link to='/team' title='Team'>
+                    Team
+                  </Link>
                 </ListItem>
-                <ListItem margin='0 15px' fontSize='18px' lineHeight='23px'>
-                  <Link to='/reports'>Reports</Link>
+                <ListItem margin='0 15px' fontSize='16px' lineHeight='23px'>
+                  <Link to='/reports' title='Reports'>
+                    Reports
+                  </Link>
                 </ListItem>
               </UnorderedList>
             ) : null}

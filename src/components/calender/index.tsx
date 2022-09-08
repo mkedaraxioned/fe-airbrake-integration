@@ -104,17 +104,18 @@ const Calendar = ({
 
     for (let i = 0; i < 7; i++) {
       days.push(
-        <Box
+        <Flex
           w='46px'
           h='46px'
           fontSize='14px'
           color='grayLight'
           key={`${i}${format(addDays(startDateVal, i), dateFormat)}`}
           textStyle='sourceSansProBold'
-          lineHeight='46px'
+          alignItems='center'
+          justifyContent='center'
         >
           {format(addDays(startDateVal, i), dateFormat)}
-        </Box>,
+        </Flex>,
       );
     }
     return <Box display='flex'>{days}</Box>;
@@ -168,10 +169,11 @@ const Calendar = ({
           );
         days.push(
           <Tooltip label={toolTiplabel && `${toolTiplabel} Hrs`}>
-            <Box
+            <Flex
               w='46px'
               h='46px'
-              lineHeight='46px'
+              alignItems='center'
+              justifyContent='center'
               bg={`${!isAfter(new Date(), day) ? '#E2E8F066' : bgColorVal}`}
               color={`${
                 month !== currentMonth.getMonth() || !isAfter(new Date(), day)
@@ -189,10 +191,15 @@ const Calendar = ({
                 onDateClickHandle(cloneDay, dayStr);
               }}
             >
-              <Text as='span' fontSize='12px' lineHeight='14.52px'>
+              <Text
+                as='span'
+                fontSize='12px'
+                lineHeight='14.52px'
+                fontWeight={isSameDay(new Date(), day) ? 'bold' : 'normal'}
+              >
                 {formattedDate}
               </Text>
-            </Box>
+            </Flex>
           </Tooltip>,
         );
         day = addDays(day, 1);

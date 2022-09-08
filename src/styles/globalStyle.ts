@@ -30,7 +30,6 @@ export const styles = {
       borderBottom: '1px solid #E9F2F9',
     },
     '.date_row .selectedDate': {
-      paddingTop: '4px',
       border: '2px solid #4657CE !important',
       display: 'flex',
       alignItems: 'center',

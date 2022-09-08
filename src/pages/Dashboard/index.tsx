@@ -17,6 +17,7 @@ import { allUsers } from '../../redux/reducers/allUserSlice';
 import { allClients } from '../../redux/reducers/clientsSlice';
 import { allProjects } from '../../redux/reducers/projectsSlice';
 import { _get } from '../../utils/api';
+import useExitPrompt from '../../utils/useExitPrompt';
 
 const Dashboard = () => {
   const [formData, setFormData] = useState({
@@ -28,6 +29,9 @@ const Dashboard = () => {
     comments: '',
     billingType: false,
   });
+
+  const [showExitPrompt] = useExitPrompt(true);
+  console.log(showExitPrompt);
   const { timeCardId } = useParams();
   const dispatch = useDispatch();
   const showDetailsHandle = (dayStr: string) => {
@@ -37,6 +41,18 @@ const Dashboard = () => {
   useEffect(() => {
     fetchClientsProjects();
   }, []);
+
+  useEffect(() => {
+    setFormData({
+      date: new Date(),
+      projectId: '',
+      milestoneId: '',
+      taskId: '',
+      logTime: '',
+      comments: '',
+      billingType: false,
+    });
+  }, [location.pathname]);
 
   const fetchClientsProjects = async () => {
     const clientRes = await _get('api/clients');

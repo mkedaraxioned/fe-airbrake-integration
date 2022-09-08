@@ -19,12 +19,7 @@ import { getTimeInHours } from '../../utils/common';
 const ReportProjectDetails = ({ usersData }: any) => {
   return (
     <Box>
-      <Accordion
-        allowToggle
-        borderLeft='1px'
-        borderRight='1px'
-        borderColor='borderColor'
-      >
+      <Accordion allowToggle borderLeft='none' borderRight='none'>
         {usersData &&
           usersData.map((user: any, index: number) => {
             return (
