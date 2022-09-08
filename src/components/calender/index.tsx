@@ -42,6 +42,14 @@ const Calendar = ({
   useEffect(() => {
     fetchTimelogsPerMonths();
   }, [currentMonth, formDate]);
+
+  useEffect(() => {
+    if (formDate) {
+      setSelectedDate(new Date(formDate));
+      setCurrentMonth(new Date(formDate));
+    }
+  }, [formDate]);
+
   const changeMonthHandle = (btnType: string) => {
     if (btnType === 'prev') {
       setCurrentMonth(subMonths(currentMonth, 1));
