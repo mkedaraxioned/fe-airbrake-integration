@@ -15,7 +15,7 @@ import {
 } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ReactComponent as EditSvg } from '../../assets/images/edit.svg';
+import { ReactComponent as EditSvg } from '../../assets/images/ProjectEdit.svg';
 import { useParams } from 'react-router';
 import { _get } from '../../utils/api';
 import FixedProjectManage from '../../components/fixedProjectManage';
@@ -104,11 +104,10 @@ const ManageTask = () => {
               margin='0 10px'
               variant='secondary'
               onClick={onOpen}
+              title='Edit Project'
             >
               <EditSvg />
-              <Text pt='2px' pl='8px'>
-                Edit Project
-              </Text>
+              <Text pl='8px'>Edit Project</Text>
             </Button>
           </Box>
         </Flex>

@@ -8,6 +8,7 @@ import { ReactComponent as PrintReport } from '../../assets/images/printReportCS
 import { FilterFormData } from '../../interfaces/reports';
 import { useGetReportDataQuery } from '../../redux/apis/reports';
 import { format } from 'date-fns';
+import { getTimeInHours } from '../../utils/common';
 
 const Reports = () => {
   const [formData, setFormData] = useState<FilterFormData>({
@@ -21,7 +22,6 @@ const Reports = () => {
   });
   const [searchQueryValues, setSearchQueryValues] = useState<any>({});
   const { data: filteredData } = useGetReportDataQuery(searchQueryValues);
-  console.log(filteredData, 'data');
 
   return (
     <Box>
@@ -100,6 +100,11 @@ const Reports = () => {
             </Text>
           )}
           <Box>
+            {filteredData?.clients?.length <= 0 && (
+              <Box p='25px 35px'>
+                <Text>No data found...</Text>
+              </Box>
+            )}
             {filteredData?.clients?.map((client: any, index: number) => {
               return (
                 <Box key={index}>
@@ -118,14 +123,13 @@ const Reports = () => {
                       fontSize='14px'
                       lineHeight='17.6px'
                     >
-                      {client.logTime}
+                      {getTimeInHours(client.logTime)}
                     </Text>
                   </Flex>
                   <ClientAccordian projects={client.projects} />
                 </Box>
               );
             })}
-            <ClientAccordian projects={[]} />
           </Box>
         </Box>
       </Box>

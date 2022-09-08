@@ -38,3 +38,11 @@ export const formateDate = (date: Date | string) => {
   const d = new Date(date);
   return [d.getFullYear(), pad(d.getMonth() + 1), pad(d.getDate())].join('-');
 };
+
+export const getTimeInHours = (duration: number) => {
+  const hours = Math.floor(duration / 60);
+  const minutes = duration % 60;
+  const HH = hours < 10 ? `0${hours}` : hours;
+  const MM = minutes < 10 ? `0${minutes}` : minutes;
+  return `${HH}:${MM}`;
+};

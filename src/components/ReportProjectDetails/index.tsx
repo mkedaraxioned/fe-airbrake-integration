@@ -14,16 +14,12 @@ import { ReactComponent as PlusSvg } from '../../assets/images/plusSvg.svg';
 import { ReactComponent as MinusSvg } from '../../assets/images/minusSvg.svg';
 import { Link } from 'react-router-dom';
 import { format } from 'date-fns';
+import { getTimeInHours } from '../../utils/common';
 
 const ReportProjectDetails = ({ usersData }: any) => {
   return (
     <Box>
-      <Accordion
-        allowToggle
-        borderLeft='1px'
-        borderRight='1px'
-        borderColor='borderColor'
-      >
+      <Accordion allowToggle borderLeft='none' borderRight='none'>
         {usersData &&
           usersData.map((user: any, index: number) => {
             return (
@@ -78,7 +74,7 @@ const ReportProjectDetails = ({ usersData }: any) => {
                                 : 'sourceSansProRegular'
                             }
                           >
-                            {user.logTime}
+                            {getTimeInHours(user.logTime)}
                           </Text>
                         </Box>
                       </AccordionButton>
@@ -116,7 +112,7 @@ const ReportProjectDetails = ({ usersData }: any) => {
                             </Flex>
                             <Text flexBasis='62%'>{timecard.comments}</Text>
                             <Text flexBasis='10%' textAlign='right'>
-                              {timecard.logTime}
+                              {getTimeInHours(timecard.logTime)}
                             </Text>
                           </Flex>
                         );
