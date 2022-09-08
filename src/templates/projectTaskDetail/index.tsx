@@ -11,15 +11,13 @@ import {
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import RecurringProjectTasks from '../../components/recurringProjectTask';
-import RecurringProjectArchive from '../../components/recurringProjectArchive';
 import { ReactComponent as ManageSvg } from '../../assets/images/manage.svg';
 import { ReactComponent as ReportSvg } from '../../assets/images/report.svg';
 import { useParams } from 'react-router';
 import { _get } from '../../utils/api';
-import { useGetSelectedProjectQuery } from '../../redux/apis/project';
 
 const ProjectTaskDetails = () => {
-  const [isLoading, setLoading] = useState<boolean>(true);
+  const [, setLoading] = useState<boolean>(true);
   const [projectData, setProjectData] = useState<any>();
   const { projectId } = useParams();
 
@@ -118,18 +116,6 @@ const ProjectTaskDetails = () => {
               projectType={projectData.projectType}
             />
           )}
-          {/* TODO: Archive is pending */}
-          {/* <Box>
-            <Text
-              color='textColor'
-              textStyle='sourceSansProBold'
-              fontSize='18px'
-              lineHeight='22.63px'
-            >
-              Archived tasks (1)
-            </Text>
-          </Box>
-          <RecurringProjectArchive /> */}
         </Box>
       </Box>
     </Box>

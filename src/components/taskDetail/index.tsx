@@ -113,8 +113,8 @@ const TaskDetail = ({ displayBlock, milestone }: Props) => {
         lineHeight='17.6px'
       >
         <Text flexBasis='25%'>Name</Text>
-        <Text flexBasis='45%'>Comments/Notes</Text>
-        <Text flexBasis='13%' textAlign={'right'}>
+        <Text flexBasis='48%'>Comments/Notes</Text>
+        <Text flexBasis='10%' textAlign={'right'}>
           Hours
         </Text>
         <Text flexBasis='17%' textAlign={'right'}>
@@ -161,7 +161,7 @@ const TaskDetail = ({ displayBlock, milestone }: Props) => {
                         borderColor: 'borderColor',
                       }}
                     >
-                      <Flex flexBasis={'70%'}>
+                      <Flex flexBasis={'73%'}>
                         <Box
                           padding='2px 1px 1px '
                           border='2px'
@@ -179,7 +179,7 @@ const TaskDetail = ({ displayBlock, milestone }: Props) => {
                           <Text textAlign='left'>{user?.name}</Text>
                         </Box>
                       </Flex>
-                      <Text flexBasis={'13%'} textAlign={'right'}>
+                      <Text flexBasis={'10%'} textAlign={'right'}>
                         {convertMinutes(user?.logTime)}
                       </Text>
                       <Text flexBasis={'17%'} textAlign={'right'}>

@@ -31,8 +31,8 @@ const UserRow = ({ activity }: Props) => {
             {format(new Date(activity.date), formatTimeCardDate)}
           </Text>
         </Flex>
-        <Text flexBasis='45%'>{activity.comments}</Text>
-        <Text pl='18px' flexBasis='13%' textAlign={'right'}>
+        <Text flexBasis='48%'>{activity.comments}</Text>
+        <Text pl='18px' flexBasis='10%' textAlign={'right'}>
           {convertMinutes(activity.logTime)}
         </Text>
         <Text flexBasis='17%' textAlign={'right'} hidden>

@@ -16,13 +16,8 @@ import { FaMinus, FaPlus } from 'react-icons/fa';
 import { HiDotsHorizontal } from 'react-icons/hi';
 import { Link } from 'react-router-dom';
 import { ReactComponent as EditGreyIcon } from '../../assets/images/editGreyIcon.svg';
-import { ProjectMileStone } from '../../interfaces/projectDetails';
 
-interface Props {
-  milestone: ProjectMileStone;
-}
-
-const TaskDetailGranular = ({ milestone }: Props) => {
+const TaskDetailGranular = () => {
   return (
     <Box m='20px 0 40px'>
       <Flex
