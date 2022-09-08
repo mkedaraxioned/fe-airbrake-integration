@@ -126,6 +126,7 @@ const TaskDetail = ({ displayBlock, milestone }: Props) => {
         borderLeft='1px'
         borderRight='1px'
         borderColor='borderColor'
+        allowMultiple
       >
         {milestone?.users.map((user: ProjectUser, i: number) => {
           const updateDateFormat = 'dd MMM yyyy';
