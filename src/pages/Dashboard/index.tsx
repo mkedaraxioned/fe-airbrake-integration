@@ -30,8 +30,8 @@ const Dashboard = () => {
     billingType: false,
   });
 
-  const [showExitPrompt] = useExitPrompt(true);
-  console.log(showExitPrompt);
+  useExitPrompt(true);
+
   const { timeCardId } = useParams();
   const dispatch = useDispatch();
   const showDetailsHandle = (dayStr: string) => {
