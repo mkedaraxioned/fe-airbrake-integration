@@ -6,6 +6,7 @@ import {
   Flex,
   Heading,
   HStack,
+  SkeletonText,
   Text,
 } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
@@ -17,7 +18,7 @@ import { useParams } from 'react-router';
 import { _get } from '../../utils/api';
 
 const ProjectTaskDetails = () => {
-  const [, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>(true);
   const [projectData, setProjectData] = useState<any>();
   const { projectId } = useParams();
 
@@ -56,30 +57,38 @@ const ProjectTaskDetails = () => {
             <Link to='/projects'>Projects</Link>
           </BreadcrumbItem>
           <BreadcrumbItem color='textLight'>
-            <Text>{projectData?.projectName}</Text>
+            {loading ? (
+              <SkeletonText w={'100px'} noOfLines={1} />
+            ) : (
+              <Text>{projectData.projectName}</Text>
+            )}
           </BreadcrumbItem>
         </Breadcrumb>
         <Flex justifyContent='space-between'>
-          <Box>
-            <Text
-              fontSize='14px'
-              color='textGray'
-              textStyle='sourceSansProRegular'
-              lineHeight='17.6px'
-            >
-              {projectData?.clientName}
-            </Text>
-            <Heading
-              as='h2'
-              m='0 !important'
-              color='textColor'
-              textStyle='sourceSansProBold'
-              fontSize='22px'
-              lineHeight='27.65px'
-            >
-              {projectData?.projectName}
-            </Heading>
-          </Box>
+          {loading ? (
+            <SkeletonText w={'100px'} noOfLines={2} />
+          ) : (
+            <Box>
+              <Text
+                fontSize='14px'
+                color='textGray'
+                textStyle='sourceSansProRegular'
+                lineHeight='17.6px'
+              >
+                {projectData.clientName}
+              </Text>
+              <Heading
+                as='h2'
+                m='0 !important'
+                color='textColor'
+                textStyle='sourceSansProBold'
+                fontSize='22px'
+                lineHeight='27.65px'
+              >
+                {projectData.projectName}
+              </Heading>
+            </Box>
+          )}
           <HStack>
             <Button w='137px' variant='secondary'>
               <Flex alignItems='center'>
