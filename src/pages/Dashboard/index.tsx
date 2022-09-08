@@ -48,10 +48,10 @@ const Dashboard = () => {
   };
 
   return (
-    <Box>
-      <Flex minH='calc(100vh - 78px)' justifyContent='center'>
-        <Box flexBasis='31%' bg='bgLight'>
-          <Box w='323px' mt='40px' mr='50px' ml='auto'>
+    <Box className='wrapper'>
+      <Flex minH='calc(100vh - 78px)' justifyContent='flex-start'>
+        <Box flexBasis='20%' bg='bgLight' pr='40px'>
+          <Box w='323px' mt='40px'>
             <Calendar
               showDetailsHandle={showDetailsHandle}
               formDate={formData.date}
@@ -65,7 +65,7 @@ const Dashboard = () => {
           borderLeft='1px'
           borderRight='1px'
           borderColor='borderColor'
-          flexBasis='36%'
+          flexBasis='41%'
           bg='white'
         >
           <Box>
@@ -85,7 +85,7 @@ const Dashboard = () => {
             <TaskList formData={formData} />
           </Box>
         </Box>
-        <Box p='40px 0 0 47px' flexBasis='33%'>
+        <Box p='40px 0 0 47px' flexBasis='35%'>
           <Heading
             as='h2'
             fontSize='22px'
@@ -95,7 +95,7 @@ const Dashboard = () => {
           >
             Recently Used
           </Heading>
-          <UnorderedList w='40%' listStyleType='none' m='0'>
+          <UnorderedList w='80%' listStyleType='none' m='0'>
             {Array.from({ length: 1 }).map((_, index) => {
               return (
                 <ListItem

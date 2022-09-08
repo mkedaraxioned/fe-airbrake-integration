@@ -100,7 +100,7 @@ const Team = () => {
 
   return (
     <Box className='wrapper'>
-      <Box w='full' p='30px' color='primary'>
+      <Box w='full' p='30px 0' color='primary'>
         <Breadcrumb fontSize='14px'>
           <BreadcrumbItem m='30px 0 18px'>
             <Link to='/'>Home</Link>
