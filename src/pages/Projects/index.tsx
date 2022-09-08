@@ -81,7 +81,7 @@ const Projects = () => {
       );
     }
     if (type !== '' && type !== 'none') {
-      temp = temp?.filter((item: { type: string }) => item.type === type);
+      temp = temp?.filter((item: { type: string }) => item.type.includes(type));
     }
     setFilterPro(temp);
   };
@@ -151,7 +151,7 @@ const Projects = () => {
 
   return (
     <Box>
-      <Box p='15px 55px 80px' className='wrapper'>
+      <Box p='15px 0 80px' className='wrapper'>
         <Breadcrumb m='15px 0' fontSize='14px' spacing='4px'>
           <BreadcrumbItem>
             <Link to='/'>Home</Link>
@@ -202,7 +202,6 @@ const Projects = () => {
             >
               <option value='none'>All project type</option>
               <option value='FIXED'>Fixed</option>
-              <option value='RETAINER_GRANULAR'>Retainer Granular</option>
               <option value='RETAINER'>Retainer</option>
             </Select>
             <Box>
@@ -212,7 +211,7 @@ const Projects = () => {
             </Box>
           </HStack>
         </Flex>
-        <Box p='30px 22px'>
+        <Box p='30px 0'>
           {filterPro?.length > 0 ? (
             clientSet?.length > 0 &&
             clientSet?.map((client) => {
