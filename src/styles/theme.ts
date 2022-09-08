@@ -75,6 +75,7 @@ export const costomTheme = extendTheme({
     bgCard: '#F5F7F8',
     bilColor: '#00B894',
     nbilColor: '#EB3839',
+    blackGray: '#7F7F80',
   },
   components: {
     Button,

@@ -16,7 +16,16 @@ const RecurringProjectTasks = ({ milestoneList }: Props) => {
           return milestone && <TaskDetail key={i} milestone={milestone} />;
         })
       ) : (
-        <Text>No Activities Found</Text>
+        <Text
+          fontSize={'22px'}
+          lineHeight={'28px'}
+          textAlign={'center'}
+          textStyle='sourceSansProRegular'
+          color='blackGray'
+          m={'68px 0 20px 0'}
+        >
+          No Activities Found
+        </Text>
       )}
     </Box>
   );
