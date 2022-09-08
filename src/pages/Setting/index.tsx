@@ -2,10 +2,11 @@ import React from 'react';
 import { Container, Heading, Text, VStack } from '@chakra-ui/react';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../redux';
+import preventRefresh from '../../utils/preventRefresh';
 
 const Setting = () => {
   const { profile } = useSelector((state: RootState) => state.rootSlices.user);
-
+  preventRefresh();
   return (
     <Container mt={4}>
       {profile && (

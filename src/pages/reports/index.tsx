@@ -9,6 +9,8 @@ import { FilterFormData } from '../../interfaces/reports';
 import { useGetReportDataQuery } from '../../redux/apis/reports';
 import { format } from 'date-fns';
 import { getTimeInHours } from '../../utils/common';
+import PeopleAccordian from '../../components/peopleAccordian';
+import preventRefresh from '../../utils/preventRefresh';
 
 const Reports = () => {
   const [formData, setFormData] = useState<FilterFormData>({
@@ -22,7 +24,7 @@ const Reports = () => {
   });
   const [searchQueryValues, setSearchQueryValues] = useState<any>({});
   const { data: filteredData } = useGetReportDataQuery(searchQueryValues);
-
+  preventRefresh();
   return (
     <Box>
       <Box p='15px 55px 80px' className='wrapper'>
@@ -79,7 +81,7 @@ const Reports = () => {
           />
         </Box>
         <Box pt='50px'>
-          {filteredData?.startDate && filteredData?.endDate && (
+          {filteredData?.data.startDate && filteredData?.data.endDate && (
             <Text
               p='12px 33px'
               bg='bgGrayLight'
@@ -87,25 +89,28 @@ const Reports = () => {
               fontSize='18px'
               textStyle='sourceSansProBold'
               lineHeight='22.63px'
+              border='1px'
+              borderColor='borderColor'
             >
-              {filteredData?.startDate &&
-                filteredData?.endDate &&
+              {filteredData?.data.startDate &&
+                filteredData?.data.endDate &&
                 `Results for ${format(
-                  new Date(filteredData?.startDate),
+                  new Date(filteredData?.data.startDate),
                   'MMMM dd, yyyy',
                 )} - ${format(
-                  new Date(filteredData?.endDate),
+                  new Date(filteredData?.data.endDate),
                   'MMMM dd, yyyy',
                 )}`}
             </Text>
           )}
           <Box>
-            {filteredData?.clients?.length <= 0 && (
-              <Box p='25px 35px'>
-                <Text>No data found...</Text>
-              </Box>
-            )}
-            {filteredData?.clients?.map((client: any, index: number) => {
+            {filteredData?.data.clients?.length <= 0 ||
+              (filteredData?.data.users?.length <= 0 && (
+                <Box p='25px 35px'>
+                  <Text>No data found...</Text>
+                </Box>
+              ))}
+            {filteredData?.data.clients?.map((client: any, index: number) => {
               return (
                 <Box key={index}>
                   <Flex justifyContent='space-between' p='8px 50px' bg='bgGray'>
@@ -129,6 +134,9 @@ const Reports = () => {
                   <ClientAccordian projects={client.projects} />
                 </Box>
               );
+            })}
+            {filteredData?.data.users?.map((users: any, index: number) => {
+              return <PeopleAccordian user={users} key={index} />;
             })}
           </Box>
         </Box>

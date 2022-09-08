@@ -13,7 +13,7 @@ const initBeforeUnLoad = (showExitPrompt: boolean) => {
   };
 };
 
-export default function useExitPrompt(bool: any) {
+export default function useExitPrompt(bool: any = false) {
   const [showExitPrompt, setShowExitPrompt] = useState(bool);
 
   window.onload = function () {
