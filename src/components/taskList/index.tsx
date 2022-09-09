@@ -1,6 +1,6 @@
-import { Box, Heading, HStack, Text } from '@chakra-ui/react';
+import { Box, Heading, HStack, Skeleton, Text } from '@chakra-ui/react';
 import { format } from 'date-fns';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { updateTimeCardDetails } from '../../redux/reducers/timeCardSlice';
 import { Project, Task } from '../../interfaces/timeCard';
@@ -14,6 +14,7 @@ interface Props {
 
 const TaskList = ({ formData }: Props) => {
   const dispatch = useDispatch();
+  const [loading, setLoading] = useState<boolean>(false);
 
   const { timeCardDetails } = useSelector(
     (state: RootState) => state.rootSlices.timeCard,
@@ -21,10 +22,14 @@ const TaskList = ({ formData }: Props) => {
 
   const fetchEntries = async (date: string) => {
     try {
+      setLoading(true);
       const res = await _get(`api/timecards/timelog?startDate=${date}`);
-      if (res.data.timecardsData)
+      if (res.data.timecardsData) {
+        setLoading(false);
         return dispatch(updateTimeCardDetails(res?.data.timecardsData));
+      }
       dispatch(updateTimeCardDetails(null));
+      setLoading(false);
     } catch (err: any) {
       console.log(err);
     }
@@ -48,56 +53,69 @@ const TaskList = ({ formData }: Props) => {
           >
             Total Logged Hours
           </Heading>
-          <Heading
-            as='h3'
-            fontSize='18px'
-            lineHeight='20px'
-            textStyle='sourceSansProBold'
-          >
-            {timeCardDetails ? timeCardDetails?.totalHours : '00:00'} Hrs
-          </Heading>
+          <Skeleton isLoaded={!loading}>
+            <Heading
+              as='h3'
+              fontSize='18px'
+              lineHeight='20px'
+              textStyle='sourceSansProBold'
+            >
+              {timeCardDetails ? timeCardDetails?.totalHours : '00:00'} Hrs
+            </Heading>
+          </Skeleton>
         </HStack>
       </Box>
-      {Array.isArray(timeCardDetails?.projects)
-        ? timeCardDetails?.projects.map((project: Project, i: number) => {
-            return (
-              <Box p={i === 0 ? '15px 0 10px' : undefined} key={project.name}>
-                <HStack
-                  justifyContent='space-between'
-                  color='textLightMid'
-                  width='95%'
+      {Array.isArray(timeCardDetails?.projects) ? (
+        timeCardDetails?.projects.map((project: Project, i: number) => {
+          return (
+            <Box p={i === 0 ? '15px 0 10px' : undefined} key={project.name}>
+              <HStack
+                justifyContent='space-between'
+                color='textLightMid'
+                width='95%'
+              >
+                <Heading
+                  as='h4'
+                  fontSize='16px'
+                  lineHeight='20.11px'
+                  textStyle='sourceSansProRegular'
                 >
-                  <Heading
-                    as='h4'
-                    fontSize='16px'
-                    lineHeight='20.11px'
-                    textStyle='sourceSansProRegular'
-                  >
-                    {`${project.client} - ${project.name}`}
-                  </Heading>
-                  <Text
-                    fontSize='16px'
-                    lineHeight='20.11px'
-                    textStyle='sourceSansProRegular'
-                  >
-                    {project.totalTime} Hrs
-                  </Text>
-                </HStack>
-                <Box>
-                  {Array.isArray(project?.tasks)
-                    ? project?.tasks.map((task: Task) => (
-                        <TimeCard
-                          key={task.taskId}
-                          task={task}
-                          formData={formData}
-                        />
-                      ))
-                    : null}
-                </Box>
+                  {`${project.client} - ${project.name}`}
+                </Heading>
+                <Text
+                  fontSize='16px'
+                  lineHeight='20.11px'
+                  textStyle='sourceSansProRegular'
+                >
+                  {project.totalTime} Hrs
+                </Text>
+              </HStack>
+              <Box>
+                {Array.isArray(project?.tasks)
+                  ? project?.tasks.map((task: Task) => (
+                      <TimeCard
+                        key={task.taskId}
+                        task={task}
+                        formData={formData}
+                      />
+                    ))
+                  : null}
               </Box>
-            );
-          })
-        : null}
+            </Box>
+          );
+        })
+      ) : (
+        <Text
+          fontSize={'22px'}
+          lineHeight={'28px'}
+          textAlign={'center'}
+          textStyle='sourceSansProRegular'
+          color='blackGray'
+          m={'68px 0 20px 0'}
+        >
+          No time logged for {format(new Date(formData.date), 'MMM do')}
+        </Text>
+      )}
     </Box>
   );
 };

@@ -158,8 +158,8 @@ const TaskDetail = ({ displayBlock, milestone }: Props) => {
                       lineHeight='17.6px'
                       _focus={{
                         outline: 'none',
-                        borderBottom: '1px',
                         borderColor: 'borderColor',
+                        border: 'none !important',
                       }}
                     >
                       <Flex flexBasis={'73%'}>
