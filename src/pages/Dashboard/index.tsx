@@ -83,6 +83,7 @@ const Dashboard = () => {
           borderColor='borderColor'
           flexBasis='41%'
           bg='white'
+          className='middle_container'
         >
           <Box>
             <Heading

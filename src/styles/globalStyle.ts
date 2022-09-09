@@ -50,4 +50,14 @@ export const styles = {
   '.date_picker_react .react-datepicker-popper': {
     zIndex: '5 !important',
   },
+  '.middle_container': {
+    height: 'calc(100vh - 78px)',
+    overflowY: 'auto',
+  },
+  '.middle_container::-webkit-scrollbar': {
+    width: '3px',
+  },
+  '.middle_container::-webkit-scrollbar-thumb': {
+    backgroundColor: '#DFDFDF',
+  },
 };
