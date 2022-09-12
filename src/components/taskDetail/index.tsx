@@ -78,33 +78,37 @@ const TaskDetail = ({ displayBlock, milestone }: Props) => {
             Actual - {milestone?.logTime && convertMinutes(milestone?.logTime)}{' '}
             Hrs
           </Text>
-          <Flex alignItems='center'>
+          <Flex
+            alignItems='center'
+            justifyContent='space-between'
+            flexBasis={['55%', null, null, '50%', null, '45%']}
+          >
             <Flex alignItems='center'>
               <Progress
                 value={
                   milestone?.budget &&
                   percentage(milestone?.logTime, milestone?.budget)
                 }
-                w={['80px', '100px', '100px', '150px', '200px']}
+                w={['80px', '100px', '120px', '150px', '200px']}
                 rounded='full'
                 size='sm'
                 colorScheme='green'
                 bg='white'
               />
-              <Text pl='5px'>
+              <Text pl='10px'>
                 {milestone?.budget &&
                   percentage(milestone?.logTime, milestone?.budget)}
                 %
               </Text>
             </Flex>
-            <Text pl='43px'>
+            <Text>
               <HiDotsHorizontal />
             </Text>
           </Flex>
         </Flex>
       </Flex>
       <Flex
-        p='8px 26px'
+        p='8px 4% 8px 2%'
         justifyContent='space-between'
         bg='bgGray'
         color='grayLight'
@@ -128,7 +132,7 @@ const TaskDetail = ({ displayBlock, milestone }: Props) => {
         borderColor='borderColor'
         allowMultiple
       >
-        {milestone?.users.map((user: ProjectUser, i: number) => {
+        {milestone?.users?.map((user: ProjectUser, i: number) => {
           const updateDateFormat = 'dd MMM yyyy';
           const sortByLastUpdated =
             user?.timecards?.length > 1
@@ -149,7 +153,7 @@ const TaskDetail = ({ displayBlock, milestone }: Props) => {
                 {({ isExpanded }) => (
                   <>
                     <AccordionButton
-                      p='15px 26px'
+                      p='15px 4% 15px 2%'
                       display='flex'
                       justifyContent='space-between'
                       color='grayLight'

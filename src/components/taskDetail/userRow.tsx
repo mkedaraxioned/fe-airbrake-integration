@@ -15,7 +15,7 @@ const UserRow = ({ activity }: Props) => {
   return (
     <ListItem>
       <Flex
-        p='15px 26px'
+        p='15px 4% 15px 2%'
         borderTop='1px'
         borderColor='borderColor'
         fontSize='14px'

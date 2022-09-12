@@ -42,7 +42,7 @@ const ProjectTaskDetails = () => {
 
   return (
     <Box>
-      <Box p='15px 55px' className='wrapper'>
+      <Box p='15px 0' className='wrapper'>
         <Breadcrumb
           m='15px 0'
           fontSize='14px'
