@@ -60,4 +60,10 @@ export const styles = {
   '.middle_container::-webkit-scrollbar-thumb': {
     backgroundColor: '#DFDFDF',
   },
+  '.not-allowed': {
+    cursor: 'not-allowed',
+  },
+  '.form-btn': {
+    verticalAlign: 'middle',
+  },
 };
