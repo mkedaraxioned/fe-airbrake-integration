@@ -46,7 +46,6 @@ const Calendar = ({
   useEffect(() => {
     if (formDate) {
       setSelectedDate(new Date(formDate));
-      setCurrentMonth(new Date(formDate));
     }
   }, [formDate]);
 
@@ -165,13 +164,13 @@ const Calendar = ({
                   format(new Date(day), 'yyyy-MM-dd') &&
                 hoursToMinutes(hoursToDecimal(value.totalTime)) < 450
               ) {
-                bgColorVal = '#AEF2E2';
+                bgColorVal = '#FFE5A1';
               } else if (
                 format(new Date(value.date.substr(0, 10)), 'yyyy-MM-dd') ===
                   format(new Date(day), 'yyyy-MM-dd') &&
                 hoursToMinutes(hoursToDecimal(value.totalTime)) >= 450
               ) {
-                bgColorVal = '#FFE5A1';
+                bgColorVal = '#AEF2E2';
               }
             },
           );
