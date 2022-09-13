@@ -40,7 +40,7 @@ export const formateDate = (date: Date | string) => {
 };
 
 export const percentage = (actualHours: number, totalHours: number) =>
-  totalHours && +((100 * actualHours) / totalHours).toFixed(2);
+  actualHours && totalHours && +Math.floor((100 * actualHours) / totalHours);
 
 export const getTimeInHours = (duration: number) => {
   const hours = Math.floor(duration / 60);
