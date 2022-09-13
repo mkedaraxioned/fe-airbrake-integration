@@ -135,7 +135,7 @@ const Team = () => {
                       <Td>
                         <HStack alignItems='center'>
                           <Box w='24px' h='24px' mr='5px'>
-                            <Avatar w='full' h='full' />
+                            <Avatar w='full' h='full' src={user?.avatar} />
                           </Box>
                           <Text fontSize='14px' as='span'>
                             {user?.name}
