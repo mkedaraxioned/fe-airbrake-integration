@@ -16,7 +16,7 @@ import { ReactComponent as DeleteSvg } from '../../assets/images/deleteSVG.svg';
 import { ReactComponent as CloseSvg } from '../../assets/images/closeSVG.svg';
 import { ReactComponent as ArchiveSvg } from '../../assets/images/archiveSVG.svg';
 import { ReactComponent as CheckGreySvg } from '../../assets/images/checkGray.svg';
-import { ReactComponent as CheckGreenSvg } from '../../assets/images/checkGreen.svg';
+import { ReactComponent as CheckGreenSvg } from '../../assets/images/checkSVG.svg';
 import { timeStringValidate } from '../../utils/validation';
 import { _get, _patch, _post } from '../../utils/api';
 import { useParams } from 'react-router';
@@ -556,7 +556,7 @@ const RecurringProjectManage = ({ projectType }: { projectType: string }) => {
                               }
                             >
                               <Box
-                                mr='8px'
+                                mr='7px'
                                 cursor='pointer'
                                 title='Archive'
                                 onChange={(e: any) => checkHandler(e, _.id)}
