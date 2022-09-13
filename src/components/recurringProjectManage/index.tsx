@@ -12,9 +12,9 @@ import {
   useToast,
 } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
-import { ReactComponent as DeleteSvg } from '../../assets/images/delete.svg';
+import { ReactComponent as DeleteSvg } from '../../assets/images/deleteSVG.svg';
 import { ReactComponent as CloseSvg } from '../../assets/images/closeSVG.svg';
-import { ReactComponent as ArchiveSvg } from '../../assets/images/projectArchive.svg';
+import { ReactComponent as ArchiveSvg } from '../../assets/images/archiveSVG.svg';
 import { ReactComponent as CheckGreySvg } from '../../assets/images/checkGray.svg';
 import { ReactComponent as CheckGreenSvg } from '../../assets/images/checkGreen.svg';
 import { timeStringValidate } from '../../utils/validation';
@@ -365,6 +365,7 @@ const RecurringProjectManage = ({ projectType }: { projectType: string }) => {
                             <Box
                               p='0 7px 0 10px'
                               display='flex'
+                              title='Save'
                               alignItems='center'
                             >
                               <button type='submit' className='form-btn'>
@@ -375,6 +376,7 @@ const RecurringProjectManage = ({ projectType }: { projectType: string }) => {
                             <Box
                               display='flex'
                               alignItems='center'
+                              title='Clear'
                               cursor='pointer'
                               onClick={() => setMilestoneIndex(null)}
                             >
@@ -527,6 +529,7 @@ const RecurringProjectManage = ({ projectType }: { projectType: string }) => {
                                 <Box
                                   pr='7px'
                                   display='flex'
+                                  title='Save'
                                   alignItems='center'
                                 >
                                   <button type='submit' className='form-btn'>
@@ -536,6 +539,7 @@ const RecurringProjectManage = ({ projectType }: { projectType: string }) => {
                                 </Box>
                                 <Box
                                   cursor='pointer'
+                                  title='Clear'
                                   onClick={() => setTaskIndex(null)}
                                 >
                                   <CloseSvg />
@@ -554,11 +558,13 @@ const RecurringProjectManage = ({ projectType }: { projectType: string }) => {
                               <Box
                                 mr='8px'
                                 cursor='pointer'
+                                title='Archive'
                                 onChange={(e: any) => checkHandler(e, _.id)}
                               >
                                 <ArchiveSvg />
                               </Box>
                               <Box
+                                title='Delete'
                                 cursor='pointer'
                                 onClick={() => removeTaskControls(_.id, index)}
                               >
