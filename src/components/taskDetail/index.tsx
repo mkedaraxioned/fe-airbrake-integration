@@ -7,22 +7,27 @@ import {
   Divider,
   Flex,
   List,
-  ListItem,
   Progress,
   Text,
 } from '@chakra-ui/react';
 import React from 'react';
 import { FaMinus, FaPlus } from 'react-icons/fa';
 import { HiDotsHorizontal } from 'react-icons/hi';
-import { ReactComponent as EditGreyIcon } from '../../assets/images/editGreyIcon.svg';
-import { Link } from 'react-router-dom';
 import './taskDetail.modules.css';
-
+import { convertMinutes, percentage } from '../../utils/common';
+import UserRow from './userRow';
+import { format } from 'date-fns';
+import {
+  ProjectActivity,
+  ProjectMileStone,
+  ProjectUser,
+} from '../../interfaces/projectDetails';
 interface Props {
   displayBlock?: boolean;
+  milestone?: ProjectMileStone;
 }
 
-const TaskDetail = ({ displayBlock }: Props) => {
+const TaskDetail = ({ displayBlock, milestone }: Props) => {
   return (
     <Box
       m='20px 0 40px'
@@ -51,8 +56,10 @@ const TaskDetail = ({ displayBlock }: Props) => {
         lineHeight='17.6px'
       >
         <Flex justifyContent='space-between' flexBasis='50%'>
-          <Text>Retainer Month: 14th May- 13th June</Text>
-          <Text>Budget - 2.5</Text>
+          <Text>{milestone?.name}</Text>
+          <Text>
+            Budget - {milestone?.budget && convertMinutes(milestone?.budget)}
+          </Text>
         </Flex>
         <Divider
           ml='10px'
@@ -67,27 +74,41 @@ const TaskDetail = ({ displayBlock }: Props) => {
           alignItems='center'
           flexBasis='50%'
         >
-          <Text>Actual - 2.5 Hrs</Text>
-          <Flex alignItems='center'>
+          <Text>
+            Actual - {milestone?.logTime && convertMinutes(milestone?.logTime)}{' '}
+            Hrs
+          </Text>
+          <Flex
+            alignItems='center'
+            justifyContent='space-between'
+            flexBasis={['55%', null, null, '50%', null, '45%']}
+          >
             <Flex alignItems='center'>
               <Progress
-                value={80}
-                w='200px'
+                value={
+                  milestone?.budget &&
+                  percentage(milestone?.logTime, milestone?.budget)
+                }
+                w={['80px', '100px', '120px', '150px', '200px']}
                 rounded='full'
                 size='sm'
                 colorScheme='green'
                 bg='white'
               />
-              <Text pl='5px'>80%</Text>
+              <Text pl='10px'>
+                {milestone?.budget &&
+                  percentage(milestone?.logTime, milestone?.budget)}
+                %
+              </Text>
             </Flex>
-            <Text pl='43px'>
+            <Text>
               <HiDotsHorizontal />
             </Text>
           </Flex>
         </Flex>
       </Flex>
       <Flex
-        p='8px 26px'
+        p='8px 4% 8px 2%'
         justifyContent='space-between'
         bg='bgGray'
         color='grayLight'
@@ -95,253 +116,105 @@ const TaskDetail = ({ displayBlock }: Props) => {
         textStyle='sourceSansProBold'
         lineHeight='17.6px'
       >
-        <Flex flexBasis='50%'>
-          <Text>Name</Text>
-          <Text ml='18%'>Comments/Notes</Text>
-        </Flex>
-        <Flex pl='16px' flexBasis='50%'>
-          <Text>Hours</Text>
-          <Text ml='48%'>Last updated date</Text>
-        </Flex>
+        <Text flexBasis='25%'>Name</Text>
+        <Text flexBasis='48%'>Comments/Notes</Text>
+        <Text flexBasis='10%' textAlign={'right'}>
+          Hours
+        </Text>
+        <Text flexBasis='17%' textAlign={'right'}>
+          Last updated date
+        </Text>
       </Flex>
       <Accordion
         allowToggle
         borderLeft='1px'
         borderRight='1px'
         borderColor='borderColor'
+        allowMultiple
       >
-        <AccordionItem>
-          {({ isExpanded }) => (
-            <>
-              <h2>
-                <AccordionButton
-                  pt='15px'
-                  pb='15px'
-                  pl='25px'
-                  display='flex'
-                  justifyContent='space-between'
-                  color='grayLight'
-                  fontSize='14px'
-                  textStyle='sourceSansProRegular'
-                  lineHeight='17.6px'
-                  _focus={{
-                    outline: 'none',
-                    borderBottom: '1px',
-                    borderColor: 'borderColor',
-                  }}
-                >
-                  <Flex>
-                    <Box
-                      padding='2px 1px 1px '
-                      border='2px'
-                      borderColor='borderDark'
-                      mr='10px'
-                      color='borderDark'
-                    >
-                      {isExpanded ? (
-                        <FaMinus fontSize='10px' />
-                      ) : (
-                        <FaPlus fontSize='10px' />
-                      )}
-                    </Box>
-                    <Box>
-                      <Text textAlign='left'>Shritej B</Text>
-                    </Box>
-                  </Flex>
-                  <Box pl='22.2%'>
-                    <Text>2.5 Hrs</Text>
-                  </Box>
-                  <Box pr='15.4%'>
-                    <Text>22 January 2022</Text>
-                  </Box>
-                </AccordionButton>
-              </h2>
-              <AccordionPanel p={0}>
-                <List>
-                  <ListItem>
-                    <Flex
-                      p='15px 24px'
-                      borderTop='1px'
-                      borderColor='borderColor'
-                      fontSize='14px'
-                      lineHeight='17.6px'
+        {milestone?.users?.map((user: ProjectUser, i: number) => {
+          const updateDateFormat = 'dd MMM yyyy';
+          const sortByLastUpdated =
+            user?.timecards?.length > 1
+              ? user.timecards
+                  .sort((a: ProjectActivity, b: ProjectActivity) =>
+                    a.updateAt.localeCompare(b.updateAt),
+                  )
+                  .reverse()
+              : user.timecards;
+          const formatUpdatedDate = format(
+            new Date(sortByLastUpdated[0].updateAt),
+            updateDateFormat,
+          );
+
+          return (
+            user && (
+              <AccordionItem key={i}>
+                {({ isExpanded }) => (
+                  <>
+                    <AccordionButton
+                      p='15px 4% 15px 2%'
+                      display='flex'
+                      justifyContent='space-between'
                       color='grayLight'
-                      textStyle='sourceSansProRegular'
-                    >
-                      <Flex flexBasis='50%' alignItems='center'>
-                        <Link to='/'>
-                          <EditGreyIcon />
-                        </Link>
-                        <Text pl='11px'>Tuesday, May 15, 2022</Text>
-                      </Flex>
-                      <Text pl='18px' flexBasis='50%'>
-                        25:00
-                      </Text>
-                    </Flex>
-                  </ListItem>
-                  <ListItem>
-                    <Flex
-                      p='15px 24px'
-                      borderTop='1px'
-                      borderColor='borderColor'
                       fontSize='14px'
-                      lineHeight='17.6px'
-                      color='grayLight'
                       textStyle='sourceSansProRegular'
-                    >
-                      <Flex flexBasis='50%' alignItems='center'>
-                        <Link to='/'>
-                          <EditGreyIcon />
-                        </Link>
-                        <Text pl='11px'>Tuesday, May 15, 2022</Text>
-                      </Flex>
-                      <Text pl='18px' flexBasis='50%'>
-                        25:00
-                      </Text>
-                    </Flex>
-                  </ListItem>
-                  <ListItem>
-                    <Flex
-                      p='15px 24px'
-                      borderTop='1px'
-                      borderColor='borderColor'
-                      fontSize='14px'
                       lineHeight='17.6px'
-                      color='grayLight'
-                      textStyle='sourceSansProRegular'
+                      _focus={{
+                        outline: 'none',
+                        borderColor: 'borderColor',
+                        border: 'none !important',
+                      }}
                     >
-                      <Flex flexBasis='50%' alignItems='center'>
-                        <Link to='/'>
-                          <EditGreyIcon />
-                        </Link>
-                        <Text pl='11px'>Tuesday, May 15, 2022</Text>
+                      <Flex flexBasis={'73%'}>
+                        <Box
+                          padding='2px 1px 1px '
+                          border='2px'
+                          borderColor='borderDark'
+                          mr='10px'
+                          color='borderDark'
+                        >
+                          {isExpanded ? (
+                            <FaMinus fontSize='10px' />
+                          ) : (
+                            <FaPlus fontSize='10px' />
+                          )}
+                        </Box>
+                        <Box>
+                          <Text textAlign='left'>{user?.name}</Text>
+                        </Box>
                       </Flex>
-                      <Text pl='18px' flexBasis='50%'>
-                        25:00
+                      <Text flexBasis={'10%'} textAlign={'right'}>
+                        {convertMinutes(user?.logTime)}
                       </Text>
-                    </Flex>
-                  </ListItem>
-                </List>
-              </AccordionPanel>
-            </>
-          )}
-        </AccordionItem>
-        <AccordionItem>
-          {({ isExpanded }) => (
-            <>
-              <h2>
-                <AccordionButton
-                  pt='15px'
-                  pb='15px'
-                  pl='25px'
-                  display='flex'
-                  justifyContent='space-between'
-                  color='grayLight'
-                  fontSize='14px'
-                  textStyle='sourceSansProRegular'
-                  lineHeight='17.6px'
-                  _focus={{
-                    outline: 'none',
-                    borderBottom: '1px',
-                    borderColor: 'borderColor',
-                  }}
-                >
-                  <Flex>
-                    <Box
-                      padding='2px 1px 1px '
-                      border='2px'
-                      borderColor='borderDark'
-                      mr='10px'
-                      color='borderDark'
-                    >
-                      {isExpanded ? (
-                        <FaMinus fontSize='10px' />
-                      ) : (
-                        <FaPlus fontSize='10px' />
-                      )}
-                    </Box>
-                    <Box>
-                      <Text textAlign='left'>Shritej B</Text>
-                    </Box>
-                  </Flex>
-                  <Box pl='22.2%'>
-                    <Text>2.5 Hrs</Text>
-                  </Box>
-                  <Box pr='15.4%'>
-                    <Text>22 January 2022</Text>
-                  </Box>
-                </AccordionButton>
-              </h2>
-              <AccordionPanel p={0}>
-                <List>
-                  <ListItem>
-                    <Flex
-                      p='15px 24px'
-                      borderTop='1px'
-                      borderColor='borderColor'
-                      fontSize='14px'
-                      lineHeight='17.6px'
-                      color='grayLight'
-                      textStyle='sourceSansProRegular'
-                    >
-                      <Flex flexBasis='50%' alignItems='center'>
-                        <Link to='/'>
-                          <EditGreyIcon />
-                        </Link>
-                        <Text pl='11px'>Tuesday, May 15, 2022</Text>
-                      </Flex>
-                      <Text pl='18px' flexBasis='50%'>
-                        25:00
+                      <Text flexBasis={'17%'} textAlign={'right'}>
+                        {formatUpdatedDate}
                       </Text>
-                    </Flex>
-                  </ListItem>
-                  <ListItem>
-                    <Flex
-                      p='15px 24px'
-                      borderTop='1px'
-                      borderColor='borderColor'
-                      fontSize='14px'
-                      lineHeight='17.6px'
-                      color='grayLight'
-                      textStyle='sourceSansProRegular'
-                    >
-                      <Flex flexBasis='50%' alignItems='center'>
-                        <Link to='/'>
-                          <EditGreyIcon />
-                        </Link>
-                        <Text pl='11px'>Tuesday, May 15, 2022</Text>
-                      </Flex>
-                      <Text pl='18px' flexBasis='50%'>
-                        25:00
-                      </Text>
-                    </Flex>
-                  </ListItem>
-                  <ListItem>
-                    <Flex
-                      p='15px 24px'
-                      borderTop='1px'
-                      borderColor='borderColor'
-                      fontSize='14px'
-                      lineHeight='17.6px'
-                      color='grayLight'
-                      textStyle='sourceSansProRegular'
-                    >
-                      <Flex flexBasis='50%' alignItems='center'>
-                        <Link to='/'>
-                          <EditGreyIcon />
-                        </Link>
-                        <Text pl='11px'>Tuesday, May 15, 2022</Text>
-                      </Flex>
-                      <Text pl='18px' flexBasis='50%'>
-                        25:00
-                      </Text>
-                    </Flex>
-                  </ListItem>
-                </List>
-              </AccordionPanel>
-            </>
-          )}
-        </AccordionItem>
+                    </AccordionButton>
+                    <AccordionPanel p={0}>
+                      <List>
+                        {user?.timecards?.length > 1 ? (
+                          user.timecards
+                            ?.sort((a: ProjectActivity, b: ProjectActivity) =>
+                              a.date.localeCompare(b.date),
+                            )
+                            ?.map((activity: ProjectActivity) => (
+                              <UserRow
+                                key={activity.timecardId}
+                                activity={activity}
+                              />
+                            ))
+                        ) : (
+                          <UserRow activity={user?.timecards[0]} />
+                        )}
+                      </List>
+                    </AccordionPanel>
+                  </>
+                )}
+              </AccordionItem>
+            )
+          );
+        })}
       </Accordion>
     </Box>
   );

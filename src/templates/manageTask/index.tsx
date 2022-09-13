@@ -54,7 +54,7 @@ const ManageTask = () => {
 
   return (
     <Box>
-      <Box p='15px 55px 80px' className='wrapper' textTransform='capitalize'>
+      <Box pt='15px' className='wrapper' textTransform='capitalize'>
         <Breadcrumb
           m='15px 0'
           fontSize='14px'
@@ -76,7 +76,7 @@ const ManageTask = () => {
             <Text>Manage</Text>
           </BreadcrumbItem>
         </Breadcrumb>
-        <Flex justifyContent='space-between'>
+        <Flex justifyContent='space-between' pr='35px'>
           <Box>
             <Text
               fontSize='14px'
@@ -100,7 +100,7 @@ const ManageTask = () => {
           </Box>
           <Box>
             <Button
-              w='137px'
+              w='160px'
               margin='0 10px'
               variant='secondary'
               onClick={onOpen}

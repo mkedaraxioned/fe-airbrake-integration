@@ -7,15 +7,15 @@ import {
   Input,
   ListItem,
   Text,
-  Tooltip,
   UnorderedList,
   useToast,
 } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
-import { AiOutlinePlusCircle } from 'react-icons/ai';
 import { useParams } from 'react-router';
-import { ReactComponent as DeleteSvg } from '../../assets/images/ProjectDelete.svg';
-import { ReactComponent as CheckSvg } from '../../assets/images/check.svg';
+import { ReactComponent as DeleteSvg } from '../../assets/images/delete.svg';
+import { ReactComponent as CheckGreySvg } from '../../assets/images/checkGray.svg';
+import { ReactComponent as CloseSvg } from '../../assets/images/closeSVG.svg';
+import { ReactComponent as CheckGreenSvg } from '../../assets/images/checkGreen.svg';
 import { _get, _patch, _post } from '../../utils/api';
 import { timeStringValidate } from '../../utils/validation';
 
@@ -81,21 +81,13 @@ const FixedProjectManage = () => {
 
   const fetchProject = async () => {
     const res = await _get(`api/projects/${projectId}`);
-    setFixedFormData({ phase: [...res.data.project.milestones] });
-  };
-
-  const addPhaseControls = () => {
     setFixedFormData({
-      phase: [{ title: '', budget: '' }, ...fixedFormData.phase],
+      phase: [{ title: '', budget: '' }, ...res.data.project.milestones],
     });
   };
 
   const focusHandler = (index: number) => {
     setMilestoneIndex(index);
-  };
-
-  const blurHandler = () => {
-    setMilestoneIndex(null);
   };
 
   const removePhaseControls = async (
@@ -151,6 +143,8 @@ const FixedProjectManage = () => {
         position: 'top-right',
         isClosable: true,
       });
+      fetchProject();
+      setMilestoneIndex(null);
     } catch (err) {
       err &&
         toast({
@@ -176,27 +170,9 @@ const FixedProjectManage = () => {
           lineHeight='17.6px'
         >
           <Text>Milestones Name</Text>
-          <Box
-            display='flex'
-            alignItems='center'
-            textStyle='inputTextStyle'
-            cursor='pointer'
-          >
-            <AiOutlinePlusCircle />
-            <Text
-              ml='5px'
-              textStyle='inputTextStyle'
-              onClick={addPhaseControls}
-              _hover={{
-                textDecor: 'underline',
-              }}
-            >
-              Add new Phase
-            </Text>
-          </Box>
         </HStack>
         <HStack
-          flexBasis='26%'
+          flexBasis='27%'
           justifyContent='space-between'
           color='grayLight'
           textStyle='sourceSansProBold'
@@ -236,7 +212,7 @@ const FixedProjectManage = () => {
                           <FormControl
                             pos='relative'
                             w='387px'
-                            mr='20px'
+                            mr='12px'
                             isInvalid={
                               errMessage?.titleEr && errMessage?.id === index
                                 ? true
@@ -250,7 +226,6 @@ const FixedProjectManage = () => {
                               value={_.title}
                               name='title'
                               onFocus={() => focusHandler(index)}
-                              onBlur={blurHandler}
                               onChange={(e) => handleInputChange(e, index)}
                             />
                             {errMessage.id === index && (
@@ -265,9 +240,9 @@ const FixedProjectManage = () => {
                             )}
                           </FormControl>
                           <FormControl
-                            w='60px'
+                            w='80px'
                             pos='relative'
-                            mr='10px !important'
+                            mr='5px !important'
                             isInvalid={
                               errMessage?.budgetEr && errMessage?.id === index
                                 ? true
@@ -282,7 +257,6 @@ const FixedProjectManage = () => {
                               value={_.budget}
                               name='budget'
                               onFocus={() => focusHandler(index)}
-                              onBlur={blurHandler}
                               onChange={(e) => handleInputChange(e, index)}
                               textAlign='center'
                             />
@@ -298,26 +272,49 @@ const FixedProjectManage = () => {
                               </FormErrorMessage>
                             )}
                           </FormControl>
-                          <Flex alignItems='center'>
-                            <Tooltip label='Delete'>
-                              <Box
-                                display={
-                                  isVisibleIndex === index ? 'block' : 'none'
-                                }
-                                pr='10px'
-                                cursor='pointer'
-                                onClick={() => removePhaseControls(_.id, index)}
+                          {milestoneIndex !== index && index === 0 && (
+                            <Box>
+                              <button
+                                type='submit'
+                                disabled
+                                className='not-allowed form-btn'
                               >
-                                <DeleteSvg />
-                              </Box>
-                            </Tooltip>
-                            {milestoneIndex === index && (
-                              <Tooltip label='Save'>
-                                <button type='submit'>
-                                  <CheckSvg />
+                                {' '}
+                                <CheckGreySvg />
+                              </button>
+                            </Box>
+                          )}
+                          {milestoneIndex === index && (
+                            <Flex alignItems='center'>
+                              <Box display='flex' pr='7px'>
+                                <button type='submit' className='form-btn'>
+                                  {' '}
+                                  <CheckGreenSvg />
                                 </button>
-                              </Tooltip>
-                            )}
+                              </Box>
+                              <Box
+                                cursor='pointer'
+                                onClick={() => setMilestoneIndex(null)}
+                              >
+                                <CloseSvg />
+                              </Box>
+                            </Flex>
+                          )}
+                          <Flex
+                            display={
+                              index !== 0 &&
+                              isVisibleIndex === index &&
+                              milestoneIndex !== index
+                                ? 'flex'
+                                : 'none'
+                            }
+                          >
+                            <Box
+                              cursor='pointer'
+                              onClick={() => removePhaseControls(_.id, index)}
+                            >
+                              <DeleteSvg />
+                            </Box>
                           </Flex>
                         </HStack>
                       </form>

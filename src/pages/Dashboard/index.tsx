@@ -30,8 +30,8 @@ const Dashboard = () => {
     billingType: false,
   });
 
-  const [showExitPrompt] = useExitPrompt(true);
-  console.log(showExitPrompt);
+  useExitPrompt(true);
+
   const { timeCardId } = useParams();
   const dispatch = useDispatch();
   const showDetailsHandle = (dayStr: string) => {
@@ -83,6 +83,7 @@ const Dashboard = () => {
           borderColor='borderColor'
           flexBasis='41%'
           bg='white'
+          className='middle_container'
         >
           <Box>
             <Heading

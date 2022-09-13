@@ -39,6 +39,9 @@ export const formateDate = (date: Date | string) => {
   return [d.getFullYear(), pad(d.getMonth() + 1), pad(d.getDate())].join('-');
 };
 
+export const percentage = (actualHours: number, totalHours: number) =>
+  actualHours && totalHours && +Math.floor((100 * actualHours) / totalHours);
+
 export const getTimeInHours = (duration: number) => {
   const hours = Math.floor(duration / 60);
   const minutes = duration % 60;

@@ -11,15 +11,18 @@ import {
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import RecurringProjectTasks from '../../components/recurringProjectTask';
-import RecurringProjectArchive from '../../components/recurringProjectArchive';
 import { ReactComponent as ManageSvg } from '../../assets/images/manage.svg';
 import { ReactComponent as ReportSvg } from '../../assets/images/report.svg';
 import { useParams } from 'react-router';
 import { _get } from '../../utils/api';
 
 const ProjectTaskDetails = () => {
+  const [, setLoading] = useState<boolean>(true);
   const [projectData, setProjectData] = useState<any>();
   const { projectId } = useParams();
+
+  // TODO: invalidating tags pending, hence not using them
+  // const { data, isLoading } = useGetSelectedProjectQuery(projectId);
 
   useEffect(() => {
     getProject();
@@ -28,8 +31,9 @@ const ProjectTaskDetails = () => {
   const getProject = async () => {
     try {
       if (projectId) {
-        const res = await _get(`api/projects/${projectId}`);
-        setProjectData(res.data.project);
+        const res = await _get(`api/projects/${projectId}/report`);
+        setProjectData(res.data.data);
+        setLoading(false);
       }
     } catch (error) {
       return error;
@@ -38,7 +42,7 @@ const ProjectTaskDetails = () => {
 
   return (
     <Box>
-      <Box p='15px 55px 80px' className='wrapper'>
+      <Box p='15px 0' className='wrapper'>
         <Breadcrumb
           m='15px 0'
           fontSize='14px'
@@ -52,7 +56,7 @@ const ProjectTaskDetails = () => {
             <Link to='/projects'>Projects</Link>
           </BreadcrumbItem>
           <BreadcrumbItem color='textLight'>
-            <Text>{projectData?.title}</Text>
+            <Text>{projectData?.projectName}</Text>
           </BreadcrumbItem>
         </Breadcrumb>
         <Flex justifyContent='space-between'>
@@ -63,7 +67,7 @@ const ProjectTaskDetails = () => {
               textStyle='sourceSansProRegular'
               lineHeight='17.6px'
             >
-              {projectData?.client.name}
+              {projectData?.clientName}
             </Text>
             <Heading
               as='h2'
@@ -73,7 +77,7 @@ const ProjectTaskDetails = () => {
               fontSize='22px'
               lineHeight='27.65px'
             >
-              {projectData?.title}
+              {projectData?.projectName}
             </Heading>
           </Box>
           <HStack>
@@ -106,18 +110,12 @@ const ProjectTaskDetails = () => {
               Task details
             </Text>
           </Box>
-          <RecurringProjectTasks />
-          <Box>
-            <Text
-              color='textColor'
-              textStyle='sourceSansProBold'
-              fontSize='18px'
-              lineHeight='22.63px'
-            >
-              Archived tasks (1)
-            </Text>
-          </Box>
-          <RecurringProjectArchive />
+          {projectData && (
+            <RecurringProjectTasks
+              milestoneList={projectData?.milestones}
+              projectType={projectData.projectType}
+            />
+          )}
         </Box>
       </Box>
     </Box>

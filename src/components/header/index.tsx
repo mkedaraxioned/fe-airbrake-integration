@@ -175,9 +175,7 @@ const Header = () => {
                         </Link>
                       </MenuItem>
                       <MenuItem>
-                        <Link to='/setting' className='menu-anchor'>
-                          Settings
-                        </Link>
+                        <Text>Settings</Text>
                       </MenuItem>
                     </>
                   ) : null}
