@@ -128,7 +128,7 @@ const TaskDetail = ({ displayBlock, milestone }: Props) => {
         borderColor='borderColor'
         allowMultiple
       >
-        {milestone?.users.map((user: ProjectUser, i: number) => {
+        {milestone?.users?.map((user: ProjectUser, i: number) => {
           const updateDateFormat = 'dd MMM yyyy';
           const sortByLastUpdated =
             user?.timecards?.length > 1

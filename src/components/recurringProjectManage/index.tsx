@@ -8,15 +8,15 @@ import {
   ListItem,
   StackDivider,
   Text,
-  Tooltip,
   UnorderedList,
   useToast,
 } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
-import { AiOutlinePlusCircle } from 'react-icons/ai';
-import CustomCheckbox from '../customCheckBox';
-import { ReactComponent as DeleteSvg } from '../../assets/images/ProjectDelete.svg';
-import { ReactComponent as CheckSvg } from '../../assets/images/check.svg';
+import { ReactComponent as DeleteSvg } from '../../assets/images/delete.svg';
+import { ReactComponent as CloseSvg } from '../../assets/images/closeSVG.svg';
+import { ReactComponent as ArchiveSvg } from '../../assets/images/projectArchive.svg';
+import { ReactComponent as CheckGreySvg } from '../../assets/images/checkGray.svg';
+import { ReactComponent as CheckGreenSvg } from '../../assets/images/checkGreen.svg';
 import { timeStringValidate } from '../../utils/validation';
 import { _get, _patch, _post } from '../../utils/api';
 import { useParams } from 'react-router';
@@ -42,6 +42,7 @@ const RecurringProjectManage = ({ projectType }: { projectType: string }) => {
   const [isVisibleIndex, setIsVisibleIndex] = useState<null | number>(null);
   const [taskIndex, setTaskIndex] = useState<null | number>(null);
   const [milestoneIndex, setMilestoneIndex] = useState<null | number>(null);
+  const [showMilestoneCount, setShowMilestoneCount] = useState(6);
   const { tasks, milestone } = recurringFormData;
   const { projectId } = useParams();
   const toast = useToast();
@@ -60,22 +61,16 @@ const RecurringProjectManage = ({ projectType }: { projectType: string }) => {
     setIsVisibleIndex(null);
   };
 
-  const addTaskControls = () => {
-    setRecurringFormData({
-      ...recurringFormData,
-      tasks: [{ title: '', budget: '' }, ...recurringFormData.tasks],
-    });
-  };
   useEffect(() => {
     fetchProject();
   }, []);
-
+  console.log(tasks, 'tasks');
   const fetchProject = async () => {
     if (projectId) {
       const res = await _get(`api/projects/${projectId}`);
       setRecurringFormData({
         milestone: res.data.project.milestones,
-        tasks: res.data.project.tasks,
+        tasks: [{ title: '', budget: '' }, ...res.data.project.tasks],
       });
     }
   };
@@ -204,6 +199,7 @@ const RecurringProjectManage = ({ projectType }: { projectType: string }) => {
         position: 'top-right',
         isClosable: true,
       });
+      setTaskIndex(null);
     } catch (err) {
       toast({
         title: 'Task',
@@ -238,6 +234,7 @@ const RecurringProjectManage = ({ projectType }: { projectType: string }) => {
           position: 'top-right',
           isClosable: true,
         });
+        setMilestoneIndex(null);
       } else {
         throw 'Milestone Not saved';
       }
@@ -255,11 +252,11 @@ const RecurringProjectManage = ({ projectType }: { projectType: string }) => {
 
   return (
     <HStack
-      justifyContent='space-between'
       alignItems='flex-start'
+      justifyContent='space-between'
       divider={<StackDivider />}
     >
-      <Box flexBasis='43%' p='22px 0'>
+      <Box p='22px 0'>
         <Flex
           justifyContent='space-between'
           color='grayLight'
@@ -268,139 +265,154 @@ const RecurringProjectManage = ({ projectType }: { projectType: string }) => {
           lineHeight='17.6px'
         >
           <Text>Month cycle - Milestone</Text>
-          <Text>Total budget hrs (opt)</Text>
+          <Text pr='8px'>Total budget hrs (opt)</Text>
         </Flex>
         <Box pos='relative'>
           <UnorderedList m='0'>
             {milestone?.length > 0 &&
               milestone.map((_: any, index: any) => {
                 return (
-                  <form
-                    key={index}
-                    onSubmit={(e) =>
-                      milestoneHandler(e, _.id, _.title, _.budget, index)
-                    }
-                  >
-                    <ListItem m='20px 0' display='flex' alignItems='center'>
-                      <Flex>
-                        <FormControl
-                          pos='relative'
-                          isInvalid={
-                            milestoneErr?.titleEr && milestoneErr?.id === index
-                              ? true
-                              : false
-                          }
-                        >
-                          <Input
-                            w='350px'
-                            textStyle='inputTextStyle'
-                            type='text'
-                            name='title'
-                            value={_.title}
-                            onFocus={() => focusHandlerInput(index)}
-                            onChange={(e) =>
-                              handleInputChangeMilestone(e, index)
+                  index < showMilestoneCount && (
+                    <form
+                      key={index}
+                      onSubmit={(e) =>
+                        milestoneHandler(e, _.id, _.title, _.budget, index)
+                      }
+                    >
+                      <ListItem m='20px 0' display='flex' alignItems='center'>
+                        <Flex>
+                          <FormControl
+                            pr='20px'
+                            pos='relative'
+                            isInvalid={
+                              milestoneErr?.titleEr &&
+                              milestoneErr?.id === index
+                                ? true
+                                : false
                             }
-                          />
-                          {milestoneErr.id === index && (
-                            <FormErrorMessage
-                              pos='absolute'
-                              width='192px'
-                              bottom='-18px'
-                              fontSize='12px'
-                            >
-                              {milestoneErr?.titleEr}
-                            </FormErrorMessage>
-                          )}
-                        </FormControl>
-                        <FormControl
-                          w='100px'
-                          pos='relative'
-                          isInvalid={
-                            milestoneErr?.budgetEr && milestoneErr?.id === index
-                              ? true
-                              : false
-                          }
-                        >
-                          <Input
-                            type='text'
-                            p='2px'
-                            textStyle='inputTextStyle'
-                            placeholder='Hrs'
-                            value={_.budget}
-                            onFocus={() => focusHandlerInput(index)}
-                            name='budget'
-                            onChange={(e) =>
-                              handleInputChangeMilestone(e, index)
+                          >
+                            <Input
+                              w='387px'
+                              textStyle='inputTextStyle'
+                              type='text'
+                              name='title'
+                              value={_.title}
+                              onFocus={() => focusHandlerInput(index)}
+                              onChange={(e) =>
+                                handleInputChangeMilestone(e, index)
+                              }
+                            />
+                            {milestoneErr.id === index && (
+                              <FormErrorMessage
+                                pos='absolute'
+                                width='192px'
+                                bottom='-18px'
+                                fontSize='12px'
+                              >
+                                {milestoneErr?.titleEr}
+                              </FormErrorMessage>
+                            )}
+                          </FormControl>
+                          <FormControl
+                            pos='relative'
+                            isInvalid={
+                              milestoneErr?.budgetEr &&
+                              milestoneErr?.id === index
+                                ? true
+                                : false
                             }
-                            textAlign='center'
-                          />
-                          {milestoneErr.id === index && (
-                            <FormErrorMessage
-                              pos='absolute'
-                              width='192px'
-                              bottom='-18px'
-                              fontSize='12px'
+                          >
+                            <Input
+                              w='80px'
+                              type='text'
+                              p='2px'
+                              textStyle='inputTextStyle'
+                              placeholder='Hrs'
+                              value={_.budget}
+                              onFocus={() => focusHandlerInput(index)}
+                              name='budget'
+                              onChange={(e) =>
+                                handleInputChangeMilestone(e, index)
+                              }
+                              textAlign='center'
+                            />
+                            {milestoneErr.id === index && (
+                              <FormErrorMessage
+                                pos='absolute'
+                                width='192px'
+                                bottom='-18px'
+                                fontSize='12px'
+                              >
+                                {milestoneErr?.budgetEr}
+                              </FormErrorMessage>
+                            )}
+                          </FormControl>
+                        </Flex>
+                        {milestoneIndex !== index && index === 0 && (
+                          <Box pl='10px'>
+                            <button
+                              type='submit'
+                              disabled
+                              className='not-allowed form-btn'
                             >
-                              {milestoneErr?.budgetEr}
-                            </FormErrorMessage>
-                          )}
-                        </FormControl>
-                      </Flex>
-                      <Tooltip label='Save'>
-                        <Box
-                          pl='10px'
-                          display={milestoneIndex === index ? 'block' : 'none'}
-                        >
-                          <button type='submit'>
-                            <CheckSvg />
-                          </button>
-                        </Box>
-                      </Tooltip>
-                    </ListItem>
-                  </form>
+                              {' '}
+                              <CheckGreySvg />
+                            </button>
+                          </Box>
+                        )}
+                        {milestoneIndex === index && (
+                          <Flex alignItems='center'>
+                            <Box
+                              p='0 7px 0 10px'
+                              display='flex'
+                              alignItems='center'
+                            >
+                              <button type='submit' className='form-btn'>
+                                {' '}
+                                <CheckGreenSvg />
+                              </button>
+                            </Box>
+                            <Box
+                              display='flex'
+                              alignItems='center'
+                              cursor='pointer'
+                              onClick={() => setMilestoneIndex(null)}
+                            >
+                              <CloseSvg />
+                            </Box>
+                          </Flex>
+                        )}
+                      </ListItem>
+                    </form>
+                  )
                 );
               })}
           </UnorderedList>
         </Box>
-        <Text textStyle='inputTextStyle' textDecor='underline'>
-          Load older entries
-        </Text>
+        {milestone?.length > showMilestoneCount && (
+          <Text
+            textStyle='inputTextStyle'
+            textDecor='underline'
+            onClick={() => setShowMilestoneCount(milestone?.length)}
+          >
+            Load older entries
+          </Text>
+        )}
       </Box>
       {projectType === 'RETAINER_GRANULAR' && (
-        <Box p='22px 0'>
+        <Box pt='22px' pb='22px'>
           <Flex w='562px' justifyContent='space-between'>
             <HStack
-              flexBasis='70%'
+              flexBasis='58%'
               color='grayLight'
               textStyle='sourceSansProBold'
               fontSize='14px'
               lineHeight='17.6px'
             >
-              <Text pr='34%' pl='30px'>
-                Task/Activity name
-              </Text>
-              <Box
-                display='flex'
-                alignItems='center'
-                textStyle='inputTextStyle'
-                cursor='pointer'
-              >
-                <AiOutlinePlusCircle />
-                <Text
-                  ml='5px'
-                  textStyle='inputTextStyle'
-                  onClick={addTaskControls}
-                  _hover={{
-                    textDecor: 'underline',
-                  }}
-                >
-                  Add new task
-                </Text>
-              </Box>
+              <Text>Task/Activity name</Text>
             </HStack>
             <HStack
-              flexBasis='29%'
+              flexBasis='27.2%'
               justifyContent='space-between'
               color='grayLight'
               textStyle='sourceSansProBold'
@@ -438,16 +450,9 @@ const RecurringProjectManage = ({ projectType }: { projectType: string }) => {
                           onMouseOut={out}
                         >
                           <HStack pos='relative'>
-                            <Tooltip label='Archive'>
-                              <Box pr='5px'>
-                                <CustomCheckbox
-                                  onChange={(e: any) => checkHandler(e, _.id)}
-                                />
-                              </Box>
-                            </Tooltip>
                             <FormControl
-                              w='350px'
-                              mr='10px !important'
+                              w='387px'
+                              mr='13px'
                               isInvalid={
                                 taskErr?.titleEr && taskErr?.id === index
                                   ? true
@@ -476,7 +481,7 @@ const RecurringProjectManage = ({ projectType }: { projectType: string }) => {
                             </FormControl>
                             <FormControl
                               w='80px'
-                              mr='10px !important'
+                              mr='3px !important'
                               isInvalid={
                                 taskErr?.budgetEr && taskErr?.id === index
                                   ? true
@@ -484,6 +489,7 @@ const RecurringProjectManage = ({ projectType }: { projectType: string }) => {
                               }
                             >
                               <Input
+                                p='0'
                                 type='text'
                                 placeholder='Hrs'
                                 textStyle='inputTextStyle'
@@ -504,29 +510,61 @@ const RecurringProjectManage = ({ projectType }: { projectType: string }) => {
                                 </FormErrorMessage>
                               )}
                             </FormControl>
-
-                            <Box
-                              display={taskIndex === index ? 'block' : 'none'}
+                            {taskIndex !== index && index === 0 && (
+                              <Box>
+                                <button
+                                  type='submit'
+                                  disabled
+                                  className='not-allowed form-btn'
+                                >
+                                  {' '}
+                                  <CheckGreySvg />
+                                </button>
+                              </Box>
+                            )}
+                            {taskIndex === index && (
+                              <Flex alignItems='center'>
+                                <Box
+                                  pr='7px'
+                                  display='flex'
+                                  alignItems='center'
+                                >
+                                  <button type='submit' className='form-btn'>
+                                    {' '}
+                                    <CheckGreenSvg />
+                                  </button>
+                                </Box>
+                                <Box
+                                  cursor='pointer'
+                                  onClick={() => setTaskIndex(null)}
+                                >
+                                  <CloseSvg />
+                                </Box>
+                              </Flex>
+                            )}
+                            <Flex
+                              display={
+                                index !== 0 &&
+                                isVisibleIndex === index &&
+                                taskIndex !== index
+                                  ? 'flex'
+                                  : 'none'
+                              }
                             >
-                              <button type='submit'>
-                                {' '}
-                                <CheckSvg />
-                              </button>
-                            </Box>
-                            <Tooltip label='Delete'>
                               <Box
-                                display={
-                                  isVisibleIndex === index ? 'block' : 'none'
-                                }
-                                pos='absolute'
-                                top='23%'
-                                right='15px'
+                                mr='8px'
+                                cursor='pointer'
+                                onChange={(e: any) => checkHandler(e, _.id)}
+                              >
+                                <ArchiveSvg />
+                              </Box>
+                              <Box
                                 cursor='pointer'
                                 onClick={() => removeTaskControls(_.id, index)}
                               >
                                 <DeleteSvg />
                               </Box>
-                            </Tooltip>
+                            </Flex>
                           </HStack>
                         </ListItem>
                       </form>
