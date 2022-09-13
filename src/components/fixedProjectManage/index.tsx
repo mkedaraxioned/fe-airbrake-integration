@@ -240,7 +240,7 @@ const FixedProjectManage = () => {
                             )}
                           </FormControl>
                           <FormControl
-                            w='60px'
+                            w='80px'
                             pos='relative'
                             mr='5px !important'
                             isInvalid={
@@ -285,8 +285,8 @@ const FixedProjectManage = () => {
                             </Box>
                           )}
                           {milestoneIndex === index && (
-                            <Flex>
-                              <Box>
+                            <Flex alignItems='center'>
+                              <Box display='flex' pr='7px'>
                                 <button type='submit' className='form-btn'>
                                   {' '}
                                   <CheckGreenSvg />

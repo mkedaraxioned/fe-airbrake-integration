@@ -256,7 +256,7 @@ const RecurringProjectManage = ({ projectType }: { projectType: string }) => {
       justifyContent='space-between'
       divider={<StackDivider />}
     >
-      <Box flexBasis='44%' p='22px 0' mr='55px'>
+      <Box p='22px 0'>
         <Flex
           justifyContent='space-between'
           color='grayLight'
@@ -265,7 +265,7 @@ const RecurringProjectManage = ({ projectType }: { projectType: string }) => {
           lineHeight='17.6px'
         >
           <Text>Month cycle - Milestone</Text>
-          <Text>Total budget hrs (opt)</Text>
+          <Text pr='8px'>Total budget hrs (opt)</Text>
         </Flex>
         <Box pos='relative'>
           <UnorderedList m='0'>
@@ -282,6 +282,7 @@ const RecurringProjectManage = ({ projectType }: { projectType: string }) => {
                       <ListItem m='20px 0' display='flex' alignItems='center'>
                         <Flex>
                           <FormControl
+                            pr='20px'
                             pos='relative'
                             isInvalid={
                               milestoneErr?.titleEr &&
@@ -291,7 +292,7 @@ const RecurringProjectManage = ({ projectType }: { projectType: string }) => {
                             }
                           >
                             <Input
-                              w='370px'
+                              w='387px'
                               textStyle='inputTextStyle'
                               type='text'
                               name='title'
@@ -313,7 +314,6 @@ const RecurringProjectManage = ({ projectType }: { projectType: string }) => {
                             )}
                           </FormControl>
                           <FormControl
-                            w='114px'
                             pos='relative'
                             isInvalid={
                               milestoneErr?.budgetEr &&
@@ -323,6 +323,7 @@ const RecurringProjectManage = ({ projectType }: { projectType: string }) => {
                             }
                           >
                             <Input
+                              w='80px'
                               type='text'
                               p='2px'
                               textStyle='inputTextStyle'
@@ -361,13 +362,19 @@ const RecurringProjectManage = ({ projectType }: { projectType: string }) => {
                         )}
                         {milestoneIndex === index && (
                           <Flex alignItems='center'>
-                            <Box pl='10px'>
+                            <Box
+                              p='0 7px 0 10px'
+                              display='flex'
+                              alignItems='center'
+                            >
                               <button type='submit' className='form-btn'>
                                 {' '}
                                 <CheckGreenSvg />
                               </button>
                             </Box>
                             <Box
+                              display='flex'
+                              alignItems='center'
                               cursor='pointer'
                               onClick={() => setMilestoneIndex(null)}
                             >
@@ -393,7 +400,7 @@ const RecurringProjectManage = ({ projectType }: { projectType: string }) => {
         )}
       </Box>
       {projectType === 'RETAINER_GRANULAR' && (
-        <Box pt='22px' pb='22px' pl='50px'>
+        <Box pt='22px' pb='22px'>
           <Flex w='562px' justifyContent='space-between'>
             <HStack
               flexBasis='58%'
@@ -405,7 +412,7 @@ const RecurringProjectManage = ({ projectType }: { projectType: string }) => {
               <Text>Task/Activity name</Text>
             </HStack>
             <HStack
-              flexBasis='34%'
+              flexBasis='27.2%'
               justifyContent='space-between'
               color='grayLight'
               textStyle='sourceSansProBold'
@@ -444,8 +451,8 @@ const RecurringProjectManage = ({ projectType }: { projectType: string }) => {
                         >
                           <HStack pos='relative'>
                             <FormControl
-                              w='350px'
-                              mr='15px !important'
+                              w='387px'
+                              mr='13px'
                               isInvalid={
                                 taskErr?.titleEr && taskErr?.id === index
                                   ? true
@@ -473,8 +480,8 @@ const RecurringProjectManage = ({ projectType }: { projectType: string }) => {
                               )}
                             </FormControl>
                             <FormControl
-                              w='60px'
-                              mr='10px !important'
+                              w='80px'
+                              mr='3px !important'
                               isInvalid={
                                 taskErr?.budgetEr && taskErr?.id === index
                                   ? true
@@ -482,6 +489,7 @@ const RecurringProjectManage = ({ projectType }: { projectType: string }) => {
                               }
                             >
                               <Input
+                                p='0'
                                 type='text'
                                 placeholder='Hrs'
                                 textStyle='inputTextStyle'
@@ -515,8 +523,12 @@ const RecurringProjectManage = ({ projectType }: { projectType: string }) => {
                               </Box>
                             )}
                             {taskIndex === index && (
-                              <Flex>
-                                <Box>
+                              <Flex alignItems='center'>
+                                <Box
+                                  pr='7px'
+                                  display='flex'
+                                  alignItems='center'
+                                >
                                   <button type='submit' className='form-btn'>
                                     {' '}
                                     <CheckGreenSvg />

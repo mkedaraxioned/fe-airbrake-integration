@@ -54,7 +54,7 @@ const ManageTask = () => {
 
   return (
     <Box>
-      <Box p='15px 55px 80px' className='wrapper' textTransform='capitalize'>
+      <Box pt='15px' className='wrapper' textTransform='capitalize'>
         <Breadcrumb
           m='15px 0'
           fontSize='14px'
