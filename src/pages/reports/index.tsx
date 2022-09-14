@@ -10,6 +10,8 @@ import { useGetReportDataQuery } from '../../redux/apis/reports';
 import { format } from 'date-fns';
 import { getTimeInHours } from '../../utils/common';
 import PeopleAccordian from '../../components/peopleAccordian';
+import axios from 'axios';
+import { variables } from '../../constants/backend';
 
 const Reports = () => {
   const [formData, setFormData] = useState<FilterFormData>({
@@ -23,6 +25,29 @@ const Reports = () => {
   });
   const [searchQueryValues, setSearchQueryValues] = useState<any>({});
   const { data: filteredData } = useGetReportDataQuery(searchQueryValues);
+
+  const csvDownload = async () => {
+    try {
+      const response = await axios.get(
+        `${variables.BACKEND_URL}api/reports?startDate=${searchQueryValues?.startDate}&endDate=${searchQueryValues?.endDate}&groupBy=${searchQueryValues?.groupBy}&billableType=${searchQueryValues?.billableType}&clientId=${searchQueryValues?.clientId}&userId=${searchQueryValues?.userId}&projectId=${searchQueryValues?.projectId}&exportType=csv`,
+        {
+          responseType: 'blob',
+          headers: {
+            'Content-Type': 'text/csv',
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
+          },
+        },
+      );
+      const blob = response.data;
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = 'Report.csv';
+      link.click();
+      setTimeout(() => URL.revokeObjectURL(link.href), 0);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <Box>
@@ -62,9 +87,11 @@ const Reports = () => {
               <ExportReport width='16px' />
               <Text
                 ml='8px'
+                onClick={csvDownload}
                 fontSize='14px'
                 textStyle='sourceSansProBold'
                 lineHeight='17.6px'
+                cursor='pointer'
               >
                 Export CSV
               </Text>

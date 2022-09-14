@@ -50,8 +50,8 @@ const ReportFilterForm = ({
   setSearchQueryValues,
 }: Props) => {
   const [dateFormat, setDateFormat] = useState({
-    fixed: true,
-    custom: false,
+    fixed: false,
+    custom: true,
   });
   const { data: clientData } = useGetAllClientsQuery();
   const { data: projectsData } = useGetAllProjectsQuery();
