@@ -12,7 +12,7 @@ import {
 } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
-import { ReactComponent as DeleteSvg } from '../../assets/images/delete.svg';
+import { ReactComponent as DeleteSvg } from '../../assets/images/deleteSVG.svg';
 import { ReactComponent as CheckGreySvg } from '../../assets/images/checkGray.svg';
 import { ReactComponent as CloseSvg } from '../../assets/images/closeSVG.svg';
 import { ReactComponent as CheckGreenSvg } from '../../assets/images/checkGreen.svg';
@@ -286,13 +286,14 @@ const FixedProjectManage = () => {
                           )}
                           {milestoneIndex === index && (
                             <Flex alignItems='center'>
-                              <Box display='flex' pr='7px'>
+                              <Box display='flex' pr='7px' title='Save'>
                                 <button type='submit' className='form-btn'>
                                   {' '}
                                   <CheckGreenSvg />
                                 </button>
                               </Box>
                               <Box
+                                title='Clear'
                                 cursor='pointer'
                                 onClick={() => setMilestoneIndex(null)}
                               >
@@ -310,6 +311,7 @@ const FixedProjectManage = () => {
                             }
                           >
                             <Box
+                              title='Delete'
                               cursor='pointer'
                               onClick={() => removePhaseControls(_.id, index)}
                             >
