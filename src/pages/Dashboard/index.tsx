@@ -17,7 +17,6 @@ import { allUsers } from '../../redux/reducers/allUserSlice';
 import { allClients } from '../../redux/reducers/clientsSlice';
 import { allProjects } from '../../redux/reducers/projectsSlice';
 import { _get } from '../../utils/api';
-import useExitPrompt from '../../utils/useExitPrompt';
 
 const Dashboard = () => {
   const [formData, setFormData] = useState({
@@ -29,8 +28,6 @@ const Dashboard = () => {
     comments: '',
     billingType: false,
   });
-
-  useExitPrompt(true);
 
   const { timeCardId } = useParams();
   const dispatch = useDispatch();

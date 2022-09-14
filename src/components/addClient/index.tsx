@@ -28,7 +28,6 @@ const NewClient = ({ onClose }: Prop) => {
   const inputHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
-
   const fieldValidation = () => {
     const errors: FormData = {};
     const { name } = formData;

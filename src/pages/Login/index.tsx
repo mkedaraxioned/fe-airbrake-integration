@@ -18,15 +18,12 @@ import { FcGoogle } from 'react-icons/fc';
 import { variables } from '../../constants/backend';
 import { useSearchParams } from 'react-router-dom';
 import { _get } from '../../utils/api';
-import preventRefresh from '../../utils/preventRefresh';
 
 const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const token = searchParams.get('token') as string;
-
-  preventRefresh();
 
   useEffect(() => {
     if (token) {

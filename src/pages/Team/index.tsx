@@ -23,14 +23,13 @@ import { ERole } from '../../constants/enum';
 import { User } from '../../interfaces/team';
 import { RootState } from '../../redux';
 import { _get, _patch } from '../../utils/api';
-import preventRefresh from '../../utils/preventRefresh';
 
 const Team = () => {
   const toast = useToast();
   const [loading, setLoading] = useState(false);
   const [allUsers, setAllUsers] = useState([]);
   const currentUser = useSelector((state: RootState) => state.rootSlices.user);
-  preventRefresh();
+
   const switchHandler = async (user: User) => {
     try {
       if (user?.role === ERole.ADMIN) {

@@ -10,7 +10,6 @@ import { useGetReportDataQuery } from '../../redux/apis/reports';
 import { format } from 'date-fns';
 import { getTimeInHours } from '../../utils/common';
 import PeopleAccordian from '../../components/peopleAccordian';
-import preventRefresh from '../../utils/preventRefresh';
 
 const Reports = () => {
   const [formData, setFormData] = useState<FilterFormData>({
@@ -24,7 +23,7 @@ const Reports = () => {
   });
   const [searchQueryValues, setSearchQueryValues] = useState<any>({});
   const { data: filteredData } = useGetReportDataQuery(searchQueryValues);
-  preventRefresh();
+
   return (
     <Box>
       <Box p='15px 0 80px' className='wrapper'>

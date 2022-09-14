@@ -25,7 +25,6 @@ import { _get } from '../../utils/api';
 import { RootState } from '../../redux';
 import { useSelector } from 'react-redux';
 import { ClientSet, utilClientName } from '../../utils/common';
-import preventRefresh from '../../utils/preventRefresh';
 
 const Projects = () => {
   const [searchParams] = useSearchParams();
@@ -43,7 +42,7 @@ const Projects = () => {
   const [checked, setChecked] = useState(true);
   const [type, setType] = useState('');
   const [searchVal, setSearchVal] = useState('');
-  preventRefresh();
+
   useEffect(() => {
     unqClients();
   }, [clients]);
