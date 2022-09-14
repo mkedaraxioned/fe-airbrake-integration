@@ -21,6 +21,7 @@ const ClientAccordian = ({ projects }: any) => {
         borderLeft='1px'
         borderRight='1px'
         borderColor='borderColor'
+        allowMultiple
       >
         {projects?.map((project: any, index: number) => {
           return (

@@ -22,6 +22,7 @@ const PeopleAccordian = ({ user }: any) => {
         borderRight='1px'
         borderColor='borderColor'
         borderTop='0 transparent'
+        allowMultiple
       >
         <AccordionItem>
           {({ isExpanded }) => (

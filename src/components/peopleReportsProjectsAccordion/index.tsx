@@ -28,6 +28,7 @@ const PeopleReportsProjectsAccordion = ({ projects }: any) => {
               borderLeft='none'
               borderRight='none'
               borderTop='0 transparent'
+              allowMultiple
             >
               <AccordionItem>
                 {({ isExpanded }) => (
