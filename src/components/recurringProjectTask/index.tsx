@@ -3,18 +3,36 @@ import React from 'react';
 import { EProjectType } from '../../constants/enum';
 import { ProjectMileStone } from '../../interfaces/projectDetails';
 import TaskDetail from '../taskDetail';
+import TaskDetailGranular from '../taskDetailGranular';
 interface Props {
   milestoneList: ProjectMileStone[];
   projectType?: EProjectType;
 }
 
-const RecurringProjectTasks = ({ milestoneList }: Props) => {
+const ProjectDetailType = ({ milestoneList, projectType }: Props) => {
+  return (
+    <>
+      {projectType === 'RETAINER_GRANULAR'
+        ? milestoneList.map((milestone: ProjectMileStone, id: number) => {
+            return (
+              milestone && <TaskDetailGranular key={id} milestone={milestone} />
+            );
+          })
+        : milestoneList.map((milestone: ProjectMileStone, i: number) => {
+            return milestone && <TaskDetail key={i} milestone={milestone} />;
+          })}
+    </>
+  );
+};
+
+const RecurringProjectTasks = ({ milestoneList, projectType }: Props) => {
   return (
     <Box>
-      {milestoneList ? (
-        milestoneList.map((milestone: ProjectMileStone, i: number) => {
-          return milestone && <TaskDetail key={i} milestone={milestone} />;
-        })
+      {milestoneList && milestoneList.length > 0 ? (
+        <ProjectDetailType
+          projectType={projectType}
+          milestoneList={milestoneList}
+        />
       ) : (
         <Text
           fontSize={'22px'}

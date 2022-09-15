@@ -135,17 +135,20 @@ const TaskDetail = ({ displayBlock, milestone }: Props) => {
         {milestone?.users?.map((user: ProjectUser, i: number) => {
           const updateDateFormat = 'dd MMM yyyy';
           const sortByLastUpdated =
-            user?.timecards?.length > 1
+            user?.timecards?.length > 0 && user?.timecards?.length > 1
               ? user.timecards
                   .sort((a: ProjectActivity, b: ProjectActivity) =>
                     a.updateAt.localeCompare(b.updateAt),
                   )
                   .reverse()
               : user.timecards;
-          const formatUpdatedDate = format(
-            new Date(sortByLastUpdated[0].updateAt),
-            updateDateFormat,
-          );
+          const formatUpdatedDate =
+            user.timecards.length > 0
+              ? format(
+                  new Date(sortByLastUpdated[0]?.updateAt),
+                  updateDateFormat,
+                )
+              : null;
 
           return (
             user && (

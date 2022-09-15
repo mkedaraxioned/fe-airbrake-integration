@@ -11,7 +11,15 @@ export interface ProjectMileStone {
   name: string;
   logTime: number;
   budget?: number;
-  users: ProjectUser[];
+  tasks?: any;
+  title?: string;
+  users?: ProjectUser[];
+}
+
+export interface ProjectTask {
+  id: string;
+  title: string;
+  users?: ProjectUser[];
 }
 
 export interface ProjectUser {

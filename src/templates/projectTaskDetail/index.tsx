@@ -32,8 +32,14 @@ const ProjectTaskDetails = () => {
     try {
       if (projectId) {
         const res = await _get(`api/projects/${projectId}/report`);
-        setProjectData(res.data.data);
-        setLoading(false);
+        if (res.data.data.projectType === 'RETAINER_GRANULAR') {
+          const res = await _get(`api/projects/${projectId}/granular/report`);
+          setProjectData(res.data.data);
+          setLoading(false);
+        } else {
+          setProjectData(res.data.data);
+          setLoading(false);
+        }
       }
     } catch (error) {
       return error;
@@ -112,7 +118,7 @@ const ProjectTaskDetails = () => {
           </Box>
           {projectData && (
             <RecurringProjectTasks
-              milestoneList={projectData?.milestones}
+              milestoneList={projectData?.milestones || projectData?.tasks}
               projectType={projectData.projectType}
             />
           )}
