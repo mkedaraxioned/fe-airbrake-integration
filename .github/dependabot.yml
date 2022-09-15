@@ -8,13 +8,13 @@ updates:
   - package-ecosystem: "npm" # See documentation for possible values
     directory: "/" # Location of package manifests
     schedule:
-      interval: "weekly"
+      interval: "monthly"
       day: "monday"
       time: "05:00"
       # Use USA Standard Time (UTC +05:00)
       timezone: "America/New_York"
     # Allow up to 10 open pull requests for npm dependencies
-    open-pull-requests-limit: 10
+    open-pull-requests-limit: 2
     # to npm package against the `master` branch
     target-branch: "master"
     # Labels on pull requests for version updates only
