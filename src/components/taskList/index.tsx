@@ -23,13 +23,12 @@ const TaskList = ({ formData }: Props) => {
   const fetchEntries = async (date: string) => {
     try {
       setLoading(true);
-      dispatch(updateTimeCardDetails([]));
       const res = await _get(`api/timecards/timelog?startDate=${date}`);
       if (res.data.timecardsData) {
         setLoading(false);
         return dispatch(updateTimeCardDetails(res?.data.timecardsData));
       }
-      dispatch(updateTimeCardDetails([]));
+      dispatch(updateTimeCardDetails(null));
       setLoading(false);
     } catch (err: any) {
       console.log(err);
@@ -106,18 +105,16 @@ const TaskList = ({ formData }: Props) => {
           );
         })
       ) : (
-        <Skeleton isLoaded={!loading}>
-          <Text
-            fontSize={'22px'}
-            lineHeight={'28px'}
-            textAlign={'center'}
-            textStyle='sourceSansProRegular'
-            color='blackGray'
-            m={'68px 0 20px 0'}
-          >
-            No time logged for {format(new Date(formData.date), 'MMM do')}
-          </Text>
-        </Skeleton>
+        <Text
+          fontSize={'22px'}
+          lineHeight={'28px'}
+          textAlign={'center'}
+          textStyle='sourceSansProRegular'
+          color='blackGray'
+          m={'68px 0 20px 0'}
+        >
+          No time logged for {format(new Date(formData.date), 'MMM do')}
+        </Text>
       )}
     </Box>
   );

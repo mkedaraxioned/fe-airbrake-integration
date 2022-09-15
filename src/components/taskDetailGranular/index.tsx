@@ -7,7 +7,6 @@ import {
   Divider,
   Flex,
   List,
-  ListItem,
   Progress,
   Text,
 } from '@chakra-ui/react';
@@ -15,8 +14,6 @@ import { format } from 'date-fns';
 import React from 'react';
 import { FaMinus, FaPlus } from 'react-icons/fa';
 import { HiDotsHorizontal } from 'react-icons/hi';
-import { Link } from 'react-router-dom';
-import { ReactComponent as EditGreyIcon } from '../../assets/images/editGreyIcon.svg';
 import {
   ProjectActivity,
   ProjectMileStone,
