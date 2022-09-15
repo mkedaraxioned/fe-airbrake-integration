@@ -90,10 +90,10 @@ const TaskDetailGranular = ({ milestone }: Props) => {
         </Flex>
       </Flex>
       <Accordion
-        allowToggle
         borderLeft='1px'
         borderRight='1px'
         borderColor='borderColor'
+        allowMultiple
       >
         {milestone?.tasks?.map((task: ProjectTask, id: number) => {
           return (
@@ -159,10 +159,10 @@ const TaskDetailGranular = ({ milestone }: Props) => {
                     </Flex>
                     <Box>
                       <Accordion
-                        allowToggle
                         borderLeft='1px'
                         borderRight='1px'
                         borderColor='borderColor'
+                        allowMultiple
                       >
                         {task?.users?.map((user: ProjectUser, id: number) => {
                           const updateDateFormat = 'dd MMM yyyy';
