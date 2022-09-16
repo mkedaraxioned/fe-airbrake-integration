@@ -53,7 +53,6 @@ const ReportFilterForm = ({
     fixed: false,
     custom: true,
   });
-  const [bothBillable, setBothBillable] = useState(false);
 
   const { data: clientData } = useGetAllClientsQuery();
   const { data: projectsData } = useGetAllProjectsQuery();
@@ -131,19 +130,6 @@ const ReportFilterForm = ({
         ...formData,
         [e.target.name]: e.target.value,
       });
-      setBothBillable(false);
-    } else if (!e.target.checked && e.target.value === 'billable') {
-      setFormData({
-        ...formData,
-        billableType: 'nonBillable',
-      });
-      setBothBillable(false);
-    } else if (!e.target.checked && e.target.value === 'nonBillable') {
-      setFormData({
-        ...formData,
-        billableType: 'billable',
-      });
-      setBothBillable(false);
     } else {
       setFormData({
         ...formData,
@@ -151,28 +137,6 @@ const ReportFilterForm = ({
       });
     }
   };
-
-  const bothSelectHandler = (e: any) => {
-    if (e.target.checked) {
-      setBothBillable(true);
-      setFormData({
-        ...formData,
-        billableType: '',
-      });
-    } else {
-      setFormData({
-        ...formData,
-        billableType: 'nonBillable',
-      });
-      setBothBillable(false);
-    }
-  };
-
-  useEffect(() => {
-    if (formData.billableType === '') {
-      setBothBillable(true);
-    }
-  }, [formData.billableType]);
 
   const selectDateHandler = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const range = e.target.value;
@@ -257,7 +221,7 @@ const ReportFilterForm = ({
     }
     getQueryParamsValues();
   };
-  console.log(formData, 'formData');
+
   return (
     <Box>
       <form onSubmit={formHandler}>
@@ -554,15 +518,9 @@ const ReportFilterForm = ({
                   value='billable'
                   name='billableType'
                   isChecked={
-                    formData.billableType === 'billable' || bothBillable
-                      ? true
-                      : false
+                    formData.billableType === 'billable' ? true : false
                   }
-                  checked={
-                    formData.billableType === 'billable' || bothBillable
-                      ? true
-                      : false
-                  }
+                  checked={formData.billableType === 'billable' ? true : false}
                   onChange={checkboxHandler}
                   _checked={{
                     '.chakra-checkbox__control': {
@@ -580,14 +538,10 @@ const ReportFilterForm = ({
                   name='billableType'
                   value='nonBillable'
                   isChecked={
-                    formData.billableType === 'nonBillable' || bothBillable
-                      ? true
-                      : false
+                    formData.billableType === 'nonBillable' ? true : false
                   }
                   checked={
-                    formData.billableType === 'nonBillable' || bothBillable
-                      ? true
-                      : false
+                    formData.billableType === 'nonBillable' ? true : false
                   }
                   onChange={checkboxHandler}
                   _checked={{
@@ -602,33 +556,6 @@ const ReportFilterForm = ({
                   </Text>
                 </Checkbox>
               </Flex>
-              <Checkbox
-                mt='10px'
-                name='all'
-                value=''
-                isChecked={
-                  formData.billableType === '' && bothBillable ? true : false
-                }
-                checked={
-                  formData.billableType === '' && bothBillable ? true : false
-                }
-                onChange={bothSelectHandler}
-                _checked={{
-                  '.chakra-checkbox__control': {
-                    backgroundColor: 'btnPurple',
-                    border: 'none',
-                  },
-                }}
-              >
-                <Text
-                  fontSize='14px'
-                  textStyle='sourceSansProRegular'
-                  lineHeight='17.6px'
-                  color='reportCta'
-                >
-                  All
-                </Text>
-              </Checkbox>
             </FormControl>
             <Button
               type='submit'
