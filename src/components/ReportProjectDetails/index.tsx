@@ -29,9 +29,11 @@ const ReportProjectDetails = ({ usersData }: any) => {
                     <h2>
                       <AccordionButton
                         p='15px 50px 15px 80px'
+                        mt='-1px'
                         display='flex'
                         justifyContent='space-between'
                         color='grayLight'
+                        outline='none'
                         bg={isExpanded ? 'accordianChildBg' : ''}
                         fontSize='14px'
                         textStyle='sourceSansProRegular'
