@@ -1,16 +1,9 @@
-import {
-  Avatar,
-  Box,
-  Flex,
-  Heading,
-  ListItem,
-  Text,
-  UnorderedList,
-} from '@chakra-ui/react';
+import { Box, Flex, Heading } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router';
 import Calendar from '../../components/calender';
+import RecentlyUsed from '../../components/recentlyUsed';
 import TaskList from '../../components/taskList';
 import TimeLogFrom from '../../components/timeLogForm';
 import { allUsers } from '../../redux/reducers/allUserSlice';
@@ -109,67 +102,7 @@ const Dashboard = () => {
           >
             Recently Used
           </Heading>
-          <UnorderedList w='80%' listStyleType='none' m='0'>
-            {Array.from({ length: 1 }).map((_, index) => {
-              return (
-                <ListItem
-                  p='12px 0'
-                  borderBottom='1px'
-                  borderColor='borderPrimary'
-                  fontSize='16px'
-                  textStyle='sourceSansProRegular'
-                  lineHeight='24px'
-                  display='flex'
-                  alignItems='center'
-                  key={index}
-                  cursor='pointer'
-                >
-                  <Box mr='18px'>
-                    <Avatar w='30px' h='30px' />
-                  </Box>
-                  <Box>
-                    <Text
-                      fontSize='14px'
-                      lineHeight='17.6px'
-                      color='textLightMid'
-                    >
-                      WordPress Maintenance
-                    </Text>
-                    <Text
-                      fontSize='12px'
-                      lineHeight='15.08px'
-                      color='textLight'
-                    >
-                      Month 65
-                    </Text>
-                  </Box>
-                </ListItem>
-              );
-            })}
-            <ListItem
-              p='12px 0'
-              borderBottom='1px'
-              borderColor='borderPrimary'
-              fontSize='16px'
-              textStyle='sourceSansProRegular'
-              lineHeight='24px'
-              display='flex'
-              alignItems='center'
-              cursor='pointer'
-            >
-              <Box mr='18px'>
-                <Avatar w='30px' h='30px' />
-              </Box>
-              <Box>
-                <Text fontSize='14px' lineHeight='17.6px' color='textLightMid'>
-                  ClearForMe Ongoing Retainer Agreement
-                </Text>
-                <Text fontSize='12px' lineHeight='15.08px' color='textLight'>
-                  Month 65
-                </Text>
-              </Box>
-            </ListItem>
-          </UnorderedList>
+          <RecentlyUsed setFormData={setFormData} formData={formData} />
         </Box>
       </Flex>
     </Box>

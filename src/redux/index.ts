@@ -24,6 +24,7 @@ import {
   projectsReducer,
   clientsReducer,
   timeCardReducer,
+  recentlyUsedReducer,
 } from './reducers';
 
 import { baseSlice } from './apis';
@@ -38,6 +39,7 @@ const rootReducer = {
   allProjects: projectsReducer,
   allClients: clientsReducer,
   timeCard: timeCardReducer,
+  recentlyUsed: recentlyUsedReducer,
 };
 
 const persistConfig: PersistConfig = {
