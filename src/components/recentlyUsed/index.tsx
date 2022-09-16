@@ -44,10 +44,10 @@ const RecentlyUsed = ({ setFormData, formData }: any) => {
             >
               <Box>
                 <Text fontSize='14px' lineHeight='17.6px' color='textLightMid'>
-                  {currentProject.title}
+                  {currentProject?.title}
                 </Text>
                 <Text fontSize='12px' lineHeight='15.08px' color='textLight'>
-                  {currentProject.client.name}
+                  {currentProject?.client.name}
                 </Text>
               </Box>
             </ListItem>

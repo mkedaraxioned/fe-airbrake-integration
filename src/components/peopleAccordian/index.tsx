@@ -30,10 +30,12 @@ const PeopleAccordian = ({ user }: any) => {
               <h2>
                 <AccordionButton
                   p='15px 50px 15px 32px'
+                  mt='-1px'
                   display='flex'
                   justifyContent='space-between'
                   color='grayLight'
                   fontSize='14px'
+                  outline='none'
                   bg={isExpanded ? 'accordianParentBg' : ''}
                   textStyle='sourceSansProRegular'
                   lineHeight='17.6px'

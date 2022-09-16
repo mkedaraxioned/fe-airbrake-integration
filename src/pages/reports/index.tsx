@@ -1,17 +1,24 @@
-import React, { useState } from 'react';
-import { Box, Breadcrumb, BreadcrumbItem, Flex, Text } from '@chakra-ui/react';
+import React, { useEffect, useState } from 'react';
+import {
+  Box,
+  Breadcrumb,
+  BreadcrumbItem,
+  Flex,
+  Skeleton,
+  Text,
+} from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
 import ReportFilterForm from '../../components/ReportFilterForm';
 import ClientAccordian from '../../components/clientAccordian';
 import { ReactComponent as ExportReport } from '../../assets/images/exportReportCSV.svg';
 import { ReactComponent as PrintReport } from '../../assets/images/printReportCSV.svg';
 import { FilterFormData } from '../../interfaces/reports';
-import { useGetReportDataQuery } from '../../redux/apis/reports';
 import { format } from 'date-fns';
 import { getTimeInHours } from '../../utils/common';
 import PeopleAccordian from '../../components/peopleAccordian';
 import axios from 'axios';
 import { variables } from '../../constants/backend';
+import { _get } from '../../utils/api';
 
 const Reports = () => {
   const [formData, setFormData] = useState<FilterFormData>({
@@ -24,7 +31,27 @@ const Reports = () => {
     endDate: new Date(),
   });
   const [searchQueryValues, setSearchQueryValues] = useState<any>({});
-  const { data: filteredData } = useGetReportDataQuery(searchQueryValues);
+  const [filteredData, setFilteredData] = useState<any>();
+  const [loaded, setLoaded] = useState(false);
+
+  useEffect(() => {
+    fetchReportData();
+  }, [searchQueryValues]);
+
+  const fetchReportData = async () => {
+    try {
+      setLoaded(true);
+      const res: any = await _get(
+        `api/reports?startDate=${searchQueryValues.startDate}&endDate=${searchQueryValues.endDate}&groupBy=${searchQueryValues.groupBy}&billableType=${searchQueryValues.billableType}&clientId=${searchQueryValues.clientId}&projectId=${searchQueryValues.projectId}&userId=${searchQueryValues.userId}`,
+      );
+      if (res?.data.data) {
+        setFilteredData(res.data.data);
+      }
+      setLoaded(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const csvDownload = async () => {
     try {
@@ -107,9 +134,9 @@ const Reports = () => {
           />
         </Box>
         <Box pt='50px'>
-          {filteredData?.data.startDate && filteredData?.data.endDate && (
+          {filteredData?.startDate && filteredData?.endDate && (
             <Text
-              p='12px 33px'
+              p='12px 32px'
               bg='bgGrayLight'
               color='grayLight'
               fontSize='18px'
@@ -118,51 +145,69 @@ const Reports = () => {
               border='1px'
               borderColor='borderColor'
             >
-              {filteredData?.data.startDate &&
-                filteredData?.data.endDate &&
+              {filteredData?.startDate &&
+                filteredData?.endDate &&
                 `Results for ${format(
-                  new Date(filteredData?.data.startDate),
+                  new Date(filteredData?.startDate),
                   'MMMM dd, yyyy',
                 )} - ${format(
-                  new Date(filteredData?.data.endDate),
+                  new Date(filteredData?.endDate),
                   'MMMM dd, yyyy',
                 )}`}
             </Text>
           )}
           <Box>
-            {(filteredData?.data.clients?.length <= 0 ||
-              filteredData?.data.users?.length <= 0) && (
-              <Box p='25px 35px'>
-                <Text>No data found...</Text>
-              </Box>
+            {(filteredData?.clients?.length <= 0 ||
+              filteredData?.users?.length <= 0) && (
+              <Skeleton isLoaded={!loaded}>
+                <Box
+                  p='12px 32px'
+                  borderBottom='1px'
+                  borderLeft='1px'
+                  borderRight='1px'
+                  borderColor='borderColor'
+                >
+                  <Text>No data found.</Text>
+                </Box>
+              </Skeleton>
             )}
-            {filteredData?.data.clients?.map((client: any, index: number) => {
+            {filteredData?.clients?.map((client: any, index: number) => {
               return (
                 <Box key={index}>
-                  <Flex justifyContent='space-between' p='8px 50px' bg='bgGray'>
-                    <Text
-                      color='grayLight'
-                      textStyle='sourceSansProBold'
-                      fontSize='14px'
-                      lineHeight='17.6px'
+                  <Skeleton isLoaded={!loaded}>
+                    <Flex
+                      justifyContent='space-between'
+                      p='8px 50px'
+                      bg='bgGray'
                     >
-                      {client.name}
-                    </Text>
-                    <Text
-                      color='grayLight'
-                      textStyle='sourceSansProBold'
-                      fontSize='14px'
-                      lineHeight='17.6px'
-                    >
-                      {getTimeInHours(client.logTime)}
-                    </Text>
-                  </Flex>
-                  <ClientAccordian projects={client.projects} />
+                      <Text
+                        color='grayLight'
+                        textStyle='sourceSansProBold'
+                        fontSize='14px'
+                        lineHeight='17.6px'
+                      >
+                        {client.name}
+                      </Text>
+                      <Text
+                        color='grayLight'
+                        textStyle='sourceSansProBold'
+                        fontSize='14px'
+                        lineHeight='17.6px'
+                      >
+                        {getTimeInHours(client.logTime)}
+                      </Text>
+                    </Flex>
+                    <ClientAccordian projects={client.projects} />
+                  </Skeleton>
                 </Box>
               );
             })}
-            {filteredData?.data.users?.map((users: any, index: number) => {
-              return <PeopleAccordian user={users} key={index} />;
+            {filteredData?.users?.map((users: any, index: number) => {
+              return (
+                <Skeleton isLoaded={!loaded} key={index}>
+                  <PeopleAccordian user={users} />
+                </Skeleton>
+              );
             })}
           </Box>
         </Box>
