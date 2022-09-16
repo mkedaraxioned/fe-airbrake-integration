@@ -82,7 +82,7 @@ const FixedProjectManage = () => {
   const fetchProject = async () => {
     const res = await _get(`api/projects/${projectId}`);
     setFixedFormData({
-      phase: [{ title: '', budget: '' }, ...res.data.project.milestones],
+      phase: [...res.data.project.milestones, { title: '', budget: '' }],
     });
   };
 
