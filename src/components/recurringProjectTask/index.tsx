@@ -7,11 +7,28 @@ import TaskDetailGranular from '../taskDetailGranular';
 interface Props {
   milestoneList: ProjectMileStone[];
   projectType?: EProjectType;
+  projectBasics?: any;
 }
 
-const ProjectDetailType = ({ milestoneList, projectType }: Props) => {
+const ProjectDetailType = ({
+  milestoneList,
+  projectType,
+  projectBasics,
+}: Props) => {
   return (
-    <>
+    <Box p='30px 0'>
+      <Box className='wrapper'>
+        <Box pos='relative'>
+          <Text
+            color='textColor'
+            textStyle='sourceSansProBold'
+            fontSize='18px'
+            lineHeight='22.63px'
+          >
+            Task details
+          </Text>
+        </Box>
+      </Box>
       {projectType === 'RETAINER_GRANULAR'
         ? milestoneList.map((milestone: ProjectMileStone, id: number) => {
             return (
@@ -19,19 +36,32 @@ const ProjectDetailType = ({ milestoneList, projectType }: Props) => {
             );
           })
         : milestoneList.map((milestone: ProjectMileStone, i: number) => {
-            return milestone && <TaskDetail key={i} milestone={milestone} />;
+            return (
+              milestone && (
+                <TaskDetail
+                  key={i}
+                  milestone={milestone}
+                  projectBasics={projectBasics}
+                />
+              )
+            );
           })}
-    </>
+    </Box>
   );
 };
 
-const RecurringProjectTasks = ({ milestoneList, projectType }: Props) => {
+const RecurringProjectTasks = ({
+  milestoneList,
+  projectType,
+  projectBasics,
+}: Props) => {
   return (
     <Box>
       {milestoneList && milestoneList.length > 0 ? (
         <ProjectDetailType
           projectType={projectType}
           milestoneList={milestoneList}
+          projectBasics={projectBasics}
         />
       ) : (
         <Text
