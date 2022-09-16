@@ -53,6 +53,7 @@ const ReportFilterForm = ({
     fixed: false,
     custom: true,
   });
+
   const { data: clientData } = useGetAllClientsQuery();
   const { data: projectsData } = useGetAllProjectsQuery();
   const { data: usersData } = useGetAllUsersQuery();
@@ -521,6 +522,12 @@ const ReportFilterForm = ({
                   }
                   checked={formData.billableType === 'billable' ? true : false}
                   onChange={checkboxHandler}
+                  _checked={{
+                    '.chakra-checkbox__control': {
+                      backgroundColor: 'btnPurple',
+                      border: 'none',
+                    },
+                  }}
                 >
                   <Text fontSize='14px' lineHeight='17.6px'>
                     Billable
@@ -537,6 +544,12 @@ const ReportFilterForm = ({
                     formData.billableType === 'nonBillable' ? true : false
                   }
                   onChange={checkboxHandler}
+                  _checked={{
+                    '.chakra-checkbox__control': {
+                      backgroundColor: 'btnPurple',
+                      border: 'none',
+                    },
+                  }}
                 >
                   <Text fontSize='14px' lineHeight='17.6px'>
                     Non-Billable

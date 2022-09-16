@@ -34,6 +34,7 @@ const ClientAccordian = ({ projects }: any) => {
                       display='flex'
                       justifyContent='space-between'
                       color='grayLight'
+                      outline='none'
                       fontSize='14px'
                       bg={isExpanded ? 'accordianParentBg' : ''}
                       textStyle='sourceSansProRegular'

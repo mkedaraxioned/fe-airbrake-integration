@@ -12,6 +12,7 @@ import { Link } from 'react-router-dom';
 import { ReactComponent as CalenderIcon1 } from '../../assets/images/calenderIcon1.svg';
 import { ReactComponent as CalenderIcon2 } from '../../assets/images/calenderIcon2.svg';
 import { RootState } from '../../redux';
+import { convertMinutes, percentage } from '../../utils/common';
 
 interface Props {
   project: any;
@@ -21,6 +22,19 @@ const ProjectCard = ({ project }: Props) => {
   const { users } = useSelector(
     (state: RootState) => state.rootSlices.allUsers,
   );
+
+  const timeColorFunc = () => {
+    const per = percentage(project?.timeLogged, project?.projectBudget);
+
+    if (per < 90) {
+      return 'green';
+    } else if (per < 100) {
+      return 'yellow';
+    } else {
+      return 'red';
+    }
+  };
+
   return (
     <Box
       w='full'
@@ -65,16 +79,18 @@ const ProjectCard = ({ project }: Props) => {
         <Box p='12px 22px'>
           <Text>
             <Text
-              p='2px 8px'
-              bg='greenLightBg'
-              color='greenLight'
+              p='4px 8px'
+              borderRadius='2px'
+              bg={`${timeColorFunc()}LightBg`}
+              color={`${timeColorFunc()}Light`}
               fontSize='13.83px'
               textStyle='sourceSansProBold'
               lineHeight='17.39px'
               display='inline-block'
               as='span'
             >
-              20 hours remaining
+              Total Hours - {convertMinutes(project?.projectBudget)} | Used
+              Hours - {convertMinutes(project?.timeLogged)}
             </Text>
           </Text>
           <Text

@@ -42,7 +42,7 @@ const TimeCard = ({ task, formData }: TaskDetails) => {
             toast({
               title: 'Entry Logs Detail',
               description: del?.data?.message,
-              status: 'error',
+              status: 'success',
               duration: 2000,
               position: 'top-right',
               isClosable: true,

@@ -36,9 +36,11 @@ const PeopleReportsProjectsAccordion = ({ projects }: any) => {
                     <h2>
                       <AccordionButton
                         p='15px 50px 15px 60px'
+                        mt='-1px'
                         display='flex'
                         justifyContent='space-between'
                         color='grayLight'
+                        outline='none'
                         fontSize='14px'
                         bg={isExpanded ? 'accordianChildBg' : ''}
                         textStyle='sourceSansProRegular'

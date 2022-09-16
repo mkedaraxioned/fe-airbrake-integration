@@ -64,13 +64,12 @@ const RecurringProjectManage = ({ projectType }: { projectType: string }) => {
   useEffect(() => {
     fetchProject();
   }, []);
-  console.log(tasks, 'tasks');
   const fetchProject = async () => {
     if (projectId) {
       const res = await _get(`api/projects/${projectId}`);
       setRecurringFormData({
         milestone: res.data.project.milestones,
-        tasks: [{ title: '', budget: '' }, ...res.data.project.tasks],
+        tasks: [...res.data.project.tasks, { title: '', budget: '' }],
       });
     }
   };
