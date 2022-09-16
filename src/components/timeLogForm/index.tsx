@@ -28,6 +28,7 @@ import { convertMinutes } from '../../utils/common';
 import { timeStringValidate } from '../../utils/validation';
 import CustomSelect from '../customSelect';
 import { resetFormData, resetTimeLogError } from './helperConstants';
+import { recentlyUsed } from '../../redux/reducers/recentlyUsedSlice';
 
 interface Props {
   formData: TimeLogFormData;
@@ -245,6 +246,14 @@ const TimeLogFrom = ({ formData, setFormData }: Props) => {
           fetchEntries(format(new Date(formData.date), 'yyyy-MM-dd'));
         }
       }
+      dispatch(
+        recentlyUsed({
+          projectId: payload.projectId,
+          ClientId: payload.clientId,
+          milestoneId: payload.milestoneId,
+          taskId: payload.taskId,
+        }),
+      );
     } catch (error: any) {
       toast({
         title: 'Timecard',
