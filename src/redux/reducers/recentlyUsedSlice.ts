@@ -13,6 +13,11 @@ const updateState = (state: any, data: any) => {
     if (state.recentlyUsedProject.length > 5) {
       state.recentlyUsedProject.pop();
     }
+  } else if (projectIds.includes(data.projectId)) {
+    const filteredProject = state.recentlyUsedProject.filter(
+      (project: { projectId: string }) => project.projectId !== data.projectId,
+    );
+    state.recentlyUsedProject = [data, ...filteredProject];
   }
 };
 
