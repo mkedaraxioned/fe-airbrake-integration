@@ -74,7 +74,6 @@ const TaskDetailGranular = ({ milestone }: Props) => {
                 w='200px'
                 rounded='full'
                 size='sm'
-                colorScheme='green'
                 bg='white'
               />
               <Text pl='5px'>

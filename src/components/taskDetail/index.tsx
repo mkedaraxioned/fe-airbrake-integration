@@ -92,7 +92,6 @@ const TaskDetail = ({ displayBlock, milestone }: Props) => {
                 w={['80px', '100px', '120px', '150px', '200px']}
                 rounded='full'
                 size='sm'
-                colorScheme='green'
                 bg='white'
               />
               <Text pl='10px'>
