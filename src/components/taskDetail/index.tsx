@@ -13,9 +13,8 @@ import {
   Text,
 } from '@chakra-ui/react';
 import { FaMinus, FaPlus } from 'react-icons/fa';
-import { convertMinutes, percentage } from '../../utils/common';
+import { convertMinutes, createPdfTitle, percentage } from '../../utils/common';
 import { format } from 'date-fns';
-import { useReactToPrint } from 'react-to-print';
 
 import './taskDetail.modules.css';
 import UserRow from './userRow';
@@ -25,6 +24,7 @@ import {
   ProjectUser,
 } from '../../interfaces/projectDetails';
 import ExportMilestone from '../ExportMilestone';
+import usePrintHook from '../usePrintHook';
 
 interface Props {
   displayBlock?: boolean;
@@ -34,45 +34,17 @@ interface Props {
 
 const TaskDetail = ({ displayBlock, milestone, projectBasics }: Props) => {
   const componentRef = useRef(null);
-  const onBeforeGetContentResolve = useRef<any>(null);
-
-  const [isPrinting, setIsPrinting] = useState(false);
-  const [openAccordianOnPrint, setOpenAccordianOnPrint] = useState<
-    number[] | undefined
-  >([]);
-
-  const date = format(new Date(), 'yyyy-MM-dd');
-
-  const reactToPrintContent = useCallback(() => {
-    return componentRef.current;
-  }, [componentRef.current]);
 
   const defaultValue = milestone?.users?.map((item, i) => i);
+  const docTitle = createPdfTitle(projectBasics?.projectName, milestone?.name);
 
-  const handleOnBeforeGetContent = useCallback(() => {
-    setOpenAccordianOnPrint(defaultValue);
-    setIsPrinting(true);
-
-    return new Promise((resolve) => {
-      onBeforeGetContentResolve.current = resolve;
-      setTimeout(() => {
-        resolve(true);
-      }, 500);
-    });
-  }, [setIsPrinting, openAccordianOnPrint]);
-
-  const handleBeforePrint = () => setIsPrinting(false);
-
-  const handleAfterPrint = () => setOpenAccordianOnPrint([]);
-
-  const handlePrint = useReactToPrint({
-    content: reactToPrintContent,
-    documentTitle: `${milestone?.name}-${date}`,
-    onBeforeGetContent: handleOnBeforeGetContent,
-    onBeforePrint: handleBeforePrint,
-    onAfterPrint: handleAfterPrint,
-    removeAfterPrint: true,
+  const [isPrinting, openAccordianOnPrint, handlePrint] = usePrintHook({
+    componentRef,
+    docTitle,
+    defaultValue,
   });
+
+  const clickHandle = () => handlePrint();
 
   return (
     <Box
@@ -171,7 +143,7 @@ const TaskDetail = ({ displayBlock, milestone, projectBasics }: Props) => {
                   %
                 </Text>
               </Flex>
-              <ExportMilestone handlePrint={handlePrint} />
+              {!isPrinting && <ExportMilestone handlePrint={clickHandle} />}
             </Flex>
           </Flex>
         </Flex>
@@ -189,9 +161,11 @@ const TaskDetail = ({ displayBlock, milestone, projectBasics }: Props) => {
           <Text flexBasis='10%' textAlign={'right'}>
             Hours
           </Text>
-          <Text flexBasis='17%' textAlign={'right'}>
-            Last updated date
-          </Text>
+          {!isPrinting && (
+            <Text flexBasis='17%' textAlign={'right'}>
+              Last updated date
+            </Text>
+          )}
         </Flex>
         <Accordion
           allowToggle
@@ -259,9 +233,11 @@ const TaskDetail = ({ displayBlock, milestone, projectBasics }: Props) => {
                         <Text flexBasis={'10%'} textAlign={'right'}>
                           {convertMinutes(user?.logTime)}
                         </Text>
-                        <Text flexBasis={'17%'} textAlign={'right'}>
-                          {formatUpdatedDate}
-                        </Text>
+                        {!isPrinting && (
+                          <Text flexBasis={'17%'} textAlign={'right'}>
+                            {formatUpdatedDate}
+                          </Text>
+                        )}
                       </AccordionButton>
                       <AccordionPanel p={0}>
                         <List>

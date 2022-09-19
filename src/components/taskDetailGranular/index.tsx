@@ -6,12 +6,13 @@ import {
   Box,
   Divider,
   Flex,
+  Heading,
   List,
   Progress,
   Text,
 } from '@chakra-ui/react';
 import { format } from 'date-fns';
-import React from 'react';
+import React, { useRef } from 'react';
 import { FaMinus, FaPlus } from 'react-icons/fa';
 import { HiDotsHorizontal } from 'react-icons/hi';
 import {
@@ -20,17 +21,55 @@ import {
   ProjectTask,
   ProjectUser,
 } from '../../interfaces/projectDetails';
-import { convertMinutes, percentage } from '../../utils/common';
+import { convertMinutes, createPdfTitle, percentage } from '../../utils/common';
+import ExportMilestone from '../ExportMilestone';
 import UserRow from '../taskDetail/userRow';
+import usePrintHook from '../usePrintHook';
 
 interface Props {
   milestone?: ProjectMileStone;
+  projectBasics: any;
 }
 
-const TaskDetailGranular = ({ milestone }: Props) => {
+const TaskDetailGranular = ({ milestone, projectBasics }: Props) => {
+  const componentRef = useRef(null);
+
+  const defaultValue = milestone?.tasks?.map((item: any, i: number) => i);
+  const docTitle = createPdfTitle(projectBasics?.projectName, milestone?.name);
+
+  const [isPrinting, openAccordianOnPrint, handlePrint] = usePrintHook({
+    componentRef,
+    docTitle,
+    defaultValue,
+  });
+
+  const clickHandle = () => handlePrint();
+
   return (
-    <Box m='20px 0 40px'>
+    <Box m='20px 0 40px' ref={componentRef}>
       <Box className='wrapper'>
+        {isPrinting && (
+          <Box mb='40px'>
+            <Text
+              fontSize='14px'
+              color='textGray'
+              textStyle='sourceSansProRegular'
+              lineHeight='17.6px'
+            >
+              {projectBasics?.clientName}
+            </Text>
+            <Heading
+              as='h2'
+              m='0 !important'
+              color='textColor'
+              textStyle='sourceSansProBold'
+              fontSize='22px'
+              lineHeight='27.65px'
+            >
+              {projectBasics?.projectName}
+            </Heading>
+          </Box>
+        )}
         <Flex
           width='full'
           p='13px 25px'
@@ -65,14 +104,18 @@ const TaskDetailGranular = ({ milestone }: Props) => {
               Actual -{' '}
               {milestone?.logTime && convertMinutes(milestone?.logTime)} Hrs
             </Text>
-            <Flex alignItems='center'>
+            <Flex
+              alignItems='center'
+              justifyContent='space-between'
+              flexBasis={['55%', null, null, '50%', null, '45%']}
+            >
               <Flex alignItems='center'>
                 <Progress
                   value={
                     milestone?.budget &&
                     percentage(milestone?.logTime, milestone?.budget)
                   }
-                  w='200px'
+                  w={['80px', '100px', '120px', '150px', '200px']}
                   rounded='full'
                   size='sm'
                   colorScheme='green'
@@ -84,9 +127,7 @@ const TaskDetailGranular = ({ milestone }: Props) => {
                   %
                 </Text>
               </Flex>
-              <Text pl='43px'>
-                <HiDotsHorizontal />
-              </Text>
+              {!isPrinting && <ExportMilestone handlePrint={clickHandle} />}
             </Flex>
           </Flex>
         </Flex>
@@ -95,6 +136,7 @@ const TaskDetailGranular = ({ milestone }: Props) => {
           borderRight='1px'
           borderColor='borderColor'
           allowMultiple
+          index={isPrinting ? openAccordianOnPrint : undefined}
         >
           {milestone?.tasks?.map((task: ProjectTask, id: number) => {
             return (
@@ -154,9 +196,11 @@ const TaskDetailGranular = ({ milestone }: Props) => {
                         <Text flexBasis='10%' textAlign={'right'}>
                           Hours
                         </Text>
-                        <Text flexBasis='17%' textAlign={'right'}>
-                          Last updated date
-                        </Text>
+                        {!isPrinting && (
+                          <Text flexBasis='17%' textAlign={'right'}>
+                            Last updated date
+                          </Text>
+                        )}
                       </Flex>
                       <Box>
                         <Accordion
@@ -231,12 +275,14 @@ const TaskDetailGranular = ({ milestone }: Props) => {
                                         >
                                           {convertMinutes(user?.logTime)}
                                         </Text>
-                                        <Text
-                                          flexBasis={'17%'}
-                                          textAlign={'right'}
-                                        >
-                                          {formatUpdatedDate}
-                                        </Text>
+                                        {!isPrinting && (
+                                          <Text
+                                            flexBasis={'17%'}
+                                            textAlign={'right'}
+                                          >
+                                            {formatUpdatedDate}
+                                          </Text>
+                                        )}
                                       </AccordionButton>
                                       <AccordionPanel p={0}>
                                         <List>

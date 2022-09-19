@@ -10,7 +10,7 @@ const ExportMilestone = ({ handlePrint }: DropDownProp) => {
     <Menu>
       {({ isOpen }) => (
         <>
-          <MenuButton isActive={isOpen} as={Text} cursor='pointer'>
+          <MenuButton isActive={isOpen} as={Text} cursor='pointer' pl='43px'>
             <HiDotsHorizontal />
           </MenuButton>
           <MenuList>
@@ -23,7 +23,7 @@ const ExportMilestone = ({ handlePrint }: DropDownProp) => {
                 lineHeight='22px'
                 onClick={() => handlePrint()}
               >
-                Print Milestone
+                Print view
               </Text>
             </MenuItem>
           </MenuList>

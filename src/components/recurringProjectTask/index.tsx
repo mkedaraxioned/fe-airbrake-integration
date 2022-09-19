@@ -32,7 +32,13 @@ const ProjectDetailType = ({
       {projectType === 'RETAINER_GRANULAR'
         ? milestoneList.map((milestone: ProjectMileStone, id: number) => {
             return (
-              milestone && <TaskDetailGranular key={id} milestone={milestone} />
+              milestone && (
+                <TaskDetailGranular
+                  key={id}
+                  milestone={milestone}
+                  projectBasics={projectBasics}
+                />
+              )
             );
           })
         : milestoneList.map((milestone: ProjectMileStone, i: number) => {

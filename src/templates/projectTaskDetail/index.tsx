@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import RecurringProjectTasks from '../../components/recurringProjectTask';
 import { useParams } from 'react-router';
 import { _get } from '../../utils/api';
-import ProjectDetailsHeader from '../../components/ProjectDetailsHeader';
+import ProjectDetailsHeader from '../../components/ProjectDetails/ProjectDetailsHeader';
 
 const ProjectTaskDetails = () => {
   const [, setLoading] = useState<boolean>(true);
