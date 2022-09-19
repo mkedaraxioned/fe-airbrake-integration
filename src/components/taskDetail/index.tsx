@@ -24,7 +24,7 @@ import {
   ProjectUser,
 } from '../../interfaces/projectDetails';
 import ExportMilestone from '../ExportMilestone';
-import usePrintHook from '../usePrintHook';
+import usePrintHook from '../../hooks/usePrintHook';
 
 interface Props {
   displayBlock?: boolean;

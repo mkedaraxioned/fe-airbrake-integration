@@ -24,7 +24,7 @@ import {
 import { convertMinutes, createPdfTitle, percentage } from '../../utils/common';
 import ExportMilestone from '../ExportMilestone';
 import UserRow from '../taskDetail/userRow';
-import usePrintHook from '../../hooks';
+import usePrintHook from '../../hooks/usePrintHook';
 
 interface Props {
   milestone?: ProjectMileStone;
