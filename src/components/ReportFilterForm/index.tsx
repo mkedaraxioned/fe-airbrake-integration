@@ -306,11 +306,7 @@ const ReportFilterForm = ({
                   bg='white'
                   onClick={() => selectDateHandler('thisWeek')}
                   variant='secondary'
-                  textStyle={
-                    activeDateRange === 'thisWeek'
-                      ? 'sourceSansProBold'
-                      : 'sourceSansProRegular'
-                  }
+                  textStyle='sourceSansProRegular'
                   lineHeight='17.6'
                   mr='5px'
                   color={
@@ -330,11 +326,7 @@ const ReportFilterForm = ({
                   fontSize='14px'
                   onClick={() => selectDateHandler('lastWeek')}
                   variant='secondary'
-                  textStyle={
-                    activeDateRange === 'lastWeek'
-                      ? 'sourceSansProBold'
-                      : 'sourceSansProRegular'
-                  }
+                  textStyle='sourceSansProRegular'
                   lineHeight='17.6'
                   color={
                     activeDateRange === 'lastWeek' ? 'btnPurple' : 'grayBtnText'
@@ -369,11 +361,7 @@ const ReportFilterForm = ({
                           ? 'btnPurple'
                           : 'grayBtnText'
                       }
-                      textStyle={
-                        activeDateRange === 'thisMonth'
-                          ? 'sourceSansProBold'
-                          : 'sourceSansProRegular'
-                      }
+                      textStyle='sourceSansProRegular'
                     >
                       This Month
                     </MenuItem>
@@ -384,11 +372,7 @@ const ReportFilterForm = ({
                           ? 'btnPurple'
                           : 'grayBtnText'
                       }
-                      textStyle={
-                        activeDateRange === 'lastMonth'
-                          ? 'sourceSansProBold'
-                          : 'sourceSansProRegular'
-                      }
+                      textStyle='sourceSansProRegular'
                     >
                       Last Month
                     </MenuItem>
@@ -399,11 +383,7 @@ const ReportFilterForm = ({
                           ? 'btnPurple'
                           : 'grayBtnText'
                       }
-                      textStyle={
-                        activeDateRange === 'thisYear'
-                          ? 'sourceSansProBold'
-                          : 'sourceSansProRegular'
-                      }
+                      textStyle='sourceSansProRegular'
                     >
                       This Year
                     </MenuItem>
