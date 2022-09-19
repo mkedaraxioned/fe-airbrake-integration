@@ -242,17 +242,28 @@ const Calendar = ({
         justifyContent='space-between'
         alignItems='center'
       >
-        <Text
-          fontSize='22px'
-          textStyle='sourceSansProBold'
-          lineHeight='27.65px'
-        >
-          {`${
-            isSameDay(new Date(), selectedDate)
-              ? 'Today'
-              : format(selectedDate, 'EEEE')
-          }, ${format(selectedDate, 'MMMM do')}`}
-        </Text>
+        <Box>
+          <Text
+            fontSize='16px'
+            textStyle='sourceSansProRegular'
+            lineHeight='20.11px'
+            color='textGray'
+          >
+            {`${
+              isSameDay(new Date(), selectedDate)
+                ? 'Today'
+                : format(selectedDate, 'EEEE')
+            }`}
+          </Text>
+          <Text
+            fontSize='22px'
+            textStyle='sourceSansProBold'
+            lineHeight='27.65px'
+            color='textColor'
+          >
+            {` ${format(selectedDate, 'MMM do')}`}
+          </Text>
+        </Box>
         {isSameMonth(currentMonth, new Date()) &&
         isSameDay(new Date(), selectedDate) ? (
           <Button
