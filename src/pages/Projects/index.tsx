@@ -23,8 +23,9 @@ import { Link, useSearchParams } from 'react-router-dom';
 import ProjectList from '../../components/projectList';
 import { _get } from '../../utils/api';
 import { RootState } from '../../redux';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { ClientSet, utilClientName } from '../../utils/common';
+import { filterFunc } from '../../redux/reducers/projectFilterSlice';
 
 const Projects = () => {
   const [searchParams] = useSearchParams();
@@ -37,11 +38,16 @@ const Projects = () => {
   const { clients } = useSelector(
     (state: RootState) => state.rootSlices.allClients,
   );
+
+  const { filterVal } = useSelector(
+    (state: RootState) => state.rootSlices.projectFilter,
+  );
   const user = useSelector((state: RootState) => state.rootSlices.user);
   const [filterPro, setFilterPro] = useState([]);
   const [checked, setChecked] = useState(true);
   const [type, setType] = useState('');
   const [searchVal, setSearchVal] = useState('');
+  const dispatch = useDispatch();
 
   useEffect(() => {
     unqClients();
@@ -51,16 +57,27 @@ const Projects = () => {
     fetchMyProjects();
     if (
       searchParams.get('checked') === '' ||
-      searchParams.get('checked') === 'true'
+      searchParams.get('checked') === 'true' ||
+      filterVal.checked === true
     ) {
       setChecked(true);
-    } else if (searchParams.get('checked') === 'false') {
+      filterVal && insertUrlParam('checked', `${filterVal.checked}`);
+    } else if (
+      searchParams.get('checked') === 'false' ||
+      filterVal.checked === false
+    ) {
       setChecked(false);
+      filterVal && insertUrlParam('checked', `${filterVal.checked}`);
     }
-    if (searchParams.get('searchVal'))
-      setSearchVal(searchParams.get('searchVal') ?? '');
+    if (searchParams.get('searchVal') || filterVal.search) {
+      setSearchVal(searchParams.get('searchVal') || filterVal.search);
+      filterVal.search !== '' && insertUrlParam('searchVal', filterVal.search);
+    }
 
-    if (searchParams.get('type')) setType(searchParams.get('type') ?? '');
+    if (searchParams.get('type') || filterVal.type) {
+      setType(searchParams.get('type') || filterVal.type);
+      filterVal.type !== '' && insertUrlParam('type', filterVal.type);
+    }
   }, []);
 
   useEffect(() => {
@@ -103,16 +120,19 @@ const Projects = () => {
 
   const handleCheck = () => {
     setChecked(!checked);
+    dispatch(filterFunc({ ...filterVal, checked: !checked }));
     insertUrlParam('checked', `${!checked}`);
   };
 
   const handleSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setType(e.currentTarget.value);
+    dispatch(filterFunc({ ...filterVal, type: e.currentTarget.value }));
     insertUrlParam('type', e.currentTarget.value);
   };
 
   const handleInput = (ele: React.ChangeEvent<HTMLInputElement>) => {
     setSearchVal(ele.currentTarget.value);
+    dispatch(filterFunc({ ...filterVal, search: ele.currentTarget.value }));
     insertUrlParam('searchVal', ele.currentTarget.value);
   };
 
