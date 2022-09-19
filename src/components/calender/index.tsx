@@ -261,7 +261,7 @@ const Calendar = ({
             lineHeight='27.65px'
             color='textColor'
           >
-            {` ${format(selectedDate, 'MMM do')}`}
+            {` ${format(selectedDate, 'do MMMM')}`}
           </Text>
         </Box>
         {isSameMonth(currentMonth, new Date()) &&
