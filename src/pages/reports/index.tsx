@@ -13,7 +13,7 @@ import ClientAccordian from '../../components/clientAccordian';
 import { ReactComponent as ExportReport } from '../../assets/images/exportReportCSV.svg';
 import { ReactComponent as PrintReport } from '../../assets/images/printReportCSV.svg';
 import { FilterFormData } from '../../interfaces/reports';
-import { format } from 'date-fns';
+import { format, lastDayOfWeek, startOfWeek } from 'date-fns';
 import { getTimeInHours } from '../../utils/common';
 import PeopleAccordian from '../../components/peopleAccordian';
 import axios from 'axios';
@@ -27,8 +27,8 @@ const Reports = () => {
     projectId: '',
     groupBy: 'client',
     billableType: '',
-    startDate: new Date(),
-    endDate: new Date(),
+    startDate: new Date(startOfWeek(new Date())),
+    endDate: new Date(lastDayOfWeek(new Date())),
   });
   const [searchQueryValues, setSearchQueryValues] = useState<any>({});
   const [filteredData, setFilteredData] = useState<any>();
@@ -36,6 +36,22 @@ const Reports = () => {
 
   useEffect(() => {
     fetchReportData();
+  }, [searchQueryValues]);
+
+  useEffect(() => {
+    if (searchQueryValues.startDate && searchQueryValues.endDate) {
+      setFormData({
+        ...formData,
+        startDate: new Date(searchQueryValues.startDate),
+        endDate: new Date(searchQueryValues.endDate),
+      });
+    } else {
+      setFormData({
+        ...formData,
+        startDate: new Date(startOfWeek(new Date())),
+        endDate: new Date(lastDayOfWeek(new Date())),
+      });
+    }
   }, [searchQueryValues]);
 
   const fetchReportData = async () => {

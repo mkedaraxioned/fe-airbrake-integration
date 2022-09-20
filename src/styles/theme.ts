@@ -60,6 +60,7 @@ export const costomTheme = extendTheme({
     accordianChildBg: '#7A84CA',
     reportBorder: '##5560A6',
     grayMid: '#F2F2F2',
+    grayBtnText: '#828282',
     tabBg: ' #F8F8F8',
     greenLight: '#00BB8B',
     greenLightBg: '#DFF7F1',

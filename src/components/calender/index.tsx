@@ -164,13 +164,13 @@ const Calendar = ({
                   format(new Date(day), 'yyyy-MM-dd') &&
                 hoursToMinutes(hoursToDecimal(value.totalTime)) < 450
               ) {
-                bgColorVal = '#FFE5A1';
+                bgColorVal = '#FFF3E0';
               } else if (
                 format(new Date(value.date.substr(0, 10)), 'yyyy-MM-dd') ===
                   format(new Date(day), 'yyyy-MM-dd') &&
                 hoursToMinutes(hoursToDecimal(value.totalTime)) >= 450
               ) {
-                bgColorVal = '#AEF2E2';
+                bgColorVal = '#E8F5E9';
               }
             },
           );
@@ -242,17 +242,28 @@ const Calendar = ({
         justifyContent='space-between'
         alignItems='center'
       >
-        <Text
-          fontSize='22px'
-          textStyle='sourceSansProBold'
-          lineHeight='27.65px'
-        >
-          {`${
-            isSameDay(new Date(), selectedDate)
-              ? 'Today'
-              : format(selectedDate, 'EEEE')
-          }, ${format(selectedDate, 'MMMM do')}`}
-        </Text>
+        <Box>
+          <Text
+            fontSize='16px'
+            textStyle='sourceSansProRegular'
+            lineHeight='20.11px'
+            color='textGray'
+          >
+            {`${
+              isSameDay(new Date(), selectedDate)
+                ? 'Today'
+                : format(selectedDate, 'EEEE')
+            }`}
+          </Text>
+          <Text
+            fontSize='22px'
+            textStyle='sourceSansProBold'
+            lineHeight='27.65px'
+            color='textColor'
+          >
+            {` ${format(selectedDate, 'do MMMM')}`}
+          </Text>
+        </Box>
         {isSameMonth(currentMonth, new Date()) &&
         isSameDay(new Date(), selectedDate) ? (
           <Button
