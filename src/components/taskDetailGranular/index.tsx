@@ -14,7 +14,6 @@ import {
 import { format } from 'date-fns';
 import React, { useRef } from 'react';
 import { FaMinus, FaPlus } from 'react-icons/fa';
-import { HiDotsHorizontal } from 'react-icons/hi';
 import {
   ProjectActivity,
   ProjectMileStone,

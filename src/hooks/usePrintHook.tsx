@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import { useReactToPrint } from 'react-to-print';
 
 interface PrintHookProps {
@@ -22,16 +22,12 @@ const usePrintHook = ({
 }: PrintHookProps): [boolean, () => void] => {
   const onBeforeGetContentResolve = useRef<any>(null);
   const [isPrinting, setIsPrinting] = useState<boolean>(false);
-  // const [openAccordianOnPrint, setOpenAccordianOnPrint] = useState<
-  //   number[] | undefined
-  // >([]);
 
   const reactToPrintContent = useCallback(() => {
     return componentRef.current;
   }, [componentRef.current]);
 
   const handleOnBeforeGetContent = useCallback(() => {
-    // setOpenAccordianOnPrint(defaultValue);
     setIsPrinting(true);
 
     return new Promise((resolve) => {
@@ -43,17 +39,12 @@ const usePrintHook = ({
   }, [setIsPrinting]);
 
   const handleBeforePrint = () => setIsPrinting(false);
-  const pageStyle = `
-`;
-
-  // const handleAfterPrint = () => setOpenAccordianOnPrint([]);
 
   const handlePrint = useReactToPrint({
     content: reactToPrintContent,
     documentTitle: docTitle,
     onBeforeGetContent: handleOnBeforeGetContent,
     onBeforePrint: handleBeforePrint,
-    // onAfterPrint: handleAfterPrint,
     removeAfterPrint: true,
   });
 
