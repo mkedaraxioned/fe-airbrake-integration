@@ -178,7 +178,6 @@ const TaskDetail = ({ displayBlock, milestone, projectBasics }: Props) => {
           index={
             isPrinting ? getIndexesBasedOnValues(milestone?.users) : undefined
           }
-          // borderRight={isPrinting ? '5px solid #000' : undefined}
         >
           {milestone?.users?.map((user: ProjectUser, i: number) => {
             const updateDateFormat = 'dd MMM yyyy';

@@ -22,7 +22,7 @@ const UserRow = ({ activity, isPrinting }: Props) => {
         lineHeight='17.6px'
         color='grayLight'
         textStyle='sourceSansProRegular'
-        justifyContent={'space-between'}
+        justifyContent={isPrinting ? 'space-between' : 'initial'}
         borderTop={isPrinting ? '1px solid #E2E8F0' : '1px solid #E2E8F0'}
       >
         <Flex flexBasis='25%'>
@@ -39,7 +39,7 @@ const UserRow = ({ activity, isPrinting }: Props) => {
         <Text pl='18px' flexBasis='10%' textAlign={'right'}>
           {convertMinutes(activity.logTime)}
         </Text>
-        {!isPrinting && (
+        {isPrinting && (
           <Text flexBasis='17%' textAlign={'right'} hidden>
             {activity.updateAt}
           </Text>
