@@ -244,16 +244,16 @@ const TimeLogFrom = ({ formData, setFormData }: Props) => {
           });
           reset();
           fetchEntries(format(new Date(formData.date), 'yyyy-MM-dd'));
+          dispatch(
+            recentlyUsed({
+              projectId: payload.projectId,
+              ClientId: payload.clientId,
+              milestoneId: payload.milestoneId,
+              taskId: payload.taskId,
+            }),
+          );
         }
       }
-      dispatch(
-        recentlyUsed({
-          projectId: payload.projectId,
-          ClientId: payload.clientId,
-          milestoneId: payload.milestoneId,
-          taskId: payload.taskId,
-        }),
-      );
     } catch (error: any) {
       toast({
         title: 'Timecard',
