@@ -4,6 +4,7 @@ import CustomRadio from '../../components/customRadio';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { AiOutlineCalendar } from 'react-icons/ai';
+import { ReactComponent as DownArrow } from '../../assets/images/downArrow.svg';
 import {
   Flex,
   FormControl,
@@ -17,6 +18,10 @@ import {
   Text,
   Divider,
   Button,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
 } from '@chakra-ui/react';
 
 import './reportFilterForm.modules.css';
@@ -47,16 +52,14 @@ interface Props {
 const ReportFilterForm = ({
   formData,
   setFormData,
+  searchQueryValues,
   setSearchQueryValues,
 }: Props) => {
-  const [dateFormat, setDateFormat] = useState({
-    fixed: false,
-    custom: true,
-  });
-
+  const [checkedItems, setCheckedItems] = useState([true, true]);
   const { data: clientData } = useGetAllClientsQuery();
   const { data: projectsData } = useGetAllProjectsQuery();
   const { data: usersData } = useGetAllUsersQuery();
+  const [activeDateRange, setActiveDateRange] = useState('');
 
   const thisWeekFirstDate = startOfWeek(new Date());
   const thisWeekLastDate = lastDayOfWeek(new Date());
@@ -73,11 +76,13 @@ const ReportFilterForm = ({
     getQueryParamsValues();
   }, []);
 
-  const changeDateFormat = (val: string) => {
-    val === 'fixed'
-      ? setDateFormat({ fixed: true, custom: false })
-      : setDateFormat({ fixed: false, custom: true });
-  };
+  useEffect(() => {
+    setSelectRangeItems();
+  }, [formData, searchQueryValues]);
+
+  useEffect(() => {
+    checkboxValueHandle();
+  }, [checkedItems]);
 
   const insertUrlParam = (key: string, value: string) => {
     if (window && window.history.pushState) {
@@ -101,7 +106,7 @@ const ReportFilterForm = ({
     params.forEach((value, key) => {
       searchParamsObj[key] = value;
       if (key === 'endDate' || key === 'startDate') {
-        obj[key] = new Date(value);
+        obj[key] = new Date(value) as Date;
       } else {
         obj[key] = value;
       }
@@ -109,7 +114,7 @@ const ReportFilterForm = ({
     if (obj) {
       setFormData({ ...formData, ...obj });
     }
-    if (setSearchQueryValues) {
+    if (searchParamsObj) {
       setSearchQueryValues({
         ...searchParamsObj,
       });
@@ -124,53 +129,109 @@ const ReportFilterForm = ({
     setFormData({ ...formData, groupBy: e.target.value });
   };
 
-  const checkboxHandler = (e: any) => {
-    if (e.target.checked) {
+  const checkboxValueHandle = () => {
+    if (checkedItems[0] && checkedItems[1]) {
       setFormData({
         ...formData,
-        [e.target.name]: e.target.value,
+        billableType: '',
+      });
+    } else if (checkedItems[0]) {
+      setFormData({
+        ...formData,
+        billableType: 'billable',
+      });
+    } else if (checkedItems[1]) {
+      setFormData({
+        ...formData,
+        billableType: 'nonBillable',
       });
     } else {
       setFormData({
         ...formData,
-        [e.target.name]: '',
+        billableType: '',
       });
     }
   };
 
-  const selectDateHandler = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const range = e.target.value;
-    range === 'thisMonth'
-      ? setFormData({
-          ...formData,
-          startDate: thisMonthFirstDate,
-          endDate: thisMonthLastDate,
-        })
-      : range === 'lastMonth'
-      ? setFormData({
-          ...formData,
-          startDate: lastMonthFirstDate,
-          endDate: lastMonthLastDate,
-        })
-      : range === 'thisWeek'
-      ? setFormData({
-          ...formData,
-          startDate: thisWeekFirstDate,
-          endDate: thisWeekLastDate,
-        })
-      : range === 'lastWeek'
-      ? setFormData({
-          ...formData,
-          startDate: LastWeekFirstDate,
-          endDate: LastWeekLastDate,
-        })
-      : range === 'thisYear'
-      ? setFormData({
-          ...formData,
-          startDate: thisYearFirstDate,
-          endDate: thisYearLastDate,
-        })
-      : null;
+  const selectDateHandler = (type: string) => {
+    const range = type;
+    if (range === 'thisMonth') {
+      setFormData({
+        ...formData,
+        startDate: thisMonthFirstDate,
+        endDate: thisMonthLastDate,
+      });
+      setActiveDateRange('thisMonth');
+    } else if (range === 'lastMonth') {
+      setFormData({
+        ...formData,
+        startDate: lastMonthFirstDate,
+        endDate: lastMonthLastDate,
+      });
+      setActiveDateRange('lastMonth');
+    } else if (range === 'thisWeek') {
+      setFormData({
+        ...formData,
+        startDate: thisWeekFirstDate,
+        endDate: thisWeekLastDate,
+      });
+      setActiveDateRange('thisWeek');
+    } else if (range === 'lastWeek') {
+      setFormData({
+        ...formData,
+        startDate: LastWeekFirstDate,
+        endDate: LastWeekLastDate,
+      });
+      setActiveDateRange('lastWeek');
+    } else if (range === 'thisYear') {
+      setFormData({
+        ...formData,
+        startDate: thisYearFirstDate,
+        endDate: thisYearLastDate,
+      });
+      setActiveDateRange('thisYear');
+    }
+  };
+
+  const setSelectRangeItems = () => {
+    if (
+      format(formData.startDate as Date, 'MM/dd/yyyy') ===
+        format(thisWeekFirstDate, 'MM/dd/yyyy') &&
+      format(formData.endDate as Date, 'MM/dd/yyyy') ===
+        format(thisWeekLastDate, 'MM/dd/yyyy')
+    ) {
+      setActiveDateRange('thisWeek');
+    } else if (
+      format(formData.startDate as Date, 'MM/dd/yyyy') ===
+        format(LastWeekFirstDate, 'MM/dd/yyyy') &&
+      format(formData.endDate as Date, 'MM/dd/yyyy') ===
+        format(LastWeekLastDate, 'MM/dd/yyyy')
+    ) {
+      setActiveDateRange('lastWeek');
+    } else if (
+      format(formData.startDate as Date, 'MM/dd/yyyy') ===
+        format(thisMonthFirstDate, 'MM/dd/yyyy') &&
+      format(formData.endDate as Date, 'MM/dd/yyyy') ===
+        format(thisMonthLastDate, 'MM/dd/yyyy')
+    ) {
+      setActiveDateRange('thisMonth');
+    } else if (
+      format(formData.startDate as Date, 'MM/dd/yyyy') ===
+        format(lastMonthFirstDate, 'MM/dd/yyyy') &&
+      format(formData.endDate as Date, 'MM/dd/yyyy') ===
+        format(lastMonthLastDate, 'MM/dd/yyyy')
+    ) {
+      setActiveDateRange('lastMonth');
+    } else if (
+      format(formData.startDate as Date, 'MM/dd/yyyy') ===
+        format(thisYearFirstDate, 'MM/dd/yyyy') &&
+      format(formData.endDate as Date, 'MM/dd/yyyy') ===
+        format(thisYearLastDate, 'MM/dd/yyyy')
+    ) {
+      setActiveDateRange('thisYear');
+    } else {
+      setActiveDateRange('');
+    }
   };
 
   const formHandler = (e: React.FormEvent<HTMLFormElement>) => {
@@ -219,6 +280,9 @@ const ReportFilterForm = ({
     } else {
       insertUrlParam('projectId', '');
     }
+    if (checkedItems.every((x) => !x)) {
+      setCheckedItems([true, true]);
+    }
     getQueryParamsValues();
   };
 
@@ -232,63 +296,115 @@ const ReportFilterForm = ({
           justifyContent='space-between'
           bg='bgSecondary'
         >
-          <Box pr='15px' flexBasis='27%'>
+          <Box pr='18px' flexBasis='27%'>
             <FormControl>
               <FormLabel m='5px 0' className='form_label' fontWeight='600'>
                 Date range
               </FormLabel>
-              <HStack pb='32px' onClick={() => changeDateFormat('fixed')}>
-                <CustomRadio isChecked={dateFormat.fixed} />
-                <Select
-                  h='38px'
-                  id='select_project'
-                  name='clientName'
-                  placeholder='Select'
+              <HStack pb='32px'>
+                <Button
+                  w='95px'
+                  h='36px'
                   fontSize='14px'
-                  color='grayLight'
-                  textStyle='sourceSansProRegular'
-                  lineHeight='17.6px'
                   bg='white'
-                  disabled={!dateFormat.fixed}
-                  _disabled={{
-                    cursor: 'auto',
-                  }}
-                  onChange={selectDateHandler}
+                  onClick={() => selectDateHandler('thisWeek')}
+                  variant='secondary'
+                  textStyle='sourceSansProRegular'
+                  lineHeight='17.6'
+                  mr='5px'
+                  color={
+                    activeDateRange === 'thisWeek' ? 'btnPurple' : 'grayBtnText'
+                  }
+                  borderColor={
+                    activeDateRange === 'thisWeek' ? 'btnPurple' : 'grayBtnText'
+                  }
                 >
-                  <option value='thisMonth'>
-                    This month: {format(thisMonthFirstDate, 'MMM dd')} -{' '}
-                    {format(thisMonthLastDate, 'MMM dd')}
-                  </option>
-                  <option value='lastMonth'>
-                    Last month: {format(lastMonthFirstDate, 'MMM dd')} -{' '}
-                    {format(lastMonthLastDate, 'MMM dd')}
-                  </option>
-                  <option value='thisWeek'>
-                    This week: {format(thisWeekFirstDate, 'MMM dd')} -{' '}
-                    {format(thisWeekLastDate, 'MMM dd')}
-                  </option>
-                  <option value='lastWeek'>
-                    Last week: {format(LastWeekFirstDate, 'MMM dd')} -{' '}
-                    {format(LastWeekLastDate, 'MMM dd')}
-                  </option>
-                  <option value='thisYear'>
-                    This year: {format(thisYearFirstDate, 'MMM dd')} -{' '}
-                    {format(thisYearLastDate, 'MMM dd')}
-                  </option>
-                </Select>
+                  This week
+                </Button>
+                <Button
+                  w='95px'
+                  h='36px'
+                  mr='5px !important'
+                  bg='white'
+                  fontSize='14px'
+                  onClick={() => selectDateHandler('lastWeek')}
+                  variant='secondary'
+                  textStyle='sourceSansProRegular'
+                  lineHeight='17.6'
+                  color={
+                    activeDateRange === 'lastWeek' ? 'btnPurple' : 'grayBtnText'
+                  }
+                  borderColor={
+                    activeDateRange === 'lastWeek' ? 'btnPurple' : 'grayBtnText'
+                  }
+                >
+                  Last week
+                </Button>
+                <Menu>
+                  <MenuButton
+                    as={Button}
+                    h='36px'
+                    w='95px'
+                    border='1px'
+                    borderColor='grayBtnText'
+                    fontSize='14px'
+                    textStyle='sourceSansProRegular'
+                    bg='white'
+                    color='grayBtnText'
+                    lineHeight='17.6'
+                    rightIcon={<DownArrow />}
+                  >
+                    More
+                  </MenuButton>
+                  <MenuList zIndex='5'>
+                    <MenuItem
+                      onClick={() => selectDateHandler('thisMonth')}
+                      color={
+                        activeDateRange === 'thisMonth'
+                          ? 'btnPurple'
+                          : 'grayBtnText'
+                      }
+                      textStyle='sourceSansProRegular'
+                    >
+                      This Month
+                    </MenuItem>
+                    <MenuItem
+                      onClick={() => selectDateHandler('lastMonth')}
+                      color={
+                        activeDateRange === 'lastMonth'
+                          ? 'btnPurple'
+                          : 'grayBtnText'
+                      }
+                      textStyle='sourceSansProRegular'
+                    >
+                      Last Month
+                    </MenuItem>
+                    <MenuItem
+                      onClick={() => selectDateHandler('thisYear')}
+                      color={
+                        activeDateRange === 'thisYear'
+                          ? 'btnPurple'
+                          : 'grayBtnText'
+                      }
+                      textStyle='sourceSansProRegular'
+                    >
+                      This Year
+                    </MenuItem>
+                  </MenuList>
+                </Menu>
               </HStack>
             </FormControl>
             <FormControl>
               <HStack>
-                <CustomRadio isChecked={dateFormat.custom} />
                 <Flex
                   h='38px'
+                  width='149px'
+                  mr='6px'
                   alignItems='center'
                   border='1px'
                   borderColor='borderColor'
                   rounded='md'
                   bg='white'
-                  onClick={() => changeDateFormat('custom')}
                 >
                   <Stack
                     flexBasis='30%'
@@ -313,18 +429,17 @@ const ReportFilterForm = ({
                       }}
                       placeholderText='DD/MM/YYYY'
                       className='date_picker_react'
-                      disabled={!dateFormat.custom}
                     />
                   </Box>
                 </Flex>
                 <Flex
                   h='38px'
+                  width='149px'
                   alignItems='center'
                   border='1px'
                   borderColor='borderColor'
                   rounded='md'
                   bg='white'
-                  onClick={() => changeDateFormat('custom')}
                 >
                   <Stack
                     flexBasis='30%'
@@ -350,7 +465,6 @@ const ReportFilterForm = ({
                       }}
                       placeholderText='DD/MM/YYYY'
                       className='date_picker_react'
-                      disabled={!dateFormat.custom}
                     />
                   </Box>
                 </Flex>
@@ -517,11 +631,10 @@ const ReportFilterForm = ({
                 <Checkbox
                   value='billable'
                   name='billableType'
-                  isChecked={
-                    formData.billableType === 'billable' ? true : false
+                  isChecked={checkedItems[0]}
+                  onChange={(e) =>
+                    setCheckedItems([e.target.checked, checkedItems[1]])
                   }
-                  checked={formData.billableType === 'billable' ? true : false}
-                  onChange={checkboxHandler}
                   _checked={{
                     '.chakra-checkbox__control': {
                       backgroundColor: 'btnPurple',
@@ -537,13 +650,10 @@ const ReportFilterForm = ({
                   pl='18px'
                   name='billableType'
                   value='nonBillable'
-                  isChecked={
-                    formData.billableType === 'nonBillable' ? true : false
+                  isChecked={checkedItems[1]}
+                  onChange={(e) =>
+                    setCheckedItems([checkedItems[0], e.target.checked])
                   }
-                  checked={
-                    formData.billableType === 'nonBillable' ? true : false
-                  }
-                  onChange={checkboxHandler}
                   _checked={{
                     '.chakra-checkbox__control': {
                       backgroundColor: 'btnPurple',

@@ -14,17 +14,17 @@ export const styles = {
   },
   '.date_body': {
     '.date_row div': {
-      border: '0  px solid #E9F2F9',
+      border: '0  px solid #FFF',
     },
     '.date_row div:nth-of-type(7n)': {
-      borderRight: '1px solid #E9F2F9',
+      borderRight: '1px solid #FFF',
     },
     '.date_row div:nth-of-type(1n)': {
-      borderLeft: '1px solid #E9F2F9',
-      borderTop: '1px solid #E9F2F9',
+      borderLeft: '1px solid #FFF',
+      borderTop: '1px solid #FFF',
     },
     '.date_row:last-child div': {
-      borderBottom: '1px solid #E9F2F9',
+      borderBottom: '1px solid #FFF',
     },
     '.date_row .selectedDate': {
       border: '2px solid #4657CE !important',

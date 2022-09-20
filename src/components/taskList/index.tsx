@@ -113,7 +113,7 @@ const TaskList = ({ formData }: Props) => {
           color='blackGray'
           m={'68px 0 20px 0'}
         >
-          No time logged for {format(new Date(formData.date), 'MMM do')}
+          No time logged for the day.
         </Text>
       )}
     </Box>
