@@ -56,7 +56,7 @@ const Dashboard = () => {
   return (
     <Box className='wrapper'>
       <Flex minH='calc(100vh - 78px)' justifyContent='flex-start'>
-        <Box flexBasis='20%' bg='bgLight' pr='40px'>
+        <Box flexBasis='20%' pr='40px'>
           <Box w='323px' mt='40px'>
             <Calendar
               showDetailsHandle={showDetailsHandle}

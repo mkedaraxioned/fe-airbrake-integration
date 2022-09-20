@@ -43,10 +43,10 @@ const RecentlyUsed = ({ setFormData, formData }: any) => {
               onClick={() => mapFormData(_.projectId, _.milestoneId, _.taskId)}
             >
               <Box>
-                <Text fontSize='14px' lineHeight='17.6px' color='textLightMid'>
+                <Text fontSize='16px' lineHeight='22px' color='textLightMid'>
                   {currentProject?.title}
                 </Text>
-                <Text fontSize='12px' lineHeight='15.08px' color='textLight'>
+                <Text fontSize='14px' lineHeight='20px' color='textLight'>
                   {currentProject?.client.name}
                 </Text>
               </Box>
