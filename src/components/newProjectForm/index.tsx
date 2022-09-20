@@ -26,12 +26,12 @@ import {
 import './newProjectForm.modules.css';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import AutoCompleteElem from '../autoComplete';
 import CustomRadio from '../customRadio';
 import { _get, _patch, _post } from '../../utils/api';
 import { add, format } from 'date-fns';
 import { useDispatch } from 'react-redux';
 import { allProjects } from '../../redux/reducers/projectsSlice';
+import AutoCompleteInput from '../autoCompleteInput';
 
 interface Props {
   onClose: () => void;
@@ -136,9 +136,7 @@ const NewProjectForm = ({ onClose, projectId }: Props) => {
   const radioHandler = (e: any) => {
     setFormData({ ...formData, type: e.target.value });
   };
-  const selectMember = (item: MemberObj) => {
-    setMember(item);
-  };
+
   const setMembers = () => {
     const arr = formData.members?.map((val) => val.id);
     const user = allUsers?.filter((ele: any) => ele.id == member?.id);
@@ -208,8 +206,7 @@ const NewProjectForm = ({ onClose, projectId }: Props) => {
     setSelectedUsers([]);
   };
 
-  const formHandler = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const formHandler = async () => {
     try {
       setErrMsg(fieldValidation());
       const notValid = fieldValidation();
@@ -265,7 +262,7 @@ const NewProjectForm = ({ onClose, projectId }: Props) => {
         Add a new project
       </Heading>
       <Box>
-        <form onSubmit={formHandler}>
+        <form>
           <FormControl
             p='25px 0 10px'
             isInvalid={errMsg?.client ? true : false}
@@ -492,9 +489,9 @@ const NewProjectForm = ({ onClose, projectId }: Props) => {
             >
               Add project members
             </FormLabel>
-            <AutoCompleteElem
-              onChange={selectMember}
-              items={allUsers}
+            <AutoCompleteInput
+              setMember={setMember}
+              users={allUsers}
               placeholder={'Select members from the list'}
             />
             <AvatarGroup mt='15px' flexWrap='wrap' w='60%'>
@@ -518,7 +515,13 @@ const NewProjectForm = ({ onClose, projectId }: Props) => {
             <FormErrorMessage>{errMsg?.members}</FormErrorMessage>
           </FormControl>
           <Box>
-            <Button w='137px' type='submit' variant='primary' mr='22px'>
+            <Button
+              onClick={formHandler}
+              w='137px'
+              type='button'
+              variant='primary'
+              mr='22px'
+            >
               Save
             </Button>
             <Button w='105px' variant='secondary' onClick={reset}>
