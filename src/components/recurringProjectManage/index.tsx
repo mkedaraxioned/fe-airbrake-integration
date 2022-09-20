@@ -152,10 +152,9 @@ const RecurringProjectManage = ({ projectType }: { projectType: string }) => {
     if (!title) {
       errors.titleEr = 'Please enter milestone';
     }
-    if (!budget || timeStringValidate(budget)) {
+    if (budget && timeStringValidate(budget)) {
       errors.budgetEr = 'Please enter valid budget';
     }
-
     return errors;
   };
 
@@ -164,7 +163,9 @@ const RecurringProjectManage = ({ projectType }: { projectType: string }) => {
     if (!title) {
       errors.titleEr = 'Please enter Task';
     }
-    if (!budget || timeStringValidate(budget)) {
+    if (!budget) {
+      errors.budgetEr = '';
+    } else if (timeStringValidate(budget)) {
       errors.budgetEr = 'Please enter valid budget';
     }
 
@@ -511,7 +512,7 @@ const RecurringProjectManage = ({ projectType }: { projectType: string }) => {
                                 </FormErrorMessage>
                               )}
                             </FormControl>
-                            {taskIndex !== index && index === 0 && (
+                            {taskIndex !== index && index === tasks.length - 1 && (
                               <Box>
                                 <button
                                   type='submit'
@@ -549,7 +550,8 @@ const RecurringProjectManage = ({ projectType }: { projectType: string }) => {
                               display={
                                 index !== 0 &&
                                 isVisibleIndex === index &&
-                                taskIndex !== index
+                                taskIndex !== index &&
+                                tasks.length - 1 !== index
                                   ? 'flex'
                                   : 'none'
                               }
