@@ -164,13 +164,13 @@ const Calendar = ({
                   format(new Date(day), 'yyyy-MM-dd') &&
                 hoursToMinutes(hoursToDecimal(value.totalTime)) < 450
               ) {
-                bgColorVal = '#FFE5A1';
+                bgColorVal = '#FFF3E0';
               } else if (
                 format(new Date(value.date.substr(0, 10)), 'yyyy-MM-dd') ===
                   format(new Date(day), 'yyyy-MM-dd') &&
                 hoursToMinutes(hoursToDecimal(value.totalTime)) >= 450
               ) {
-                bgColorVal = '#AEF2E2';
+                bgColorVal = '#E8F5E9';
               }
             },
           );

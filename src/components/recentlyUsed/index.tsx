@@ -53,6 +53,19 @@ const RecentlyUsed = ({ setFormData, formData }: any) => {
             </ListItem>
           );
         })}
+        {recentlyUsedProject.length === 0 && (
+          <Box p='45px 15px'>
+            <Text
+              fontSize='16px'
+              lineHeight='1.5'
+              textStyle='sourceSansProRegular'
+              color='blackGray'
+              textAlign='center'
+            >
+              No recently used projects.
+            </Text>
+          </Box>
+        )}
       </UnorderedList>
     </Box>
   );
