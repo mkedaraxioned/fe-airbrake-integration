@@ -32,7 +32,7 @@ const RecentlyUsed = ({ setFormData, formData }: any) => {
             <ListItem
               p='12px 0'
               borderBottom='1px'
-              borderColor='borderPrimary'
+              borderColor='borderColor'
               fontSize='16px'
               textStyle='sourceSansProRegular'
               lineHeight='24px'
