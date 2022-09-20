@@ -17,13 +17,13 @@ const UserRow = ({ activity, isPrinting }: Props) => {
     <ListItem>
       <Flex
         p='15px 4% 15px 2%'
-        borderTop='1px'
         borderColor='borderColor'
         fontSize='14px'
         lineHeight='17.6px'
         color='grayLight'
         textStyle='sourceSansProRegular'
         justifyContent={'space-between'}
+        borderTop={isPrinting ? '1px solid #E2E8F0' : '1px solid #E2E8F0'}
       >
         <Flex flexBasis='25%'>
           {!isPrinting && (

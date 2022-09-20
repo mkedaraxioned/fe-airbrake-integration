@@ -43,6 +43,8 @@ const usePrintHook = ({
   }, [setIsPrinting]);
 
   const handleBeforePrint = () => setIsPrinting(false);
+  const pageStyle = `
+`;
 
   // const handleAfterPrint = () => setOpenAccordianOnPrint([]);
 

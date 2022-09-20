@@ -211,8 +211,8 @@ const TaskDetailGranular = ({ milestone, projectBasics }: Props) => {
                       </Flex>
                       <Box>
                         <Accordion
-                          borderLeft='1px'
-                          borderRight='1px'
+                          borderLeft={isPrinting ? '1px solid #000' : '1px'}
+                          borderRight={isPrinting ? '1px solid #000' : '1px'}
                           borderColor='borderColor'
                           allowMultiple
                           index={

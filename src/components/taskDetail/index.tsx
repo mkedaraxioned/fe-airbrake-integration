@@ -171,13 +171,14 @@ const TaskDetail = ({ displayBlock, milestone, projectBasics }: Props) => {
         </Flex>
         <Accordion
           allowToggle
-          borderLeft='1px'
-          borderRight='1px'
+          borderLeft={isPrinting ? '1px solid #000' : '1px'}
+          borderRight={isPrinting ? '1px solid #000' : '1px'}
           borderColor='borderColor'
           allowMultiple
           index={
             isPrinting ? getIndexesBasedOnValues(milestone?.users) : undefined
           }
+          // borderRight={isPrinting ? '5px solid #000' : undefined}
         >
           {milestone?.users?.map((user: ProjectUser, i: number) => {
             const updateDateFormat = 'dd MMM yyyy';
