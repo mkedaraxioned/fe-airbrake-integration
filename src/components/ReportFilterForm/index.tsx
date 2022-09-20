@@ -55,7 +55,7 @@ const ReportFilterForm = ({
   searchQueryValues,
   setSearchQueryValues,
 }: Props) => {
-  const [checkedItems, setCheckedItems] = useState([false, false]);
+  const [checkedItems, setCheckedItems] = useState([true, true]);
   const { data: clientData } = useGetAllClientsQuery();
   const { data: projectsData } = useGetAllProjectsQuery();
   const { data: usersData } = useGetAllUsersQuery();
@@ -279,6 +279,9 @@ const ReportFilterForm = ({
       insertUrlParam('projectId', projectId);
     } else {
       insertUrlParam('projectId', '');
+    }
+    if (checkedItems.every((x) => !x)) {
+      setCheckedItems([true, true]);
     }
     getQueryParamsValues();
   };

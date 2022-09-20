@@ -84,7 +84,9 @@ const Reports = () => {
       const blob = response.data;
       const link = document.createElement('a');
       link.href = URL.createObjectURL(blob);
-      link.download = 'Report.csv';
+      link.download = response.headers['content-disposition']
+        .replace(/"/g, '')
+        .split('filename=')[1];
       link.click();
       setTimeout(() => URL.revokeObjectURL(link.href), 0);
     } catch (error) {
