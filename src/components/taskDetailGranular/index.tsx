@@ -21,7 +21,12 @@ import {
   ProjectTask,
   ProjectUser,
 } from '../../interfaces/projectDetails';
-import { convertMinutes, createPdfTitle, percentage } from '../../utils/common';
+import {
+  convertMinutes,
+  createPdfTitle,
+  getIndexesBasedOnValues,
+  percentage,
+} from '../../utils/common';
 import ExportMilestone from '../ExportMilestone';
 import UserRow from '../taskDetail/userRow';
 import usePrintHook from '../../hooks/usePrintHook';
@@ -34,13 +39,11 @@ interface Props {
 const TaskDetailGranular = ({ milestone, projectBasics }: Props) => {
   const componentRef = useRef(null);
 
-  const defaultValue = milestone?.tasks?.map((item: any, i: number) => i);
   const docTitle = createPdfTitle(projectBasics?.projectName, milestone?.name);
 
-  const [isPrinting, openAccordianOnPrint, handlePrint] = usePrintHook({
+  const [isPrinting, handlePrint] = usePrintHook({
     componentRef,
     docTitle,
-    defaultValue,
   });
 
   const clickHandle = () => handlePrint();
@@ -136,7 +139,9 @@ const TaskDetailGranular = ({ milestone, projectBasics }: Props) => {
           borderRight='1px'
           borderColor='borderColor'
           allowMultiple
-          index={isPrinting ? openAccordianOnPrint : undefined}
+          index={
+            isPrinting ? getIndexesBasedOnValues(milestone?.tasks) : undefined
+          }
         >
           {milestone?.tasks?.map((task: ProjectTask, id: number) => {
             return (
@@ -162,19 +167,21 @@ const TaskDetailGranular = ({ milestone, projectBasics }: Props) => {
                         }}
                       >
                         <Flex>
-                          <Box
-                            padding='2px 1px 1px '
-                            border='2px'
-                            borderColor='borderDark'
-                            mr='10px'
-                            color='borderDark'
-                          >
-                            {isExpanded ? (
-                              <FaMinus fontSize='10px' />
-                            ) : (
-                              <FaPlus fontSize='10px' />
-                            )}
-                          </Box>
+                          {!isPrinting && (
+                            <Box
+                              padding='2px 1px 1px '
+                              border='2px'
+                              borderColor='borderDark'
+                              mr='10px'
+                              color='borderDark'
+                            >
+                              {isExpanded ? (
+                                <FaMinus fontSize='10px' />
+                              ) : (
+                                <FaPlus fontSize='10px' />
+                              )}
+                            </Box>
+                          )}
                           <Box>
                             <Text textAlign='left'>{task?.title}</Text>
                           </Box>
@@ -208,6 +215,11 @@ const TaskDetailGranular = ({ milestone, projectBasics }: Props) => {
                           borderRight='1px'
                           borderColor='borderColor'
                           allowMultiple
+                          index={
+                            isPrinting
+                              ? getIndexesBasedOnValues(task?.users)
+                              : undefined
+                          }
                         >
                           {task?.users?.map((user: ProjectUser, id: number) => {
                             const updateDateFormat = 'dd MMM yyyy';
@@ -250,19 +262,21 @@ const TaskDetailGranular = ({ milestone, projectBasics }: Props) => {
                                         }}
                                       >
                                         <Flex flexBasis={'73%'}>
-                                          <Box
-                                            padding='2px 1px 1px '
-                                            border='2px'
-                                            borderColor='borderDark'
-                                            mr='10px'
-                                            color='borderDark'
-                                          >
-                                            {isExpanded ? (
-                                              <FaMinus fontSize='10px' />
-                                            ) : (
-                                              <FaPlus fontSize='10px' />
-                                            )}
-                                          </Box>
+                                          {!isPrinting && (
+                                            <Box
+                                              padding='2px 1px 1px '
+                                              border='2px'
+                                              borderColor='borderDark'
+                                              mr='10px'
+                                              color='borderDark'
+                                            >
+                                              {isExpanded ? (
+                                                <FaMinus fontSize='10px' />
+                                              ) : (
+                                                <FaPlus fontSize='10px' />
+                                              )}
+                                            </Box>
+                                          )}
                                           <Box>
                                             <Text textAlign='left'>
                                               {user?.name}
@@ -300,12 +314,14 @@ const TaskDetailGranular = ({ milestone, projectBasics }: Props) => {
                                                   <UserRow
                                                     key={activity.timecardId}
                                                     activity={activity}
+                                                    isPrinting={isPrinting}
                                                   />
                                                 ),
                                               )
                                           ) : (
                                             <UserRow
                                               activity={user?.timecards[0]}
+                                              isPrinting={isPrinting}
                                             />
                                           )}
                                         </List>

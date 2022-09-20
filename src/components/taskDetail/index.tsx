@@ -13,7 +13,12 @@ import {
   Text,
 } from '@chakra-ui/react';
 import { FaMinus, FaPlus } from 'react-icons/fa';
-import { convertMinutes, createPdfTitle, percentage } from '../../utils/common';
+import {
+  convertMinutes,
+  createPdfTitle,
+  getIndexesBasedOnValues,
+  percentage,
+} from '../../utils/common';
 import { format } from 'date-fns';
 
 import './taskDetail.modules.css';
@@ -34,14 +39,11 @@ interface Props {
 
 const TaskDetail = ({ displayBlock, milestone, projectBasics }: Props) => {
   const componentRef = useRef(null);
-
-  const defaultValue = milestone?.users?.map((item, i) => i);
   const docTitle = createPdfTitle(projectBasics?.projectName, milestone?.name);
 
-  const [isPrinting, openAccordianOnPrint, handlePrint] = usePrintHook({
+  const [isPrinting, handlePrint] = usePrintHook({
     componentRef,
     docTitle,
-    defaultValue,
   });
 
   const clickHandle = () => handlePrint();
@@ -173,7 +175,9 @@ const TaskDetail = ({ displayBlock, milestone, projectBasics }: Props) => {
           borderRight='1px'
           borderColor='borderColor'
           allowMultiple
-          index={isPrinting ? openAccordianOnPrint : undefined}
+          index={
+            isPrinting ? getIndexesBasedOnValues(milestone?.users) : undefined
+          }
         >
           {milestone?.users?.map((user: ProjectUser, i: number) => {
             const updateDateFormat = 'dd MMM yyyy';
@@ -213,19 +217,21 @@ const TaskDetail = ({ displayBlock, milestone, projectBasics }: Props) => {
                         }}
                       >
                         <Flex flexBasis={'73%'}>
-                          <Box
-                            padding='2px 1px 1px '
-                            border='2px'
-                            borderColor='borderDark'
-                            mr='10px'
-                            color='borderDark'
-                          >
-                            {isExpanded ? (
-                              <FaMinus fontSize='10px' />
-                            ) : (
-                              <FaPlus fontSize='10px' />
-                            )}
-                          </Box>
+                          {!isPrinting && (
+                            <Box
+                              padding='2px 1px 1px '
+                              border='2px'
+                              borderColor='borderDark'
+                              mr='10px'
+                              color='borderDark'
+                            >
+                              {isExpanded ? (
+                                <FaMinus fontSize='10px' />
+                              ) : (
+                                <FaPlus fontSize='10px' />
+                              )}
+                            </Box>
+                          )}
                           <Box>
                             <Text textAlign='left'>{user?.name}</Text>
                           </Box>
@@ -250,10 +256,14 @@ const TaskDetail = ({ displayBlock, milestone, projectBasics }: Props) => {
                                 <UserRow
                                   key={activity.timecardId}
                                   activity={activity}
+                                  isPrinting={isPrinting}
                                 />
                               ))
                           ) : (
-                            <UserRow activity={user?.timecards[0]} />
+                            <UserRow
+                              activity={user?.timecards[0]}
+                              isPrinting={isPrinting}
+                            />
                           )}
                         </List>
                       </AccordionPanel>

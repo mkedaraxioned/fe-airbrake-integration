@@ -4,17 +4,14 @@ import { useReactToPrint } from 'react-to-print';
 interface PrintHookProps {
   componentRef: any;
   docTitle: string;
-  defaultValue: number[] | undefined;
 }
 
 /**
  * Print selected component based on ref.
  * @param {ref} componentRef - Reference of component to print.
  * @param {string} docTitle - title of the pdf document which will be downloaded.
- * @param {number[] | undefined} defaultValue - open accordians to display all details.
  * @returns [
  * 	isPrinting - state for checking printing state,
- * 	{string} openAccordianOnPrint - open all accordians,
  * 	{void} handlePrint - click event to trigger printing of a selected component
  * ]
  */
@@ -22,20 +19,19 @@ interface PrintHookProps {
 const usePrintHook = ({
   componentRef,
   docTitle,
-  defaultValue,
-}: PrintHookProps): [boolean, number[] | undefined, () => void] => {
+}: PrintHookProps): [boolean, () => void] => {
   const onBeforeGetContentResolve = useRef<any>(null);
   const [isPrinting, setIsPrinting] = useState<boolean>(false);
-  const [openAccordianOnPrint, setOpenAccordianOnPrint] = useState<
-    number[] | undefined
-  >([]);
+  // const [openAccordianOnPrint, setOpenAccordianOnPrint] = useState<
+  //   number[] | undefined
+  // >([]);
 
   const reactToPrintContent = useCallback(() => {
     return componentRef.current;
   }, [componentRef.current]);
 
   const handleOnBeforeGetContent = useCallback(() => {
-    setOpenAccordianOnPrint(defaultValue);
+    // setOpenAccordianOnPrint(defaultValue);
     setIsPrinting(true);
 
     return new Promise((resolve) => {
@@ -44,22 +40,22 @@ const usePrintHook = ({
         resolve(true);
       }, 500);
     });
-  }, [setIsPrinting, openAccordianOnPrint]);
+  }, [setIsPrinting]);
 
   const handleBeforePrint = () => setIsPrinting(false);
 
-  const handleAfterPrint = () => setOpenAccordianOnPrint([]);
+  // const handleAfterPrint = () => setOpenAccordianOnPrint([]);
 
   const handlePrint = useReactToPrint({
     content: reactToPrintContent,
     documentTitle: docTitle,
     onBeforeGetContent: handleOnBeforeGetContent,
     onBeforePrint: handleBeforePrint,
-    onAfterPrint: handleAfterPrint,
+    // onAfterPrint: handleAfterPrint,
     removeAfterPrint: true,
   });
 
-  return [isPrinting, openAccordianOnPrint, handlePrint];
+  return [isPrinting, handlePrint];
 };
 
 export default usePrintHook;

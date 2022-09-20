@@ -8,9 +8,10 @@ import { ProjectActivity } from '../../interfaces/projectDetails';
 
 interface Props {
   activity: ProjectActivity;
+  isPrinting?: boolean;
 }
 
-const UserRow = ({ activity }: Props) => {
+const UserRow = ({ activity, isPrinting }: Props) => {
   const formatTimeCardDate = 'EEEE, MMMM dd, yyyy';
   return (
     <ListItem>
@@ -22,11 +23,14 @@ const UserRow = ({ activity }: Props) => {
         lineHeight='17.6px'
         color='grayLight'
         textStyle='sourceSansProRegular'
+        justifyContent={'space-between'}
       >
         <Flex flexBasis='25%'>
-          <Link to={`/dashboard/${activity.timecardId}`}>
-            <EditGreyIcon />
-          </Link>
+          {!isPrinting && (
+            <Link to={`/dashboard/${activity.timecardId}`}>
+              <EditGreyIcon />
+            </Link>
+          )}
           <Text pl='11px'>
             {format(new Date(activity.date), formatTimeCardDate)}
           </Text>
@@ -35,9 +39,11 @@ const UserRow = ({ activity }: Props) => {
         <Text pl='18px' flexBasis='10%' textAlign={'right'}>
           {convertMinutes(activity.logTime)}
         </Text>
-        <Text flexBasis='17%' textAlign={'right'} hidden>
-          {activity.updateAt}
-        </Text>
+        {!isPrinting && (
+          <Text flexBasis='17%' textAlign={'right'} hidden>
+            {activity.updateAt}
+          </Text>
+        )}
       </Flex>
     </ListItem>
   );
