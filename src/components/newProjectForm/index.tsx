@@ -468,6 +468,7 @@ const NewProjectForm = ({ onClose, projectId }: Props) => {
           <FormControl>
             <Checkbox
               onChange={checkboxHandler}
+              isChecked={formData.billingType}
               _checked={{
                 '.chakra-checkbox__control': {
                   backgroundColor: 'btnPurple',
