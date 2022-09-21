@@ -214,15 +214,7 @@ const PrintMileStoneGranular = forwardRef(
                                           )
                                           .reverse()
                                       : user.timecards;
-                                  const formatUpdatedDate =
-                                    user.timecards.length > 0
-                                      ? format(
-                                          new Date(
-                                            sortByLastUpdated[0]?.updateAt,
-                                          ),
-                                          updateDateFormat,
-                                        )
-                                      : null;
+
                                   return (
                                     user.timecards.length > 0 && (
                                       <AccordionItem key={id}>
