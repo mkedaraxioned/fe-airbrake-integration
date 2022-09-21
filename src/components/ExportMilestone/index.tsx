@@ -8,9 +8,9 @@ interface DropDownProp {
 const ExportMilestone = ({ handlePrint }: DropDownProp) => {
   return (
     <Menu>
-      {({ isOpen }) => (
+      {() => (
         <>
-          <MenuButton isActive={isOpen} as={Text} cursor='pointer' pl='43px'>
+          <MenuButton as={Text} cursor='pointer' pl='43px'>
             <HiDotsHorizontal />
           </MenuButton>
           <MenuList>

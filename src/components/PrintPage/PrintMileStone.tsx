@@ -184,7 +184,7 @@ const PrintMileStone = forwardRef(
                 return (
                   user && (
                     <AccordionItem key={i}>
-                      {({ isExpanded }) => (
+                      {() => (
                         <>
                           <AccordionButton
                             p='15px 4% 15px 2%'
