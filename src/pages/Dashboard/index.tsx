@@ -24,8 +24,8 @@ const Dashboard = () => {
 
   const { timeCardId } = useParams();
   const dispatch = useDispatch();
-  const showDetailsHandle = (dayStr: string) => {
-    setFormData({ ...formData, date: new Date(dayStr) });
+  const showDetailsHandle = (day: Date) => {
+    setFormData({ ...formData, date: day });
   };
 
   useEffect(() => {

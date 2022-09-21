@@ -86,7 +86,7 @@ const AutoCompleteInput = ({ users, placeholder, setMember }: Props) => {
         fontFamily='Source Sans Pro'
         fontSize='14px'
         listStyleType={'none'}
-        zIndex='10'
+        zIndex='2'
       >
         {suggestion && suggestion.length > 0 ? (
           suggestion.map((sug, index) => (
