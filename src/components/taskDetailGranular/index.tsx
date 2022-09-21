@@ -122,7 +122,7 @@ const TaskDetailGranular = ({
             {milestone?.tasks?.map((task: ProjectTask, id: number) => {
               return (
                 <AccordionItem key={id}>
-                  {({ isExpanded }) => (
+                  {() => (
                     <>
                       <h2>
                         <AccordionButton
@@ -218,7 +218,7 @@ const TaskDetailGranular = ({
                                 return (
                                   user.timecards.length > 0 && (
                                     <AccordionItem key={id}>
-                                      {({ isExpanded }) => (
+                                      {() => (
                                         <>
                                           <AccordionButton
                                             p='15px 4% 15px 2%'
