@@ -3,11 +3,6 @@ import {
   Breadcrumb,
   BreadcrumbItem,
   Button,
-  Drawer,
-  DrawerBody,
-  DrawerCloseButton,
-  DrawerContent,
-  DrawerOverlay,
   Flex,
   Heading,
   Text,
@@ -22,6 +17,7 @@ import FixedProjectManage from '../../components/fixedProjectManage';
 import RecurringProjectManage from '../../components/recurringProjectManage';
 
 import NewProjectForm from '../../components/newProjectForm';
+import { DrawerContainer } from '../../components/drawer';
 
 const ManageTask = () => {
   const { projectId } = useParams();
@@ -36,20 +32,6 @@ const ManageTask = () => {
   const fetchProject = async () => {
     const res = await _get(`api/projects/${projectId}`);
     setProjectData(res?.data.project);
-  };
-
-  const ModalBox = () => {
-    return (
-      <Drawer isOpen={isOpen} size='lg' placement='right' onClose={onClose}>
-        <DrawerOverlay />
-        <DrawerContent overflowY='scroll' w='588px !important'>
-          <DrawerCloseButton zIndex='10' mt='10px' mr='10px' />
-          <DrawerBody>
-            <NewProjectForm onClose={onClose} projectId={projectId} />
-          </DrawerBody>
-        </DrawerContent>
-      </Drawer>
-    );
   };
 
   return (
@@ -119,7 +101,9 @@ const ManageTask = () => {
           )}
         </Box>
       </Box>
-      <ModalBox />
+      <DrawerContainer isOpen={isOpen} onClose={onClose}>
+        <NewProjectForm onClose={onClose} projectId={projectId} />
+      </DrawerContainer>
     </Box>
   );
 };

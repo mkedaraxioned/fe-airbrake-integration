@@ -5,11 +5,6 @@ import {
   BreadcrumbItem,
   Button,
   Checkbox,
-  Drawer,
-  DrawerBody,
-  DrawerCloseButton,
-  DrawerContent,
-  DrawerOverlay,
   Flex,
   Heading,
   HStack,
@@ -26,6 +21,7 @@ import { RootState } from '../../redux';
 import { useSelector, useDispatch } from 'react-redux';
 import { ClientSet, utilClientName } from '../../utils/common';
 import { filterFunc } from '../../redux/reducers/projectFilterSlice';
+import { DrawerContainer } from '../../components/drawer';
 
 const Projects = () => {
   const [searchParams] = useSearchParams();
@@ -155,20 +151,6 @@ const Projects = () => {
     }
   };
 
-  const ModalBox = () => {
-    return (
-      <Drawer isOpen={isOpen} size='lg' placement='right' onClose={onClose}>
-        <DrawerOverlay />
-        <DrawerContent overflowY='scroll' w='588px !important'>
-          <DrawerCloseButton zIndex='10' mt='10px' mr='10px' />
-          <DrawerBody>
-            <NewProjectForm onClose={onClose} />
-          </DrawerBody>
-        </DrawerContent>
-      </Drawer>
-    );
-  };
-
   return (
     <Box>
       <Box p='15px 0 80px' className='wrapper'>
@@ -252,7 +234,9 @@ const Projects = () => {
           )}
         </Box>
       </Box>
-      <ModalBox />
+      <DrawerContainer isOpen={isOpen} onClose={onClose}>
+        <NewProjectForm onClose={onClose} />
+      </DrawerContainer>
     </Box>
   );
 };

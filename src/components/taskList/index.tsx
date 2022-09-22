@@ -28,7 +28,7 @@ const TaskList = ({ formData }: Props) => {
         setLoading(false);
         return dispatch(updateTimeCardDetails(res?.data.timecardsData));
       }
-      dispatch(updateTimeCardDetails(null));
+      dispatch(updateTimeCardDetails([]));
       setLoading(false);
     } catch (err: any) {
       console.log(err);
@@ -60,7 +60,10 @@ const TaskList = ({ formData }: Props) => {
               lineHeight='20px'
               textStyle='sourceSansProBold'
             >
-              {timeCardDetails ? timeCardDetails?.totalHours : '00:00'} Hrs
+              {timeCardDetails?.totalHours
+                ? timeCardDetails?.totalHours
+                : '00:00'}{' '}
+              Hrs
             </Heading>
           </Skeleton>
         </HStack>
@@ -74,47 +77,55 @@ const TaskList = ({ formData }: Props) => {
                 color='textLightMid'
                 width='95%'
               >
-                <Heading
-                  as='h4'
-                  fontSize='16px'
-                  lineHeight='20.11px'
-                  textStyle='sourceSansProRegular'
-                >
-                  {`${project.client} - ${project.name}`}
-                </Heading>
-                <Text
-                  fontSize='16px'
-                  lineHeight='20.11px'
-                  textStyle='sourceSansProRegular'
-                >
-                  {project.totalTime} Hrs
-                </Text>
+                <Skeleton isLoaded={!loading}>
+                  <Heading
+                    as='h4'
+                    fontSize='16px'
+                    lineHeight='20.11px'
+                    textStyle='sourceSansProRegular'
+                  >
+                    {`${project.client} - ${project.name}`}
+                  </Heading>
+                </Skeleton>
+                <Skeleton isLoaded={!loading}>
+                  <Text
+                    fontSize='16px'
+                    lineHeight='20.11px'
+                    textStyle='sourceSansProRegular'
+                  >
+                    {project.totalTime} Hrs
+                  </Text>
+                </Skeleton>
               </HStack>
-              <Box>
-                {Array.isArray(project?.tasks)
-                  ? project?.tasks.map((task: Task) => (
-                      <TimeCard
-                        key={task.taskId}
-                        task={task}
-                        formData={formData}
-                      />
-                    ))
-                  : null}
-              </Box>
+              <Skeleton isLoaded={!loading}>
+                <Box>
+                  {Array.isArray(project?.tasks)
+                    ? project?.tasks.map((task: Task) => (
+                        <TimeCard
+                          key={task.taskId}
+                          task={task}
+                          formData={formData}
+                        />
+                      ))
+                    : null}
+                </Box>
+              </Skeleton>
             </Box>
           );
         })
       ) : (
-        <Text
-          fontSize={'22px'}
-          lineHeight={'28px'}
-          textAlign={'center'}
-          textStyle='sourceSansProRegular'
-          color='blackGray'
-          m={'68px 0 20px 0'}
-        >
-          No time logged for the day.
-        </Text>
+        <Skeleton isLoaded={!loading}>
+          <Text
+            fontSize={'22px'}
+            lineHeight={'28px'}
+            textAlign={'center'}
+            textStyle='sourceSansProRegular'
+            color='blackGray'
+            m={'68px 0 20px 0'}
+          >
+            No time logged for the day.
+          </Text>
+        </Skeleton>
       )}
     </Box>
   );
