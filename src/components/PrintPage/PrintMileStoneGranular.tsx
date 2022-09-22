@@ -129,160 +129,193 @@ const PrintMileStoneGranular = forwardRef(
               borderRight='1px'
               borderColor='borderColor'
               allowMultiple
-              index={
-                isPrinting
+              defaultIndex={
+                milestone?.tasks
                   ? getIndexesBasedOnValues(milestone?.tasks)
                   : undefined
               }
             >
-              {milestone?.tasks?.map((task: ProjectTask, id: number) => {
-                return (
-                  <AccordionItem key={id}>
-                    {() => (
-                      <>
-                        <h2>
-                          <AccordionButton
-                            pt='14px'
-                            pb='14px'
-                            pl='25px'
-                            display='flex'
-                            justifyContent='space-between'
-                            bg='purpleLight'
-                            color='grayLight'
-                            fontSize='14px'
-                            textStyle='sourceSansProRegular'
-                            lineHeight='17.6px'
-                            _focus={{
-                              outline: 'none',
-                              borderBottom: '1px',
-                              borderColor: 'borderColor',
-                            }}
-                          >
-                            <Flex>
-                              <Box>
-                                <Text textAlign='left'>{task?.title}</Text>
-                              </Box>
-                            </Flex>
-                          </AccordionButton>
-                        </h2>
-                        <AccordionPanel p='0'>
-                          <Flex
-                            p='8px 4% 8px 2%'
-                            justifyContent='space-between'
-                            bg='bgGray'
-                            color='grayLight'
-                            fontSize='14px'
-                            textStyle='sourceSansProBold'
-                            lineHeight='17.6px'
-                          >
-                            <Text flexBasis='25%'>Name</Text>
-                            <Text flexBasis='48%'>Comments/Notes</Text>
-                            <Text flexBasis='10%' textAlign={'right'}>
-                              Hours
-                            </Text>
-                          </Flex>
-                          <Box>
-                            <Accordion
-                              borderLeft={isPrinting ? '1px solid #000' : '1px'}
-                              borderRight={
-                                isPrinting ? '1px solid #000' : '1px'
-                              }
-                              borderColor='borderColor'
-                              allowMultiple
-                              index={
-                                isPrinting
-                                  ? getIndexesBasedOnValues(task?.users)
-                                  : undefined
-                              }
+              {milestone?.tasks ? (
+                milestone?.tasks?.map((task: ProjectTask, id: number) => {
+                  return (
+                    <AccordionItem key={id}>
+                      {() => (
+                        <>
+                          <h2>
+                            <AccordionButton
+                              pt='14px'
+                              pb='14px'
+                              pl='25px'
+                              display='flex'
+                              justifyContent='space-between'
+                              bg='purpleLight'
+                              color='grayLight'
+                              fontSize='14px'
+                              textStyle='sourceSansProRegular'
+                              lineHeight='17.6px'
+                              _focus={{
+                                outline: 'none',
+                                borderBottom: '1px',
+                                borderColor: 'borderColor',
+                              }}
                             >
-                              {task?.users?.map(
-                                (user: ProjectUser, id: number) => {
-                                  return (
-                                    user.timecards.length > 0 && (
-                                      <AccordionItem key={id}>
-                                        {() => (
-                                          <>
-                                            <AccordionButton
-                                              p='15px 4% 15px 2%'
-                                              display='flex'
-                                              justifyContent='space-between'
-                                              color='grayLight'
-                                              fontSize='14px'
-                                              textStyle='sourceSansProRegular'
-                                              lineHeight='17.6px'
-                                              _focus={{
-                                                outline: 'none',
-                                                borderColor: 'borderColor',
-                                                border: 'none !important',
-                                              }}
-                                            >
-                                              <Flex flexBasis={'73%'}>
-                                                <Box>
-                                                  <Text textAlign='left'>
-                                                    {user?.name}
+                              <Flex>
+                                <Box>
+                                  <Text textAlign='left'>{task?.title}</Text>
+                                </Box>
+                              </Flex>
+                            </AccordionButton>
+                          </h2>
+                          <AccordionPanel p='0'>
+                            <Flex
+                              p='8px 4% 8px 2%'
+                              justifyContent='space-between'
+                              bg='bgGray'
+                              color='grayLight'
+                              fontSize='14px'
+                              textStyle='sourceSansProBold'
+                              lineHeight='17.6px'
+                            >
+                              <Text flexBasis='25%'>Name</Text>
+                              <Text flexBasis='48%'>Comments/Notes</Text>
+                              <Text flexBasis='10%' textAlign={'right'}>
+                                Hours
+                              </Text>
+                            </Flex>
+                            <Box>
+                              <Accordion
+                                borderLeft={
+                                  isPrinting ? '1px solid #000' : '1px'
+                                }
+                                borderRight={
+                                  isPrinting ? '1px solid #000' : '1px'
+                                }
+                                borderColor='borderColor'
+                                allowMultiple
+                                defaultIndex={
+                                  task?.users
+                                    ? getIndexesBasedOnValues(task?.users)
+                                    : undefined
+                                }
+                              >
+                                {task?.users ? (
+                                  task?.users?.map(
+                                    (user: ProjectUser, id: number) => {
+                                      return (
+                                        user.timecards.length > 0 && (
+                                          <AccordionItem key={id}>
+                                            {() => (
+                                              <>
+                                                <AccordionButton
+                                                  p='15px 4% 15px 2%'
+                                                  display='flex'
+                                                  justifyContent='space-between'
+                                                  color='grayLight'
+                                                  fontSize='14px'
+                                                  textStyle='sourceSansProRegular'
+                                                  lineHeight='17.6px'
+                                                  _focus={{
+                                                    outline: 'none',
+                                                    borderColor: 'borderColor',
+                                                    border: 'none !important',
+                                                  }}
+                                                >
+                                                  <Flex flexBasis={'73%'}>
+                                                    <Box>
+                                                      <Text textAlign='left'>
+                                                        {user?.name}
+                                                      </Text>
+                                                    </Box>
+                                                  </Flex>
+                                                  <Text
+                                                    flexBasis={'10%'}
+                                                    textAlign={'right'}
+                                                  >
+                                                    {convertMinutes(
+                                                      user?.logTime,
+                                                    )}
                                                   </Text>
-                                                </Box>
-                                              </Flex>
-                                              <Text
-                                                flexBasis={'10%'}
-                                                textAlign={'right'}
-                                              >
-                                                {convertMinutes(user?.logTime)}
-                                              </Text>
-                                            </AccordionButton>
-                                            <AccordionPanel p={0}>
-                                              <List>
-                                                {user?.timecards?.length > 1 ? (
-                                                  user.timecards
-                                                    ?.sort(
-                                                      (
-                                                        a: ProjectActivity,
-                                                        b: ProjectActivity,
-                                                      ) =>
-                                                        a.date.localeCompare(
-                                                          b.date,
-                                                        ),
-                                                    )
-                                                    ?.map(
-                                                      (
-                                                        activity: ProjectActivity,
-                                                      ) => (
-                                                        <UserRow
-                                                          key={
-                                                            activity.timecardId
-                                                          }
-                                                          activity={activity}
-                                                          isPrinting={
-                                                            isPrinting
-                                                          }
-                                                        />
-                                                      ),
-                                                    )
-                                                ) : (
-                                                  <UserRow
-                                                    activity={
-                                                      user?.timecards[0]
-                                                    }
-                                                    isPrinting={isPrinting}
-                                                  />
-                                                )}
-                                              </List>
-                                            </AccordionPanel>
-                                          </>
-                                        )}
-                                      </AccordionItem>
-                                    )
-                                  );
-                                },
-                              )}
-                            </Accordion>
-                          </Box>
-                        </AccordionPanel>
-                      </>
-                    )}
-                  </AccordionItem>
-                );
-              })}
+                                                </AccordionButton>
+                                                <AccordionPanel p={0}>
+                                                  <List>
+                                                    {user?.timecards?.length >
+                                                    1 ? (
+                                                      user.timecards
+                                                        ?.sort(
+                                                          (
+                                                            a: ProjectActivity,
+                                                            b: ProjectActivity,
+                                                          ) =>
+                                                            a.date.localeCompare(
+                                                              b.date,
+                                                            ),
+                                                        )
+                                                        ?.map(
+                                                          (
+                                                            activity: ProjectActivity,
+                                                          ) => (
+                                                            <UserRow
+                                                              key={
+                                                                activity.timecardId
+                                                              }
+                                                              activity={
+                                                                activity
+                                                              }
+                                                              isPrinting={
+                                                                isPrinting
+                                                              }
+                                                            />
+                                                          ),
+                                                        )
+                                                    ) : (
+                                                      <UserRow
+                                                        activity={
+                                                          user?.timecards[0]
+                                                        }
+                                                        isPrinting={isPrinting}
+                                                      />
+                                                    )}
+                                                  </List>
+                                                </AccordionPanel>
+                                              </>
+                                            )}
+                                          </AccordionItem>
+                                        )
+                                      );
+                                    },
+                                  )
+                                ) : (
+                                  <Text
+                                    fontSize={'22px'}
+                                    lineHeight={'28px'}
+                                    textAlign={'center'}
+                                    textStyle='sourceSansProRegular'
+                                    color='blackGray'
+                                    m={'48px 0 20px 0'}
+                                  >
+                                    No Entry Found
+                                  </Text>
+                                )}
+                              </Accordion>
+                            </Box>
+                          </AccordionPanel>
+                        </>
+                      )}
+                    </AccordionItem>
+                  );
+                })
+              ) : (
+                <Text
+                  fontSize={'22px'}
+                  lineHeight={'28px'}
+                  textAlign={'center'}
+                  textStyle='sourceSansProRegular'
+                  color='blackGray'
+                  m={'48px 0 20px 0'}
+                >
+                  No Tasks Found
+                </Text>
+              )}
             </Accordion>
           </Box>
         </Box>

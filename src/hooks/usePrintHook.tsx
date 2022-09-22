@@ -34,7 +34,7 @@ const usePrintHook = ({
       onBeforeGetContentResolve.current = resolve;
       setTimeout(() => {
         resolve(true);
-      }, 500);
+      }, 300);
     });
   }, [setIsPrinting]);
 
