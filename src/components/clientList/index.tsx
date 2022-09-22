@@ -1,73 +1,86 @@
-import { Box, Divider, Flex, Heading, Text, VStack } from '@chakra-ui/react';
+import { Box, Flex, Text } from '@chakra-ui/react';
 import React from 'react';
-import { AiOutlineDelete, AiOutlineEdit } from 'react-icons/ai';
+import { ReactComponent as EditGreyIcon } from '../../assets/images/editGreyIcon.svg';
+import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { RootState } from '../../redux';
+import { FormData } from '../addClient';
 
-const ClientList = () => {
+interface Props {
+  setFormData: React.Dispatch<React.SetStateAction<FormData>>;
+  onClose: () => void;
+}
+
+const ClientList = ({ setFormData, onClose }: Props) => {
+  const {
+    allClients: { clients },
+  } = useSelector((state: RootState) => state.rootSlices);
+
+  const editClient = (id: string, name: string) => {
+    setFormData({ id, name });
+  };
+
   return (
     <Box>
-      <Heading as='h2' fontSize='22px' lineHeight='33px'>
-        Client List
-      </Heading>
-      <Divider m='28px 0' borderColor='borderSecondary' />
-      <VStack>
-        <Flex
-          w='full'
-          p='18px 30px'
-          m='5px 0'
-          rounded='md'
-          bg='white'
-          alignItems='center'
-          justifyContent='space-between'
-        >
-          <Flex alignItems='center'>
-            <Text>Harvest</Text>
-            <Box p='0 8px'>
-              <AiOutlineEdit />
-            </Box>
-          </Flex>
-          <Box>
-            <AiOutlineDelete />
-          </Box>
-        </Flex>
-        <Flex
-          w='full'
-          p='18px 30px'
-          m='5px 0'
-          rounded='md'
-          bg='white'
-          alignItems='center'
-          justifyContent='space-between'
-        >
-          <Flex alignItems='center'>
-            <Text>HSUSA</Text>
-            <Box p='0 8px'>
-              <AiOutlineEdit />
-            </Box>
-          </Flex>
-          <Box>
-            <AiOutlineDelete />
-          </Box>
-        </Flex>
-        <Flex
-          w='full'
-          p='18px 30px'
-          m='5px 0'
-          rounded='md'
-          bg='white'
-          alignItems='center'
-          justifyContent='space-between'
-        >
-          <Flex alignItems='center'>
-            <Text>Shutterstock</Text>
-            <Box p='0 8px'>
-              <AiOutlineEdit />
-            </Box>
-          </Flex>
-          <Box>
-            <AiOutlineDelete />
-          </Box>
-        </Flex>
-      </VStack>
+      <Text
+        mt='34px'
+        color='grayLight'
+        fontSize='18px'
+        textStyle='sourceSansProBold'
+        lineHeight='22.63px'
+      >
+        Client listing
+      </Text>
+      <Box>
+        {clients &&
+          clients.length > 0 &&
+          clients.map(
+            (
+              client: { id: string; name: string; projects: string[] },
+              index: number,
+            ) => {
+              return (
+                <Flex
+                  key={client.id}
+                  p={index === 0 ? '8px 0' : '12px 0'}
+                  justifyContent='space-between'
+                  borderBottom={index < clients.length - 1 ? '1px' : ''}
+                  borderColor='borderColor'
+                >
+                  <Flex alignItems='center'>
+                    <Text
+                      cursor='pointer'
+                      title='Edit'
+                      onClick={() => editClient(client.id, client.name)}
+                    >
+                      <EditGreyIcon />
+                    </Text>
+                    <Text pl='10px' color='grayLight'>
+                      {client.name}
+                    </Text>
+                  </Flex>
+                  <Box>
+                    <Link
+                      to={`/projects?checked=false&searchVal=${client.name.replace(
+                        ' ',
+                        '+',
+                      )}`}
+                      onClick={onClose}
+                    >
+                      <Text
+                        color='grayLight'
+                        textDecor='underline'
+                        _hover={{
+                          opacity: '.8',
+                        }}
+                      >{`${client.projects.length} Projects`}</Text>
+                    </Link>
+                  </Box>
+                </Flex>
+              );
+            },
+          )}
+      </Box>
     </Box>
   );
 };

@@ -44,10 +44,18 @@ const Projects = () => {
   const [type, setType] = useState('');
   const [searchVal, setSearchVal] = useState('');
   const dispatch = useDispatch();
+  const urlVal = searchParams.get('searchVal');
 
   useEffect(() => {
     unqClients();
   }, [clients]);
+
+  useEffect(() => {
+    if (urlVal) {
+      setSearchVal(urlVal);
+      setChecked(false);
+    }
+  }, [urlVal]);
 
   useEffect(() => {
     fetchMyProjects();
@@ -89,8 +97,8 @@ const Projects = () => {
     if (searchVal !== '') {
       temp = temp?.filter(
         (project: { title: string; client: any }) =>
-          project?.title.toLowerCase().includes(searchVal) ||
-          project?.client.name.toLowerCase().includes(searchVal),
+          project?.title.toLowerCase().includes(searchVal.toLowerCase()) ||
+          project?.client.name.toLowerCase().includes(searchVal.toLowerCase()),
       );
     }
     if (type !== '' && type !== 'none') {
@@ -213,7 +221,7 @@ const Projects = () => {
             </Box>
           </HStack>
         </Flex>
-        <Box p='30px 0'>
+        <Box p='15px 0'>
           {filterPro?.length > 0 ? (
             clientSet?.length > 0 &&
             clientSet?.map((client) => {
