@@ -20,6 +20,13 @@ import axios from 'axios';
 import { variables } from '../../constants/backend';
 import { _get } from '../../utils/api';
 
+interface FilterData {
+  startDate: string;
+  endDate: string;
+  users: string[];
+  clients: string[];
+}
+
 const Reports = () => {
   const [formData, setFormData] = useState<FilterFormData>({
     clientId: '',
@@ -31,7 +38,12 @@ const Reports = () => {
     endDate: new Date(lastDayOfWeek(new Date())),
   });
   const [searchQueryValues, setSearchQueryValues] = useState<any>({});
-  const [filteredData, setFilteredData] = useState<any>();
+  const [filteredData, setFilteredData] = useState<FilterData>({
+    startDate: '',
+    endDate: '',
+    users: [],
+    clients: [],
+  });
   const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
@@ -57,6 +69,7 @@ const Reports = () => {
   const fetchReportData = async () => {
     try {
       setLoaded(true);
+      setFilteredData({ ...filteredData, clients: [], users: [] });
       const res: any = await _get(
         `api/reports?startDate=${searchQueryValues.startDate}&endDate=${searchQueryValues.endDate}&groupBy=${searchQueryValues.groupBy}&billableType=${searchQueryValues.billableType}&clientId=${searchQueryValues.clientId}&projectId=${searchQueryValues.projectId}&userId=${searchQueryValues.userId}`,
       );
@@ -65,7 +78,7 @@ const Reports = () => {
       }
       setLoaded(false);
     } catch (error) {
-      console.log(error);
+      setLoaded(false);
     }
   };
 
@@ -175,57 +188,48 @@ const Reports = () => {
             </Text>
           )}
           <Box>
-            {(filteredData?.clients?.length <= 0 ||
-              filteredData?.users?.length <= 0) && (
-              <Skeleton isLoaded={!loaded}>
-                <Box
-                  p='12px 32px'
-                  borderBottom='1px'
-                  borderLeft='1px'
-                  borderRight='1px'
-                  borderColor='borderColor'
-                >
-                  <Text>No data found.</Text>
-                </Box>
-              </Skeleton>
-            )}
+            {searchQueryValues?.startDate &&
+              (filteredData?.clients?.length <= 0 ||
+                filteredData?.users?.length <= 0) && (
+                <Skeleton isLoaded={!loaded}>
+                  <Box
+                    p='12px 32px'
+                    borderBottom='1px'
+                    borderLeft='1px'
+                    borderRight='1px'
+                    borderColor='borderColor'
+                  >
+                    <Text>No data found.</Text>
+                  </Box>
+                </Skeleton>
+              )}
             {filteredData?.clients?.map((client: any, index: number) => {
               return (
                 <Box key={index}>
-                  <Skeleton isLoaded={!loaded}>
-                    <Flex
-                      justifyContent='space-between'
-                      p='8px 50px'
-                      bg='bgGray'
+                  <Flex justifyContent='space-between' p='8px 50px' bg='bgGray'>
+                    <Text
+                      color='grayLight'
+                      textStyle='sourceSansProBold'
+                      fontSize='14px'
+                      lineHeight='17.6px'
                     >
-                      <Text
-                        color='grayLight'
-                        textStyle='sourceSansProBold'
-                        fontSize='14px'
-                        lineHeight='17.6px'
-                      >
-                        {client.name}
-                      </Text>
-                      <Text
-                        color='grayLight'
-                        textStyle='sourceSansProBold'
-                        fontSize='14px'
-                        lineHeight='17.6px'
-                      >
-                        {getTimeInHours(client.logTime)}
-                      </Text>
-                    </Flex>
-                    <ClientAccordian projects={client.projects} />
-                  </Skeleton>
+                      {client.name}
+                    </Text>
+                    <Text
+                      color='grayLight'
+                      textStyle='sourceSansProBold'
+                      fontSize='14px'
+                      lineHeight='17.6px'
+                    >
+                      {getTimeInHours(client.logTime)}
+                    </Text>
+                  </Flex>
+                  <ClientAccordian projects={client.projects} />
                 </Box>
               );
             })}
             {filteredData?.users?.map((users: any, index: number) => {
-              return (
-                <Skeleton isLoaded={!loaded} key={index}>
-                  <PeopleAccordian user={users} />
-                </Skeleton>
-              );
+              return <PeopleAccordian user={users} key={index} />;
             })}
           </Box>
         </Box>
