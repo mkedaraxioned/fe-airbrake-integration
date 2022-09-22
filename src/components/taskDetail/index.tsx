@@ -30,7 +30,7 @@ interface Props {
 const TaskDetail = ({ displayBlock, milestone }: Props) => {
   return (
     <Box
-      m='20px 0 40px'
+      m='14px 0 40px'
       pos='relative'
       _after={{
         content: "''",

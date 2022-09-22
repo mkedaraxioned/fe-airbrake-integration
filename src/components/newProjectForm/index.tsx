@@ -264,7 +264,8 @@ const NewProjectForm = ({ onClose, projectId }: Props) => {
       <Box>
         <form>
           <FormControl
-            p='25px 0 10px'
+            mt='25px'
+            mb='20px'
             isInvalid={errMsg?.client ? true : false}
             opacity={projectId ? '.3' : '1'}
             pointerEvents={projectId ? 'none' : 'auto'}
@@ -294,7 +295,7 @@ const NewProjectForm = ({ onClose, projectId }: Props) => {
             </Select>
             <FormErrorMessage>{errMsg?.client}</FormErrorMessage>
           </FormControl>
-          <FormControl p='8px 0' isInvalid={errMsg?.title ? true : false}>
+          <FormControl mb='20px' isInvalid={errMsg?.title ? true : false}>
             <FormLabel fontSize='14px' lineHeight='17.6px' fontWeight='600'>
               Project name
             </FormLabel>
@@ -312,12 +313,17 @@ const NewProjectForm = ({ onClose, projectId }: Props) => {
             <FormErrorMessage>{errMsg?.title}</FormErrorMessage>
           </FormControl>
           <FormControl
-            p='8px 0'
+            mb='20px'
             opacity={projectId ? '.3' : '1'}
             pointerEvents={projectId ? 'none' : 'auto'}
             color='extraLightBlack'
           >
-            <FormLabel fontSize='14px' lineHeight='17.6px' fontWeight='600'>
+            <FormLabel
+              fontSize='14px'
+              lineHeight='17.6px'
+              fontWeight='600'
+              color='grayLight'
+            >
               Select project type
             </FormLabel>
             <Flex>
@@ -355,7 +361,7 @@ const NewProjectForm = ({ onClose, projectId }: Props) => {
             pointerEvents={projectId ? 'none' : 'auto'}
           >
             <FormControl
-              p='8px 0'
+              mb='10px'
               flexBasis='48%'
               isInvalid={errMsg?.startDate ? true : false}
             >
@@ -365,7 +371,7 @@ const NewProjectForm = ({ onClose, projectId }: Props) => {
                 fontWeight='600'
                 htmlFor='add_time'
               >
-                Select date
+                Start date
               </FormLabel>
               <Flex
                 alignItems='center'
@@ -399,7 +405,7 @@ const NewProjectForm = ({ onClose, projectId }: Props) => {
               <FormErrorMessage>{errMsg?.startDate}</FormErrorMessage>
             </FormControl>
             <FormControl
-              p='8px 0'
+              mb='10px'
               flexBasis='48%'
               isInvalid={errMsg?.endDate ? true : false}
             >
@@ -409,11 +415,9 @@ const NewProjectForm = ({ onClose, projectId }: Props) => {
                 fontWeight='600'
                 htmlFor='add_time'
               >
-                {formData.type === 'FIXED' ? (
-                  <Text visibility='hidden'>Select date</Text>
-                ) : (
-                  'Month cycle (in days)'
-                )}
+                {formData.type === 'FIXED'
+                  ? 'End Date'
+                  : 'Month cycle (in days)'}
               </FormLabel>
               {formData.type === 'FIXED' ? (
                 <Flex
@@ -479,7 +483,7 @@ const NewProjectForm = ({ onClose, projectId }: Props) => {
             </Checkbox>
           </FormControl>
           <FormControl
-            p='20px 0 34px'
+            p='14px 0 34px'
             isInvalid={errMsg?.members ? true : false}
           >
             <FormLabel
