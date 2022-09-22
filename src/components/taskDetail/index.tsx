@@ -148,93 +148,106 @@ const TaskDetail = ({ displayBlock, milestone, projectBasics }: Props) => {
             borderColor='borderColor'
             allowMultiple
           >
-            {milestone?.users?.map((user: ProjectUser, i: number) => {
-              const updateDateFormat = 'dd MMM yyyy';
-              const sortByLastUpdated =
-                user?.timecards?.length > 0 && user?.timecards?.length > 1
-                  ? user.timecards
-                      .sort((a: ProjectActivity, b: ProjectActivity) =>
-                        a.updateAt.localeCompare(b.updateAt),
+            {milestone?.users ? (
+              milestone?.users?.map((user: ProjectUser, i: number) => {
+                const updateDateFormat = 'dd MMM yyyy';
+                const sortByLastUpdated =
+                  user?.timecards?.length > 0 && user?.timecards?.length > 1
+                    ? user.timecards
+                        .sort((a: ProjectActivity, b: ProjectActivity) =>
+                          a.updateAt.localeCompare(b.updateAt),
+                        )
+                        .reverse()
+                    : user.timecards;
+                const formatUpdatedDate =
+                  user.timecards.length > 0
+                    ? format(
+                        new Date(sortByLastUpdated[0]?.updateAt),
+                        updateDateFormat,
                       )
-                      .reverse()
-                  : user.timecards;
-              const formatUpdatedDate =
-                user.timecards.length > 0
-                  ? format(
-                      new Date(sortByLastUpdated[0]?.updateAt),
-                      updateDateFormat,
-                    )
-                  : null;
+                    : null;
 
-              return (
-                user && (
-                  <AccordionItem key={i}>
-                    {({ isExpanded }) => (
-                      <>
-                        <AccordionButton
-                          p='15px 4% 15px 2%'
-                          display='flex'
-                          justifyContent='space-between'
-                          color='grayLight'
-                          fontSize='14px'
-                          textStyle='sourceSansProRegular'
-                          lineHeight='17.6px'
-                          _focus={{
-                            outline: 'none',
-                            borderColor: 'borderColor',
-                            border: 'none !important',
-                          }}
-                        >
-                          <Flex flexBasis={'73%'}>
-                            <Box
-                              padding='2px 1px 1px '
-                              border='2px'
-                              borderColor='borderDark'
-                              mr='10px'
-                              color='borderDark'
-                            >
-                              {isExpanded ? (
-                                <FaMinus fontSize='10px' />
+                return (
+                  user && (
+                    <AccordionItem key={i}>
+                      {({ isExpanded }) => (
+                        <>
+                          <AccordionButton
+                            p='15px 4% 15px 2%'
+                            display='flex'
+                            justifyContent='space-between'
+                            color='grayLight'
+                            fontSize='14px'
+                            textStyle='sourceSansProRegular'
+                            lineHeight='17.6px'
+                            _focus={{
+                              outline: 'none',
+                              borderColor: 'borderColor',
+                              border: 'none !important',
+                            }}
+                          >
+                            <Flex flexBasis={'73%'}>
+                              <Box
+                                padding='2px 1px 1px '
+                                border='2px'
+                                borderColor='borderDark'
+                                mr='10px'
+                                color='borderDark'
+                              >
+                                {isExpanded ? (
+                                  <FaMinus fontSize='10px' />
+                                ) : (
+                                  <FaPlus fontSize='10px' />
+                                )}
+                              </Box>
+                              <Box>
+                                <Text textAlign='left'>{user?.name}</Text>
+                              </Box>
+                            </Flex>
+                            <Text flexBasis={'10%'} textAlign={'right'}>
+                              {convertMinutes(user?.logTime)}
+                            </Text>
+                            <Text flexBasis={'17%'} textAlign={'right'}>
+                              {formatUpdatedDate}
+                            </Text>
+                          </AccordionButton>
+                          <AccordionPanel p={0}>
+                            <List>
+                              {user?.timecards?.length > 1 ? (
+                                user.timecards
+                                  ?.sort(
+                                    (a: ProjectActivity, b: ProjectActivity) =>
+                                      a.date.localeCompare(b.date),
+                                  )
+                                  ?.map((activity: ProjectActivity) => (
+                                    <UserRow
+                                      key={activity.timecardId}
+                                      activity={activity}
+                                    />
+                                  ))
                               ) : (
-                                <FaPlus fontSize='10px' />
+                                <UserRow activity={user?.timecards[0]} />
                               )}
-                            </Box>
-                            <Box>
-                              <Text textAlign='left'>{user?.name}</Text>
-                            </Box>
-                          </Flex>
-                          <Text flexBasis={'10%'} textAlign={'right'}>
-                            {convertMinutes(user?.logTime)}
-                          </Text>
-                          <Text flexBasis={'17%'} textAlign={'right'}>
-                            {formatUpdatedDate}
-                          </Text>
-                        </AccordionButton>
-                        <AccordionPanel p={0}>
-                          <List>
-                            {user?.timecards?.length > 1 ? (
-                              user.timecards
-                                ?.sort(
-                                  (a: ProjectActivity, b: ProjectActivity) =>
-                                    a.date.localeCompare(b.date),
-                                )
-                                ?.map((activity: ProjectActivity) => (
-                                  <UserRow
-                                    key={activity.timecardId}
-                                    activity={activity}
-                                  />
-                                ))
-                            ) : (
-                              <UserRow activity={user?.timecards[0]} />
-                            )}
-                          </List>
-                        </AccordionPanel>
-                      </>
-                    )}
-                  </AccordionItem>
-                )
-              );
-            })}
+                            </List>
+                          </AccordionPanel>
+                        </>
+                      )}
+                    </AccordionItem>
+                  )
+                );
+              })
+            ) : (
+              <Text
+                fontSize={'22px'}
+                lineHeight={'28px'}
+                textAlign={'center'}
+                textStyle='sourceSansProRegular'
+                color='blackGray'
+                m={'48px 0 20px 0'}
+              >
+                No Entry Found
+              </Text>
+            )}
           </Accordion>
         </Box>
       </Box>
