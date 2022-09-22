@@ -106,7 +106,7 @@ const Team = () => {
             <Link to='/'>Home</Link>
           </BreadcrumbItem>
           <BreadcrumbItem>
-            <Text color='textLight'>Add Teams</Text>
+            <Text color='textLight'>Teams</Text>
           </BreadcrumbItem>
         </Breadcrumb>
         <Box>

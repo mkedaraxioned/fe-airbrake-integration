@@ -29,7 +29,7 @@ interface Props {
 
 const TaskDetailGranular = ({ milestone }: Props) => {
   return (
-    <Box m='20px 0 40px'>
+    <Box m='14px 0 40px'>
       <Flex
         width='full'
         p='13px 25px'

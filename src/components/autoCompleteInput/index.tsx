@@ -79,6 +79,7 @@ const AutoCompleteInput = ({ users, placeholder, setMember }: Props) => {
         w='100%'
         border='1px solid #E2E8F0'
         borderRadius='5px'
+        display={display ? 'block' : 'none'}
         position='absolute'
         mt='2px'
         left='-14px'
@@ -91,7 +92,6 @@ const AutoCompleteInput = ({ users, placeholder, setMember }: Props) => {
         {suggestion && suggestion.length > 0 ? (
           suggestion.map((sug, index) => (
             <ListItem
-              display={display ? 'block' : 'none'}
               p='5px 15px'
               borderBottom='1px solid #E2E8F0'
               bg={index === suggestionIndex ? '#eeeeee' : 'white'}
@@ -104,8 +104,13 @@ const AutoCompleteInput = ({ users, placeholder, setMember }: Props) => {
             </ListItem>
           ))
         ) : (
-          <ListItem p='5px 15px' borderBottom='1px solid #E2E8F0'>
-            No Results
+          <ListItem
+            p='5px 15px'
+            borderBottom='1px solid #E2E8F0'
+            bg='white'
+            cursor='default'
+          >
+            No Members Found
           </ListItem>
         )}
       </UnorderedList>
