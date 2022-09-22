@@ -8,7 +8,7 @@ import {
   Input,
   useToast,
 } from '@chakra-ui/react';
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { allClients } from '../../redux/reducers/clientsSlice';
 import { _get, _patch, _post } from '../../utils/api';
@@ -31,6 +31,7 @@ const NewClient = ({ onClose }: Prop) => {
   const [errMsg, setErrMsg] = useState<FormData>();
   const toast = useToast();
   const dispatch = useDispatch();
+  const listContainer = useRef<any>();
   const inputHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -92,6 +93,7 @@ const NewClient = ({ onClose }: Prop) => {
 
   return (
     <Box
+      ref={listContainer}
       w='full'
       p='48px 60px 60px'
       pos='absolute'
@@ -151,7 +153,11 @@ const NewClient = ({ onClose }: Prop) => {
           </Box>
         </form>
       </Box>
-      <ClientList setFormData={setFormData} onClose={onClose} />
+      <ClientList
+        setFormData={setFormData}
+        onClose={onClose}
+        listContainer={listContainer}
+      />
     </Box>
   );
 };

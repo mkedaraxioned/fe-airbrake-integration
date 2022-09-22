@@ -9,19 +9,23 @@ import { FormData } from '../addClient';
 interface Props {
   setFormData: React.Dispatch<React.SetStateAction<FormData>>;
   onClose: () => void;
+  listContainer: any;
 }
 
-const ClientList = ({ setFormData, onClose }: Props) => {
+const ClientList = ({ setFormData, onClose, listContainer }: Props) => {
   const {
     allClients: { clients },
   } = useSelector((state: RootState) => state.rootSlices);
 
   const editClient = (id: string, name: string) => {
     setFormData({ id, name });
+    listContainer.current.scrollIntoView({
+      behavior: 'smooth',
+    });
   };
 
   return (
-    <Box>
+    <Box ref={listContainer}>
       <Text
         mt='34px'
         color='grayLight'
