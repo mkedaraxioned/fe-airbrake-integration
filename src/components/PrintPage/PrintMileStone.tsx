@@ -12,7 +12,6 @@ import {
   Progress,
   Text,
 } from '@chakra-ui/react';
-import { format } from 'date-fns';
 import React, { LegacyRef } from 'react';
 import { ProjectActivity, ProjectUser } from '../../interfaces/projectDetails';
 import {
@@ -164,16 +163,6 @@ const PrintMileStone = forwardRef(
               }
             >
               {milestone?.users?.map((user: ProjectUser, i: number) => {
-                const updateDateFormat = 'dd MMM yyyy';
-                const sortByLastUpdated =
-                  user?.timecards?.length > 0 && user?.timecards?.length > 1
-                    ? user.timecards
-                        .sort((a: ProjectActivity, b: ProjectActivity) =>
-                          a.updateAt.localeCompare(b.updateAt),
-                        )
-                        .reverse()
-                    : user.timecards;
-
                 return (
                   user && (
                     <AccordionItem key={i}>
