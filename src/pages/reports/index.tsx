@@ -188,20 +188,21 @@ const Reports = () => {
             </Text>
           )}
           <Box>
-            {(filteredData?.clients?.length <= 0 ||
-              filteredData?.users?.length <= 0) && (
-              <Skeleton isLoaded={!loaded}>
-                <Box
-                  p='12px 32px'
-                  borderBottom='1px'
-                  borderLeft='1px'
-                  borderRight='1px'
-                  borderColor='borderColor'
-                >
-                  <Text>No data found.</Text>
-                </Box>
-              </Skeleton>
-            )}
+            {searchQueryValues?.startDate &&
+              (filteredData?.clients?.length <= 0 ||
+                filteredData?.users?.length <= 0) && (
+                <Skeleton isLoaded={!loaded}>
+                  <Box
+                    p='12px 32px'
+                    borderBottom='1px'
+                    borderLeft='1px'
+                    borderRight='1px'
+                    borderColor='borderColor'
+                  >
+                    <Text>No data found.</Text>
+                  </Box>
+                </Skeleton>
+              )}
             {filteredData?.clients?.map((client: any, index: number) => {
               return (
                 <Box key={index}>
