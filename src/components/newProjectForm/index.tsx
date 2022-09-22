@@ -198,7 +198,7 @@ const NewProjectForm = ({ onClose, projectId }: Props) => {
       title: '',
       type: 'FIXED',
       startDate: format(new Date(), 'yyyy-MM-dd'),
-      endDate: null,
+      endDate: format(new Date(), 'yyyy-MM-dd'),
       billingType: false,
       members: [],
     });

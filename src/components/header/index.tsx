@@ -1,11 +1,6 @@
 import {
   Avatar,
   Box,
-  Drawer,
-  DrawerBody,
-  DrawerCloseButton,
-  DrawerContent,
-  DrawerOverlay,
   Flex,
   Heading,
   IconButton,
@@ -29,26 +24,13 @@ import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../redux';
 import NewClient from '../addClient';
 import { ERole } from '../../constants/enum';
+import { DrawerContainer } from '../drawer';
 
 const Header = () => {
   const user = useSelector((state: RootState) => state.rootSlices.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { isOpen, onOpen, onClose } = useDisclosure();
-
-  const ModalBox = () => {
-    return (
-      <Drawer isOpen={isOpen} size='lg' placement='right' onClose={onClose}>
-        <DrawerOverlay />
-        <DrawerContent overflowY='scroll' w='588px !important'>
-          <DrawerCloseButton zIndex='10' mt='10px' mr='10px' />
-          <DrawerBody>
-            <NewClient onClose={onClose} />
-          </DrawerBody>
-        </DrawerContent>
-      </Drawer>
-    );
-  };
 
   const logOut = () => {
     dispatch(userLogout());
@@ -188,7 +170,9 @@ const Header = () => {
           </Flex>
         </Flex>
       </Flex>
-      <ModalBox />
+      <DrawerContainer isOpen={isOpen} onClose={onClose}>
+        <NewClient onClose={onClose} />
+      </DrawerContainer>
     </Box>
   );
 };

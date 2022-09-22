@@ -18,7 +18,7 @@ import { HiOutlineChevronLeft, HiOutlineChevronRight } from 'react-icons/hi';
 import { endOfMonth } from 'date-fns/esm';
 import { _get } from '../../utils/api';
 interface Props {
-  showDetailsHandle: (dayStr: string) => void;
+  showDetailsHandle: (dayStr: Date) => void;
   formDate: Date;
   setFormData: any;
   formData: any;
@@ -57,9 +57,9 @@ const Calendar = ({
       setCurrentMonth(addMonths(currentMonth, 1));
     }
   };
-  const onDateClickHandle = (day: Date, dayStr: string) => {
+  const onDateClickHandle = (day: Date) => {
     setSelectedDate(day);
-    showDetailsHandle(dayStr);
+    showDetailsHandle(day);
   };
   const startDate = format(startDateCell, 'yyyy-MM-dd');
   const endDate = format(endDateCell, 'yyyy-MM-dd');
@@ -194,8 +194,7 @@ const Calendar = ({
               cursor={`${getTime > curTime ? 'not-allowed' : 'pointer'}`}
               key={`${day.getTime()}${i}`}
               onClick={() => {
-                const dayStr = format(cloneDay, 'MM-dd-yyyy');
-                onDateClickHandle(cloneDay, dayStr);
+                onDateClickHandle(cloneDay);
               }}
             >
               <Text
