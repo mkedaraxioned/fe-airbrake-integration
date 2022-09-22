@@ -78,7 +78,7 @@ const Reports = () => {
       }
       setLoaded(false);
     } catch (error) {
-      console.log(error);
+      setLoaded(false);
     }
   };
 

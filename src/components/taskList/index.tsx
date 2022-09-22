@@ -32,7 +32,7 @@ const TaskList = ({ formData }: Props) => {
       dispatch(updateTimeCardDetails([]));
       setLoading(false);
     } catch (err: any) {
-      console.log(err);
+      setLoading(false);
     }
   };
 
