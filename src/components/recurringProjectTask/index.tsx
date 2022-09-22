@@ -78,7 +78,7 @@ const RecurringProjectTasks = ({
           color='blackGray'
           m={'68px 0 20px 0'}
         >
-          No Activities Found
+          No Milesones Found
         </Text>
       )}
     </Box>
