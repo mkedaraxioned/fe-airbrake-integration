@@ -1,3 +1,5 @@
+import { format } from 'date-fns';
+
 export interface ClientSet {
   name: string;
   id: string;
@@ -49,3 +51,14 @@ export const getTimeInHours = (duration: number) => {
   const MM = minutes < 10 ? `0${minutes}` : minutes;
   return `${HH}:${MM}`;
 };
+
+export const createPdfTitle = (
+  projectName: string | undefined,
+  milestoneName: string | undefined,
+) => {
+  const date = format(new Date(), 'yyyy-MM-dd');
+  return `${projectName}-${milestoneName}-${date}`;
+};
+
+export const getIndexesBasedOnValues = (array: any) =>
+  array.map((item: any, i: number) => i);

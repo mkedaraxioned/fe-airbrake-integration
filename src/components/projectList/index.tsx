@@ -9,7 +9,7 @@ const ProjectList = ({ clientName, projects }: any) => {
         <Text
           mb='8px'
           color='textColor'
-          fontSize='22px'
+          fontSize='20px'
           textStyle='sourceSansProBold'
           lineHeight='27.65px'
         >

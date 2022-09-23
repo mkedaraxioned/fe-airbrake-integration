@@ -10,7 +10,6 @@ import {
   useDisclosure,
 } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
 import RecurringProjectTasks from '../../components/recurringProjectTask';
 import { ReactComponent as ManageSvg } from '../../assets/images/manage.svg';
 import { ReactComponent as ReportSvg } from '../../assets/images/report.svg';
@@ -19,10 +18,12 @@ import { useParams } from 'react-router';
 import { _get } from '../../utils/api';
 import { DrawerContainer } from '../../components/drawer';
 import NewProjectForm from '../../components/newProjectForm';
+import { Link } from 'react-router-dom';
 
 const ProjectTaskDetails = () => {
   const [, setLoading] = useState<boolean>(true);
   const [projectData, setProjectData] = useState<any>();
+  const [projectBasics, setProjectBasics] = useState<object | null>(null);
   const { projectId } = useParams();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -38,12 +39,20 @@ const ProjectTaskDetails = () => {
       if (projectId) {
         const res = await _get(`api/projects/${projectId}/report`);
         if (res.data.data.projectType === 'RETAINER_GRANULAR') {
-          const res = await _get(`api/projects/${projectId}/granular/report`);
-          setProjectData(res.data.data);
+          const resG = await _get(`api/projects/${projectId}/granular/report`);
+          setProjectData(resG.data.data);
           setLoading(false);
+          setProjectBasics({
+            clientName: res.data.data.clientName,
+            projectName: res.data.data.projectName,
+          });
         } else {
           setProjectData(res.data.data);
           setLoading(false);
+          setProjectBasics({
+            clientName: res.data.data.clientName,
+            projectName: res.data.data.projectName,
+          });
         }
       }
     } catch (error) {
@@ -169,6 +178,7 @@ const ProjectTaskDetails = () => {
           </Box>
           {projectData && (
             <RecurringProjectTasks
+              projectBasics={projectBasics}
               milestoneList={projectData?.milestones || projectData?.tasks}
               projectType={projectData.projectType}
             />
