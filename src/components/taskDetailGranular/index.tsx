@@ -61,7 +61,7 @@ const TaskDetailGranular = ({
             bg='purple'
             color='white'
             fontSize='14px'
-            textStyle='sourceSansProBold'
+            textStyle='sourceSansProRegular'
             lineHeight='17.6px'
           >
             <Flex justifyContent='space-between' flexBasis='50%'>

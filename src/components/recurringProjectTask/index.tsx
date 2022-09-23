@@ -16,7 +16,7 @@ const ProjectDetailType = ({
   projectBasics,
 }: Props) => {
   return (
-    <Box p='30px 0'>
+    <>
       <Box className='wrapper'>
         <Box pos='relative'>
           <Text
@@ -25,7 +25,7 @@ const ProjectDetailType = ({
             fontSize='18px'
             lineHeight='22.63px'
           >
-            Task details
+            Milestone details
           </Text>
         </Box>
       </Box>
@@ -52,7 +52,7 @@ const ProjectDetailType = ({
               )
             );
           })}
-    </Box>
+    </>
   );
 };
 
