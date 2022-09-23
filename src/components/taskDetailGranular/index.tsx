@@ -12,8 +12,9 @@ import {
 } from '@chakra-ui/react';
 import { format } from 'date-fns';
 import React from 'react';
-import { FaMinus, FaPlus } from 'react-icons/fa';
 import { HiDotsHorizontal } from 'react-icons/hi';
+import { ReactComponent as PlusSvg } from './../../assets/images/plusSvg.svg';
+import { ReactComponent as MinusDarkSvg } from './../../assets/images/minusdark.svg';
 import {
   ProjectActivity,
   ProjectMileStone,
@@ -37,8 +38,8 @@ const TaskDetailGranular = ({ milestone }: Props) => {
         justifyContent='space-between'
         bg='purple'
         color='white'
-        fontSize='14px'
-        textStyle='sourceSansProBold'
+        fontSize='16px'
+        textStyle='sourceSansProRegular'
         lineHeight='17.6px'
       >
         <Flex justifyContent='space-between' flexBasis='50%'>
@@ -101,9 +102,7 @@ const TaskDetailGranular = ({ milestone }: Props) => {
                 <>
                   <h2>
                     <AccordionButton
-                      pt='14px'
-                      pb='14px'
-                      pl='25px'
+                      p='15px 4% 15px 2%'
                       display='flex'
                       justifyContent='space-between'
                       bg='purpleLight'
@@ -116,23 +115,16 @@ const TaskDetailGranular = ({ milestone }: Props) => {
                         borderBottom: '1px',
                         borderColor: 'borderColor',
                       }}
+                      _hover={{ bg: '#D8DCF2' }}
                     >
                       <Flex>
-                        <Box
-                          padding='2px 1px 1px '
-                          border='2px'
-                          borderColor='borderDark'
-                          mr='10px'
-                          color='borderDark'
-                        >
-                          {isExpanded ? (
-                            <FaMinus fontSize='10px' />
-                          ) : (
-                            <FaPlus fontSize='10px' />
-                          )}
+                        <Box mr='10px' color='borderDark'>
+                          {isExpanded ? <MinusDarkSvg /> : <PlusSvg />}
                         </Box>
                         <Box>
-                          <Text textAlign='left'>{task?.title}</Text>
+                          <Text textStyle='sourceSansProBold' textAlign='left'>
+                            {task?.title}
+                          </Text>
                         </Box>
                       </Flex>
                     </AccordionButton>
@@ -141,7 +133,7 @@ const TaskDetailGranular = ({ milestone }: Props) => {
                     <Flex
                       p='8px 4% 8px 2%'
                       justifyContent='space-between'
-                      bg='bgGray'
+                      bg='#f5f5f5'
                       color='grayLight'
                       fontSize='14px'
                       textStyle='sourceSansProBold'
@@ -202,17 +194,11 @@ const TaskDetailGranular = ({ milestone }: Props) => {
                                       }}
                                     >
                                       <Flex flexBasis={'73%'}>
-                                        <Box
-                                          padding='2px 1px 1px '
-                                          border='2px'
-                                          borderColor='borderDark'
-                                          mr='10px'
-                                          color='borderDark'
-                                        >
+                                        <Box mr='10px' color='borderDark'>
                                           {isExpanded ? (
-                                            <FaMinus fontSize='10px' />
+                                            <MinusDarkSvg />
                                           ) : (
-                                            <FaPlus fontSize='10px' />
+                                            <PlusSvg />
                                           )}
                                         </Box>
                                         <Box>

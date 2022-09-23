@@ -12,6 +12,8 @@ import {
 } from '@chakra-ui/react';
 import React from 'react';
 import { FaMinus, FaPlus } from 'react-icons/fa';
+import { ReactComponent as PlusSvg } from './../../assets/images/plusSvg.svg';
+import { ReactComponent as MinusDarkSvg } from './../../assets/images/minusdark.svg';
 import { HiDotsHorizontal } from 'react-icons/hi';
 import './taskDetail.modules.css';
 import { convertMinutes, percentage } from '../../utils/common';
@@ -51,8 +53,8 @@ const TaskDetail = ({ displayBlock, milestone }: Props) => {
         justifyContent='space-between'
         bg='purple'
         color='white'
-        fontSize='14px'
-        textStyle='sourceSansProBold'
+        fontSize='16px'
+        textStyle='sourceSansProRegular'
         lineHeight='17.6px'
       >
         <Flex justifyContent='space-between' flexBasis='50%'>
@@ -169,18 +171,8 @@ const TaskDetail = ({ displayBlock, milestone }: Props) => {
                       }}
                     >
                       <Flex flexBasis={'73%'}>
-                        <Box
-                          padding='2px 1px 1px '
-                          border='2px'
-                          borderColor='borderDark'
-                          mr='10px'
-                          color='borderDark'
-                        >
-                          {isExpanded ? (
-                            <FaMinus fontSize='10px' />
-                          ) : (
-                            <FaPlus fontSize='10px' />
-                          )}
+                        <Box mr='10px' color='borderDark'>
+                          {isExpanded ? <MinusDarkSvg /> : <PlusSvg />}
                         </Box>
                         <Box>
                           <Text textAlign='left'>{user?.name}</Text>

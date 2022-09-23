@@ -73,7 +73,7 @@ const ProjectTaskDetails = () => {
         <Flex justifyContent='space-between'>
           <Box>
             <Text
-              fontSize='14px'
+              fontSize='16px'
               color='textGray'
               textStyle='sourceSansProRegular'
               lineHeight='17.6px'
@@ -133,7 +133,7 @@ const ProjectTaskDetails = () => {
             </HStack>
           </Box>
           <HStack>
-            <Button w='137px' variant='secondary'>
+            <Button w='137px' variant='secondary' fontSize='14px'>
               <Flex alignItems='center'>
                 <ReportSvg />
                 <Text pt='3px' pl='8px'>
@@ -142,7 +142,12 @@ const ProjectTaskDetails = () => {
               </Flex>
             </Button>
             <Link to={`/projects/${projectId}/manage`} title='Edit Milestone'>
-              <Button w='150px' ml='10px !important' variant='primary'>
+              <Button
+                w='150px'
+                ml='10px !important'
+                variant='primary'
+                fontSize='14px'
+              >
                 <Flex alignItems='center'>
                   <ManageSvg />
                   <Text pl='8px'>Edit Milestone</Text>
@@ -151,7 +156,7 @@ const ProjectTaskDetails = () => {
             </Link>
           </HStack>
         </Flex>
-        <Box p='30px 0'>
+        <Box p='14px 0'>
           <Box pos='relative'>
             <Text
               color='textColor'

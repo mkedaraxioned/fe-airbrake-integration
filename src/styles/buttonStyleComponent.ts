@@ -14,6 +14,7 @@ const Button: ComponentStyleConfig = {
         bg: 'royalDarkBlue',
         color: 'white',
       },
+      textStyle: 'sourceSansProRegular',
     },
     secondary: {
       border: '1px',
@@ -26,6 +27,7 @@ const Button: ComponentStyleConfig = {
         color: 'royalDarkBlue',
         borderColor: 'royalDarkBlue',
       },
+      textStyle: 'sourceSansProRegular',
     },
   },
   defaultProps: {},

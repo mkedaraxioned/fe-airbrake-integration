@@ -53,7 +53,7 @@ export const costomTheme = extendTheme({
     },
     purple: '#5C6BC0',
     purpleDark: '#3E467E',
-    purpleLight: '#D1D5EE',
+    purpleLight: '#e8eaf6',
     grayColor: '#EDF2F7',
     accordianBg: '#E2E8F066',
     accordianParentBg: '#6973B5',
