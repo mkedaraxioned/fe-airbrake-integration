@@ -3,7 +3,7 @@ import { Flex, ListItem, Text } from '@chakra-ui/react';
 import { format } from 'date-fns';
 import { Link } from 'react-router-dom';
 import { convertMinutes } from '../../utils/common';
-import { ReactComponent as EditGreyIcon } from '../../assets/images/editGreyIcon.svg';
+import { ReactComponent as EditTimeCardSvg } from '../../assets/images/editTimeCardSVG.svg';
 import { ProjectActivity } from '../../interfaces/projectDetails';
 
 interface Props {
@@ -28,7 +28,7 @@ const UserRow = ({ activity, isPrinting }: Props) => {
         <Flex flexBasis='25%'>
           {!isPrinting && (
             <Link to={`/dashboard/${activity.timecardId}`}>
-              <EditGreyIcon />
+              <EditTimeCardSvg />
             </Link>
           )}
           <Text pl='11px'>

@@ -11,12 +11,13 @@ import {
   Progress,
   Text,
 } from '@chakra-ui/react';
-import { FaMinus, FaPlus } from 'react-icons/fa';
+import { ReactComponent as PlusSvg } from './../../assets/images/plusSvg.svg';
+import { ReactComponent as MinusDarkSvg } from './../../assets/images/minusdark.svg';
+import './taskDetail.modules.css';
+import UserRow from './userRow';
 import { convertMinutes, createPdfTitle, percentage } from '../../utils/common';
 import { format } from 'date-fns';
 
-import './taskDetail.modules.css';
-import UserRow from './userRow';
 import {
   ProjectActivity,
   ProjectMileStone,
@@ -46,7 +47,7 @@ const TaskDetail = ({ displayBlock, milestone, projectBasics }: Props) => {
   return (
     <Box>
       <Box
-        m='20px 0 40px'
+        m='14px 0 40px'
         pos='relative'
         _after={{
           content: "''",
@@ -187,18 +188,8 @@ const TaskDetail = ({ displayBlock, milestone, projectBasics }: Props) => {
                             }}
                           >
                             <Flex flexBasis={'73%'}>
-                              <Box
-                                padding='2px 1px 1px '
-                                border='2px'
-                                borderColor='borderDark'
-                                mr='10px'
-                                color='borderDark'
-                              >
-                                {isExpanded ? (
-                                  <FaMinus fontSize='10px' />
-                                ) : (
-                                  <FaPlus fontSize='10px' />
-                                )}
+                              <Box mr='10px' color='borderDark'>
+                                {isExpanded ? <MinusDarkSvg /> : <PlusSvg />}
                               </Box>
                               <Box>
                                 <Text textAlign='left'>{user?.name}</Text>

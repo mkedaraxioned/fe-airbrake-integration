@@ -10,9 +10,11 @@ import {
   Progress,
   Text,
 } from '@chakra-ui/react';
-import { format } from 'date-fns';
 import React, { useRef } from 'react';
-import { FaMinus, FaPlus } from 'react-icons/fa';
+import { format } from 'date-fns';
+import { ReactComponent as PlusSvg } from './../../assets/images/plusSvg.svg';
+import { ReactComponent as MinusDarkSvg } from './../../assets/images/minusdark.svg';
+
 import {
   ProjectActivity,
   ProjectMileStone,
@@ -49,7 +51,7 @@ const TaskDetailGranular = ({
 
   return (
     <Box>
-      <Box m='20px 0 40px'>
+      <Box m='14px 0 40px'>
         <Box className='wrapper'>
           <Flex
             width='full'
@@ -127,9 +129,7 @@ const TaskDetailGranular = ({
                       <>
                         <h2>
                           <AccordionButton
-                            pt='14px'
-                            pb='14px'
-                            pl='25px'
+                            p='15px 4% 15px 2%'
                             display='flex'
                             justifyContent='space-between'
                             bg='purpleLight'
@@ -144,18 +144,8 @@ const TaskDetailGranular = ({
                             }}
                           >
                             <Flex>
-                              <Box
-                                padding='2px 1px 1px '
-                                border='2px'
-                                borderColor='borderDark'
-                                mr='10px'
-                                color='borderDark'
-                              >
-                                {isExpanded ? (
-                                  <FaMinus fontSize='10px' />
-                                ) : (
-                                  <FaPlus fontSize='10px' />
-                                )}
+                              <Box mr='10px' color='borderDark'>
+                                {isExpanded ? <MinusDarkSvg /> : <PlusSvg />}
                               </Box>
                               <Box>
                                 <Text textAlign='left'>{task?.title}</Text>
@@ -167,7 +157,7 @@ const TaskDetailGranular = ({
                           <Flex
                             p='8px 4% 8px 2%'
                             justifyContent='space-between'
-                            bg='bgGray'
+                            bg='#f5f5f5'
                             color='grayLight'
                             fontSize='14px'
                             textStyle='sourceSansProBold'
@@ -238,16 +228,13 @@ const TaskDetailGranular = ({
                                               >
                                                 <Flex flexBasis={'73%'}>
                                                   <Box
-                                                    padding='2px 1px 1px '
-                                                    border='2px'
-                                                    borderColor='borderDark'
                                                     mr='10px'
                                                     color='borderDark'
                                                   >
                                                     {isExpanded ? (
-                                                      <FaMinus fontSize='10px' />
+                                                      <MinusDarkSvg />
                                                     ) : (
-                                                      <FaPlus fontSize='10px' />
+                                                      <PlusSvg />
                                                     )}
                                                   </Box>
                                                   <Box>

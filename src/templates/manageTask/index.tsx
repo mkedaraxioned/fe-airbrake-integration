@@ -5,24 +5,23 @@ import {
   Button,
   Flex,
   Heading,
+  HStack,
   Text,
   useDisclosure,
 } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ReactComponent as EditSvg } from '../../assets/images/ProjectEdit.svg';
 import { useParams } from 'react-router';
 import { _get } from '../../utils/api';
 import FixedProjectManage from '../../components/fixedProjectManage';
 import RecurringProjectManage from '../../components/recurringProjectManage';
-
-import NewProjectForm from '../../components/newProjectForm';
 import { DrawerContainer } from '../../components/drawer';
+import NewProjectForm from '../../components/newProjectForm';
+import { ReactComponent as EditGreyIcon } from '../../assets/images/editGreyIcon.svg';
 
 const ManageTask = () => {
   const { projectId } = useParams();
   const [projectData, setProjectData] = useState<any>();
-
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   useEffect(() => {
@@ -69,28 +68,57 @@ const ManageTask = () => {
             >
               {projectData?.client.name}
             </Text>
-            <Heading
-              as='h2'
-              m='0 !important'
-              color='textColor'
-              textStyle='sourceSansProBold'
-              fontSize='22px'
-              lineHeight='27.65px'
-            >
-              {projectData?.title}
-            </Heading>
-          </Box>
-          <Box>
-            <Button
-              w='160px'
-              margin='0 10px'
-              variant='secondary'
-              onClick={onOpen}
-              title='Edit Project'
-            >
-              <EditSvg />
-              <Text pl='8px'>Edit Project</Text>
-            </Button>
+            <HStack spacing='12px'>
+              <Heading
+                as='h2'
+                m='0 !important'
+                color='textColor'
+                textStyle='sourceSansProBold'
+                fontSize='22px'
+                lineHeight='27.65px'
+              >
+                {projectData?.title}
+              </Heading>
+              <Text
+                p='5px 8px'
+                borderRadius='2px'
+                bg='bgCard'
+                fontSize='14px'
+                color='textGray'
+                textStyle='sourceSansProRegular'
+                lineHeight='17.6px'
+                textTransform='capitalize'
+              >
+                {projectData?.type === 'RETAINER_GRANULAR' &&
+                  'Retainer Granular'}
+                {projectData?.type === 'RETAINER' && 'Retainer'}
+                {projectData?.type === 'FIXED' && 'Fixed'}
+              </Text>
+              <Button
+                p='0'
+                ml='2px'
+                className='group'
+                onClick={onOpen}
+                bg='none'
+                fontSize='14px'
+                color='textGray'
+                textStyle='sourceSansProRegular'
+                lineHeight='17.6px'
+                title='Edit Project'
+                _hover={{ bg: 'white' }}
+                transition='all 3s'
+              >
+                <EditGreyIcon />
+                <Text
+                  ml='5px'
+                  textDecoration='none'
+                  as='span'
+                  _groupHover={{ textDecoration: 'underline' }}
+                >
+                  Edit Project
+                </Text>
+              </Button>
+            </HStack>
           </Box>
         </Flex>
         <Box p='8px 0'>
