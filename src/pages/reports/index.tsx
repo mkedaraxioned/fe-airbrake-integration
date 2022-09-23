@@ -11,7 +11,6 @@ import { Link } from 'react-router-dom';
 import ReportFilterForm from '../../components/ReportFilterForm';
 import ClientAccordian from '../../components/clientAccordian';
 import { ReactComponent as ExportReport } from '../../assets/images/exportReportCSV.svg';
-import { ReactComponent as PrintReport } from '../../assets/images/printReportCSV.svg';
 import { FilterFormData } from '../../interfaces/reports';
 import { format, lastDayOfWeek, startOfWeek } from 'date-fns';
 import { getTimeInHours } from '../../utils/common';
@@ -50,10 +49,12 @@ const Reports = () => {
     fetchReportData();
   }, [searchQueryValues]);
 
+  console.log(searchQueryValues, 'searchQueryValues');
+
   useEffect(() => {
     if (searchQueryValues.startDate && searchQueryValues.endDate) {
       setFormData({
-        ...formData,
+        ...searchQueryValues,
         startDate: new Date(searchQueryValues.startDate),
         endDate: new Date(searchQueryValues.endDate),
       });
@@ -128,19 +129,7 @@ const Reports = () => {
           >
             Reports
           </Text>
-          <Flex textStyle='sourceSansProBold' color='reportCta'>
-            <Flex>
-              <PrintReport width='16px' />
-              <Text
-                ml='8px'
-                mr='51px'
-                fontSize='14px'
-                textStyle='sourceSansProBold'
-                lineHeight='17.6px'
-              >
-                Print report
-              </Text>
-            </Flex>
+          <Box textStyle='sourceSansProBold' color='reportCta'>
             <Flex>
               <ExportReport width='16px' />
               <Text
@@ -154,7 +143,7 @@ const Reports = () => {
                 Export CSV
               </Text>
             </Flex>
-          </Flex>
+          </Box>
         </Flex>
         <Box>
           <ReportFilterForm

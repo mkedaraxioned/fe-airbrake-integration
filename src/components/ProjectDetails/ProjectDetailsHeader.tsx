@@ -8,11 +8,14 @@ import {
   HStack,
   Text,
 } from '@chakra-ui/react';
+import { format, lastDayOfWeek, startOfWeek } from 'date-fns';
 import React from 'react';
+import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import { ReactComponent as ManageSvg } from '../../assets/images/manage.svg';
 import { ReactComponent as ReportSvg } from '../../assets/images/report.svg';
+import { RootState } from '../../redux';
 
 interface Props {
   projectName: string | undefined;
@@ -24,6 +27,18 @@ const ProjectDetailsHeader = ({
   clientName,
   projectId,
 }: Props) => {
+  const {
+    allClients: { clients },
+  } = useSelector((state: RootState) => state.rootSlices);
+  const thisWeekFirstDate = format(startOfWeek(new Date()), 'yyyy-MM-dd');
+  const thisWeekLastDate = format(lastDayOfWeek(new Date()), 'yyyy-MM-dd');
+
+  const { id: clientId } = clients.find((client: { projects: string[] }) => {
+    return client.projects.find((project: any) => project.id === projectId);
+  });
+
+  const reportURL = `/reports?startDate=${thisWeekFirstDate}&endDate=${thisWeekLastDate}&groupBy=client&billableType=&clientId=${clientId}&userId=&projectId=${projectId}`;
+
   return (
     <>
       <Breadcrumb
@@ -64,14 +79,16 @@ const ProjectDetailsHeader = ({
           </Heading>
         </Box>
         <HStack>
-          <Button w='137px' variant='secondary'>
-            <Flex alignItems='center'>
-              <ReportSvg />
-              <Text pt='3px' pl='8px'>
-                View Report
-              </Text>
-            </Flex>
-          </Button>
+          <Link to={reportURL} title='View Report'>
+            <Button w='137px' variant='secondary'>
+              <Flex alignItems='center'>
+                <ReportSvg />
+                <Text pt='3px' pl='8px'>
+                  View Report
+                </Text>
+              </Flex>
+            </Button>
+          </Link>
           <Link to={`/projects/${projectId}/manage`} title='Edit Milestone'>
             <Button w='150px' ml='10px !important' variant='primary'>
               <Flex alignItems='center'>

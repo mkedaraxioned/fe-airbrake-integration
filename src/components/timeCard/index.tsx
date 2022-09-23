@@ -7,7 +7,7 @@ import { ReactComponent as DeleteSvg } from '../../assets/images/delete.svg';
 import { ReactComponent as EditSvg } from '../../assets/images/edit.svg';
 import { updateTimeCardDetails } from '../../redux/reducers/timeCardSlice';
 import { Task } from '../../interfaces/timeCard';
-import { _del, _get, _put } from '../../utils/api';
+import { _del, _get } from '../../utils/api';
 import { scrollToTop } from '../../utils/common';
 interface TaskDetails {
   task: Task;
@@ -34,21 +34,18 @@ const TimeCard = ({ task, formData }: TaskDetails) => {
   const deleteTask = async (id: string | undefined) => {
     try {
       if (id) {
-        const res = await _put(`api/timecards/${id}`, { isDeleted: true });
-        if (res.status === 200) {
-          const del = await _del(`api/timecards/${id}`);
-          if (del?.status === 200) {
-            redirectToHome(id);
-            toast({
-              title: 'Entry Logs Detail',
-              description: del?.data?.message,
-              status: 'success',
-              duration: 2000,
-              position: 'top-right',
-              isClosable: true,
-            });
-            fetchEntries(format(new Date(formData.date), 'yyyy-MM-dd'));
-          }
+        const del = await _del(`api/timecards/${id}`);
+        if (del?.status === 200) {
+          redirectToHome(id);
+          toast({
+            title: 'Entry Logs Detail',
+            description: del?.data?.message,
+            status: 'success',
+            duration: 2000,
+            position: 'top-right',
+            isClosable: true,
+          });
+          fetchEntries(format(new Date(formData.date), 'yyyy-MM-dd'));
         }
       }
     } catch (err) {

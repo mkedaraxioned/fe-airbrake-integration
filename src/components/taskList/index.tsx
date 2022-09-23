@@ -1,4 +1,4 @@
-import { Box, Heading, HStack, Skeleton, Text } from '@chakra-ui/react';
+import { Box, Flex, Heading, HStack, Skeleton, Text } from '@chakra-ui/react';
 import { format } from 'date-fns';
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
@@ -110,6 +110,12 @@ const TaskList = ({ formData }: Props) => {
         })
       ) : (
         <Box m={!loading ? '68px 0 20px 0' : '28px 0'}>
+          {loading && (
+            <Flex justifyContent='space-between'>
+              <Skeleton height='20px' w='50%' isLoaded={!loading}></Skeleton>
+              <Skeleton height='20px' w='20%' isLoaded={!loading}></Skeleton>
+            </Flex>
+          )}
           <Skeleton mt='15px' height='80px' isLoaded={!loading}>
             <Text
               fontSize={'22px'}
