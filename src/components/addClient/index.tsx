@@ -8,11 +8,15 @@ import {
   Input,
   useToast,
 } from '@chakra-ui/react';
-import React, { useState } from 'react';
-import { _post } from '../../utils/api';
+import React, { useRef, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { allClients } from '../../redux/reducers/clientsSlice';
+import { _get, _patch, _post } from '../../utils/api';
+import ClientList from '../clientList';
 
-interface FormData {
+export interface FormData {
   name?: string;
+  id?: string;
 }
 
 interface Prop {
@@ -22,9 +26,12 @@ interface Prop {
 const NewClient = ({ onClose }: Prop) => {
   const [formData, setFormData] = useState<FormData>({
     name: '',
+    id: '',
   });
   const [errMsg, setErrMsg] = useState<FormData>();
   const toast = useToast();
+  const dispatch = useDispatch();
+  const listContainer = useRef<any>();
   const inputHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -44,6 +51,10 @@ const NewClient = ({ onClose }: Prop) => {
     });
     setErrMsg({ name: '' });
   };
+  const fetchClient = async () => {
+    const clientRes = await _get('api/clients');
+    dispatch(allClients(clientRes?.data?.clients));
+  };
 
   const formHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -51,9 +62,13 @@ const NewClient = ({ onClose }: Prop) => {
       setErrMsg(fieldValidation());
       const notValid = fieldValidation();
       if (Object.values(notValid).length <= 0) {
-        await _post('api/clients/', formData);
+        if (formData.id) {
+          await _patch(`api/clients/${formData.id}`, { name: formData.name });
+        } else {
+          await _post('api/clients/', { name: formData.name });
+        }
         reset();
-        onClose();
+        fetchClient();
         toast({
           title: 'Client',
           description: 'New client created successfully.',
@@ -78,8 +93,9 @@ const NewClient = ({ onClose }: Prop) => {
 
   return (
     <Box
+      ref={listContainer}
       w='full'
-      p='40px 60px 60px'
+      p='48px 60px 60px'
       pos='absolute'
       top={0}
       right={0}
@@ -87,11 +103,12 @@ const NewClient = ({ onClose }: Prop) => {
       textStyle='sourceSansProRegular'
     >
       <Heading
+        color='grayLight'
         textStyle='sourceSansProBold'
         fontSize='22px'
         lineHeight='27.65px'
       >
-        Add a new client
+        Manage client
       </Heading>
       <Box>
         <form onSubmit={formHandler}>
@@ -104,6 +121,9 @@ const NewClient = ({ onClose }: Prop) => {
               name='name'
               placeholder='Please enter client name'
               fontSize='14px'
+              border='1px'
+              borderColor={`${formData.id ? 'btnPurple' : 'borderColor'}`}
+              boxShadow={`${formData.id ? '0 0 0 0.5px btnPurple' : 'none'}`}
               lineHeight='17.6px'
               onChange={inputHandler}
               value={formData.name}
@@ -119,7 +139,7 @@ const NewClient = ({ onClose }: Prop) => {
               variant='primary'
               mr='22px'
             >
-              Save
+              {formData.id ? 'Update' : 'Save'}
             </Button>
             <Button
               w='105px'
@@ -133,6 +153,11 @@ const NewClient = ({ onClose }: Prop) => {
           </Box>
         </form>
       </Box>
+      <ClientList
+        setFormData={setFormData}
+        onClose={onClose}
+        listContainer={listContainer}
+      />
     </Box>
   );
 };

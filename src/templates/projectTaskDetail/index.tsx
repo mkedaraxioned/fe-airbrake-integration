@@ -1,24 +1,14 @@
-import {
-  Box,
-  Breadcrumb,
-  BreadcrumbItem,
-  Button,
-  Flex,
-  Heading,
-  HStack,
-  Text,
-} from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
 import RecurringProjectTasks from '../../components/recurringProjectTask';
-import { ReactComponent as ManageSvg } from '../../assets/images/manage.svg';
-import { ReactComponent as ReportSvg } from '../../assets/images/report.svg';
 import { useParams } from 'react-router';
 import { _get } from '../../utils/api';
+import ProjectDetailsHeader from '../../components/ProjectDetails/ProjectDetailsHeader';
 
 const ProjectTaskDetails = () => {
   const [, setLoading] = useState<boolean>(true);
   const [projectData, setProjectData] = useState<any>();
+  const [projectBasics, setProjectBasics] = useState<object | null>(null);
   const { projectId } = useParams();
 
   // TODO: invalidating tags pending, hence not using them
@@ -33,12 +23,20 @@ const ProjectTaskDetails = () => {
       if (projectId) {
         const res = await _get(`api/projects/${projectId}/report`);
         if (res.data.data.projectType === 'RETAINER_GRANULAR') {
-          const res = await _get(`api/projects/${projectId}/granular/report`);
-          setProjectData(res.data.data);
+          const resG = await _get(`api/projects/${projectId}/granular/report`);
+          setProjectData(resG.data.data);
           setLoading(false);
+          setProjectBasics({
+            clientName: res.data.data.clientName,
+            projectName: res.data.data.projectName,
+          });
         } else {
           setProjectData(res.data.data);
           setLoading(false);
+          setProjectBasics({
+            clientName: res.data.data.clientName,
+            projectName: res.data.data.projectName,
+          });
         }
       }
     } catch (error) {
@@ -49,81 +47,19 @@ const ProjectTaskDetails = () => {
   return (
     <Box>
       <Box p='15px 0' className='wrapper'>
-        <Breadcrumb
-          m='15px 0'
-          fontSize='14px'
-          textStyle='sourceSansProRegular'
-          spacing='4px'
-        >
-          <BreadcrumbItem color='black'>
-            <Link to='/'>Home</Link>
-          </BreadcrumbItem>
-          <BreadcrumbItem color='black'>
-            <Link to='/projects'>Projects</Link>
-          </BreadcrumbItem>
-          <BreadcrumbItem color='textLight'>
-            <Text>{projectData?.projectName}</Text>
-          </BreadcrumbItem>
-        </Breadcrumb>
-        <Flex justifyContent='space-between'>
-          <Box>
-            <Text
-              fontSize='14px'
-              color='textGray'
-              textStyle='sourceSansProRegular'
-              lineHeight='17.6px'
-            >
-              {projectData?.clientName}
-            </Text>
-            <Heading
-              as='h2'
-              m='0 !important'
-              color='textColor'
-              textStyle='sourceSansProBold'
-              fontSize='22px'
-              lineHeight='27.65px'
-            >
-              {projectData?.projectName}
-            </Heading>
-          </Box>
-          <HStack>
-            <Button w='137px' variant='secondary'>
-              <Flex alignItems='center'>
-                <ReportSvg />
-                <Text pt='3px' pl='8px'>
-                  View Report
-                </Text>
-              </Flex>
-            </Button>
-            <Link to={`/projects/${projectId}/manage`} title='Edit Milestone'>
-              <Button w='150px' ml='10px !important' variant='primary'>
-                <Flex alignItems='center'>
-                  <ManageSvg />
-                  <Text pl='8px'>Edit Milestone</Text>
-                </Flex>
-              </Button>
-            </Link>
-          </HStack>
-        </Flex>
-        <Box p='30px 0'>
-          <Box pos='relative'>
-            <Text
-              color='textColor'
-              textStyle='sourceSansProBold'
-              fontSize='18px'
-              lineHeight='22.63px'
-            >
-              Task details
-            </Text>
-          </Box>
-          {projectData && (
-            <RecurringProjectTasks
-              milestoneList={projectData?.milestones || projectData?.tasks}
-              projectType={projectData.projectType}
-            />
-          )}
-        </Box>
+        <ProjectDetailsHeader
+          projectName={projectData?.projectName}
+          clientName={projectData?.clientName}
+          projectId={projectId}
+        />
       </Box>
+      {projectData && (
+        <RecurringProjectTasks
+          projectBasics={projectBasics}
+          milestoneList={projectData?.milestones || projectData?.tasks}
+          projectType={projectData.projectType}
+        />
+      )}
     </Box>
   );
 };
