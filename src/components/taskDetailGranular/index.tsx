@@ -12,7 +12,6 @@ import {
 } from '@chakra-ui/react';
 import React, { useRef } from 'react';
 import { format } from 'date-fns';
-import { HiDotsHorizontal } from 'react-icons/hi';
 import { ReactComponent as PlusSvg } from './../../assets/images/plusSvg.svg';
 import { ReactComponent as MinusDarkSvg } from './../../assets/images/minusdark.svg';
 

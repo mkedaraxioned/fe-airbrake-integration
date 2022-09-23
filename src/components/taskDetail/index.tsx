@@ -11,7 +11,6 @@ import {
   Progress,
   Text,
 } from '@chakra-ui/react';
-import { FaMinus, FaPlus } from 'react-icons/fa';
 import { ReactComponent as PlusSvg } from './../../assets/images/plusSvg.svg';
 import { ReactComponent as MinusDarkSvg } from './../../assets/images/minusdark.svg';
 import './taskDetail.modules.css';
