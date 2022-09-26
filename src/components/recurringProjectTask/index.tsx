@@ -84,7 +84,7 @@ const RecurringProjectTasks = ({
             No milestones present in the project.
           </Text>
           <Link to='manage'>
-            <Button variant='primary' objectFit='contain'>
+            <Button variant='primary' objectFit='contain' gap='6px'>
               <IoAddSharp size='21' />
               <Text>Add Milestone</Text>
             </Button>
