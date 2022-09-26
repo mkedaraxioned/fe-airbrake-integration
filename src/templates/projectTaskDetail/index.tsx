@@ -54,7 +54,6 @@ const ProjectTaskDetails = () => {
           projectType={projectData?.projectType}
         />
       </Box>
-      \{' '}
       {projectData && (
         <RecurringProjectTasks
           projectBasics={projectBasics}

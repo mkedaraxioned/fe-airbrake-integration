@@ -1,5 +1,7 @@
-import { Box, Text } from '@chakra-ui/react';
+import { Box, Button, Text } from '@chakra-ui/react';
 import React from 'react';
+import { IoAddSharp } from 'react-icons/io5';
+import { Link } from 'react-router-dom';
 import { EProjectType } from '../../constants/enum';
 import { ProjectMileStone } from '../../interfaces/projectDetails';
 import TaskDetail from '../taskDetail';
@@ -29,7 +31,7 @@ const ProjectDetailType = ({
           </Text>
         </Box>
       </Box>
-      {projectType === 'RETAINER_GRANULAR'
+      {projectType === EProjectType.RETAINER_GRANULAR
         ? milestoneList.map((milestone: ProjectMileStone, id: number) => {
             return (
               milestone && (
@@ -70,16 +72,14 @@ const RecurringProjectTasks = ({
           projectBasics={projectBasics}
         />
       ) : (
-        <Text
-          fontSize={'22px'}
-          lineHeight={'28px'}
-          textAlign={'center'}
-          textStyle='sourceSansProRegular'
-          color='blackGray'
-          m={'68px 0 20px 0'}
-        >
-          No Milesones Found
-        </Text>
+        <Box display='flex' justifyContent='center' m={'68px 0 20px 0'}>
+          <Link to='manage'>
+            <Button w='137px' variant='secondary'>
+              <IoAddSharp size='21' />
+              <Text>Add Milestone</Text>
+            </Button>
+          </Link>
+        </Box>
       )}
     </Box>
   );
