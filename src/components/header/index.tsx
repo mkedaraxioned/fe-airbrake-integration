@@ -148,21 +148,6 @@ const Header = () => {
                   <MenuItem pointerEvents='none'>
                     <Text fontWeight='bold'>{user.profile.name}</Text>
                   </MenuItem>
-                  {user.profile.role === ERole.ADMIN ? (
-                    <>
-                      <MenuItem> Account </MenuItem>
-                      <MenuItem>
-                        <Link to='/dashboard' className='menu-anchor'>
-                          Dashboard
-                        </Link>
-                      </MenuItem>
-                      <MenuItem>
-                        <Text>Settings</Text>
-                      </MenuItem>
-                    </>
-                  ) : null}
-                </MenuGroup>
-                <MenuGroup>
                   <MenuItem onClick={logOut}>Sign Out</MenuItem>
                 </MenuGroup>
               </MenuList>

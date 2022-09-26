@@ -15,7 +15,12 @@ import { ReactComponent as MinusSvg } from '../../assets/images/minusSvg.svg';
 import { getTimeInHours } from '../../utils/common';
 import { format } from 'date-fns';
 import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../redux';
 const PeopleReportsProjectsAccordion = ({ projects }: any) => {
+  const {
+    profile: { role },
+  } = useSelector((state: RootState) => state.rootSlices.user);
   return (
     <Box>
       {Array.isArray(projects) &&
@@ -106,14 +111,16 @@ const PeopleReportsProjectsAccordion = ({ projects }: any) => {
                             justifyContent='space-between'
                           >
                             <Flex alignItems='center' flexBasis='27%'>
-                              <Tooltip label='Edit'>
-                                <Text _hover={{ textDecor: 'underline' }}>
-                                  <Link to={`/dashboard/${timecard.id}`}>
-                                    <EditSvg />
-                                  </Link>
-                                </Text>
-                              </Tooltip>
-                              <Text pl='10px'>
+                              {role === 'ADMIN' && (
+                                <Tooltip label='Edit'>
+                                  <Text _hover={{ textDecor: 'underline' }}>
+                                    <Link to={`/dashboard/${timecard.id}`}>
+                                      <EditSvg />
+                                    </Link>
+                                  </Text>
+                                </Tooltip>
+                              )}
+                              <Text pl={role === 'ADMIN' ? '10px' : '30px'}>
                                 {format(
                                   new Date(timecard.date),
                                   'EEEE, LLLL dd yyyy',
