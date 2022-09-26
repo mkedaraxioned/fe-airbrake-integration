@@ -77,11 +77,13 @@ const TaskDetail = ({ displayBlock, milestone, projectBasics }: Props) => {
               <Text textTransform='capitalize'>{milestone?.name}</Text>
               <Text>
                 Budget -{' '}
-                {milestone?.budget && convertMinutes(milestone?.budget)}
+                {milestone?.budget
+                  ? convertMinutes(milestone?.budget)
+                  : '00:00'}
               </Text>
             </Flex>
             <Divider
-              ml='10px'
+              ml='16px'
               mr='16px'
               orientation='vertical'
               h='20px'
@@ -95,7 +97,10 @@ const TaskDetail = ({ displayBlock, milestone, projectBasics }: Props) => {
             >
               <Text>
                 Actual -{' '}
-                {milestone?.logTime && convertMinutes(milestone?.logTime)} Hrs
+                {milestone?.logTime
+                  ? convertMinutes(milestone?.logTime)
+                  : '00:00'}{' '}
+                Hrs
               </Text>
               <Flex
                 alignItems='center'
@@ -115,8 +120,9 @@ const TaskDetail = ({ displayBlock, milestone, projectBasics }: Props) => {
                     bg='white'
                   />
                   <Text pl='10px'>
-                    {milestone?.budget &&
-                      percentage(milestone?.logTime, milestone?.budget)}
+                    {milestone?.budget
+                      ? percentage(milestone?.logTime, milestone?.budget)
+                      : '0'}
                     %
                   </Text>
                 </Flex>
