@@ -228,16 +228,9 @@ const TaskDetail = ({ displayBlock, milestone, projectBasics }: Props) => {
                 );
               })
             ) : (
-              <Text
-                fontSize={'22px'}
-                lineHeight={'28px'}
-                textAlign={'center'}
-                textStyle='sourceSansProRegular'
-                color='blackGray'
-                m={'48px 0 20px 0'}
-              >
-                No Entry Found
-              </Text>
+              <Box p='12px 32px' borderBottom='1px' borderColor='borderColor'>
+                <Text>No data found.</Text>
+              </Box>
             )}
           </Accordion>
         </Box>

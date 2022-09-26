@@ -285,16 +285,14 @@ const PrintMileStoneGranular = forwardRef(
                                     },
                                   )
                                 ) : (
-                                  <Text
-                                    fontSize={'22px'}
-                                    lineHeight={'28px'}
-                                    textAlign={'center'}
-                                    textStyle='sourceSansProRegular'
-                                    color='blackGray'
-                                    m={'48px 0 20px 0'}
+                                  <Box
+                                    p='12px 32px'
+                                    border='1px solid #000'
+                                    borderTop='none'
+                                    borderColor='borderColor'
                                   >
-                                    No Entry Found
-                                  </Text>
+                                    <Text>No data found.</Text>
+                                  </Box>
                                 )}
                               </Accordion>
                             </Box>
@@ -305,16 +303,14 @@ const PrintMileStoneGranular = forwardRef(
                   );
                 })
               ) : (
-                <Text
-                  fontSize={'22px'}
-                  lineHeight={'28px'}
-                  textAlign={'center'}
-                  textStyle='sourceSansProRegular'
-                  color='blackGray'
-                  m={'48px 0 20px 0'}
+                <Box
+                  p='12px 32px'
+                  border='1px solid #000'
+                  borderTop='none'
+                  borderColor='borderColor'
                 >
-                  No Tasks Found
-                </Text>
+                  <Text>No data found.</Text>
+                </Box>
               )}
             </Accordion>
           </Box>

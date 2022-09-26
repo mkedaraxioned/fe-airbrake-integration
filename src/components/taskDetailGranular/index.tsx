@@ -301,16 +301,13 @@ const TaskDetailGranular = ({
                                   },
                                 )
                               ) : (
-                                <Text
-                                  fontSize={'22px'}
-                                  lineHeight={'28px'}
-                                  textAlign={'center'}
-                                  textStyle='sourceSansProRegular'
-                                  color='blackGray'
-                                  m={'48px 0 20px 0'}
+                                <Box
+                                  p='12px 32px'
+                                  borderBottom='1px'
+                                  borderColor='borderColor'
                                 >
-                                  No Entry Found
-                                </Text>
+                                  <Text>No data found.</Text>
+                                </Box>
                               )}
                             </Accordion>
                           </Box>
@@ -321,16 +318,9 @@ const TaskDetailGranular = ({
                 );
               })
             ) : (
-              <Text
-                fontSize={'22px'}
-                lineHeight={'28px'}
-                textAlign={'center'}
-                textStyle='sourceSansProRegular'
-                color='blackGray'
-                m={'48px 0 20px 0'}
-              >
-                No Tasks Found
-              </Text>
+              <Box p='12px 32px' borderBottom='1px' borderColor='borderColor'>
+                <Text>No data found.</Text>
+              </Box>
             )}
           </Accordion>
         </Box>
