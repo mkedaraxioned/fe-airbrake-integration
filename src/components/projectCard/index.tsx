@@ -12,7 +12,7 @@ import { Link } from 'react-router-dom';
 import { ReactComponent as CalenderIcon1 } from '../../assets/images/calenderIcon1.svg';
 import { ReactComponent as CalenderIcon2 } from '../../assets/images/calenderIcon2.svg';
 import { RootState } from '../../redux';
-import { convertMinutes, percentage } from '../../utils/common';
+import { percentage } from '../../utils/common';
 
 interface Props {
   project: any;
@@ -33,6 +33,13 @@ const ProjectCard = ({ project }: Props) => {
     } else {
       return 'red';
     }
+  };
+
+  const minutesToDecimal = (n: string) => {
+    const result = parseFloat(n) / 60;
+    if (parseFloat(n) % 60 === 0) {
+      return result;
+    } else return result.toFixed(2);
   };
 
   return (
@@ -81,16 +88,27 @@ const ProjectCard = ({ project }: Props) => {
             <Text
               p='4px 8px'
               borderRadius='2px'
-              bg={`${timeColorFunc()}LightBg`}
-              color={`${timeColorFunc()}Light`}
+              bg={
+                project?.timeLogged === 0
+                  ? '#F5F7F8'
+                  : `${timeColorFunc()}LightBg`
+              }
+              color={
+                project?.timeLogged === 0
+                  ? '#757575'
+                  : `${timeColorFunc()}Light`
+              }
               fontSize='13.83px'
               textStyle='sourceSansProBold'
               lineHeight='17.39px'
               display='inline-block'
               as='span'
             >
-              Total Hours - {convertMinutes(project?.projectBudget)} | Used
-              Hours - {convertMinutes(project?.timeLogged)}
+              {project?.timeLogged === 0
+                ? 'No time added for this project'
+                : `${minutesToDecimal(
+                    project?.timeLogged,
+                  )} / ${minutesToDecimal(project?.projectBudget)} Hours`}
             </Text>
           </Text>
           <Text

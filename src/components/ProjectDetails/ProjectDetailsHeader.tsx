@@ -94,9 +94,9 @@ const ProjectDetailsHeader = ({
               lineHeight='17.6px'
               textTransform='capitalize'
             >
-              {projectType === 'RETAINER_GRANULAR' && 'Retainer Granular'}
-              {projectType === 'RETAINER' && 'Retainer'}
-              {projectType === 'FIXED' && 'Fixed'}
+              {projectType === 'RETAINER_GRANULAR'
+                ? 'Retainer Granular'
+                : projectType?.toLowerCase()}
             </Text>
             <Button
               p='0'

@@ -44,7 +44,7 @@ const Projects = () => {
   const [type, setType] = useState('');
   const [searchVal, setSearchVal] = useState('');
   const dispatch = useDispatch();
-  const urlVal = searchParams.get('searchVal');
+  const urlVal = searchParams.get('project');
 
   useEffect(() => {
     unqClients();
@@ -60,22 +60,23 @@ const Projects = () => {
   useEffect(() => {
     fetchMyProjects();
     if (
-      searchParams.get('checked') === '' ||
-      searchParams.get('checked') === 'true' ||
-      filterVal.checked === true
+      searchParams.get('myprojects') === '' ||
+      searchParams.get('myprojects') === 'true' ||
+      filterVal.myprojects === true
     ) {
       setChecked(true);
-      filterVal && insertUrlParam('checked', `${filterVal.checked}`);
+      filterVal && insertUrlParam('myprojects', `${filterVal.myprojects}`);
     } else if (
-      searchParams.get('checked') === 'false' ||
-      filterVal.checked === false
+      searchParams.get('myprojects') === 'false' ||
+      filterVal.myprojects === false
     ) {
       setChecked(false);
-      filterVal && insertUrlParam('checked', `${filterVal.checked}`);
+      filterVal && insertUrlParam('myprojects', `${filterVal.myprojects}`);
     }
-    if (searchParams.get('searchVal') || filterVal.search) {
-      setSearchVal(searchParams.get('searchVal') || filterVal.search);
-      filterVal.search !== '' && insertUrlParam('searchVal', filterVal.search);
+
+    if (searchParams.get('project') || filterVal.project) {
+      setSearchVal(searchParams.get('project') || filterVal.project);
+      filterVal.project !== '' && insertUrlParam('project', filterVal.project);
     }
 
     if (searchParams.get('type') || filterVal.type) {
@@ -125,7 +126,7 @@ const Projects = () => {
   const handleCheck = () => {
     setChecked(!checked);
     dispatch(filterFunc({ ...filterVal, checked: !checked }));
-    insertUrlParam('checked', `${!checked}`);
+    insertUrlParam('myprojects', `${!checked}`);
   };
 
   const handleSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -136,8 +137,8 @@ const Projects = () => {
 
   const handleInput = (ele: React.ChangeEvent<HTMLInputElement>) => {
     setSearchVal(ele.currentTarget.value);
-    dispatch(filterFunc({ ...filterVal, search: ele.currentTarget.value }));
-    insertUrlParam('searchVal', ele.currentTarget.value);
+    dispatch(filterFunc({ ...filterVal, project: ele.currentTarget.value }));
+    insertUrlParam('project', ele.currentTarget.value);
   };
 
   const fetchMyProjects = async () => {

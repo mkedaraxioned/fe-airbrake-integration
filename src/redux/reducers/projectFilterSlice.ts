@@ -2,9 +2,9 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 const initialState: any = {
   filterVal: {
-    checked: true,
+    myprojects: true,
     type: '',
-    search: '',
+    project: '',
   },
 };
 
