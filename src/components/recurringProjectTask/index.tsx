@@ -1,4 +1,4 @@
-import { Box, Button, Text } from '@chakra-ui/react';
+import { Box, Button, HStack, Text, VStack } from '@chakra-ui/react';
 import React from 'react';
 import { IoAddSharp } from 'react-icons/io5';
 import { Link } from 'react-router-dom';
@@ -72,14 +72,24 @@ const RecurringProjectTasks = ({
           projectBasics={projectBasics}
         />
       ) : (
-        <Box display='flex' justifyContent='center' m={'68px 0 20px 0'}>
+        <VStack m={'48px 0 20px 0'}>
+          <Text
+            mb='5px'
+            fontSize={'22px'}
+            lineHeight={'28px'}
+            textAlign={'center'}
+            textStyle='sourceSansProRegular'
+            color='blackGray'
+          >
+            No milestones present in the project.
+          </Text>
           <Link to='manage'>
-            <Button w='137px' variant='secondary'>
+            <Button variant='primary' objectFit='contain'>
               <IoAddSharp size='21' />
               <Text>Add Milestone</Text>
             </Button>
           </Link>
-        </Box>
+        </VStack>
       )}
     </Box>
   );
