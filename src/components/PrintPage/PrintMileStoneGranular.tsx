@@ -78,11 +78,13 @@ const PrintMileStoneGranular = forwardRef(
                 <Text textTransform='capitalize'>{milestone?.title}</Text>
                 <Text>
                   Budget -{' '}
-                  {milestone?.budget && convertMinutes(milestone?.budget)}
+                  {milestone?.budget
+                    ? convertMinutes(milestone?.budget)
+                    : '00:00'}
                 </Text>
               </Flex>
               <Divider
-                ml='10px'
+                ml='16px'
                 mr='16px'
                 orientation='vertical'
                 h='20px'
@@ -96,7 +98,10 @@ const PrintMileStoneGranular = forwardRef(
               >
                 <Text>
                   Actual -{' '}
-                  {milestone?.logTime && convertMinutes(milestone?.logTime)} Hrs
+                  {milestone?.logTime
+                    ? convertMinutes(milestone?.logTime)
+                    : '00:00'}{' '}
+                  Hrs
                 </Text>
                 <Flex
                   alignItems='center'
@@ -116,8 +121,9 @@ const PrintMileStoneGranular = forwardRef(
                       bg='white'
                     />
                     <Text pl='5px'>
-                      {milestone?.budget &&
-                        percentage(milestone?.logTime, milestone?.budget)}
+                      {milestone?.budget
+                        ? percentage(milestone?.logTime, milestone?.budget)
+                        : '0'}
                       %
                     </Text>
                   </Flex>
@@ -285,16 +291,14 @@ const PrintMileStoneGranular = forwardRef(
                                     },
                                   )
                                 ) : (
-                                  <Text
-                                    fontSize={'22px'}
-                                    lineHeight={'28px'}
-                                    textAlign={'center'}
-                                    textStyle='sourceSansProRegular'
-                                    color='blackGray'
-                                    m={'48px 0 20px 0'}
+                                  <Box
+                                    p='12px 32px'
+                                    border='1px solid #000'
+                                    borderTop='none'
+                                    borderColor='borderColor'
                                   >
-                                    No Entry Found
-                                  </Text>
+                                    <Text>No data found.</Text>
+                                  </Box>
                                 )}
                               </Accordion>
                             </Box>
@@ -305,16 +309,14 @@ const PrintMileStoneGranular = forwardRef(
                   );
                 })
               ) : (
-                <Text
-                  fontSize={'22px'}
-                  lineHeight={'28px'}
-                  textAlign={'center'}
-                  textStyle='sourceSansProRegular'
-                  color='blackGray'
-                  m={'48px 0 20px 0'}
+                <Box
+                  p='12px 32px'
+                  border='1px solid #000'
+                  borderTop='none'
+                  borderColor='borderColor'
                 >
-                  No Tasks Found
-                </Text>
+                  <Text>No data found.</Text>
+                </Box>
               )}
             </Accordion>
           </Box>

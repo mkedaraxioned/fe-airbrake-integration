@@ -376,7 +376,7 @@ const RecurringProjectManage = ({ projectType }: { projectType: string }) => {
                             <Box
                               display='flex'
                               alignItems='center'
-                              title='Clear'
+                              title='Cancel'
                               cursor='pointer'
                               onClick={() => setMilestoneIndex(null)}
                             >
@@ -539,7 +539,7 @@ const RecurringProjectManage = ({ projectType }: { projectType: string }) => {
                                 </Box>
                                 <Box
                                   cursor='pointer'
-                                  title='Clear'
+                                  title='Cancel'
                                   onClick={() => setTaskIndex(null)}
                                 >
                                   <CloseSvg />

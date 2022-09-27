@@ -49,7 +49,8 @@ const Reports = () => {
     fetchReportData();
   }, [searchQueryValues]);
 
-  console.log(searchQueryValues, 'searchQueryValues');
+  const startDate = format(formData.startDate as Date, 'yyyy-MM-dd');
+  const endDate = format(formData.endDate as Date, 'yyyy-MM-dd');
 
   useEffect(() => {
     if (searchQueryValues.startDate && searchQueryValues.endDate) {
@@ -72,7 +73,7 @@ const Reports = () => {
       setLoaded(true);
       setFilteredData({ ...filteredData, clients: [], users: [] });
       const res: any = await _get(
-        `api/reports?startDate=${searchQueryValues.startDate}&endDate=${searchQueryValues.endDate}&groupBy=${searchQueryValues.groupBy}&billableType=${searchQueryValues.billableType}&clientId=${searchQueryValues.clientId}&projectId=${searchQueryValues.projectId}&userId=${searchQueryValues.userId}`,
+        `api/reports?startDate=${startDate}&endDate=${endDate}&groupBy=${formData.groupBy}&billableType=${formData.billableType}&clientId=${formData.clientId}&projectId=${formData.projectId}&userId=${formData.userId}`,
       );
       if (res?.data.data) {
         setFilteredData(res.data.data);
@@ -86,7 +87,7 @@ const Reports = () => {
   const csvDownload = async () => {
     try {
       const response = await axios.get(
-        `${variables.BACKEND_URL}api/reports?startDate=${searchQueryValues?.startDate}&endDate=${searchQueryValues?.endDate}&groupBy=${searchQueryValues?.groupBy}&billableType=${searchQueryValues?.billableType}&clientId=${searchQueryValues?.clientId}&userId=${searchQueryValues?.userId}&projectId=${searchQueryValues?.projectId}&exportType=csv`,
+        `${variables.BACKEND_URL}api/reports?startDate=${startDate}&endDate=${endDate}&groupBy=${formData?.groupBy}&billableType=${formData?.billableType}&clientId=${formData?.clientId}&userId=${formData?.userId}&projectId=${formData?.projectId}&exportType=csv`,
         {
           responseType: 'blob',
           headers: {
@@ -177,7 +178,7 @@ const Reports = () => {
             </Text>
           )}
           <Box>
-            {searchQueryValues?.startDate &&
+            {filteredData?.startDate &&
               (filteredData?.clients?.length <= 0 ||
                 filteredData?.users?.length <= 0) && (
                 <Skeleton isLoaded={!loaded}>

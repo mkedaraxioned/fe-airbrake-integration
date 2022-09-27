@@ -26,15 +26,13 @@ export const App = () => {
       <BrowserRouter>
         {isLoggedIn && <Header />}
         <Routes>
-          {isLoggedIn ? (
+          {isLoggedIn && user.profile?.role === 'ADMIN' && (
             <>
               <Route path='/' element={<Dashboard />} />
               <Route path='/dashboard' element={<Dashboard />} />
               <Route path='/setting' element={<Setting />} />
               <Route path='/add-client' element={<AddClient />} />
               <Route path='/team' element={<Team />} />
-              <Route path='/projects' element={<Projects />} />
-              <Route path='/reports' element={<Reports />} />
               <Route
                 path='/projects/:projectId/'
                 element={<ProjectTaskDetails />}
@@ -45,8 +43,13 @@ export const App = () => {
               />
               <Route path='/dashboard/:timeCardId/' element={<Dashboard />} />
             </>
-          ) : (
-            <Route path='/login' element={<Login />} />
+          )}
+          {isLoggedIn && (
+            <>
+              <Route path='/projects' element={<Projects />} />
+              <Route path='/login' element={<Login />} />
+              <Route path='/reports' element={<Reports />} />
+            </>
           )}
           <Route path='*' element={isLoggedIn ? <Dashboard /> : <Login />} />
         </Routes>
