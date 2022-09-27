@@ -533,7 +533,7 @@ const NewProjectForm = ({ onClose, projectId }: Props) => {
               Save
             </Button>
             <Button w='105px' variant='secondary' onClick={reset}>
-              Clear
+              Cancel
             </Button>
           </Box>
         </form>

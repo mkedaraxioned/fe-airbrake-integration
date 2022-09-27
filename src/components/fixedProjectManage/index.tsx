@@ -293,7 +293,7 @@ const FixedProjectManage = () => {
                                 </button>
                               </Box>
                               <Box
-                                title='Clear'
+                                title='Cancel'
                                 cursor='pointer'
                                 onClick={() => setMilestoneIndex(null)}
                               >
