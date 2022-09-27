@@ -1,4 +1,4 @@
-import { Box, Button, HStack, Text, VStack } from '@chakra-ui/react';
+import { Box, Button, Text, VStack } from '@chakra-ui/react';
 import React from 'react';
 import { IoAddSharp } from 'react-icons/io5';
 import { Link } from 'react-router-dom';
