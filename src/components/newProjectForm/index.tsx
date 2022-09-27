@@ -33,13 +33,13 @@ import { useDispatch } from 'react-redux';
 import { allProjects } from '../../redux/reducers/projectsSlice';
 import AutoCompleteInput from '../autoCompleteInput';
 import { allClients } from '../../redux/reducers/clientsSlice';
-
 interface Props {
   onClose: () => void;
   projectId?: string;
+  setMyProjects?: any;
 }
 
-const NewProjectForm = ({ onClose, projectId }: Props) => {
+const NewProjectForm = ({ onClose, projectId, setMyProjects }: Props) => {
   const [formData, setFormData] = useState<NewProjectFormData>({
     clientId: '',
     title: '',
@@ -117,11 +117,14 @@ const NewProjectForm = ({ onClose, projectId }: Props) => {
       });
     }
   };
+
   const fetchProjects = async () => {
     const projectsRes = await _get('api/projects');
     const clientRes = await _get('api/clients');
+    const res = await _get('api/users/projects');
     dispatch(allProjects(projectsRes.data?.projects));
     dispatch(allClients(clientRes.data?.clients));
+    setMyProjects(res.data.projects);
   };
 
   const selecttHandler = (e: React.ChangeEvent<HTMLSelectElement>) => {
