@@ -77,11 +77,13 @@ const TaskDetail = ({ displayBlock, milestone, projectBasics }: Props) => {
               <Text textTransform='capitalize'>{milestone?.name}</Text>
               <Text>
                 Budget -{' '}
-                {milestone?.budget && convertMinutes(milestone?.budget)}
+                {milestone?.budget
+                  ? convertMinutes(milestone?.budget)
+                  : '00:00'}
               </Text>
             </Flex>
             <Divider
-              ml='10px'
+              ml='16px'
               mr='16px'
               orientation='vertical'
               h='20px'
@@ -95,7 +97,10 @@ const TaskDetail = ({ displayBlock, milestone, projectBasics }: Props) => {
             >
               <Text>
                 Actual -{' '}
-                {milestone?.logTime && convertMinutes(milestone?.logTime)} Hrs
+                {milestone?.logTime
+                  ? convertMinutes(milestone?.logTime)
+                  : '00:00'}{' '}
+                Hrs
               </Text>
               <Flex
                 alignItems='center'
@@ -115,8 +120,9 @@ const TaskDetail = ({ displayBlock, milestone, projectBasics }: Props) => {
                     bg='white'
                   />
                   <Text pl='10px'>
-                    {milestone?.budget &&
-                      percentage(milestone?.logTime, milestone?.budget)}
+                    {milestone?.budget
+                      ? percentage(milestone?.logTime, milestone?.budget)
+                      : '0'}
                     %
                   </Text>
                 </Flex>
@@ -228,16 +234,9 @@ const TaskDetail = ({ displayBlock, milestone, projectBasics }: Props) => {
                 );
               })
             ) : (
-              <Text
-                fontSize={'22px'}
-                lineHeight={'28px'}
-                textAlign={'center'}
-                textStyle='sourceSansProRegular'
-                color='blackGray'
-                m={'48px 0 20px 0'}
-              >
-                No Entry Found
-              </Text>
+              <Box p='12px 32px' borderBottom='1px' borderColor='borderColor'>
+                <Text>No data found.</Text>
+              </Box>
             )}
           </Accordion>
         </Box>

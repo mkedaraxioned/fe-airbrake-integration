@@ -89,11 +89,13 @@ const PrintMileStone = forwardRef(
                 <Text textTransform='capitalize'>{milestone?.name}</Text>
                 <Text>
                   Budget -{' '}
-                  {milestone?.budget && convertMinutes(milestone?.budget)}
+                  {milestone?.budget
+                    ? convertMinutes(milestone?.budget)
+                    : '00:00'}
                 </Text>
               </Flex>
               <Divider
-                ml='10px'
+                ml='16px'
                 mr='16px'
                 orientation='vertical'
                 h='20px'
@@ -107,7 +109,10 @@ const PrintMileStone = forwardRef(
               >
                 <Text>
                   Actual -{' '}
-                  {milestone?.logTime && convertMinutes(milestone?.logTime)} Hrs
+                  {milestone?.logTime
+                    ? convertMinutes(milestone?.logTime)
+                    : '00:00'}{' '}
+                  Hrs
                 </Text>
                 <Flex
                   alignItems='center'
@@ -127,8 +132,9 @@ const PrintMileStone = forwardRef(
                       bg='white'
                     />
                     <Text pl='10px'>
-                      {milestone?.budget &&
-                        percentage(milestone?.logTime, milestone?.budget)}
+                      {milestone?.budget
+                        ? percentage(milestone?.logTime, milestone?.budget)
+                        : '0'}
                       %
                     </Text>
                   </Flex>
@@ -224,16 +230,14 @@ const PrintMileStone = forwardRef(
                   );
                 })
               ) : (
-                <Text
-                  fontSize={'22px'}
-                  lineHeight={'28px'}
-                  textAlign={'center'}
-                  textStyle='sourceSansProRegular'
-                  color='blackGray'
-                  m={'48px 0 20px 0'}
+                <Box
+                  p='12px 32px'
+                  border='1px solid #000'
+                  borderTop='none'
+                  borderColor='borderColor'
                 >
-                  No Entry Found
-                </Text>
+                  <Text>No data found.</Text>
+                </Box>
               )}
             </Accordion>
           </Box>

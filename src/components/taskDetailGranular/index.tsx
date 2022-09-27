@@ -72,7 +72,7 @@ const TaskDetailGranular = ({
               </Text>
             </Flex>
             <Divider
-              ml='10px'
+              ml='16px'
               mr='16px'
               orientation='vertical'
               h='20px'
@@ -106,8 +106,9 @@ const TaskDetailGranular = ({
                     bg='white'
                   />
                   <Text pl='5px'>
-                    {milestone?.budget &&
-                      percentage(milestone?.logTime, milestone?.budget)}
+                    {milestone?.budget
+                      ? percentage(milestone?.logTime, milestone?.budget)
+                      : '0'}
                     %
                   </Text>
                 </Flex>
@@ -301,16 +302,13 @@ const TaskDetailGranular = ({
                                   },
                                 )
                               ) : (
-                                <Text
-                                  fontSize={'22px'}
-                                  lineHeight={'28px'}
-                                  textAlign={'center'}
-                                  textStyle='sourceSansProRegular'
-                                  color='blackGray'
-                                  m={'48px 0 20px 0'}
+                                <Box
+                                  p='12px 32px'
+                                  borderBottom='1px'
+                                  borderColor='borderColor'
                                 >
-                                  No Entry Found
-                                </Text>
+                                  <Text>No data found.</Text>
+                                </Box>
                               )}
                             </Accordion>
                           </Box>
@@ -321,16 +319,9 @@ const TaskDetailGranular = ({
                 );
               })
             ) : (
-              <Text
-                fontSize={'22px'}
-                lineHeight={'28px'}
-                textAlign={'center'}
-                textStyle='sourceSansProRegular'
-                color='blackGray'
-                m={'48px 0 20px 0'}
-              >
-                No Tasks Found
-              </Text>
+              <Box p='12px 32px' borderBottom='1px' borderColor='borderColor'>
+                <Text>No data found.</Text>
+              </Box>
             )}
           </Accordion>
         </Box>
