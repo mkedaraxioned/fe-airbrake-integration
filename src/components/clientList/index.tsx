@@ -50,7 +50,7 @@ const ClientList = ({ setFormData, onClose, listContainer }: Props) => {
       </Text>
       <Box w='full' p='10px 0'>
         <Input
-          placeholder='Search Client'
+          placeholder='Search client here'
           w='full'
           textStyle='sourceSansProRegular'
           boxSizing='border-box'
