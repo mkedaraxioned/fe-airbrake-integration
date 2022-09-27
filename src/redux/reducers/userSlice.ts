@@ -7,6 +7,7 @@ export interface UserState {
     id: string;
     name: string;
     role: string;
+    status: string;
   };
 }
 
@@ -17,6 +18,7 @@ const initialState: UserState = {
     id: '',
     name: '',
     role: '',
+    status: '',
   },
 };
 
@@ -34,6 +36,7 @@ export const userSlice = createSlice({
         role: '',
         email: '',
         avatar: '',
+        status: '',
       };
     },
   },

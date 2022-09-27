@@ -504,7 +504,15 @@ const ReportFilterForm = ({
                   {clientData &&
                     clientData.clients.length > 0 &&
                     clientData.clients.map(
-                      (client: { id: string; name: string }, index: number) => {
+                      (
+                        client: {
+                          id: string;
+                          name: string;
+                          projects: string[];
+                        },
+                        index: number,
+                      ) => {
+                        if (client.projects.length <= 0) return null;
                         return (
                           <option value={client.id} key={index}>
                             {client.name}

@@ -3,9 +3,9 @@ import {
   Button,
   FormControl,
   FormErrorMessage,
-  FormLabel,
   Heading,
   Input,
+  Text,
   useToast,
 } from '@chakra-ui/react';
 import React, { useRef, useState } from 'react';
@@ -110,12 +110,18 @@ const NewClient = ({ onClose }: Prop) => {
       >
         Manage client
       </Heading>
+      <Text
+        mt='20px'
+        color='grayLight'
+        fontSize='18px'
+        textStyle='sourceSansProBold'
+        lineHeight='22.63px'
+      >
+        Create a new client
+      </Text>
       <Box>
         <form onSubmit={formHandler}>
-          <FormControl p='15px 0' isInvalid={errMsg?.name ? true : false}>
-            <FormLabel fontSize='14px' lineHeight='17.6px' fontWeight='600'>
-              Client name
-            </FormLabel>
+          <FormControl p='10px 0' isInvalid={errMsg?.name ? true : false}>
             <Input
               type='text'
               name='name'
@@ -130,7 +136,7 @@ const NewClient = ({ onClose }: Prop) => {
             />
             <FormErrorMessage>{errMsg?.name}</FormErrorMessage>
           </FormControl>
-          <Box pt='22px'>
+          <Box pt='8px'>
             <Button
               w='110px'
               fontSize='15px'
@@ -138,17 +144,25 @@ const NewClient = ({ onClose }: Prop) => {
               type='submit'
               variant='primary'
               mr='22px'
+              isDisabled={formData.name ? false : true}
+              _hover={{
+                bg: 'royalDarkBlue',
+              }}
             >
               {formData.id ? 'Update' : 'Save'}
             </Button>
             <Button
               w='105px'
-              h='38px'
+              h='36px'
               variant='secondary'
               onClick={reset}
               fontSize='15px'
+              isDisabled={formData.name ? false : true}
+              _hover={{
+                bg: 'white',
+              }}
             >
-              Clear
+              Cancel
             </Button>
           </Box>
         </form>

@@ -4,7 +4,6 @@ import {
   Flex,
   Heading,
   IconButton,
-  Input,
   ListItem,
   Menu,
   MenuButton,
@@ -17,7 +16,7 @@ import {
 } from '@chakra-ui/react';
 import React from 'react';
 import { FaClock } from 'react-icons/fa';
-import { AiOutlineSearch } from 'react-icons/ai';
+// import { AiOutlineSearch } from 'react-icons/ai';
 import { Link, useNavigate } from 'react-router-dom';
 import { userLogout } from '../../redux/reducers/userSlice';
 import { useSelector, useDispatch } from 'react-redux';
@@ -57,11 +56,11 @@ const Header = () => {
         </Box>
         <Flex
           w='71%'
-          justifyContent='space-between'
+          justifyContent='flex-end'
           alignItems='center'
           color='grayLight'
         >
-          <Flex
+          {/* <Flex
             w='522px'
             p='0 15px'
             justifyContent='space-between'
@@ -96,40 +95,39 @@ const Header = () => {
                 Ctrl + K
               </Text>
             </Box>
-          </Flex>
+          </Flex> */}
           <Flex alignItems='center'>
-            {user.profile.role === ERole.ADMIN ? (
-              <UnorderedList
-                display='flex'
-                listStyleType='none'
-                textStyle='sourceSansProRegular'
-                color='textColor'
-              >
-                <ListItem margin='0 15px' fontSize='16px' lineHeight='1.5'>
-                  <Text onClick={onOpen} cursor='pointer' title='Client'>
-                    Clients
-                  </Text>
-                </ListItem>
-                {(user.profile.role === ERole.ADMIN ||
-                  user.profile.role === ERole.NORMAL) && (
+            <UnorderedList
+              display='flex'
+              listStyleType='none'
+              textStyle='sourceSansProRegular'
+              color='textColor'
+            >
+              {user.profile.role === ERole.ADMIN && (
+                <>
                   <ListItem margin='0 15px' fontSize='16px' lineHeight='1.5'>
-                    <Link to='/projects' title='Project'>
-                      Projects
+                    <Text onClick={onOpen} cursor='pointer' title='Client'>
+                      Clients
+                    </Text>
+                  </ListItem>
+                  <ListItem margin='0 15px' fontSize='16px' lineHeight='1.5'>
+                    <Link to='/team' title='Team'>
+                      Team
                     </Link>
                   </ListItem>
-                )}
-                <ListItem margin='0 15px' fontSize='16px' lineHeight='1.5'>
-                  <Link to='/team' title='Team'>
-                    Team
-                  </Link>
-                </ListItem>
-                <ListItem margin='0 15px' fontSize='16px' lineHeight='23px'>
-                  <Link to='/reports' title='Reports'>
-                    Reports
-                  </Link>
-                </ListItem>
-              </UnorderedList>
-            ) : null}
+                </>
+              )}
+              <ListItem margin='0 15px' fontSize='16px' lineHeight='1.5'>
+                <Link to='/projects' title='Project'>
+                  Projects
+                </Link>
+              </ListItem>
+              <ListItem margin='0 15px' fontSize='16px' lineHeight='23px'>
+                <Link to='/reports' title='Reports'>
+                  Reports
+                </Link>
+              </ListItem>
+            </UnorderedList>
             <Menu>
               <MenuButton
                 ml='30px'
