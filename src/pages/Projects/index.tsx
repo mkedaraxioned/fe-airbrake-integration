@@ -125,7 +125,7 @@ const Projects = () => {
 
   const handleCheck = () => {
     setChecked(!checked);
-    dispatch(filterFunc({ ...filterVal, checked: !checked }));
+    dispatch(filterFunc({ ...filterVal, myprojects: !checked }));
     insertUrlParam('myprojects', `${!checked}`);
   };
 
@@ -244,7 +244,7 @@ const Projects = () => {
         </Box>
       </Box>
       <DrawerContainer isOpen={isOpen} onClose={onClose}>
-        <NewProjectForm onClose={onClose} />
+        <NewProjectForm onClose={onClose} setMyProjects={setMyProjects} />
       </DrawerContainer>
     </Box>
   );
