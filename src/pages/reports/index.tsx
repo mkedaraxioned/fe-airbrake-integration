@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   Box,
   Breadcrumb,
   BreadcrumbItem,
   Flex,
+  HStack,
   Skeleton,
   Text,
 } from '@chakra-ui/react';
@@ -18,6 +19,9 @@ import PeopleAccordian from '../../components/peopleAccordian';
 import axios from 'axios';
 import { variables } from '../../constants/backend';
 import { _get } from '../../utils/api';
+import usePrintHook from '../../hooks/usePrintHook';
+import PrintReport from '../../components/PrintPage/PrintReport';
+import { ReactComponent as PrintReportIcon } from '../../assets/images/printReportCSV.svg';
 
 interface FilterData {
   startDate: string;
@@ -27,6 +31,9 @@ interface FilterData {
 }
 
 const Reports = () => {
+  const componentRef = useRef(null);
+  const date = format(new Date(), 'yyyy-MM-dd');
+
   const [formData, setFormData] = useState<FilterFormData>({
     clientId: '',
     userId: '',
@@ -111,6 +118,18 @@ const Reports = () => {
     }
   };
 
+  // Print Report Data
+  const docTitle =
+    formData.groupBy === 'client'
+      ? `report-by-client-${date}`
+      : `report-by-people-${date}`;
+  const [isPrinting, handlePrint] = usePrintHook({
+    componentRef,
+    docTitle,
+  });
+
+  const clickHandle = () => handlePrint();
+
   return (
     <Box>
       <Box p='15px 0 80px' className='wrapper'>
@@ -132,7 +151,19 @@ const Reports = () => {
           >
             Reports
           </Text>
-          <Box textStyle='sourceSansProBold' color='reportCta'>
+          <HStack textStyle='sourceSansProBold' color='reportCta'>
+            <Flex onClick={clickHandle} cursor='pointer'>
+              <PrintReportIcon width='16px' />
+              <Text
+                ml='8px'
+                mr='30px'
+                fontSize='14px'
+                textStyle='sourceSansProBold'
+                lineHeight='17.6px'
+              >
+                Print report
+              </Text>
+            </Flex>
             <Flex>
               <ExportReport width='16px' />
               <Text
@@ -146,7 +177,7 @@ const Reports = () => {
                 Export CSV
               </Text>
             </Flex>
-          </Box>
+          </HStack>
         </Flex>
         <Box>
           <ReportFilterForm
@@ -228,6 +259,14 @@ const Reports = () => {
             })}
           </Box>
         </Box>
+        {isPrinting && (
+          <PrintReport
+            searchQueryValues={searchQueryValues}
+            loaded={loaded}
+            isPrinting={isPrinting}
+            ref={componentRef}
+          />
+        )}
       </Box>
     </Box>
   );
