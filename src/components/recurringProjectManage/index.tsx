@@ -152,8 +152,10 @@ const RecurringProjectManage = ({ projectType }: { projectType: string }) => {
     if (!title) {
       errors.titleEr = 'Please enter milestone';
     }
-    if (budget && timeStringValidate(budget)) {
-      errors.budgetEr = 'Please enter valid budget';
+    if (!budget) {
+      return errors;
+    } else if (timeStringValidate(budget)) {
+      errors.budgetEr = 'Please enter valid milestone';
     }
     return errors;
   };
@@ -183,6 +185,7 @@ const RecurringProjectManage = ({ projectType }: { projectType: string }) => {
     try {
       setTaskErr({ ...taskFieldValidation(title, budget), id: index });
       const notValid = fieldValidation(title, budget);
+
       if (id && Object.values(notValid).length <= 0) {
         await _patch(`api/tasks/${id}`, { projectId, title, budget });
       } else if (!id && Object.values(notValid).length <= 0) {
