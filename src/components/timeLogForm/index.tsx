@@ -29,6 +29,7 @@ import { timeStringValidate } from '../../utils/validation';
 import CustomSelect from '../customSelect';
 import { resetFormData, resetTimeLogError } from './helperConstants';
 import { recentlyUsed } from '../../redux/reducers/recentlyUsedSlice';
+import { Milestone } from '../../interfaces/editProject';
 
 interface Props {
   formData: TimeLogFormData;
@@ -56,6 +57,22 @@ const TimeLogFrom = ({ formData, setFormData }: Props) => {
   useEffect(() => {
     selectOptionData();
   }, [formData.projectId]);
+
+  useEffect(() => {
+    if (
+      projectType === EProjectType.RETAINER_GRANULAR ||
+      projectType === EProjectType.RETAINER
+    ) {
+      const sortArr: Milestone[] = milestoneData
+        .slice()
+        .sort((a: Milestone, b: Milestone) =>
+          new Date(a.startDate).getTime() < new Date(b.startDate).getTime()
+            ? 1
+            : -1,
+        );
+      setFormData({ ...formData, milestoneId: sortArr[0].id });
+    }
+  }, [milestoneData]);
 
   useEffect(() => {
     if (!formData.logTime) return;
