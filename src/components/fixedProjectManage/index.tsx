@@ -110,10 +110,11 @@ const FixedProjectManage = () => {
     if (!title) {
       errors.titleEr = 'Please enter milestone';
     }
-    if (!budget || timeStringValidate(budget)) {
+    if (!budget) {
+      return errors;
+    } else if (timeStringValidate(budget)) {
       errors.budgetEr = 'Please enter valid milestone';
     }
-
     return errors;
   };
 
