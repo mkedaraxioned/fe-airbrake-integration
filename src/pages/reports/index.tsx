@@ -36,8 +36,10 @@ const Reports = () => {
     startDate: new Date(startOfWeek(new Date())),
     endDate: new Date(lastDayOfWeek(new Date())),
   });
-  const [searchQueryValues, setSearchQueryValues] = useState<any>({});
-  const [filteredData, setFilteredData] = useState<FilterData>({
+  const [searchQueryValues, setSearchQueryValues] = useState<FilterFormData>({
+    ...formData,
+  });
+  const [filteredData, setFilteredData] = useState<FilterData | any>({
     startDate: '',
     endDate: '',
     users: [],
@@ -73,7 +75,7 @@ const Reports = () => {
       setLoaded(true);
       setFilteredData({ ...filteredData, clients: [], users: [] });
       const res: any = await _get(
-        `api/reports?startDate=${startDate}&endDate=${endDate}&groupBy=${formData.groupBy}&billableType=${formData.billableType}&clientId=${formData.clientId}&projectId=${formData.projectId}&userId=${formData.userId}`,
+        `api/reports?startDate=${searchQueryValues.startDate}&endDate=${searchQueryValues.endDate}&groupBy=${searchQueryValues.groupBy}&billableType=${searchQueryValues.billableType}&clientId=${searchQueryValues.clientId}&projectId=${searchQueryValues.projectId}&userId=${searchQueryValues.userId}`,
       );
       if (res?.data.data) {
         setFilteredData(res.data.data);

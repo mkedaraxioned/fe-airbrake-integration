@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Accordion,
   AccordionButton,
@@ -8,19 +8,28 @@ import {
   Flex,
   Text,
   Tooltip,
+  useDisclosure,
 } from '@chakra-ui/react';
 import { ReactComponent as EditSvg } from '../../assets/images/editTimeCardSVG.svg';
 import { ReactComponent as PlusSvg } from '../../assets/images/plusSvg.svg';
 import { ReactComponent as MinusSvg } from '../../assets/images/minusSvg.svg';
 import { getTimeInHours } from '../../utils/common';
+import { DrawerContainer } from '../drawer';
+import EditTimecardReport from '../EditTimecardReport';
 import { format } from 'date-fns';
-import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../redux';
 const PeopleReportsProjectsAccordion = ({ projects }: any) => {
   const {
     profile: { role },
   } = useSelector((state: RootState) => state.rootSlices.user);
+  const [timeLogId, setTimeLogId] = useState<string>('');
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const editTimeCard = (id: string) => {
+    onOpen();
+    setTimeLogId(id);
+  };
+
   return (
     <Box>
       {Array.isArray(projects) &&
@@ -113,10 +122,12 @@ const PeopleReportsProjectsAccordion = ({ projects }: any) => {
                             <Flex alignItems='center' flexBasis='27%'>
                               {role === 'ADMIN' && (
                                 <Tooltip label='Edit'>
-                                  <Text _hover={{ textDecor: 'underline' }}>
-                                    <Link to={`/dashboard/${timecard.id}`}>
-                                      <EditSvg />
-                                    </Link>
+                                  <Text
+                                    _hover={{ textDecor: 'underline' }}
+                                    onClick={() => editTimeCard(timecard.id)}
+                                    cursor='pointer'
+                                  >
+                                    <EditSvg />
                                   </Text>
                                 </Tooltip>
                               )}
@@ -141,6 +152,9 @@ const PeopleReportsProjectsAccordion = ({ projects }: any) => {
             </Accordion>
           );
         })}
+      <DrawerContainer isOpen={isOpen} onClose={onClose}>
+        <EditTimecardReport timeLogId={timeLogId} onClose={onClose} />
+      </DrawerContainer>
     </Box>
   );
 };
