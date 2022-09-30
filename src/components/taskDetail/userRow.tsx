@@ -25,7 +25,7 @@ const UserRow = ({ activity, isPrinting }: Props) => {
         justifyContent={isPrinting ? 'space-between' : 'initial'}
         borderTop={isPrinting ? '1px solid #E2E8F0' : '1px solid #E2E8F0'}
       >
-        <Flex flexBasis='25%'>
+        <Flex flexBasis='28%'>
           {!isPrinting && (
             <Link to={`/dashboard/${activity.timecardId}`}>
               <EditTimeCardSvg />
@@ -35,12 +35,12 @@ const UserRow = ({ activity, isPrinting }: Props) => {
             {format(new Date(activity.date), formatTimeCardDate)}
           </Text>
         </Flex>
-        <Text flexBasis='48%'>{activity.comments}</Text>
+        <Text flexBasis='45%'>{activity.comments}</Text>
         <Text pl='18px' flexBasis='10%' textAlign={'right'}>
           {convertMinutes(activity.logTime)}
         </Text>
         {isPrinting && (
-          <Text flexBasis='17%' textAlign={'right'} hidden>
+          <Text flexBasis='8%' textAlign={'right'} hidden>
             {activity.updateAt}
           </Text>
         )}

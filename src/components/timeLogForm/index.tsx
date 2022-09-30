@@ -29,6 +29,7 @@ import { timeStringValidate } from '../../utils/validation';
 import CustomSelect from '../customSelect';
 import { resetFormData, resetTimeLogError } from './helperConstants';
 import { recentlyUsed } from '../../redux/reducers/recentlyUsedSlice';
+import { Milestone } from '../../interfaces/editProject';
 
 interface Props {
   formData: TimeLogFormData;
@@ -43,7 +44,7 @@ const TimeLogFrom = ({ formData, setFormData }: Props) => {
 
   const [projectType, setProjectType] = useState<EProjectType | null>(null);
   const [taskNode, setTaskNode] = useState([]);
-  const [milestoneData, setMilestoneData] = useState([]);
+  const [milestoneData, setMilestoneData] = useState<Milestone[]>([]);
   const [errorMsg, setErrorMsg] = useState<TimelogFormError>({});
 
   const { projects } = useSelector(
@@ -55,7 +56,7 @@ const TimeLogFrom = ({ formData, setFormData }: Props) => {
 
   useEffect(() => {
     selectOptionData();
-  }, [formData.projectId]);
+  }, [formData.projectId, formData.date]);
 
   useEffect(() => {
     if (!formData.logTime) return;
@@ -81,6 +82,20 @@ const TimeLogFrom = ({ formData, setFormData }: Props) => {
       setTaskNode(project.tasks);
       setMilestoneData(project.milestones);
       setProjectType(project.type);
+      const currentMilestone = project.milestones.filter((val: any) => {
+        return (
+          new Date(formData.date) >= new Date(val.startDate) &&
+          new Date(formData.date).getTime() <= new Date(val.endDate).getTime()
+        );
+      });
+      if (
+        projectType === EProjectType.RETAINER_GRANULAR ||
+        projectType === EProjectType.RETAINER
+      ) {
+        currentMilestone.length > 0
+          ? setFormData({ ...formData, milestoneId: currentMilestone[0].id })
+          : setFormData({ ...formData, milestoneId: '' });
+      }
     }
   };
 
@@ -114,21 +129,20 @@ const TimeLogFrom = ({ formData, setFormData }: Props) => {
       errors.projectName = 'Please select project ';
     }
 
-    if (
-      !milestoneId &&
-      projectType !== EProjectType.RETAINER_GRANULAR &&
-      projectType !== EProjectType.RETAINER
-    ) {
+    if (!milestoneId) {
       errors.milestone = 'Please select milestone ';
     }
 
     if (
       !taskId &&
-      projectType !== EProjectType.FIXED &&
-      projectType !== EProjectType.RETAINER
+      !(
+        projectType === EProjectType.FIXED ||
+        projectType === EProjectType.RETAINER
+      )
     ) {
       errors.task = 'Please select task ';
     }
+
     if (!comments) {
       errors.comments = 'Please enter comments ';
     }
@@ -314,7 +328,13 @@ const TimeLogFrom = ({ formData, setFormData }: Props) => {
             id='select_milestone'
             name='milestoneId'
             value={formData.milestoneId}
-            placeholder='Select milestone'
+            placeholder={
+              (projectType === EProjectType.RETAINER_GRANULAR ||
+                projectType === EProjectType.RETAINER) &&
+              !formData.milestoneId
+                ? 'No milestone'
+                : 'Select milestone'
+            }
             fontSize='14px'
             lineHeight='17.6px'
             color='grayLight'
@@ -330,15 +350,13 @@ const TimeLogFrom = ({ formData, setFormData }: Props) => {
             {...updateStateProps}
           >
             {milestoneData.length > 0 &&
-              milestoneData.map(
-                (task: { id: string; title: string }, index) => {
-                  return (
-                    <option value={task.id} key={index}>
-                      {task.title}
-                    </option>
-                  );
-                },
-              )}
+              milestoneData.map((milestone, index) => {
+                return (
+                  <option value={milestone.id} key={index}>
+                    {milestone.title}
+                  </option>
+                );
+              })}
           </Select>
           <FormErrorMessage mt='6px' fontSize='12px'>
             {errorMsg?.milestone}

@@ -199,6 +199,7 @@ const NewProjectForm = ({ onClose, projectId, setMyProjects }: Props) => {
   };
 
   const reset = () => {
+    onClose();
     setFormData({
       clientId: '',
       title: '',
@@ -224,7 +225,6 @@ const NewProjectForm = ({ onClose, projectId, setMyProjects }: Props) => {
         } else {
           await _post('api/projects/', formData);
         }
-        onClose();
         reset();
         fetchProjects();
         toast({

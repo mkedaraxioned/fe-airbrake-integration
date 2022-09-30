@@ -69,7 +69,7 @@ const EditTimecardReport = ({ timeLogId, onClose }: Props) => {
 
   useEffect(() => {
     selectOptionData();
-  }, [formData.projectId]);
+  }, [formData.projectId, formData.date]);
 
   useEffect(() => {
     if (!formData.logTime) return;
@@ -95,6 +95,20 @@ const EditTimecardReport = ({ timeLogId, onClose }: Props) => {
       setTaskNode(project.tasks);
       setMilestoneData(project.milestones);
       setProjectType(project.type);
+      const currentMilestone = project.milestones.filter((val: any) => {
+        return (
+          new Date(formData.date) >= new Date(val.startDate) &&
+          new Date(formData.date).getTime() <= new Date(val.endDate).getTime()
+        );
+      });
+      if (
+        projectType === EProjectType.RETAINER_GRANULAR ||
+        projectType === EProjectType.RETAINER
+      ) {
+        currentMilestone.length > 0
+          ? setFormData({ ...formData, milestoneId: currentMilestone[0].id })
+          : setFormData({ ...formData, milestoneId: '' });
+      }
     }
   };
 
@@ -116,8 +130,8 @@ const EditTimecardReport = ({ timeLogId, onClose }: Props) => {
     setFormData({
       ...formData,
       projectId: item.value,
-      milestoneId: '',
       taskId: '',
+      milestoneId: '',
     });
   };
 
@@ -133,18 +147,16 @@ const EditTimecardReport = ({ timeLogId, onClose }: Props) => {
       errors.projectName = 'Please select project ';
     }
 
-    if (
-      !milestoneId &&
-      projectType !== EProjectType.RETAINER_GRANULAR &&
-      projectType !== EProjectType.RETAINER
-    ) {
+    if (!milestoneId) {
       errors.milestone = 'Please select milestone ';
     }
 
     if (
       !taskId &&
-      projectType !== EProjectType.FIXED &&
-      projectType !== EProjectType.RETAINER
+      !(
+        projectType === EProjectType.FIXED ||
+        projectType === EProjectType.RETAINER
+      )
     ) {
       errors.task = 'Please select task ';
     }
@@ -159,6 +171,7 @@ const EditTimecardReport = ({ timeLogId, onClose }: Props) => {
   };
 
   const reset = () => {
+    onClose();
     setFormData(resetFormData);
     setErrorMsg(resetTimeLogError);
     setMilestoneData([]);
@@ -247,7 +260,6 @@ const EditTimecardReport = ({ timeLogId, onClose }: Props) => {
           });
         }
         if (res?.status === 201 || res?.status === 200) {
-          onClose();
           toast({
             title: 'Project',
             description: `${
@@ -279,7 +291,8 @@ const EditTimecardReport = ({ timeLogId, onClose }: Props) => {
     <Box p='50px 15px 10px 38px'>
       <Heading
         as='h2'
-        mb='23px'
+        mb='16px'
+        fontSize='22px'
         color='grayLight'
         textStyle='sourceSansProBold'
         lineHeight='27.65px'
@@ -378,7 +391,13 @@ const EditTimecardReport = ({ timeLogId, onClose }: Props) => {
             id='select_milestone'
             name='milestoneId'
             value={formData.milestoneId}
-            placeholder='Select milestone'
+            placeholder={
+              (projectType === EProjectType.RETAINER_GRANULAR ||
+                projectType === EProjectType.RETAINER) &&
+              !formData.milestoneId
+                ? 'No milestone'
+                : 'Select milestone'
+            }
             fontSize='14px'
             lineHeight='17.6px'
             color='grayLight'
