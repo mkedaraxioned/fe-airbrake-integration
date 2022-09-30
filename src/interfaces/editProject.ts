@@ -22,6 +22,7 @@ export interface Milestone {
   budget: string;
   id?: string;
   startDate: Date | string;
+  endDate: Date | string;
 }
 
 export interface FixedFormObj {
