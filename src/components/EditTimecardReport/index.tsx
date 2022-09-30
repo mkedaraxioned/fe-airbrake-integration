@@ -171,6 +171,7 @@ const EditTimecardReport = ({ timeLogId, onClose }: Props) => {
   };
 
   const reset = () => {
+    onClose();
     setFormData(resetFormData);
     setErrorMsg(resetTimeLogError);
     setMilestoneData([]);
@@ -259,7 +260,6 @@ const EditTimecardReport = ({ timeLogId, onClose }: Props) => {
           });
         }
         if (res?.status === 201 || res?.status === 200) {
-          onClose();
           toast({
             title: 'Project',
             description: `${
@@ -291,7 +291,8 @@ const EditTimecardReport = ({ timeLogId, onClose }: Props) => {
     <Box p='50px 15px 10px 38px'>
       <Heading
         as='h2'
-        mb='23px'
+        mb='16px'
+        fontSize='22px'
         color='grayLight'
         textStyle='sourceSansProBold'
         lineHeight='27.65px'
