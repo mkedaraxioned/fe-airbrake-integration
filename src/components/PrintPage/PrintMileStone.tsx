@@ -150,8 +150,8 @@ const PrintMileStone = forwardRef(
               textStyle='sourceSansProBold'
               lineHeight='17.6px'
             >
-              <Text flexBasis='25%'>Name</Text>
-              <Text flexBasis='48%'>Comments/Notes</Text>
+              <Text flexBasis='32%'>Name</Text>
+              <Text flexBasis='50%'>Comments/Notes</Text>
               <Text flexBasis='10%' textAlign={'right'}>
                 Hours
               </Text>
@@ -191,7 +191,12 @@ const PrintMileStone = forwardRef(
                             >
                               <Flex flexBasis={'73%'}>
                                 <Box>
-                                  <Text textAlign='left'>{user?.name}</Text>
+                                  <Text
+                                    textAlign='left'
+                                    textStyle='sourceSansProBold'
+                                  >
+                                    {user?.name}
+                                  </Text>
                                 </Box>
                               </Flex>
                               <Text flexBasis={'10%'} textAlign={'right'}>
