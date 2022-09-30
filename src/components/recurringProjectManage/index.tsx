@@ -551,7 +551,6 @@ const RecurringProjectManage = ({ projectType }: { projectType: string }) => {
                             )}
                             <Flex
                               display={
-                                index !== 0 &&
                                 isVisibleIndex === index &&
                                 taskIndex !== index &&
                                 tasks.length - 1 !== index

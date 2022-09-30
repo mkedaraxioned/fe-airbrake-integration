@@ -113,7 +113,12 @@ const EditTimecardReport = ({ timeLogId, onClose }: Props) => {
   };
 
   const selectProject = (item: { value: string }) => {
-    setFormData({ ...formData, projectId: item.value });
+    setFormData({
+      ...formData,
+      projectId: item.value,
+      milestoneId: '',
+      taskId: '',
+    });
   };
 
   const fieldValidation = () => {

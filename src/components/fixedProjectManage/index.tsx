@@ -273,18 +273,19 @@ const FixedProjectManage = () => {
                               </FormErrorMessage>
                             )}
                           </FormControl>
-                          {milestoneIndex !== index && index === 0 && (
-                            <Box>
-                              <button
-                                type='submit'
-                                disabled
-                                className='not-allowed form-btn'
-                              >
-                                {' '}
-                                <CheckGreySvg />
-                              </button>
-                            </Box>
-                          )}
+                          {milestoneIndex !== index &&
+                            index === fixedFormData.phase.length - 1 && (
+                              <Box>
+                                <button
+                                  type='submit'
+                                  disabled
+                                  className='not-allowed form-btn'
+                                >
+                                  {' '}
+                                  <CheckGreySvg />
+                                </button>
+                              </Box>
+                            )}
                           {milestoneIndex === index && (
                             <Flex alignItems='center'>
                               <Box display='flex' pr='7px' title='Save'>
@@ -304,9 +305,9 @@ const FixedProjectManage = () => {
                           )}
                           <Flex
                             display={
-                              index !== 0 &&
                               isVisibleIndex === index &&
-                              milestoneIndex !== index
+                              milestoneIndex !== index &&
+                              fixedFormData.phase.length - 1 !== index
                                 ? 'flex'
                                 : 'none'
                             }

@@ -366,7 +366,7 @@ const ReportFilterForm = ({
                       }
                       textStyle='sourceSansProRegular'
                     >
-                      This Month
+                      This month
                     </MenuItem>
                     <MenuItem
                       onClick={() => selectDateHandler('lastMonth')}
@@ -377,7 +377,7 @@ const ReportFilterForm = ({
                       }
                       textStyle='sourceSansProRegular'
                     >
-                      Last Month
+                      Last month
                     </MenuItem>
                     <MenuItem
                       onClick={() => selectDateHandler('thisYear')}
@@ -388,7 +388,7 @@ const ReportFilterForm = ({
                       }
                       textStyle='sourceSansProRegular'
                     >
-                      This Year
+                      This year
                     </MenuItem>
                   </MenuList>
                 </Menu>
@@ -486,7 +486,7 @@ const ReportFilterForm = ({
             <Box flexBasis='47.5%'>
               <FormControl pb='5px'>
                 <FormLabel m='5px 0' className='form_label' fontWeight='600'>
-                  Select Client
+                  Select client
                 </FormLabel>
                 <Select
                   id='select_project'
@@ -601,7 +601,7 @@ const ReportFilterForm = ({
               </FormControl>
               <FormControl>
                 <FormLabel className='form_label' fontWeight='600'>
-                  Group By
+                  Group by
                 </FormLabel>
                 <RadioGroup value='client'>
                   <Stack direction='row'>
