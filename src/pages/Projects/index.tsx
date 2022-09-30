@@ -44,7 +44,7 @@ const Projects = () => {
   const [type, setType] = useState('');
   const [searchVal, setSearchVal] = useState('');
   const dispatch = useDispatch();
-  const urlVal = searchParams.get('project');
+  const urlVal = searchParams.get('search');
 
   useEffect(() => {
     unqClients();
@@ -59,43 +59,53 @@ const Projects = () => {
 
   useEffect(() => {
     fetchMyProjects();
-    if (
-      searchParams.get('myprojects') === '' ||
-      searchParams.get('myprojects') === 'true' ||
-      filterVal.myprojects === true
-    ) {
-      setChecked(true);
-      filterVal && insertUrlParam('myprojects', `${filterVal.myprojects}`);
-    } else if (
-      searchParams.get('myprojects') === 'false' ||
-      filterVal.myprojects === false
-    ) {
-      setChecked(false);
-      filterVal && insertUrlParam('myprojects', `${filterVal.myprojects}`);
-    }
-
-    if (searchParams.get('project') || filterVal.project) {
-      setSearchVal(searchParams.get('project') || filterVal.project);
-      filterVal.project !== '' && insertUrlParam('project', filterVal.project);
-    }
-
-    if (searchParams.get('type') || filterVal.type) {
-      setType(searchParams.get('type') || filterVal.type);
-      filterVal.type !== '' && insertUrlParam('type', filterVal.type);
-    }
+    paramsVal();
   }, []);
 
   useEffect(() => {
     if (checked) {
       filterFunctionality(myProjects);
+      dispatch(filterFunc({ ...filterVal, show: 'my' }));
     } else {
       filterFunctionality(projects);
+      dispatch(filterFunc({ ...filterVal, show: 'all' }));
     }
   }, [checked, type, searchVal, myProjects]);
+
+  const paramsVal = () => {
+    if (Array.from(searchParams).length > 0) {
+      searchParams.get('show') === 'my' && setChecked(true);
+      searchParams.get('show') === 'all' && setChecked(false);
+      searchParams.get('search') &&
+        setSearchVal(searchParams.get('search') ?? '');
+      searchParams.get('type') && setType(searchParams.get('type') ?? '');
+    } else {
+      if (filterVal.show === 'my') {
+        setChecked(true);
+        filterVal && insertUrlParam('show', `${filterVal.show}`);
+      } else if (filterVal.show === 'all') {
+        setChecked(false);
+        filterVal && insertUrlParam('show', `${filterVal.show}`);
+      }
+
+      if (filterVal.search) {
+        setSearchVal(filterVal.search);
+        filterVal.project !== '' &&
+          insertUrlParam('project', filterVal.search.toLowerCase());
+      }
+
+      if (filterVal.type) {
+        setType(filterVal.type.toLowerCase());
+        filterVal.type !== '' &&
+          insertUrlParam('type', filterVal.type.toLowerCase());
+      }
+    }
+  };
 
   const filterFunctionality = (pro: any) => {
     let temp = pro;
     if (searchVal !== '') {
+      dispatch(filterFunc({ ...filterVal, search: searchVal }));
       temp = temp?.filter(
         (project: { title: string; client: any }) =>
           project?.title.toLowerCase().includes(searchVal.toLowerCase()) ||
@@ -103,7 +113,10 @@ const Projects = () => {
       );
     }
     if (type !== '' && type !== 'none') {
-      temp = temp?.filter((item: { type: string }) => item.type.includes(type));
+      dispatch(filterFunc({ ...filterVal, type: type }));
+      temp = temp?.filter((item: { type: string }) =>
+        item.type.toLowerCase().includes(type.toLowerCase()),
+      );
     }
     setFilterPro(temp);
   };
@@ -125,20 +138,17 @@ const Projects = () => {
 
   const handleCheck = () => {
     setChecked(!checked);
-    dispatch(filterFunc({ ...filterVal, myprojects: !checked }));
-    insertUrlParam('myprojects', `${!checked}`);
+    insertUrlParam('show', !checked ? 'my' : 'all');
   };
 
   const handleSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setType(e.currentTarget.value);
-    dispatch(filterFunc({ ...filterVal, type: e.currentTarget.value }));
     insertUrlParam('type', e.currentTarget.value);
   };
 
   const handleInput = (ele: React.ChangeEvent<HTMLInputElement>) => {
     setSearchVal(ele.currentTarget.value);
-    dispatch(filterFunc({ ...filterVal, project: ele.currentTarget.value }));
-    insertUrlParam('project', ele.currentTarget.value);
+    insertUrlParam('search', ele.currentTarget.value);
   };
 
   const fetchMyProjects = async () => {
@@ -212,8 +222,8 @@ const Projects = () => {
               onChange={(e) => handleSelect(e)}
             >
               <option value='none'>All project type</option>
-              <option value='FIXED'>Fixed</option>
-              <option value='RETAINER'>Retainer</option>
+              <option value='fixed'>Fixed</option>
+              <option value='retainer'>Retainer</option>
             </Select>
             <Box>
               <Button w='138px' variant='primary' onClick={onOpen}>

@@ -190,6 +190,9 @@ const Reports = () => {
                     borderLeft='1px'
                     borderRight='1px'
                     borderColor='borderColor'
+                    fontSize='16px'
+                    textStyle='sourceSansProRegular'
+                    lineHeight='17.6px'
                   >
                     <Text>No data found.</Text>
                   </Box>

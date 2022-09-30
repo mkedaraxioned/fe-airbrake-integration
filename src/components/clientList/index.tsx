@@ -94,7 +94,7 @@ const ClientList = ({ setFormData, onClose, listContainer }: Props) => {
                   </Flex>
                   <Box>
                     <Link
-                      to={`/projects?project=${client.name.replace(' ', '+')}`}
+                      to={`/projects?search=${client.name.replace(' ', '+')}`}
                       onClick={onClose}
                     >
                       <Text

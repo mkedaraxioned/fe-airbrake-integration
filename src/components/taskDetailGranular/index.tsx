@@ -60,7 +60,7 @@ const TaskDetailGranular = ({
             justifyContent='space-between'
             bg='purple'
             color='white'
-            fontSize='14px'
+            fontSize='16px'
             textStyle='sourceSansProRegular'
             lineHeight='17.6px'
           >
@@ -306,6 +306,9 @@ const TaskDetailGranular = ({
                                   p='12px 32px'
                                   borderBottom='1px'
                                   borderColor='borderColor'
+                                  fontSize='16px'
+                                  textStyle='sourceSansProRegular'
+                                  lineHeight='17.6px'
                                 >
                                   <Text>No data found.</Text>
                                 </Box>
@@ -319,7 +322,14 @@ const TaskDetailGranular = ({
                 );
               })
             ) : (
-              <Box p='12px 32px' borderBottom='1px' borderColor='borderColor'>
+              <Box
+                p='12px 32px'
+                borderBottom='1px'
+                borderColor='borderColor'
+                fontSize='16px'
+                textStyle='sourceSansProRegular'
+                lineHeight='17.6px'
+              >
                 <Text>No data found.</Text>
               </Box>
             )}

@@ -39,7 +39,7 @@ const ProjectCard = ({ project }: Props) => {
     const result = parseFloat(n) / 60;
     if (parseFloat(n) % 60 === 0) {
       return result;
-    } else return result.toFixed(2);
+    } else return result.toFixed(1);
   };
 
   return (
