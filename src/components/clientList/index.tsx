@@ -27,7 +27,7 @@ const ClientList = ({ setFormData, onClose, listContainer }: Props) => {
   };
   useEffect(() => {
     if (clients) setShowClients(clients);
-  }, []);
+  }, [clients]);
 
   const searchHandler = () => {
     const inputVal = searchElem.current.value;

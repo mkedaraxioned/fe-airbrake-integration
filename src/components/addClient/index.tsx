@@ -52,8 +52,10 @@ const NewClient = ({ onClose }: Prop) => {
     setErrMsg({ name: '' });
   };
   const fetchClient = async () => {
-    const clientRes = await _get('api/clients');
-    dispatch(allClients(clientRes?.data?.clients));
+    const { data } = await _get('api/clients');
+    if (data.result === 'success') {
+      dispatch(allClients(data.clients));
+    }
   };
 
   const formHandler = async (e: React.FormEvent<HTMLFormElement>) => {

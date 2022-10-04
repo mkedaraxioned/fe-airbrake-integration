@@ -122,7 +122,12 @@ const ReportFilterForm = ({
   };
 
   const selecttHandler = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const name = e.target.name;
+    const value = e.target.value;
+    console.log(name, 'name');
+    name === 'clientId'
+      ? setFormData({ ...formData, [name]: value, projectId: '' })
+      : setFormData({ ...formData, [name]: value });
   };
 
   const radioHandler = (e: any) => {
