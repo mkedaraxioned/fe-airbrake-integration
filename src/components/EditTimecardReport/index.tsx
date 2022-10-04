@@ -14,7 +14,7 @@ import {
   Text,
   useToast,
 } from '@chakra-ui/react';
-import { format } from 'date-fns';
+import { addMonths, format } from 'date-fns';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { EProjectType } from '../../constants/enum';
@@ -69,7 +69,7 @@ const EditTimecardReport = ({ timeLogId, onClose }: Props) => {
 
   useEffect(() => {
     selectOptionData();
-  }, [formData.projectId, formData.date]);
+  }, [formData.projectId, formData.date, milestoneData]);
 
   useEffect(() => {
     if (!formData.logTime) return;
@@ -97,8 +97,10 @@ const EditTimecardReport = ({ timeLogId, onClose }: Props) => {
       setProjectType(project.type);
       const currentMilestone = project.milestones.filter((val: any) => {
         return (
-          new Date(formData.date) >= new Date(val.startDate) &&
-          new Date(formData.date).getTime() <= new Date(val.endDate).getTime()
+          new Date(format(new Date(formData.date), 'yyyy-MM-dd')).getTime() >=
+            new Date(val.startDate).getTime() &&
+          new Date(format(new Date(formData.date), 'yyyy-MM-dd')).getTime() <=
+            new Date(val.endDate).getTime()
         );
       });
       if (
@@ -147,7 +149,7 @@ const EditTimecardReport = ({ timeLogId, onClose }: Props) => {
       errors.projectName = 'Please select project ';
     }
 
-    if (!milestoneId) {
+    if (!milestoneId && projectType === EProjectType.FIXED) {
       errors.milestone = 'Please select milestone ';
     }
 
@@ -395,7 +397,13 @@ const EditTimecardReport = ({ timeLogId, onClose }: Props) => {
               (projectType === EProjectType.RETAINER_GRANULAR ||
                 projectType === EProjectType.RETAINER) &&
               !formData.milestoneId
-                ? 'No milestone'
+                ? `Month - (${format(
+                    new Date(formData.date),
+                    'dd MMM',
+                  )} - ${format(
+                    addMonths(new Date(formData.date), 1),
+                    'dd MMM',
+                  )})`
                 : 'Select milestone'
             }
             fontSize='14px'

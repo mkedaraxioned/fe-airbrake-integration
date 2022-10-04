@@ -12,7 +12,7 @@ import {
   Text,
   useToast,
 } from '@chakra-ui/react';
-import { format } from 'date-fns';
+import { addMonths, format } from 'date-fns';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router';
@@ -56,7 +56,7 @@ const TimeLogFrom = ({ formData, setFormData }: Props) => {
 
   useEffect(() => {
     selectOptionData();
-  }, [formData.projectId, formData.date]);
+  }, [formData.projectId, formData.date, milestoneData]);
 
   useEffect(() => {
     if (!formData.logTime) return;
@@ -84,8 +84,10 @@ const TimeLogFrom = ({ formData, setFormData }: Props) => {
       setProjectType(project.type);
       const currentMilestone = project.milestones.filter((val: any) => {
         return (
-          new Date(formData.date) >= new Date(val.startDate) &&
-          new Date(formData.date).getTime() <= new Date(val.endDate).getTime()
+          new Date(format(new Date(formData.date), 'yyyy-MM-dd')).getTime() >=
+            new Date(val.startDate).getTime() &&
+          new Date(format(new Date(formData.date), 'yyyy-MM-dd')).getTime() <=
+            new Date(val.endDate).getTime()
         );
       });
       if (
@@ -114,7 +116,12 @@ const TimeLogFrom = ({ formData, setFormData }: Props) => {
   };
 
   const selectProject = (item: { value: string }) => {
-    setFormData({ ...formData, projectId: item.value });
+    setFormData({
+      ...formData,
+      projectId: item.value,
+      taskId: '',
+      milestoneId: '',
+    });
   };
 
   const fieldValidation = () => {
@@ -129,7 +136,7 @@ const TimeLogFrom = ({ formData, setFormData }: Props) => {
       errors.projectName = 'Please select project ';
     }
 
-    if (!milestoneId) {
+    if (!milestoneId && projectType === EProjectType.FIXED) {
       errors.milestone = 'Please select milestone ';
     }
 
@@ -332,7 +339,13 @@ const TimeLogFrom = ({ formData, setFormData }: Props) => {
               (projectType === EProjectType.RETAINER_GRANULAR ||
                 projectType === EProjectType.RETAINER) &&
               !formData.milestoneId
-                ? 'No milestone'
+                ? `Month - (${format(
+                    new Date(formData.date),
+                    'dd MMM',
+                  )} - ${format(
+                    addMonths(new Date(formData.date), 1),
+                    'dd MMM',
+                  )})`
                 : 'Select milestone'
             }
             fontSize='14px'
