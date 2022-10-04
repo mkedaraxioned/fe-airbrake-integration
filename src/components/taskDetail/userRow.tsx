@@ -1,7 +1,6 @@
 import React from 'react';
 import { Flex, ListItem, Text } from '@chakra-ui/react';
 import { format } from 'date-fns';
-import { Link } from 'react-router-dom';
 import { convertMinutes } from '../../utils/common';
 import { ReactComponent as EditTimeCardSvg } from '../../assets/images/editTimeCardSVG.svg';
 import { ProjectActivity } from '../../interfaces/projectDetails';
@@ -9,10 +8,16 @@ import { ProjectActivity } from '../../interfaces/projectDetails';
 interface Props {
   activity: ProjectActivity;
   isPrinting?: boolean;
+  onOpen?: any;
+  setTimeLogId?: any;
 }
 
-const UserRow = ({ activity, isPrinting }: Props) => {
+const UserRow = ({ activity, isPrinting, onOpen, setTimeLogId }: Props) => {
   const formatTimeCardDate = 'EEE, MMM dd, yyyy';
+  const timeCardEdit = (id: string) => {
+    onOpen();
+    setTimeLogId(id);
+  };
   return (
     <ListItem>
       <Flex
@@ -27,9 +32,12 @@ const UserRow = ({ activity, isPrinting }: Props) => {
       >
         <Flex flexBasis='20%'>
           {!isPrinting && (
-            <Link to={`/dashboard/${activity.timecardId}`}>
+            <Text
+              cursor='pointer'
+              onClick={() => timeCardEdit(activity.timecardId)}
+            >
               <EditTimeCardSvg />
-            </Link>
+            </Text>
           )}
           <Text pl='11px'>
             {format(new Date(activity.date), formatTimeCardDate)}

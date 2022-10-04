@@ -9,8 +9,9 @@ import {
   List,
   Progress,
   Text,
+  useDisclosure,
 } from '@chakra-ui/react';
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { format } from 'date-fns';
 import { ReactComponent as PlusSvg } from './../../assets/images/plusSvg.svg';
 import { ReactComponent as MinusDarkSvg } from './../../assets/images/minusdark.svg';
@@ -26,6 +27,8 @@ import ExportMilestone from '../ExportMilestone';
 import UserRow from '../taskDetail/userRow';
 import usePrintHook from '../../hooks/usePrintHook';
 import PrintMileStoneGranular from '../PrintPage/PrintMileStoneGranular';
+import { DrawerContainer } from '../drawer';
+import EditTimecardReport from '../EditTimecardReport';
 
 interface Props {
   milestone?: ProjectMileStone;
@@ -39,7 +42,8 @@ const TaskDetailGranular = ({
   projectBasics,
 }: Props) => {
   const componentRef = useRef(null);
-
+  const [timeLogId, setTimeLogId] = useState<string>('');
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const docTitle = createPdfTitle(projectBasics?.projectName, milestone?.name);
 
   const [isPrinting, handlePrint] = usePrintHook({
@@ -281,6 +285,10 @@ const TaskDetailGranular = ({
                                                             key={
                                                               activity.timecardId
                                                             }
+                                                            onOpen={onOpen}
+                                                            setTimeLogId={
+                                                              setTimeLogId
+                                                            }
                                                             activity={activity}
                                                           />
                                                         ),
@@ -289,6 +297,10 @@ const TaskDetailGranular = ({
                                                     <UserRow
                                                       activity={
                                                         user?.timecards[0]
+                                                      }
+                                                      onOpen={onOpen}
+                                                      setTimeLogId={
+                                                        setTimeLogId
                                                       }
                                                     />
                                                   )}
@@ -346,6 +358,9 @@ const TaskDetailGranular = ({
           ref={componentRef}
         />
       )}
+      <DrawerContainer isOpen={isOpen} onClose={onClose}>
+        <EditTimecardReport timeLogId={timeLogId} onClose={onClose} />
+      </DrawerContainer>
     </Box>
   );
 };

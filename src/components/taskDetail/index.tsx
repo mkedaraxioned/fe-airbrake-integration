@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import {
   Accordion,
   AccordionButton,
@@ -10,6 +10,7 @@ import {
   List,
   Progress,
   Text,
+  useDisclosure,
 } from '@chakra-ui/react';
 import { ReactComponent as PlusSvg } from './../../assets/images/plusSvg.svg';
 import { ReactComponent as MinusDarkSvg } from './../../assets/images/minusdark.svg';
@@ -26,6 +27,8 @@ import {
 import ExportMilestone from '../ExportMilestone';
 import usePrintHook from '../../hooks/usePrintHook';
 import PrintMileStone from '../PrintPage/PrintMileStone';
+import { DrawerContainer } from '../drawer';
+import EditTimecardReport from '../EditTimecardReport';
 
 interface Props {
   displayBlock?: boolean;
@@ -34,6 +37,8 @@ interface Props {
 }
 
 const TaskDetail = ({ displayBlock, milestone, projectBasics }: Props) => {
+  const [timeLogId, setTimeLogId] = useState<string>('');
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const componentRef = useRef(null);
   const docTitle = createPdfTitle(projectBasics?.projectName, milestone?.name);
 
@@ -220,10 +225,16 @@ const TaskDetail = ({ displayBlock, milestone, projectBasics }: Props) => {
                                     <UserRow
                                       key={activity.timecardId}
                                       activity={activity}
+                                      onOpen={onOpen}
+                                      setTimeLogId={setTimeLogId}
                                     />
                                   ))
                               ) : (
-                                <UserRow activity={user?.timecards[0]} />
+                                <UserRow
+                                  activity={user?.timecards[0]}
+                                  onOpen={onOpen}
+                                  setTimeLogId={setTimeLogId}
+                                />
                               )}
                             </List>
                           </AccordionPanel>
@@ -258,6 +269,9 @@ const TaskDetail = ({ displayBlock, milestone, projectBasics }: Props) => {
           ref={componentRef}
         />
       )}
+      <DrawerContainer isOpen={isOpen} onClose={onClose}>
+        <EditTimecardReport timeLogId={timeLogId} onClose={onClose} />
+      </DrawerContainer>
     </Box>
   );
 };
