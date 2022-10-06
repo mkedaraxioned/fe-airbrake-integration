@@ -302,7 +302,11 @@ const TimeLogFrom = ({ formData, setFormData }: Props) => {
   return (
     <Box>
       <form onSubmit={formHandler}>
-        <FormControl mb='18px' isInvalid={errorMsg?.projectName ? true : false}>
+        <FormControl
+          mb='18px'
+          isInvalid={errorMsg?.projectName ? true : false}
+          pos='relative'
+        >
           <FormLabel
             htmlFor='select_project'
             color='grayLight'
@@ -315,11 +319,15 @@ const TimeLogFrom = ({ formData, setFormData }: Props) => {
             Project
           </FormLabel>
           {renderSelect()}
-          <FormErrorMessage mt='6px' fontSize='12px'>
+          <FormErrorMessage mt='6px' fontSize='12px' className='error_align'>
             {errorMsg?.projectName}
           </FormErrorMessage>
         </FormControl>
-        <FormControl mb='18px' isInvalid={errorMsg?.milestone ? true : false}>
+        <FormControl
+          mb='18px'
+          isInvalid={errorMsg?.milestone ? true : false}
+          pos='relative'
+        >
           <FormLabel
             htmlFor='select_milestone'
             color='grayLight'
@@ -371,12 +379,16 @@ const TimeLogFrom = ({ formData, setFormData }: Props) => {
                 );
               })}
           </Select>
-          <FormErrorMessage mt='6px' fontSize='12px'>
+          <FormErrorMessage mt='6px' fontSize='12px' className='error_align'>
             {errorMsg?.milestone}
           </FormErrorMessage>
         </FormControl>
         {projectType == EProjectType.RETAINER_GRANULAR && (
-          <FormControl mb='18px' isInvalid={errorMsg?.task ? true : false}>
+          <FormControl
+            mb='18px'
+            isInvalid={errorMsg?.task ? true : false}
+            pos='relative'
+          >
             <FormLabel
               htmlFor='select_task'
               color='grayLight'
@@ -410,7 +422,7 @@ const TimeLogFrom = ({ formData, setFormData }: Props) => {
                   );
                 })}
             </Select>
-            <FormErrorMessage mt='6px' fontSize='12px'>
+            <FormErrorMessage mt='6px' fontSize='12px' className='error_align'>
               {errorMsg?.task}
             </FormErrorMessage>
           </FormControl>
@@ -422,7 +434,6 @@ const TimeLogFrom = ({ formData, setFormData }: Props) => {
             mr='10px'
             pos='relative'
             isInvalid={errorMsg?.logTime ? true : false}
-            mb={errorMsg?.logTime ? '18px' : 0}
           >
             <FormLabel
               htmlFor='add_time'
@@ -476,12 +487,7 @@ const TimeLogFrom = ({ formData, setFormData }: Props) => {
                 Hours
               </Text>
             </Flex>
-            <FormErrorMessage
-              pos='absolute'
-              bottom='-18px'
-              mt='6px'
-              fontSize='12px'
-            >
+            <FormErrorMessage fontSize='12px' className='error_align'>
               {errorMsg?.logTime}
             </FormErrorMessage>
           </FormControl>
@@ -489,7 +495,6 @@ const TimeLogFrom = ({ formData, setFormData }: Props) => {
             w='70%'
             pos='relative'
             isInvalid={errorMsg?.comments ? true : false}
-            mb={errorMsg?.comments ? '18px !important' : 0}
           >
             <FormLabel
               htmlFor='comment'
@@ -514,12 +519,7 @@ const TimeLogFrom = ({ formData, setFormData }: Props) => {
               lineHeight='17.6px'
               {...updateStateProps}
             />
-            <FormErrorMessage
-              pos='absolute'
-              bottom='-18px'
-              mt='6px'
-              fontSize='12px'
-            >
+            <FormErrorMessage className='error_align' fontSize='12px'>
               {errorMsg?.comments}
             </FormErrorMessage>
           </FormControl>
