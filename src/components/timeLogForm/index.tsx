@@ -121,7 +121,7 @@ const TimeLogFrom = ({ formData, setFormData }: Props) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const checkboxHandler = (e: React.ChangeEvent<HTMLInputElement> | any) => {
+  const checkboxHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.target.checked
       ? setFormData({ ...formData, billingType: true })
       : setFormData({ ...formData, billingType: false });
