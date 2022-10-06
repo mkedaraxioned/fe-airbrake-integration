@@ -105,7 +105,7 @@ const ProjectCard = ({ project }: Props) => {
               as='span'
             >
               {project?.timeLogged === 0
-                ? 'No time added for this project'
+                ? 'No time added'
                 : `${minutesToDecimal(
                     project?.timeLogged,
                   )} / ${minutesToDecimal(project?.projectBudget)} Hours`}

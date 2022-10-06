@@ -12,10 +12,10 @@ import {
 } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
-import { ReactComponent as DeleteSvg } from '../../assets/images/deleteSVG.svg';
+import { ReactComponent as DeleteSvg } from '../../assets/images/deletetask.svg';
 import { ReactComponent as CheckGreySvg } from '../../assets/images/checkGray.svg';
-import { ReactComponent as CloseSvg } from '../../assets/images/closeSVG.svg';
-import { ReactComponent as CheckGreenSvg } from '../../assets/images/checkGreen.svg';
+import { ReactComponent as CloseSvg } from '../../assets/images/xv2.svg';
+import { ReactComponent as CheckGreenSvg } from '../../assets/images/checkv2.svg';
 import { _get, _patch, _post } from '../../utils/api';
 import { timeStringValidate } from '../../utils/validation';
 
@@ -45,7 +45,6 @@ const FixedProjectManage = () => {
   });
   const [milestoneIndex, setMilestoneIndex] = useState<null | number>(null);
   const [isVisibleIndex, setIsVisibleIndex] = useState<null | number>(null);
-
   const { projectId } = useParams();
   const toast = useToast();
 
@@ -61,6 +60,22 @@ const FixedProjectManage = () => {
     setIsVisibleIndex(null);
   };
 
+  const handleCancel = async (index: number) => {
+    const res = await _get(`api/projects/${projectId}`);
+    const temp = res.data.project.milestones;
+    const list: any = [...fixedFormData.phase];
+    if (index <= temp.length - 1) {
+      list[index]['title'] = temp[index]['title'];
+      list[index]['budget'] = temp[index]['budget'];
+    } else if (index === temp.length && list[index]['title'] !== '') {
+      list[index]['title'] = '';
+      list[index]['budget'] = '';
+      list.pop();
+    }
+    setMilestoneIndex(null);
+    setFixedFormData({ phase: list });
+  };
+
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement>,
     index: number,
@@ -68,8 +83,22 @@ const FixedProjectManage = () => {
     const { name, value }: { name: string; value: string } = e.target;
     const list: any = [...fixedFormData.phase];
     list[index][name] = value;
-    setFixedFormData({ phase: list });
-    setFixedFormData({ ...fixedFormData, phase: list });
+    if (value.length === 1 && list[list.length - 1]['title'] !== '') {
+      setFixedFormData({
+        ...fixedFormData,
+        phase: [...list, { title: '', budget: '' }],
+      });
+    } else if (
+      value.length === 0 &&
+      list[list.length - 1]['title'] === '' &&
+      list[list.length - 1]['budget'] !== ''
+    ) {
+      list.pop();
+      setFixedFormData({ ...fixedFormData, phase: list });
+    } else {
+      setFixedFormData({ phase: list });
+      setFixedFormData({ ...fixedFormData, phase: list });
+    }
     if (name === 'budget') {
       if (timeStringValidate(value)) {
         setErrMessage({ budgetEr: 'Please Enter valid time', id: index });
@@ -297,7 +326,7 @@ const FixedProjectManage = () => {
                               <Box
                                 title='Cancel'
                                 cursor='pointer'
-                                onClick={() => setMilestoneIndex(null)}
+                                onClick={() => handleCancel(index)}
                               >
                                 <CloseSvg />
                               </Box>
