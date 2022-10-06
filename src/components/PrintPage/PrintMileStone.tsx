@@ -142,7 +142,7 @@ const PrintMileStone = forwardRef(
               </Flex>
             </Flex>
             <Flex
-              p='8px 4% 8px 2%'
+              p='8px 30px 8px 24px'
               justifyContent='space-between'
               bg='bgGray'
               color='grayLight'
@@ -150,8 +150,8 @@ const PrintMileStone = forwardRef(
               textStyle='sourceSansProBold'
               lineHeight='17.6px'
             >
-              <Text flexBasis='32%'>Name</Text>
-              <Text flexBasis='50%'>Comments/Notes</Text>
+              <Text flexBasis='20%'>Name</Text>
+              <Text flexBasis='60%'>Comments/Notes</Text>
               <Text flexBasis='10%' textAlign={'right'}>
                 Hours
               </Text>
@@ -176,7 +176,7 @@ const PrintMileStone = forwardRef(
                         {() => (
                           <>
                             <AccordionButton
-                              p='15px 4% 15px 2%'
+                              p='15px 30px 15px 24px'
                               display='flex'
                               justifyContent='space-between'
                               color='grayLight'
@@ -199,7 +199,11 @@ const PrintMileStone = forwardRef(
                                   </Text>
                                 </Box>
                               </Flex>
-                              <Text flexBasis={'10%'} textAlign={'right'}>
+                              <Text
+                                flexBasis={'10%'}
+                                textAlign={'right'}
+                                textStyle='sourceSansProBold'
+                              >
                                 {convertMinutes(user?.logTime)}
                               </Text>
                             </AccordionButton>
