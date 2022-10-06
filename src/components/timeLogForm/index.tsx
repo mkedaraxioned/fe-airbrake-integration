@@ -13,7 +13,7 @@ import {
   useToast,
 } from '@chakra-ui/react';
 import { addMonths, format } from 'date-fns';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router';
 import { EProjectType } from '../../constants/enum';
@@ -37,12 +37,14 @@ interface Props {
 }
 
 const TimeLogFrom = ({ formData, setFormData }: Props) => {
+  const checkBoxRef = useRef(null);
   const { timeCardId } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const toast = useToast();
 
   const [projectType, setProjectType] = useState<EProjectType | null>(null);
+  const [isProjectBillable, setIsProjectBillable] = useState<boolean>(true);
   const [taskNode, setTaskNode] = useState([]);
   const [milestoneData, setMilestoneData] = useState<Milestone[]>([]);
   const [errorMsg, setErrorMsg] = useState<TimelogFormError>({});
@@ -57,6 +59,15 @@ const TimeLogFrom = ({ formData, setFormData }: Props) => {
   useEffect(() => {
     selectOptionData();
   }, [formData.projectId, formData.date, milestoneData]);
+
+  /**
+   * Condition to uncheck billabl checkbox on selected project
+   */
+  useEffect(() => {
+    if (!isProjectBillable) {
+      setFormData({ ...formData, billingType: isProjectBillable });
+    }
+  }, [isProjectBillable]);
 
   useEffect(() => {
     if (!formData.logTime) return;
@@ -79,9 +90,11 @@ const TimeLogFrom = ({ formData, setFormData }: Props) => {
       (project: { id: string }) => project.id === formData.projectId,
     );
     if (project) {
+      setIsProjectBillable(project.billingType);
       setTaskNode(project.tasks);
       setMilestoneData(project.milestones);
       setProjectType(project.type);
+
       const currentMilestone = project.milestones.filter((val: any) => {
         return (
           new Date(format(new Date(formData.date), 'yyyy-MM-dd')).getTime() >=
@@ -109,7 +122,7 @@ const TimeLogFrom = ({ formData, setFormData }: Props) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const checkboxHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const checkboxHandler = (e: React.ChangeEvent<HTMLInputElement> | any) => {
     e.target.checked
       ? setFormData({ ...formData, billingType: true })
       : setFormData({ ...formData, billingType: false });
@@ -526,6 +539,7 @@ const TimeLogFrom = ({ formData, setFormData }: Props) => {
         </HStack>
         <FormControl mb='15px'>
           <Checkbox
+            ref={checkBoxRef}
             onChange={checkboxHandler}
             isChecked={formData.billingType}
             _checked={{
@@ -534,6 +548,7 @@ const TimeLogFrom = ({ formData, setFormData }: Props) => {
                 border: 'none',
               },
             }}
+            isDisabled={!isProjectBillable ? true : false}
           >
             <Text fontSize='14px' color='grayLight'>
               Billable
