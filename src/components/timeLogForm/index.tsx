@@ -13,7 +13,7 @@ import {
   useToast,
 } from '@chakra-ui/react';
 import { addMonths, format } from 'date-fns';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router';
 import { EProjectType } from '../../constants/enum';
@@ -37,7 +37,6 @@ interface Props {
 }
 
 const TimeLogFrom = ({ formData, setFormData }: Props) => {
-  const checkBoxRef = useRef(null);
   const { timeCardId } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -61,7 +60,7 @@ const TimeLogFrom = ({ formData, setFormData }: Props) => {
   }, [formData.projectId, formData.date, milestoneData]);
 
   /**
-   * Condition to uncheck billabl checkbox on selected project
+   * Condition to uncheck billable checkbox on selected project
    */
   useEffect(() => {
     if (!isProjectBillable) {
@@ -539,7 +538,6 @@ const TimeLogFrom = ({ formData, setFormData }: Props) => {
         </HStack>
         <FormControl mb='15px'>
           <Checkbox
-            ref={checkBoxRef}
             onChange={checkboxHandler}
             isChecked={formData.billingType}
             _checked={{
