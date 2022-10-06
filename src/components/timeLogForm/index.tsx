@@ -43,10 +43,11 @@ const TimeLogFrom = ({ formData, setFormData }: Props) => {
   const toast = useToast();
 
   const [projectType, setProjectType] = useState<EProjectType | null>(null);
+  const [projectStartDate, setProjectStartDate] = useState('');
   const [taskNode, setTaskNode] = useState([]);
   const [milestoneData, setMilestoneData] = useState<Milestone[]>([]);
   const [errorMsg, setErrorMsg] = useState<TimelogFormError>({});
-
+  console.log(projectStartDate, 'projectStartDate');
   const { projects } = useSelector(
     (state: RootState) => state.rootSlices.allProjects,
   );
@@ -82,6 +83,7 @@ const TimeLogFrom = ({ formData, setFormData }: Props) => {
       setTaskNode(project.tasks);
       setMilestoneData(project.milestones);
       setProjectType(project.type);
+      setProjectStartDate(project.startDate);
       const currentMilestone = project.milestones.filter((val: any) => {
         return (
           new Date(format(new Date(formData.date), 'yyyy-MM-dd')).getTime() >=
@@ -346,6 +348,7 @@ const TimeLogFrom = ({ formData, setFormData }: Props) => {
             placeholder={
               (projectType === EProjectType.RETAINER_GRANULAR ||
                 projectType === EProjectType.RETAINER) &&
+              new Date(formData.date) > new Date(projectStartDate) &&
               !formData.milestoneId
                 ? `Month - (${format(
                     new Date(formData.date),
