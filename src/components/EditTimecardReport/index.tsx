@@ -362,7 +362,11 @@ const EditTimecardReport = ({ timeLogId, onClose }: Props) => {
             </Box>
           </Flex>
         </FormControl>
-        <FormControl mb='18px' isInvalid={errorMsg?.projectName ? true : false}>
+        <FormControl
+          mb='18px'
+          pos='relative'
+          isInvalid={errorMsg?.projectName ? true : false}
+        >
           <FormLabel
             htmlFor='select_project'
             color='grayLight'
@@ -374,11 +378,15 @@ const EditTimecardReport = ({ timeLogId, onClose }: Props) => {
             Project
           </FormLabel>
           {renderSelect()}
-          <FormErrorMessage mt='6px' fontSize='12px'>
+          <FormErrorMessage mt='6px' fontSize='12px' className='error_align'>
             {errorMsg?.projectName}
           </FormErrorMessage>
         </FormControl>
-        <FormControl mb='18px' isInvalid={errorMsg?.milestone ? true : false}>
+        <FormControl
+          mb='18px'
+          pos='relative'
+          isInvalid={errorMsg?.milestone ? true : false}
+        >
           <FormLabel
             htmlFor='select_milestone'
             color='grayLight'
@@ -430,12 +438,16 @@ const EditTimecardReport = ({ timeLogId, onClose }: Props) => {
                 },
               )}
           </Select>
-          <FormErrorMessage mt='6px' fontSize='12px'>
+          <FormErrorMessage mt='6px' className='error_align' fontSize='12px'>
             {errorMsg?.milestone}
           </FormErrorMessage>
         </FormControl>
         {projectType == EProjectType.RETAINER_GRANULAR && (
-          <FormControl mb='18px' isInvalid={errorMsg?.task ? true : false}>
+          <FormControl
+            mb='18px'
+            pos='relative'
+            isInvalid={errorMsg?.task ? true : false}
+          >
             <FormLabel
               htmlFor='select_task'
               color='grayLight'
@@ -467,7 +479,7 @@ const EditTimecardReport = ({ timeLogId, onClose }: Props) => {
                   );
                 })}
             </Select>
-            <FormErrorMessage mt='6px' fontSize='12px'>
+            <FormErrorMessage mt='6px' fontSize='12px' className='error_align'>
               {errorMsg?.task}
             </FormErrorMessage>
           </FormControl>
@@ -479,7 +491,6 @@ const EditTimecardReport = ({ timeLogId, onClose }: Props) => {
             mr='10px'
             pos='relative'
             isInvalid={errorMsg?.logTime ? true : false}
-            mb={errorMsg?.logTime ? '18px' : 0}
           >
             <FormLabel
               htmlFor='add_time'
@@ -532,12 +543,7 @@ const EditTimecardReport = ({ timeLogId, onClose }: Props) => {
                 Hours
               </Text>
             </Flex>
-            <FormErrorMessage
-              pos='absolute'
-              bottom='-18px'
-              mt='6px'
-              fontSize='12px'
-            >
+            <FormErrorMessage className='error_align' fontSize='12px'>
               {errorMsg?.logTime}
             </FormErrorMessage>
           </FormControl>
@@ -545,7 +551,6 @@ const EditTimecardReport = ({ timeLogId, onClose }: Props) => {
             w='70%'
             pos='relative'
             isInvalid={errorMsg?.comments ? true : false}
-            mb={errorMsg?.comments ? '18px !important' : 0}
           >
             <FormLabel
               htmlFor='comment'
@@ -569,12 +574,7 @@ const EditTimecardReport = ({ timeLogId, onClose }: Props) => {
               lineHeight='17.6px'
               {...updateStateProps}
             />
-            <FormErrorMessage
-              pos='absolute'
-              bottom='-18px'
-              mt='6px'
-              fontSize='12px'
-            >
+            <FormErrorMessage className='error_align' fontSize='12px'>
               {errorMsg?.comments}
             </FormErrorMessage>
           </FormControl>

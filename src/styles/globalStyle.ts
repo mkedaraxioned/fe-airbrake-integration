@@ -66,4 +66,9 @@ export const styles = {
   '.form-btn': {
     verticalAlign: 'middle',
   },
+  '.error_align': {
+    position: 'absolute',
+    bottom: '-18px',
+    left: '0',
+  },
 };

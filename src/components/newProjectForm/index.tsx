@@ -272,6 +272,7 @@ const NewProjectForm = ({ onClose, projectId, setMyProjects }: Props) => {
           <FormControl
             mt='25px'
             mb='20px'
+            pos='relative'
             isInvalid={errMsg?.client ? true : false}
             opacity={projectId ? '.3' : '1'}
             pointerEvents={projectId ? 'none' : 'auto'}
@@ -299,9 +300,15 @@ const NewProjectForm = ({ onClose, projectId, setMyProjects }: Props) => {
                   );
                 })}
             </Select>
-            <FormErrorMessage>{errMsg?.client}</FormErrorMessage>
+            <FormErrorMessage className='error_align'>
+              {errMsg?.client}
+            </FormErrorMessage>
           </FormControl>
-          <FormControl mb='20px' isInvalid={errMsg?.title ? true : false}>
+          <FormControl
+            mb='20px'
+            isInvalid={errMsg?.title ? true : false}
+            pos='relative'
+          >
             <FormLabel fontSize='14px' lineHeight='17.6px' fontWeight='600'>
               Project name
             </FormLabel>
@@ -316,7 +323,9 @@ const NewProjectForm = ({ onClose, projectId, setMyProjects }: Props) => {
               onChange={inputHandler}
               value={formData.title}
             />
-            <FormErrorMessage>{errMsg?.title}</FormErrorMessage>
+            <FormErrorMessage className='error_align'>
+              {errMsg?.title}
+            </FormErrorMessage>
           </FormControl>
           <FormControl
             mb='20px'
@@ -370,6 +379,7 @@ const NewProjectForm = ({ onClose, projectId, setMyProjects }: Props) => {
               mb='10px'
               flexBasis='48%'
               isInvalid={errMsg?.startDate ? true : false}
+              pos='relative'
             >
               <FormLabel
                 fontSize='14px'
@@ -408,12 +418,15 @@ const NewProjectForm = ({ onClose, projectId, setMyProjects }: Props) => {
                   />
                 </Box>
               </Flex>
-              <FormErrorMessage>{errMsg?.startDate}</FormErrorMessage>
+              <FormErrorMessage className='error_align'>
+                {errMsg?.startDate}
+              </FormErrorMessage>
             </FormControl>
             <FormControl
               mb='10px'
               flexBasis='48%'
               isInvalid={errMsg?.endDate ? true : false}
+              pos='relative'
             >
               <FormLabel
                 fontSize='14px'
@@ -469,7 +482,9 @@ const NewProjectForm = ({ onClose, projectId, setMyProjects }: Props) => {
                   month
                 </Text>
               )}
-              <FormErrorMessage>{errMsg?.endDate}</FormErrorMessage>
+              <FormErrorMessage className='error_align'>
+                {errMsg?.endDate}
+              </FormErrorMessage>
             </FormControl>
           </Flex>
           <FormControl>
@@ -523,7 +538,9 @@ const NewProjectForm = ({ onClose, projectId, setMyProjects }: Props) => {
                   );
                 })}
             </AvatarGroup>
-            <FormErrorMessage>{errMsg?.members}</FormErrorMessage>
+            <FormErrorMessage pos='absolute' left='0' top='71px'>
+              {errMsg?.members}
+            </FormErrorMessage>
           </FormControl>
           <Box>
             <Button
