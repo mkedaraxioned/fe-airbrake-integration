@@ -13,7 +13,7 @@ import ClientAccordian from '../../components/clientAccordian';
 import { ReactComponent as ExportReport } from '../../assets/images/exportReportCSV.svg';
 import { FilterFormData } from '../../interfaces/reports';
 import { format, lastDayOfWeek, startOfWeek } from 'date-fns';
-import { getTimeInHours, minutesToDecimal } from '../../utils/common';
+import { minutesToDecimal } from '../../utils/common';
 import PeopleAccordian from '../../components/peopleAccordian';
 import axios from 'axios';
 import { variables } from '../../constants/backend';
