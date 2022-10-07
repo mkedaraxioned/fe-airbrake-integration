@@ -7,6 +7,7 @@ import { Project, Task } from '../../interfaces/timeCard';
 import { RootState } from '../../redux';
 import { _get } from '../../utils/api';
 import TimeCard from '../timeCard';
+import { hoursToDecimal } from '../../utils/common';
 
 interface Props {
   formData: any;
@@ -62,8 +63,8 @@ const TaskList = ({ formData }: Props) => {
               textStyle='sourceSansProBold'
             >
               {timeCardDetails?.totalHours
-                ? timeCardDetails?.totalHours
-                : '00:00'}{' '}
+                ? hoursToDecimal(timeCardDetails?.totalHours).toFixed(2)
+                : '0.00'}{' '}
               Hrs
             </Heading>
           </Skeleton>
@@ -91,7 +92,10 @@ const TaskList = ({ formData }: Props) => {
                   lineHeight='20.11px'
                   textStyle='sourceSansProRegular'
                 >
-                  {project.totalTime} Hrs
+                  {project.totalTime
+                    ? hoursToDecimal(project.totalTime).toFixed(2)
+                    : '0.00'}{' '}
+                  Hrs
                 </Text>
               </HStack>
               <Box>

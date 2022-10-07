@@ -24,7 +24,7 @@ import {
 } from '../../interfaces/timelogForm';
 import { RootState } from '../../redux';
 import { _get, _post, _put } from '../../utils/api';
-import { convertMinutes } from '../../utils/common';
+import { minutesToDecimal } from '../../utils/common';
 import { timeStringValidate } from '../../utils/validation';
 import CustomSelect from '../customSelect';
 import { resetFormData, resetTimeLogError } from './helperConstants';
@@ -180,7 +180,7 @@ const TimeLogFrom = ({ formData, setFormData }: Props) => {
           projectId: task.projectId,
           taskId: task?.taskId,
           milestoneId: task.milestoneId,
-          logTime: convertMinutes(task.logTime),
+          logTime: minutesToDecimal(task.logTime),
           comments: task.comments,
           billingType: task.billingType,
         });

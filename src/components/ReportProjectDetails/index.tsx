@@ -14,7 +14,7 @@ import { ReactComponent as EditSvg } from '../../assets/images/editTimeCardSVG.s
 import { ReactComponent as PlusSvg } from '../../assets/images/plusSvg.svg';
 import { ReactComponent as MinusSvg } from '../../assets/images/minusSvg.svg';
 import { format } from 'date-fns';
-import { getTimeInHours } from '../../utils/common';
+import { minutesToDecimal } from '../../utils/common';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../redux';
 import { DrawerContainer } from '../drawer';
@@ -89,7 +89,7 @@ const ReportProjectDetails = ({ usersData }: any) => {
                                 : 'sourceSansProRegular'
                             }
                           >
-                            {getTimeInHours(user.logTime)}
+                            {minutesToDecimal(user.logTime)}
                           </Text>
                         </Box>
                       </AccordionButton>
@@ -130,7 +130,7 @@ const ReportProjectDetails = ({ usersData }: any) => {
                             </Flex>
                             <Text flexBasis='62%'>{timecard.comments}</Text>
                             <Text flexBasis='10%' textAlign='right'>
-                              {getTimeInHours(timecard.logTime)}
+                              {minutesToDecimal(timecard.logTime)}
                             </Text>
                           </Flex>
                         );

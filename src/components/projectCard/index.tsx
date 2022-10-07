@@ -37,9 +37,7 @@ const ProjectCard = ({ project }: Props) => {
 
   const minutesToDecimal = (n: string) => {
     const result = parseFloat(n) / 60;
-    if (parseFloat(n) % 60 === 0) {
-      return result;
-    } else return result.toFixed(1);
+    return result.toFixed(0);
   };
 
   return (
@@ -105,7 +103,9 @@ const ProjectCard = ({ project }: Props) => {
               as='span'
             >
               {project?.timeLogged === 0
-                ? 'No time added'
+                ? 'No time logged'
+                : project?.projectBudget === 0
+                ? `${minutesToDecimal(project?.timeLogged)} Hours`
                 : `${minutesToDecimal(
                     project?.timeLogged,
                   )} / ${minutesToDecimal(project?.projectBudget)} Hours`}

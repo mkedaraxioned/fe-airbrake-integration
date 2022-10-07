@@ -62,3 +62,14 @@ export const createPdfTitle = (
 
 export const getIndexesBasedOnValues = (array: any) =>
   array.map((item: any, i: number) => i);
+
+export const minutesToDecimal = (n: number) => {
+  const result = parseFloat(n.toString()) / 60;
+  return result.toFixed(2);
+};
+
+export const hoursToDecimal = (val: string) => {
+  const arr = val.split(':');
+  const result = parseInt(arr[0], 10) * 1 + parseInt(arr[1], 10) / 60;
+  return result;
+};

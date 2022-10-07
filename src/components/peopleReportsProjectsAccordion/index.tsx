@@ -13,7 +13,7 @@ import {
 import { ReactComponent as EditSvg } from '../../assets/images/editTimeCardSVG.svg';
 import { ReactComponent as PlusSvg } from '../../assets/images/plusSvg.svg';
 import { ReactComponent as MinusSvg } from '../../assets/images/minusSvg.svg';
-import { getTimeInHours } from '../../utils/common';
+import { minutesToDecimal } from '../../utils/common';
 import { DrawerContainer } from '../drawer';
 import EditTimecardReport from '../EditTimecardReport';
 import { format } from 'date-fns';
@@ -98,7 +98,7 @@ const PeopleReportsProjectsAccordion = ({ projects }: any) => {
                                 : 'sourceSansProRegular'
                             }
                           >
-                            {getTimeInHours(project.logTime)}
+                            {minutesToDecimal(project.logTime)}
                           </Text>
                         </Box>
                       </AccordionButton>
@@ -140,7 +140,7 @@ const PeopleReportsProjectsAccordion = ({ projects }: any) => {
                             </Flex>
                             <Text flexBasis='62%'>{timecard.comments}</Text>
                             <Text flexBasis='10%' textAlign='right'>
-                              {getTimeInHours(timecard.logTime)}
+                              {minutesToDecimal(timecard.logTime)}
                             </Text>
                           </Flex>
                         );

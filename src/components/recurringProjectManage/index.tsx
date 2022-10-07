@@ -20,6 +20,7 @@ import { ReactComponent as CheckGreenSvg } from '../../assets/images/checkSVG.sv
 import { timeStringValidate } from '../../utils/validation';
 import { _get, _patch, _post } from '../../utils/api';
 import { useParams } from 'react-router';
+import { hoursToDecimal } from '../../utils/common';
 
 export interface RecurringProjectError {
   milestoneEr?: string;
@@ -67,9 +68,17 @@ const RecurringProjectManage = ({ projectType }: { projectType: string }) => {
   const fetchProject = async () => {
     if (projectId) {
       const res = await _get(`api/projects/${projectId}`);
+      const milestoneArray = res.data.project.milestones.map((mile: any) => ({
+        ...mile,
+        budget: mile.budget ? hoursToDecimal(mile.budget).toFixed(2) : '',
+      }));
+      const TaskArray = res.data.project.tasks.map((task: any) => ({
+        ...task,
+        budget: task.budget ? hoursToDecimal(task.budget).toFixed(2) : '',
+      }));
       setRecurringFormData({
-        milestone: res.data.project.milestones,
-        tasks: [...res.data.project.tasks, { title: '', budget: '' }],
+        milestone: milestoneArray,
+        tasks: [...TaskArray, { title: '', budget: '' }],
       });
     }
   };

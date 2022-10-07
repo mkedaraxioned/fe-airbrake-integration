@@ -13,7 +13,7 @@ import ClientAccordian from '../../components/clientAccordian';
 import { ReactComponent as ExportReport } from '../../assets/images/exportReportCSV.svg';
 import { FilterFormData } from '../../interfaces/reports';
 import { format, lastDayOfWeek, startOfWeek } from 'date-fns';
-import { getTimeInHours } from '../../utils/common';
+import { getTimeInHours, minutesToDecimal } from '../../utils/common';
 import PeopleAccordian from '../../components/peopleAccordian';
 import axios from 'axios';
 import { variables } from '../../constants/backend';
@@ -216,7 +216,7 @@ const Reports = () => {
                       fontSize='14px'
                       lineHeight='17.6px'
                     >
-                      {getTimeInHours(client.logTime)}
+                      {minutesToDecimal(client.logTime)}
                     </Text>
                   </Flex>
                   <ClientAccordian projects={client.projects} />

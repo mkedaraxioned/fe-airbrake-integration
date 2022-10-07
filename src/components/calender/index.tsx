@@ -17,6 +17,7 @@ import { Box, Button, Flex, Text, Tooltip } from '@chakra-ui/react';
 import { HiOutlineChevronLeft, HiOutlineChevronRight } from 'react-icons/hi';
 import { endOfMonth } from 'date-fns/esm';
 import { _get } from '../../utils/api';
+import { hoursToDecimal } from '../../utils/common';
 interface Props {
   showDetailsHandle: (dayStr: Date) => void;
   formDate: Date;
@@ -135,11 +136,6 @@ const Calendar = ({
     let day = startDateCell;
     let formattedDate = '';
 
-    const hoursToDecimal = (val: string) => {
-      const arr = val.split(':');
-      return parseInt(arr[0], 10) * 1 + parseInt(arr[1], 10) / 60;
-    };
-
     while (day <= endDateCell) {
       for (let i = 0; i < 7; i++) {
         formattedDate = format(day, dateFormat);
@@ -148,7 +144,7 @@ const Calendar = ({
         const curTime = new Date().getTime();
         const month = getMonth(day);
         let bgColorVal = '';
-        let toolTiplabel = '';
+        let toolTiplabel = null;
 
         Array.isArray(loggedTimeData) &&
           loggedTimeData.forEach(
@@ -157,7 +153,7 @@ const Calendar = ({
                 format(new Date(value.date.substr(0, 10)), 'yyyy-MM-dd') ===
                 format(new Date(day), 'yyyy-MM-dd')
               ) {
-                toolTiplabel = value.totalTime;
+                toolTiplabel = hoursToDecimal(value.totalTime).toFixed(2);
               }
               if (
                 format(new Date(value.date.substr(0, 10)), 'yyyy-MM-dd') ===

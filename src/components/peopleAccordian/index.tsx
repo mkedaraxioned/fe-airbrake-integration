@@ -8,7 +8,7 @@ import {
   Flex,
   Text,
 } from '@chakra-ui/react';
-import { getTimeInHours } from '../../utils/common';
+import { minutesToDecimal } from '../../utils/common';
 import { ReactComponent as PlusSvg } from '../../assets/images/plusSvg.svg';
 import { ReactComponent as MinusSvg } from '../../assets/images/minusSvg.svg';
 import PeopleReportsProjectsAccordion from '../peopleReportsProjectsAccordion';
@@ -76,7 +76,7 @@ const PeopleAccordian = ({ user }: any) => {
                           : 'sourceSansProRegular'
                       }
                     >
-                      {getTimeInHours(user.logTime)}
+                      {minutesToDecimal(user.logTime)}
                     </Text>
                   </Box>
                 </AccordionButton>
@@ -104,7 +104,7 @@ const PeopleAccordian = ({ user }: any) => {
                           fontSize='14px'
                           lineHeight='17.6px'
                         >
-                          {getTimeInHours(client.logTime)}
+                          {minutesToDecimal(client.logTime)}
                         </Text>
                       </Flex>
                       <PeopleReportsProjectsAccordion
