@@ -30,13 +30,15 @@ import CustomSelect from '../customSelect';
 import { resetFormData, resetTimeLogError } from './helperConstants';
 import { recentlyUsed } from '../../redux/reducers/recentlyUsedSlice';
 import { Milestone } from '../../interfaces/editProject';
+import { allProjects } from '../../redux/reducers/projectsSlice';
 
 interface Props {
   formData: TimeLogFormData;
   setFormData: any;
+  recentlyUsedFlag: boolean;
 }
 
-const TimeLogFrom = ({ formData, setFormData }: Props) => {
+const TimeLogFrom = ({ formData, setFormData, recentlyUsedFlag }: Props) => {
   const { timeCardId } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -47,7 +49,6 @@ const TimeLogFrom = ({ formData, setFormData }: Props) => {
   const [taskNode, setTaskNode] = useState([]);
   const [milestoneData, setMilestoneData] = useState<Milestone[]>([]);
   const [errorMsg, setErrorMsg] = useState<TimelogFormError>({});
-  console.log(projectStartDate, 'projectStartDate');
   const { projects } = useSelector(
     (state: RootState) => state.rootSlices.allProjects,
   );
@@ -57,7 +58,7 @@ const TimeLogFrom = ({ formData, setFormData }: Props) => {
 
   useEffect(() => {
     selectOptionData();
-  }, [formData.projectId, formData.date, milestoneData]);
+  }, [formData.projectId, formData.date, milestoneData, projects]);
 
   useEffect(() => {
     if (!formData.logTime) return;
@@ -74,6 +75,19 @@ const TimeLogFrom = ({ formData, setFormData }: Props) => {
       });
     }
   }, [formData.logTime]);
+
+  useEffect(() => {
+    if (
+      (projectType === EProjectType.RETAINER_GRANULAR ||
+        projectType === EProjectType.RETAINER) &&
+      new Date(formData.date) < new Date(projectStartDate)
+    ) {
+      setErrorMsg({
+        ...errorMsg,
+        milestone: 'You can’t log hours before the project has started',
+      });
+    }
+  }, [formData.date]);
 
   const selectOptionData = () => {
     const project = projects.find(
@@ -211,6 +225,12 @@ const TimeLogFrom = ({ formData, setFormData }: Props) => {
   }, [formData]);
 
   const updateStateProps = {
+    borderColor: `${timeCardId || recentlyUsedFlag ? '#4657CE' : '#E2E8F0'}`,
+    boxShadow: `${
+      timeCardId || recentlyUsedFlag ? '0 0 0 0.5px #4657ce' : 'none'
+    }`,
+  };
+  const updateCommentStateProps = {
     borderColor: `${timeCardId ? '#4657CE' : '#E2E8F0'}`,
     boxShadow: `${timeCardId ? '0 0 0 0.5px #4657ce' : 'none'}`,
   };
@@ -218,6 +238,15 @@ const TimeLogFrom = ({ formData, setFormData }: Props) => {
   const updateStatePropsTime = {
     ...updateStateProps,
     boxShadow: `${timeCardId ? '0 0 0 1.5px #4657ce' : 'none'}`,
+  };
+
+  const fetchProjects = async () => {
+    try {
+      const projectsRes = await _get('api/projects');
+      dispatch(allProjects(projectsRes.data?.projects));
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   const formHandler = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -267,6 +296,7 @@ const TimeLogFrom = ({ formData, setFormData }: Props) => {
           });
           reset();
           fetchEntries(format(new Date(formData.date), 'yyyy-MM-dd'));
+          fetchProjects();
           dispatch(
             recentlyUsed({
               projectId: payload.projectId,
@@ -520,7 +550,7 @@ const TimeLogFrom = ({ formData, setFormData }: Props) => {
               placeholder='Describe the activity'
               fontSize='14px'
               lineHeight='17.6px'
-              {...updateStateProps}
+              {...updateCommentStateProps}
             />
             <FormErrorMessage className='error_align' fontSize='12px'>
               {errorMsg?.comments}

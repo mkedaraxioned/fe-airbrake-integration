@@ -33,7 +33,8 @@ import {
 } from '../timeLogForm/helperConstants';
 import ReactDatePicker from 'react-datepicker';
 import { AiOutlineCalendar } from 'react-icons/ai';
-
+import { allProjects } from '../../redux/reducers/projectsSlice';
+import { useDispatch } from 'react-redux';
 interface Props {
   timeLogId: string;
   onClose: () => void;
@@ -52,10 +53,11 @@ const EditTimecardReport = ({ timeLogId, onClose }: Props) => {
   const [userName, setUserName] = useState<string>('');
   const toast = useToast();
   const [projectType, setProjectType] = useState<EProjectType | null>(null);
+  const [projectStartDate, setProjectStartDate] = useState('');
   const [taskNode, setTaskNode] = useState([]);
   const [milestoneData, setMilestoneData] = useState([]);
   const [errorMsg, setErrorMsg] = useState<TimelogFormError>({});
-
+  const dispatch = useDispatch();
   const { projects } = useSelector(
     (state: RootState) => state.rootSlices.allProjects,
   );
@@ -69,7 +71,7 @@ const EditTimecardReport = ({ timeLogId, onClose }: Props) => {
 
   useEffect(() => {
     selectOptionData();
-  }, [formData.projectId, formData.date, milestoneData]);
+  }, [formData.projectId, formData.date, milestoneData, projects]);
 
   useEffect(() => {
     if (!formData.logTime) return;
@@ -87,6 +89,19 @@ const EditTimecardReport = ({ timeLogId, onClose }: Props) => {
     }
   }, [formData.logTime]);
 
+  useEffect(() => {
+    if (
+      (projectType === EProjectType.RETAINER_GRANULAR ||
+        projectType === EProjectType.RETAINER) &&
+      new Date(formData.date) < new Date(projectStartDate)
+    ) {
+      setErrorMsg({
+        ...errorMsg,
+        milestone: 'You can’t log hours before the project has started',
+      });
+    }
+  }, [formData.date]);
+
   const selectOptionData = () => {
     const project = projects.find(
       (project: { id: string }) => project.id === formData.projectId,
@@ -95,6 +110,7 @@ const EditTimecardReport = ({ timeLogId, onClose }: Props) => {
       setTaskNode(project.tasks);
       setMilestoneData(project.milestones);
       setProjectType(project.type);
+      setProjectStartDate(project.startDate);
       const currentMilestone = project.milestones.filter((val: any) => {
         return (
           new Date(format(new Date(formData.date), 'yyyy-MM-dd')).getTime() >=
@@ -234,6 +250,15 @@ const EditTimecardReport = ({ timeLogId, onClose }: Props) => {
     boxShadow: `${timeLogId ? '0 0 0 1.5px #4657ce' : 'none'}`,
   };
 
+  const fetchProjects = async () => {
+    try {
+      const projectsRes = await _get('api/projects');
+      dispatch(allProjects(projectsRes.data?.projects));
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   const formHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
@@ -275,6 +300,7 @@ const EditTimecardReport = ({ timeLogId, onClose }: Props) => {
             isClosable: true,
           });
           reset();
+          fetchProjects();
         }
       }
     } catch (error: any) {

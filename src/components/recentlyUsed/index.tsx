@@ -3,7 +3,7 @@ import { Box, ListItem, Text, UnorderedList } from '@chakra-ui/react';
 import { RootState } from '../../redux';
 import { useSelector } from 'react-redux';
 
-const RecentlyUsed = ({ setFormData, formData }: any) => {
+const RecentlyUsed = ({ setFormData, formData, setRecentlyUsedFlag }: any) => {
   const {
     recentlyUsed: { recentlyUsedProject },
     allProjects: { projects },
@@ -40,7 +40,10 @@ const RecentlyUsed = ({ setFormData, formData }: any) => {
               alignItems='center'
               key={index}
               cursor='pointer'
-              onClick={() => mapFormData(_.projectId, _.milestoneId, _.taskId)}
+              onClick={() => {
+                mapFormData(_.projectId, _.milestoneId, _.taskId);
+                setRecentlyUsedFlag(true);
+              }}
             >
               <Box>
                 <Text fontSize='16px' lineHeight='22px' color='textLightMid'>

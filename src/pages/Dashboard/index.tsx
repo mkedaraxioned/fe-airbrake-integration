@@ -21,7 +21,7 @@ const Dashboard = () => {
     comments: '',
     billingType: false,
   });
-
+  const [recentlyUsedFlag, setRecentlyUsedFlag] = useState(false);
   const { timeCardId } = useParams();
   const dispatch = useDispatch();
   const showDetailsHandle = (day: Date) => {
@@ -86,7 +86,11 @@ const Dashboard = () => {
             >
               {timeCardId ? 'Edit entry' : 'Add a new entry'}
             </Heading>
-            <TimeLogFrom formData={formData} setFormData={setFormData} />
+            <TimeLogFrom
+              formData={formData}
+              setFormData={setFormData}
+              recentlyUsedFlag={recentlyUsedFlag}
+            />
           </Box>
           <Box mt='26px'>
             <TaskList formData={formData} />
@@ -102,7 +106,11 @@ const Dashboard = () => {
           >
             Recently Used
           </Heading>
-          <RecentlyUsed setFormData={setFormData} formData={formData} />
+          <RecentlyUsed
+            setFormData={setFormData}
+            formData={formData}
+            setRecentlyUsedFlag={setRecentlyUsedFlag}
+          />
         </Box>
       </Flex>
     </Box>
