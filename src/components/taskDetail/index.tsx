@@ -246,10 +246,10 @@ const TaskDetail = ({ displayBlock, milestone, projectBasics }: Props) => {
               })
             ) : (
               <Box
-                p='12px 30px'
+                p='12px 28px'
                 borderBottom='1px'
                 borderColor='borderColor'
-                fontSize='16px'
+                fontSize='14px'
                 textStyle='sourceSansProRegular'
                 lineHeight='17.6px'
               >

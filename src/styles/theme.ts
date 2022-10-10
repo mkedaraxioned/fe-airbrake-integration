@@ -17,7 +17,7 @@ export const costomTheme = extendTheme({
     },
   },
   fonts: {
-    sourceSansPro: `'Source Sans Pro'`,
+    sourceSansPro: `'Source Sans Pro', sans-serif`,
   },
   textStyles: {
     ...textStyle,
