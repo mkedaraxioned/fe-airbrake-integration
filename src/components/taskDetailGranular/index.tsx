@@ -22,7 +22,11 @@ import {
   ProjectTask,
   ProjectUser,
 } from '../../interfaces/projectDetails';
-import { convertMinutes, createPdfTitle, percentage } from '../../utils/common';
+import {
+  createPdfTitle,
+  minutesToDecimal,
+  percentage,
+} from '../../utils/common';
 import ExportMilestone from '../ExportMilestone';
 import UserRow from '../taskDetail/userRow';
 import usePrintHook from '../../hooks/usePrintHook';
@@ -72,7 +76,9 @@ const TaskDetailGranular = ({
               <Text textTransform='capitalize'>{milestone?.title}</Text>
               <Text>
                 Budget -{' '}
-                {milestone?.budget && convertMinutes(milestone?.budget)}
+                {milestone?.budget
+                  ? minutesToDecimal(milestone?.budget)
+                  : '0.00'}
               </Text>
             </Flex>
             <Divider
@@ -90,7 +96,10 @@ const TaskDetailGranular = ({
             >
               <Text>
                 Actual -{' '}
-                {milestone?.logTime && convertMinutes(milestone?.logTime)} Hrs
+                {milestone?.logTime
+                  ? minutesToDecimal(milestone?.logTime)
+                  : '0.00'}{' '}
+                Hrs
               </Text>
               <Flex
                 alignItems='center'
@@ -252,7 +261,7 @@ const TaskDetailGranular = ({
                                                   flexBasis={'10%'}
                                                   textAlign={'right'}
                                                 >
-                                                  {convertMinutes(
+                                                  {minutesToDecimal(
                                                     user?.logTime,
                                                   )}
                                                 </Text>

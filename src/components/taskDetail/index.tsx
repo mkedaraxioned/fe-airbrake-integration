@@ -16,7 +16,11 @@ import { ReactComponent as PlusSvg } from './../../assets/images/plusSvg.svg';
 import { ReactComponent as MinusDarkSvg } from './../../assets/images/minusdark.svg';
 import './taskDetail.modules.css';
 import UserRow from './userRow';
-import { convertMinutes, createPdfTitle, percentage } from '../../utils/common';
+import {
+  createPdfTitle,
+  minutesToDecimal,
+  percentage,
+} from '../../utils/common';
 import { format } from 'date-fns';
 
 import {
@@ -83,8 +87,8 @@ const TaskDetail = ({ displayBlock, milestone, projectBasics }: Props) => {
               <Text>
                 Budget -{' '}
                 {milestone?.budget
-                  ? convertMinutes(milestone?.budget)
-                  : '00:00'}
+                  ? minutesToDecimal(milestone?.budget)
+                  : '0.00'}
               </Text>
             </Flex>
             <Divider
@@ -103,8 +107,8 @@ const TaskDetail = ({ displayBlock, milestone, projectBasics }: Props) => {
               <Text>
                 Actual -{' '}
                 {milestone?.logTime
-                  ? convertMinutes(milestone?.logTime)
-                  : '00:00'}{' '}
+                  ? minutesToDecimal(milestone?.logTime)
+                  : '0.00'}{' '}
                 Hrs
               </Text>
               <Flex
@@ -207,7 +211,7 @@ const TaskDetail = ({ displayBlock, milestone, projectBasics }: Props) => {
                               </Box>
                             </Flex>
                             <Text flexBasis={'10%'} textAlign={'right'}>
-                              {convertMinutes(user?.logTime)}
+                              {minutesToDecimal(user?.logTime)}
                             </Text>
                             <Text flexBasis={'17%'} textAlign={'right'}>
                               {formatUpdatedDate}

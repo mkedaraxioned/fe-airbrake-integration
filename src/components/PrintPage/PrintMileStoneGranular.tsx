@@ -19,8 +19,8 @@ import {
   ProjectUser,
 } from '../../interfaces/projectDetails';
 import {
-  convertMinutes,
   getIndexesBasedOnValues,
+  minutesToDecimal,
   percentage,
 } from '../../utils/common';
 import UserRow from '../taskDetail/userRow';
@@ -79,8 +79,8 @@ const PrintMileStoneGranular = forwardRef(
                 <Text>
                   Budget -{' '}
                   {milestone?.budget
-                    ? convertMinutes(milestone?.budget)
-                    : '00:00'}
+                    ? minutesToDecimal(milestone?.budget)
+                    : '0.00'}
                 </Text>
               </Flex>
               <Divider
@@ -99,7 +99,7 @@ const PrintMileStoneGranular = forwardRef(
                 <Text>
                   Actual -{' '}
                   {milestone?.logTime
-                    ? convertMinutes(milestone?.logTime)
+                    ? minutesToDecimal(milestone?.logTime)
                     : '00:00'}{' '}
                   Hrs
                 </Text>
@@ -237,7 +237,7 @@ const PrintMileStoneGranular = forwardRef(
                                                     flexBasis={'10%'}
                                                     textAlign={'right'}
                                                   >
-                                                    {convertMinutes(
+                                                    {minutesToDecimal(
                                                       user?.logTime,
                                                     )}
                                                   </Text>

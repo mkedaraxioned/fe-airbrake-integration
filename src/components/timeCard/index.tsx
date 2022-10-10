@@ -8,7 +8,7 @@ import { ReactComponent as EditSvg } from '../../assets/images/edit.svg';
 import { updateTimeCardDetails } from '../../redux/reducers/timeCardSlice';
 import { Task } from '../../interfaces/timeCard';
 import { _del, _get } from '../../utils/api';
-import { scrollToTop } from '../../utils/common';
+import { hoursToDecimal, scrollToTop } from '../../utils/common';
 interface TaskDetails {
   task: Task;
   formData: any;
@@ -107,7 +107,7 @@ const TimeCard = ({ task, formData }: TaskDetails) => {
           </Text>
         )}
         <Text color='grayLight' textStyle='sourceSansProBold'>
-          {task.timeLogged}
+          {hoursToDecimal(task.timeLogged).toFixed(2)}
         </Text>
       </VStack>
       <VStack

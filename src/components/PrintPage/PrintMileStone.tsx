@@ -15,8 +15,8 @@ import {
 import React, { LegacyRef } from 'react';
 import { ProjectActivity, ProjectUser } from '../../interfaces/projectDetails';
 import {
-  convertMinutes,
   getIndexesBasedOnValues,
+  minutesToDecimal,
   percentage,
 } from '../../utils/common';
 import UserRow from '../taskDetail/userRow';
@@ -90,8 +90,8 @@ const PrintMileStone = forwardRef(
                 <Text>
                   Budget -{' '}
                   {milestone?.budget
-                    ? convertMinutes(milestone?.budget)
-                    : '00:00'}
+                    ? minutesToDecimal(milestone?.budget)
+                    : '0.00'}
                 </Text>
               </Flex>
               <Divider
@@ -110,8 +110,8 @@ const PrintMileStone = forwardRef(
                 <Text>
                   Actual -{' '}
                   {milestone?.logTime
-                    ? convertMinutes(milestone?.logTime)
-                    : '00:00'}{' '}
+                    ? minutesToDecimal(milestone?.logTime)
+                    : '0.00'}{' '}
                   Hrs
                 </Text>
                 <Flex
@@ -204,7 +204,7 @@ const PrintMileStone = forwardRef(
                                 textAlign={'right'}
                                 textStyle='sourceSansProBold'
                               >
-                                {convertMinutes(user?.logTime)}
+                                {minutesToDecimal(user?.logTime)}
                               </Text>
                             </AccordionButton>
                             <AccordionPanel p={0}>

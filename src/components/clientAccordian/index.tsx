@@ -11,7 +11,7 @@ import React from 'react';
 import { ReactComponent as PlusSvg } from '../../assets/images/plusSvg.svg';
 import { ReactComponent as MinusSvg } from '../../assets/images/minusSvg.svg';
 import ReportProjectDetails from '../ReportProjectDetails';
-import { getTimeInHours } from '../../utils/common';
+import { minutesToDecimal } from '../../utils/common';
 
 const ClientAccordian = ({ projects }: any) => {
   return (
@@ -81,7 +81,7 @@ const ClientAccordian = ({ projects }: any) => {
                               : 'sourceSansProRegular'
                           }
                         >
-                          {getTimeInHours(project.logTime)}
+                          {minutesToDecimal(project.logTime)}
                         </Text>
                       </Box>
                     </AccordionButton>

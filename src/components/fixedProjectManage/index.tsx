@@ -18,6 +18,7 @@ import { ReactComponent as CloseSvg } from '../../assets/images/xv2.svg';
 import { ReactComponent as CheckGreenSvg } from '../../assets/images/checkv2.svg';
 import { _get, _patch, _post } from '../../utils/api';
 import { timeStringValidate } from '../../utils/validation';
+import { hoursToDecimal } from '../../utils/common';
 
 export interface Phase {
   title: string;
@@ -110,8 +111,12 @@ const FixedProjectManage = () => {
 
   const fetchProject = async () => {
     const res = await _get(`api/projects/${projectId}`);
+    const milestoneArray = res.data.project.milestones.map((mile: any) => ({
+      ...mile,
+      budget: mile.budget ? hoursToDecimal(mile.budget).toFixed(2) : '',
+    }));
     setFixedFormData({
-      phase: [...res.data.project.milestones, { title: '', budget: '' }],
+      phase: [...milestoneArray, { title: '', budget: '' }],
     });
   };
 

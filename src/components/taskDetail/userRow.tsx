@@ -1,7 +1,7 @@
 import React from 'react';
 import { Flex, ListItem, Text } from '@chakra-ui/react';
 import { format } from 'date-fns';
-import { convertMinutes } from '../../utils/common';
+import { minutesToDecimal } from '../../utils/common';
 import { ReactComponent as EditTimeCardSvg } from '../../assets/images/editTimeCardSVG.svg';
 import { ProjectActivity } from '../../interfaces/projectDetails';
 
@@ -45,7 +45,7 @@ const UserRow = ({ activity, isPrinting, onOpen, setTimeLogId }: Props) => {
         </Flex>
         <Text flexBasis='57%'>{activity.comments}</Text>
         <Text pl='18px' flexBasis='10%' textAlign={'right'}>
-          {convertMinutes(activity.logTime)}
+          {minutesToDecimal(activity.logTime)}
         </Text>
         {isPrinting && (
           <Text flexBasis='10%' textAlign={'right'} hidden>
