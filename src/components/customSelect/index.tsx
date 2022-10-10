@@ -1,9 +1,10 @@
 import { Box, Text } from '@chakra-ui/react';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Select, { components } from 'react-select';
 import { updateSelectedProject } from '../../redux/reducers/timeCardSlice';
 import { RootState } from '../../redux';
+import { _get } from '../../utils/api';
 
 export interface Options {
   id: string;
@@ -28,14 +29,40 @@ const CustomSelect = ({
   formData,
 }: Props) => {
   const dispatch = useDispatch();
-  const [noDataFound, setNoDataFound] = useState<boolean>(false);
+
   const { projects } = useSelector(
     (state: RootState) => state.rootSlices.allProjects,
   );
+
+  const [noDataFound, setNoDataFound] = useState<boolean>(false);
+  const [myProjects, setMyProjects] = useState([]);
+  const [isUserSearching, setIsUserSearching] = useState<boolean>(false);
+
+  const [searchProject, setSearchProject] = useState([]);
+
   const { clients } = useSelector(
     (state: RootState) => state.rootSlices.allClients,
   );
-  const optionsData = projects.map((elem: any) => {
+
+  const fetchMyProjects = async () => {
+    try {
+      const res = await _get('api/users/projects');
+      setMyProjects(res.data.projects);
+      setSearchProject(res.data.projects);
+    } catch (err) {
+      return err;
+    }
+  };
+
+  useEffect(() => {
+    fetchMyProjects();
+  }, []);
+
+  useEffect(() => {
+    isUserSearching ? setSearchProject(projects) : setSearchProject(myProjects);
+  }, [isUserSearching]);
+
+  const optionsData = searchProject.map((elem: any) => {
     const client = clients?.find(
       ({ id }: { id: string }) => id === elem.clientId,
     );
@@ -218,6 +245,14 @@ const CustomSelect = ({
     onChange && onChange(val);
     dispatch(updateSelectedProject(val));
   };
+
+  const handleInputChange = (val: any) => {
+    if (val === null || val.trim() === '') {
+      return setIsUserSearching(false);
+    }
+    return setIsUserSearching(true);
+  };
+
   return (
     <Box>
       <Select
@@ -228,6 +263,7 @@ const CustomSelect = ({
         styles={customStyles}
         placeholder='Select project'
         components={{ MenuList: CustomMenuList }}
+        onInputChange={handleInputChange}
       />
     </Box>
   );
