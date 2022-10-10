@@ -89,6 +89,21 @@ const TimeLogFrom = ({ formData, setFormData, recentlyUsedFlag }: Props) => {
     }
   }, [formData.date]);
 
+  useEffect(() => {
+    if (projectType === EProjectType.FIXED && !milestoneData.length) {
+      setErrorMsg({
+        ...errorMsg,
+        milestone:
+          'No Milestones created. Please get in touch with your Project Lead',
+      });
+    } else {
+      setErrorMsg({
+        ...errorMsg,
+        milestone: '',
+      });
+    }
+  }, [milestoneData]);
+
   const selectOptionData = () => {
     const project = projects.find(
       (project: { id: string }) => project.id === formData.projectId,
