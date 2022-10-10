@@ -45,6 +45,7 @@ const TimeLogFrom = ({ formData, setFormData, recentlyUsedFlag }: Props) => {
   const toast = useToast();
 
   const [projectType, setProjectType] = useState<EProjectType | null>(null);
+  const [isProjectBillable, setIsProjectBillable] = useState<boolean>(true);
   const [projectStartDate, setProjectStartDate] = useState('');
   const [taskNode, setTaskNode] = useState([]);
   const [milestoneData, setMilestoneData] = useState<Milestone[]>([]);
@@ -59,6 +60,15 @@ const TimeLogFrom = ({ formData, setFormData, recentlyUsedFlag }: Props) => {
   useEffect(() => {
     selectOptionData();
   }, [formData.projectId, formData.date, milestoneData, projects]);
+
+  /**
+   * Condition to uncheck billable checkbox on selected project
+   */
+  useEffect(() => {
+    if (!isProjectBillable) {
+      setFormData({ ...formData, billingType: isProjectBillable });
+    }
+  }, [isProjectBillable]);
 
   useEffect(() => {
     if (!formData.logTime) return;
@@ -109,6 +119,7 @@ const TimeLogFrom = ({ formData, setFormData, recentlyUsedFlag }: Props) => {
       (project: { id: string }) => project.id === formData.projectId,
     );
     if (project) {
+      setIsProjectBillable(project.billingType);
       setTaskNode(project.tasks);
       setMilestoneData(project.milestones);
       setProjectType(project.type);
@@ -582,6 +593,7 @@ const TimeLogFrom = ({ formData, setFormData, recentlyUsedFlag }: Props) => {
                 border: 'none',
               },
             }}
+            isDisabled={!isProjectBillable ? true : false}
           >
             <Text fontSize='14px' color='grayLight'>
               Billable
