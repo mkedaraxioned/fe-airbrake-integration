@@ -303,7 +303,12 @@ const ReportFilterForm = ({
         >
           <Box pr='18px' flexBasis='27%'>
             <FormControl>
-              <FormLabel m='5px 0' className='form_label' fontWeight='600'>
+              <FormLabel
+                m='5px 0'
+                fontSize='14px'
+                className='form_label'
+                fontWeight='600'
+              >
                 Date range
               </FormLabel>
               <HStack pb='32px'>
@@ -490,7 +495,12 @@ const ReportFilterForm = ({
           >
             <Box flexBasis='47.5%'>
               <FormControl pb='5px'>
-                <FormLabel m='5px 0' className='form_label' fontWeight='600'>
+                <FormLabel
+                  m='5px 0'
+                  fontSize='14px'
+                  className='form_label'
+                  fontWeight='600'
+                >
                   Select client
                 </FormLabel>
                 <Select
@@ -530,6 +540,7 @@ const ReportFilterForm = ({
               <FormControl>
                 <FormLabel
                   m='5px 0 5px'
+                  fontSize='14px'
                   className='form_label'
                   fontWeight='600'
                 >
@@ -564,7 +575,12 @@ const ReportFilterForm = ({
             </Box>
             <Box flexBasis='47%'>
               <FormControl pb='15px'>
-                <FormLabel m='5px 0' className='form_label' fontWeight='600'>
+                <FormLabel
+                  m='5px 0'
+                  fontSize='14px'
+                  className='form_label'
+                  fontWeight='600'
+                >
                   Select project
                 </FormLabel>
                 <Select
@@ -605,7 +621,11 @@ const ReportFilterForm = ({
                 </Select>
               </FormControl>
               <FormControl>
-                <FormLabel className='form_label' fontWeight='600'>
+                <FormLabel
+                  fontSize='14px'
+                  className='form_label'
+                  fontWeight='600'
+                >
                   Group by
                 </FormLabel>
                 <RadioGroup value='client'>
@@ -637,7 +657,11 @@ const ReportFilterForm = ({
           />
           <Box pl='11px' flexBasis='18%'>
             <FormControl>
-              <FormLabel className='form_label' fontWeight='600'>
+              <FormLabel
+                fontSize='14px'
+                className='form_label'
+                fontWeight='600'
+              >
                 Include
               </FormLabel>
               <Flex className='form_label'>
