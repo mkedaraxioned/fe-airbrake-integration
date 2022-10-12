@@ -261,8 +261,7 @@ const Reports = () => {
         </Box>
         {isPrinting && (
           <PrintReport
-            searchQueryValues={searchQueryValues}
-            loaded={loaded}
+            // searchQueryValues={searchQueryValues}
             isPrinting={isPrinting}
             ref={componentRef}
           />
