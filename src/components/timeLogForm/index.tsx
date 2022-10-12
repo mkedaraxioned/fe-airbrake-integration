@@ -100,7 +100,7 @@ const TimeLogFrom = ({ formData, setFormData, recentlyUsedFlag }: Props) => {
   }, [formData.date]);
 
   useEffect(() => {
-    if (projectType === EProjectType.FIXED && !milestoneData.length) {
+    if (formData.projectId && !milestoneData.length) {
       setErrorMsg({
         ...errorMsg,
         milestone:

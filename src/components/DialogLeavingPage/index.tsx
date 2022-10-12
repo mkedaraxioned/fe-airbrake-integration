@@ -29,11 +29,11 @@ export const DialogLeavingPage = ({
       <AlertDialogOverlay>
         <AlertDialogContent>
           <AlertDialogHeader fontSize='lg' fontWeight='bold'>
-            Navigate page?
+            Save changes?
           </AlertDialogHeader>
 
           <AlertDialogBody>
-            Changes that you made may not be saved.
+            Your unsaved changes will be lost. Save changes before closing?
           </AlertDialogBody>
 
           <AlertDialogFooter>
@@ -44,7 +44,7 @@ export const DialogLeavingPage = ({
               ref={cancelRef}
               onClick={cancelNavigation}
             >
-              Cancel
+              Stay
             </Button>
             <Button
               w='60px'
@@ -53,7 +53,7 @@ export const DialogLeavingPage = ({
               onClick={confirmNavigation}
               ml={3}
             >
-              Yes
+              Leave
             </Button>
           </AlertDialogFooter>
         </AlertDialogContent>
