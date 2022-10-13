@@ -23,7 +23,7 @@ const Dashboard = () => {
     comments: '',
     billingType: false,
   });
-  const [recentlyUsedFlag, setRecentlyUsedFlag] = useState(false);
+  const [recentlyUsedFlag, setRecentlyUsedFlag] = useState<boolean>(false);
   const { timeCardId } = useParams();
   const dispatch = useDispatch();
   const showDetailsHandle = (day: Date) => {
@@ -115,6 +115,7 @@ const Dashboard = () => {
               formData={formData}
               setFormData={setFormData}
               recentlyUsedFlag={recentlyUsedFlag}
+              setRecentlyUsedFlag={setRecentlyUsedFlag}
             />
           </Box>
           <Box mt='26px'>
