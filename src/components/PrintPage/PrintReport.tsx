@@ -1,17 +1,7 @@
-import {
-  Box,
-  Flex,
-  Heading,
-  HStack,
-  Table,
-  TableContainer,
-  Tbody,
-  Text,
-  Th,
-  Thead,
-  Tr,
-} from '@chakra-ui/react';
+import { Box, Flex, Text, List, ListItem } from '@chakra-ui/react';
+import { format } from 'date-fns';
 import React, { forwardRef, LegacyRef } from 'react';
+import { minutesToDecimal } from '../../utils/common';
 
 interface Props {
   filteredData?: any;
@@ -24,72 +14,96 @@ const PrintReport = forwardRef(
     { filteredData, searchQueryValues, isPrinting }: Props,
     ref: LegacyRef<HTMLDivElement> | undefined,
   ) => {
-    console.log({ filteredData });
+    console.log({ filteredData }, 'filteredData');
     return (
-      <Box display='none'>
+      <Box>
         <Box ref={ref}>
           <Box p='15px 0' className='wrapper'>
-            <Flex justifyContent='space-between' pb='20px'>
-              <Box>
-                <Text
-                  fontSize='14px'
-                  color='textGray'
-                  textStyle='sourceSansProRegular'
-                  lineHeight='17.6px'
-                >
-                  Harvest
-                  {/* {projectBasics?.clientName} */}
-                </Text>
-                <Heading
-                  as='h2'
-                  m='0 !important'
-                  color='textColor'
-                  textStyle='sourceSansProBold'
-                  fontSize='22px'
-                  lineHeight='27.65px'
-                >
-                  123V
-                  {/* {projectBasics?.projectName} */}
-                </Heading>
-              </Box>
-              <HStack>
-                <Flex border={'1px solid #E2E8F0'} p={'10px 1rem'}>
-                  <Text as='b' mr='5px'>
-                    {/* {convertMinutes(milestone?.logTime)} */}
-                    180
+            {filteredData.clients.map((client: any, index: number) => {
+              return (
+                <Box key={index}>
+                  <Text
+                    fontSize='22px'
+                    lineHeight='27.65px'
+                    textStyle='sourceSansProBold'
+                  >
+                    {client.name}
+                    <Text
+                      as='span'
+                      textStyle='sourceSansProRegular'
+                    >{` (${minutesToDecimal(client?.logTime)} Hours)`}</Text>
                   </Text>
-                  <Text>Hours</Text>
-                </Flex>
-              </HStack>
-            </Flex>
-            <TableContainer>
-              <Table border='1px solid #E2E8F0'>
-                <Thead background={'white'}>
-                  <Tr>
-                    <Th
-                      w={'50%'}
-                      color='textColor'
-                      fontSize='16px'
-                      lineHeight='20px'
-                      textStyle='sourceSansProBold'
-                    >
-                      Phase 3
-                    </Th>
-                    <Th
-                      w='50%'
-                      color='textColor'
-                      textAlign='right'
-                      fontSize='16px'
-                      lineHeight='20px'
-                      textStyle='sourceSansProBold'
-                    >
-                      Total hours
-                    </Th>
-                  </Tr>
-                </Thead>
-                <Tbody></Tbody>
-              </Table>
-            </TableContainer>
+                  {client.projects?.map((project: any, index: number) => {
+                    return (
+                      <Box key={index}>
+                        <Box>
+                          <Flex
+                            justifyContent='space-between'
+                            textStyle='sourceSansProBold'
+                          >
+                            <Text
+                              fontSize='16px'
+                              textAlign='left'
+                              lineHeight='20.11px'
+                            >
+                              {project.name}
+                            </Text>
+                            <Text
+                              fontSize='16px'
+                              textAlign='left'
+                              lineHeight='20.11px'
+                            >{`(${minutesToDecimal(
+                              project?.logTime,
+                            )} Hours)`}</Text>
+                          </Flex>
+                          <Box pb={4}>
+                            {project.users.map((user: any, index: number) => {
+                              return (
+                                <Box key={index}>
+                                  <Box>
+                                    <Text>{user.name}</Text>
+
+                                    <List>
+                                      {user.timecards.map(
+                                        (timecard: any, index: number) => {
+                                          console.log(timecard, 'timecard');
+                                          return (
+                                            <ListItem key={index}>
+                                              <Flex
+                                                justifyContent='space-between'
+                                                textAlign='left'
+                                              >
+                                                <Text>{user.name}</Text>
+                                                <Text>
+                                                  {format(
+                                                    new Date(timecard.date),
+                                                    'yyyy MM dd',
+                                                  )}
+                                                </Text>
+                                                <Text>{timecard.comments}</Text>
+                                                <Text>
+                                                  {minutesToDecimal(
+                                                    timecard.logTime,
+                                                  )}
+                                                </Text>
+                                              </Flex>
+                                            </ListItem>
+                                          );
+                                        },
+                                      )}
+                                    </List>
+                                  </Box>
+                                </Box>
+                              );
+                            })}
+                          </Box>
+                        </Box>
+                      </Box>
+                    );
+                  })}
+                </Box>
+              );
+            })}
           </Box>
         </Box>
       </Box>

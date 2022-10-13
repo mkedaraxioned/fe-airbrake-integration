@@ -259,9 +259,10 @@ const Reports = () => {
             })}
           </Box>
         </Box>
-        {isPrinting && (
+        {!isPrinting && (
           <PrintReport
-            // searchQueryValues={searchQueryValues}
+            filteredData={filteredData}
+            searchQueryValues={searchQueryValues}
             isPrinting={isPrinting}
             ref={componentRef}
           />
