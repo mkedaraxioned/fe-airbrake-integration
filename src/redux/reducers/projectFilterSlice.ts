@@ -3,8 +3,6 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 const initialState: any = {
   filterVal: {
     show: 'my',
-    type: '',
-    search: '',
   },
 };
 
