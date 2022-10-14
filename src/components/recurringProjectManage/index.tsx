@@ -12,15 +12,16 @@ import {
   useToast,
 } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
-import { ReactComponent as DeleteSvg } from '../../assets/images/deleteSVG.svg';
-import { ReactComponent as CloseSvg } from '../../assets/images/closeSVG.svg';
+import { ReactComponent as DeleteSvg } from '../../assets/images/deletetask.svg';
+import { ReactComponent as CloseSvg } from '../../assets/images/xv2.svg';
 import { ReactComponent as ArchiveSvg } from '../../assets/images/archiveSVG.svg';
 import { ReactComponent as CheckGreySvg } from '../../assets/images/checkGray.svg';
-import { ReactComponent as CheckGreenSvg } from '../../assets/images/checkSVG.svg';
+import { ReactComponent as CheckGreenSvg } from '../../assets/images/checkv2.svg';
 import { timeStringValidate } from '../../utils/validation';
 import { _get, _patch, _post } from '../../utils/api';
 import { useParams } from 'react-router';
-import { hoursToDecimal } from '../../utils/common';
+import { decreaseItem, hoursToDecimal, removeItem } from '../../utils/common';
+import { Phase } from '../fixedProjectManage';
 
 export interface RecurringProjectError {
   milestoneEr?: string;
@@ -38,12 +39,18 @@ const RecurringProjectManage = ({ projectType }: { projectType: string }) => {
     tasks: [{ title: '', budget: '' }],
     milestone: [],
   });
+  const [tempFormData, setTempFormData] = useState<any>({
+    tasks: [{ title: '', budget: '' }],
+    milestone: [],
+  });
   const [milestoneErr, setMilestoneErr] = useState<Err>({});
   const [taskErr, setTaskErr] = useState<Err>({});
   const [isVisibleIndex, setIsVisibleIndex] = useState<null | number>(null);
   const [taskIndex, setTaskIndex] = useState<null | number>(null);
   const [milestoneIndex, setMilestoneIndex] = useState<null | number>(null);
   const [showMilestoneCount, setShowMilestoneCount] = useState(6);
+  const [milestoneEdit, setMilestoneEdit] = useState<number[]>([]);
+  const [taskEdit, setTaskEdit] = useState<number[]>([]);
   const { tasks, milestone } = recurringFormData;
   const { projectId } = useParams();
   const toast = useToast();
@@ -65,6 +72,7 @@ const RecurringProjectManage = ({ projectType }: { projectType: string }) => {
   useEffect(() => {
     fetchProject();
   }, []);
+
   const fetchProject = async () => {
     if (projectId) {
       const res = await _get(`api/projects/${projectId}`);
@@ -79,6 +87,10 @@ const RecurringProjectManage = ({ projectType }: { projectType: string }) => {
       setRecurringFormData({
         milestone: milestoneArray,
         tasks: [...TaskArray, { title: '', budget: '' }],
+      });
+      setTempFormData({
+        milestone: res.data.project.milestones,
+        tasks: res.data.project.tasks,
       });
     }
   };
@@ -128,8 +140,21 @@ const RecurringProjectManage = ({ projectType }: { projectType: string }) => {
   ) => {
     const { name, value }: { name: string; value: string } = e.target;
     const list: any = [...recurringFormData.tasks];
+    if (taskEdit.indexOf(index) < 0) {
+      setTaskEdit((taskEdit) => [...taskEdit, index]);
+    }
     list[index][name] = value;
-    setRecurringFormData({ ...recurringFormData, tasks: list });
+    if (value.length === 1 && list[list.length - 1]['title'] !== '') {
+      setRecurringFormData({
+        ...recurringFormData,
+        tasks: [...list, { title: '', budget: '' }],
+      });
+    } else if (value === '' && list[list.length - 1]['title'] === '') {
+      list.pop();
+      setRecurringFormData({ ...recurringFormData, tasks: list });
+    } else {
+      setRecurringFormData({ ...recurringFormData, tasks: list });
+    }
     if (name === 'budget') {
       if (timeStringValidate(value)) {
         setTaskErr({ budgetEr: 'Please enter valid budget' });
@@ -146,6 +171,9 @@ const RecurringProjectManage = ({ projectType }: { projectType: string }) => {
     const { name, value }: { name: string; value: string } = e.target;
     const mileStoneList: any = [...milestone];
     mileStoneList[index][name] = value;
+    if (milestoneEdit.indexOf(index) < 0) {
+      setMilestoneEdit((mile) => [...mile, index]);
+    }
     setRecurringFormData({ ...recurringFormData, milestone: mileStoneList });
     if (name === 'budget') {
       if (timeStringValidate(value)) {
@@ -154,6 +182,45 @@ const RecurringProjectManage = ({ projectType }: { projectType: string }) => {
         setMilestoneErr({ budgetEr: '', id: null });
       }
     }
+  };
+
+  const handleMilestoneCancel = (index: number) => {
+    // const res = await _get(`api/projects/${projectId}`);
+    const temp: Phase[] = tempFormData.milestone;
+    const list: Phase[] = recurringFormData.milestone;
+    list[index]['title'] = temp[index]['title'];
+    list[index]['budget'] = temp[index]['budget']
+      ? hoursToDecimal(temp[index]['budget']).toFixed(2)
+      : '';
+    setRecurringFormData({ ...recurringFormData, milestone: list });
+    setMilestoneEdit(removeItem(milestoneEdit, index));
+    setMilestoneIndex(null);
+  };
+
+  const handleTaskCancel = (index: number) => {
+    // const res = await _get(`api/projects/${projectId}`);
+    const temp: Phase[] = tempFormData.tasks;
+    const list: Phase[] = recurringFormData.tasks;
+    console.log(
+      index <= temp.length - 1,
+      index >= temp.length,
+      temp.length - 1,
+      list.length - 1,
+    );
+    if (index <= temp.length - 1) {
+      list[index]['title'] = temp[index]['title'];
+      list[index]['budget'] = temp[index]['budget']
+        ? hoursToDecimal(temp[index]['budget']).toFixed(2)
+        : '';
+      setTaskEdit(removeItem(taskEdit, index));
+    }
+    if (index >= temp.length) {
+      list.splice(index, 1);
+      setTaskEdit(decreaseItem(taskEdit, index, temp.length));
+    }
+
+    setTaskIndex(null);
+    setRecurringFormData({ ...recurringFormData, task: list });
   };
 
   const fieldValidation = (title: string, budget: string) => {
@@ -212,6 +279,7 @@ const RecurringProjectManage = ({ projectType }: { projectType: string }) => {
         isClosable: true,
       });
       setTaskIndex(null);
+      setTaskEdit(removeItem(taskEdit, index));
     } catch (err) {
       toast({
         title: 'Task',
@@ -247,6 +315,7 @@ const RecurringProjectManage = ({ projectType }: { projectType: string }) => {
           isClosable: true,
         });
         setMilestoneIndex(null);
+        setMilestoneEdit(removeItem(milestoneEdit, index));
       } else {
         throw 'Milestone Not saved';
       }
@@ -360,19 +429,21 @@ const RecurringProjectManage = ({ projectType }: { projectType: string }) => {
                             )}
                           </FormControl>
                         </Flex>
-                        {milestoneIndex !== index && index === 0 && (
-                          <Box pl='10px'>
-                            <button
-                              type='submit'
-                              disabled
-                              className='not-allowed form-btn'
-                            >
-                              {' '}
-                              <CheckGreySvg />
-                            </button>
-                          </Box>
-                        )}
-                        {milestoneIndex === index && (
+                        {milestoneIndex !== index &&
+                          milestoneEdit.indexOf(index) < 0 &&
+                          index === recurringFormData.milestone.length - 1 && (
+                            <Box pl='10px'>
+                              <button
+                                type='submit'
+                                disabled
+                                className='not-allowed form-btn'
+                              >
+                                {' '}
+                                <CheckGreySvg />
+                              </button>
+                            </Box>
+                          )}
+                        {milestoneEdit.indexOf(index) > -1 && (
                           <Flex alignItems='center'>
                             <Box
                               p='0 7px 0 10px'
@@ -390,7 +461,7 @@ const RecurringProjectManage = ({ projectType }: { projectType: string }) => {
                               alignItems='center'
                               title='Cancel'
                               cursor='pointer'
-                              onClick={() => setMilestoneIndex(null)}
+                              onClick={() => handleMilestoneCancel(index)}
                             >
                               <CloseSvg />
                             </Box>
@@ -536,7 +607,7 @@ const RecurringProjectManage = ({ projectType }: { projectType: string }) => {
                                 </button>
                               </Box>
                             )}
-                            {taskIndex === index && (
+                            {taskEdit.indexOf(index) > -1 && (
                               <Flex alignItems='center'>
                                 <Box
                                   pr='7px'
@@ -552,7 +623,7 @@ const RecurringProjectManage = ({ projectType }: { projectType: string }) => {
                                 <Box
                                   cursor='pointer'
                                   title='Cancel'
-                                  onClick={() => setTaskIndex(null)}
+                                  onClick={() => handleTaskCancel(index)}
                                 >
                                   <CloseSvg />
                                 </Box>
@@ -562,6 +633,7 @@ const RecurringProjectManage = ({ projectType }: { projectType: string }) => {
                               display={
                                 isVisibleIndex === index &&
                                 taskIndex !== index &&
+                                taskEdit.indexOf(index) < 0 &&
                                 tasks.length - 1 !== index
                                   ? 'flex'
                                   : 'none'

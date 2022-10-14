@@ -1,4 +1,5 @@
 import { format } from 'date-fns';
+import { FaTemperatureHigh } from 'react-icons/fa';
 
 export interface ClientSet {
   name: string;
@@ -72,4 +73,29 @@ export const hoursToDecimal = (val: string) => {
   const arr = val.split(':');
   const result = parseInt(arr[0], 10) * 1 + parseInt(arr[1], 10) / 60;
   return result;
+};
+
+export const removeItem = (arr: number[], index: number) => {
+  console.log(arr, 'before remove');
+
+  arr.splice(arr.indexOf(index), 1);
+  const list = arr;
+  console.log(list, 'after remove');
+  return list;
+};
+
+export const decreaseItem = (arr: number[], index: number, length: number) => {
+  console.log(arr, 'before dec');
+
+  let list: number[] = [];
+  arr.splice(arr.indexOf(index), 1);
+  list = arr.map((item) => {
+    if (item > length) {
+      return item - 1;
+    } else {
+      return item;
+    }
+  });
+  console.log(list, 'after dec');
+  return list;
 };

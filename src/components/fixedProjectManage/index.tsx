@@ -18,7 +18,7 @@ import { ReactComponent as CloseSvg } from '../../assets/images/xv2.svg';
 import { ReactComponent as CheckGreenSvg } from '../../assets/images/checkv2.svg';
 import { _get, _patch, _post } from '../../utils/api';
 import { timeStringValidate } from '../../utils/validation';
-import { hoursToDecimal } from '../../utils/common';
+import { decreaseItem, hoursToDecimal, removeItem } from '../../utils/common';
 
 export interface Phase {
   title: string;
@@ -44,7 +44,9 @@ const FixedProjectManage = () => {
   const [fixedFormData, setFixedFormData] = useState<any>({
     phase: [],
   });
-  const [milestoneIndex, setMilestoneIndex] = useState<null | number>(null);
+  const [tempData, setTempData] = useState<Phase[]>([]);
+  const [milestoneIndex, setMilestoneIndex] = useState<number | null>(null);
+  const [editIndex, setEditIndex] = useState<number[]>([]);
   const [isVisibleIndex, setIsVisibleIndex] = useState<null | number>(null);
   const { projectId } = useParams();
   const toast = useToast();
@@ -61,17 +63,21 @@ const FixedProjectManage = () => {
     setIsVisibleIndex(null);
   };
 
-  const handleCancel = async (index: number) => {
-    const res = await _get(`api/projects/${projectId}`);
-    const temp = res.data.project.milestones;
-    const list: any = [...fixedFormData.phase];
+  const handleCancel = (index: number) => {
+    // const res = await _get(`api/projects/${projectId}`);
+    const temp: Phase[] = tempData;
+    const list: Phase[] = fixedFormData.phase;
+
     if (index <= temp.length - 1) {
       list[index]['title'] = temp[index]['title'];
-      list[index]['budget'] = temp[index]['budget'];
-    } else if (index === temp.length && list[index]['title'] !== '') {
-      list[index]['title'] = '';
-      list[index]['budget'] = '';
-      list.pop();
+      list[index]['budget'] = temp[index]['budget']
+        ? hoursToDecimal(temp[index]['budget']).toFixed(2)
+        : '';
+      setEditIndex(removeItem(editIndex, index));
+    }
+    if (index >= temp.length) {
+      list.splice(index, 1);
+      setEditIndex(decreaseItem(editIndex, index, temp.length));
     }
     setMilestoneIndex(null);
     setFixedFormData({ phase: list });
@@ -83,21 +89,19 @@ const FixedProjectManage = () => {
   ) => {
     const { name, value }: { name: string; value: string } = e.target;
     const list: any = [...fixedFormData.phase];
+    if (editIndex.indexOf(index) < 0) {
+      setEditIndex((editIndex) => [...editIndex, index]);
+    }
     list[index][name] = value;
     if (value.length === 1 && list[list.length - 1]['title'] !== '') {
       setFixedFormData({
         ...fixedFormData,
         phase: [...list, { title: '', budget: '' }],
       });
-    } else if (
-      value.length === 0 &&
-      list[list.length - 1]['title'] === '' &&
-      list[list.length - 1]['budget'] !== ''
-    ) {
+    } else if (value === '' && list[list.length - 1]['title'] === '') {
       list.pop();
       setFixedFormData({ ...fixedFormData, phase: list });
     } else {
-      setFixedFormData({ phase: list });
       setFixedFormData({ ...fixedFormData, phase: list });
     }
     if (name === 'budget') {
@@ -111,13 +115,14 @@ const FixedProjectManage = () => {
 
   const fetchProject = async () => {
     const res = await _get(`api/projects/${projectId}`);
-    const milestoneArray = res.data.project.milestones.map((mile: any) => ({
+    const milestoneArray = res.data.project.milestones.map((mile: Phase) => ({
       ...mile,
       budget: mile.budget ? hoursToDecimal(mile.budget).toFixed(2) : '',
     }));
     setFixedFormData({
       phase: [...milestoneArray, { title: '', budget: '' }],
     });
+    setTempData(res.data.project.milestones);
   };
 
   const focusHandler = (index: number) => {
@@ -180,6 +185,7 @@ const FixedProjectManage = () => {
       });
       fetchProject();
       setMilestoneIndex(null);
+      setEditIndex(removeItem(editIndex, index));
     } catch (err) {
       err &&
         toast({
@@ -320,7 +326,7 @@ const FixedProjectManage = () => {
                                 </button>
                               </Box>
                             )}
-                          {milestoneIndex === index && (
+                          {editIndex.indexOf(index) > -1 && (
                             <Flex alignItems='center'>
                               <Box display='flex' pr='7px' title='Save'>
                                 <button type='submit' className='form-btn'>
@@ -341,6 +347,7 @@ const FixedProjectManage = () => {
                             display={
                               isVisibleIndex === index &&
                               milestoneIndex !== index &&
+                              editIndex.indexOf(index) < 0 &&
                               fixedFormData.phase.length - 1 !== index
                                 ? 'flex'
                                 : 'none'
