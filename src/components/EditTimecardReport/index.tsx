@@ -549,7 +549,7 @@ const EditTimecardReport = ({ timeLogId, onClose }: Props) => {
                 _focus={{
                   boxShadow: '0 0 0 2px #3182ce',
                 }}
-                placeholder='07:30'
+                placeholder='1.5'
                 fontSize='14px'
                 textStyle='sourceSansProRegular'
                 lineHeight='17.6px'

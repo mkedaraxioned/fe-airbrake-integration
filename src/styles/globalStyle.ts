@@ -1,4 +1,7 @@
 export const styles = {
+  body: {
+    fontFamily: `'Source Sans Pro', sans-serif`,
+  },
   '.wrapper': {
     maxWidth: '1410px',
     width: '94%',

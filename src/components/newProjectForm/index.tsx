@@ -229,7 +229,11 @@ const NewProjectForm = ({ onClose, projectId, setMyProjects }: Props) => {
         fetchProjects();
         toast({
           title: 'Project',
-          description: 'New project created successfully.',
+          description: `${
+            projectId
+              ? 'Project has been updated'
+              : 'New project created successfully.'
+          }`,
           status: 'success',
           duration: 2000,
           position: 'top-right',

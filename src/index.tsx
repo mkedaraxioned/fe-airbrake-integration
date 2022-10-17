@@ -5,7 +5,6 @@ import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import { App } from './App';
 import { costomTheme } from './styles/theme';
-import '@fontsource/source-sans-pro';
 import { persistor, store } from './redux';
 
 ReactDOM.render(

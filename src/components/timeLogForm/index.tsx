@@ -35,10 +35,16 @@ import { allProjects } from '../../redux/reducers/projectsSlice';
 interface Props {
   formData: TimeLogFormData;
   setFormData: any;
+  setRecentlyUsedFlag: (val: boolean) => void;
   recentlyUsedFlag: boolean;
 }
 
-const TimeLogFrom = ({ formData, setFormData, recentlyUsedFlag }: Props) => {
+const TimeLogFrom = ({
+  formData,
+  setFormData,
+  recentlyUsedFlag,
+  setRecentlyUsedFlag,
+}: Props) => {
   const { timeCardId } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -100,7 +106,7 @@ const TimeLogFrom = ({ formData, setFormData, recentlyUsedFlag }: Props) => {
   }, [formData.date]);
 
   useEffect(() => {
-    if (projectType === EProjectType.FIXED && !milestoneData.length) {
+    if (formData.projectId && !milestoneData.length) {
       setErrorMsg({
         ...errorMsg,
         milestone:
@@ -209,6 +215,7 @@ const TimeLogFrom = ({ formData, setFormData, recentlyUsedFlag }: Props) => {
     setProjectType(null);
     setFormData({ ...resetFormData, projectId: '' });
     navigate('/');
+    setRecentlyUsedFlag(false);
   };
 
   const fetchTaskDetail = async (id: string) => {
@@ -526,7 +533,7 @@ const TimeLogFrom = ({ formData, setFormData, recentlyUsedFlag }: Props) => {
                 _focus={{
                   boxShadow: '0 0 0 2px #3182ce',
                 }}
-                placeholder='07:30'
+                placeholder='1.5'
                 fontSize='14px'
                 textStyle='sourceSansProRegular'
                 lineHeight='17.6px'

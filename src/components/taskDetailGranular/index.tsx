@@ -344,10 +344,10 @@ const TaskDetailGranular = ({
               })
             ) : (
               <Box
-                p='12px 32px'
+                p='12px 25px'
                 borderBottom='1px'
                 borderColor='borderColor'
-                fontSize='16px'
+                fontSize='14px'
                 textStyle='sourceSansProRegular'
                 lineHeight='17.6px'
               >
