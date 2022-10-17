@@ -1,5 +1,4 @@
 import { format } from 'date-fns';
-import { FaTemperatureHigh } from 'react-icons/fa';
 
 export interface ClientSet {
   name: string;
