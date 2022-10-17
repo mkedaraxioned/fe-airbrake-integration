@@ -76,17 +76,12 @@ export const hoursToDecimal = (val: string) => {
 };
 
 export const removeItem = (arr: number[], index: number) => {
-  console.log(arr, 'before remove');
-
   arr.splice(arr.indexOf(index), 1);
   const list = arr;
-  console.log(list, 'after remove');
   return list;
 };
 
 export const decreaseItem = (arr: number[], index: number, length: number) => {
-  console.log(arr, 'before dec');
-
   let list: number[] = [];
   arr.splice(arr.indexOf(index), 1);
   list = arr.map((item) => {
@@ -96,6 +91,5 @@ export const decreaseItem = (arr: number[], index: number, length: number) => {
       return item;
     }
   });
-  console.log(list, 'after dec');
   return list;
 };

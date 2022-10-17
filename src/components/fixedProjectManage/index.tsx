@@ -64,7 +64,6 @@ const FixedProjectManage = () => {
   };
 
   const handleCancel = (index: number) => {
-    // const res = await _get(`api/projects/${projectId}`);
     const temp: Phase[] = tempData;
     const list: Phase[] = fixedFormData.phase;
 
@@ -125,6 +124,17 @@ const FixedProjectManage = () => {
     setTempData(res.data.project.milestones);
   };
 
+  const fetchTempProject = async (index: number) => {
+    const res = await _get(`api/projects/${projectId}`);
+    const temp = res.data.project.milestones;
+    setTempData(temp);
+    const list: Phase[] = fixedFormData.phase;
+    list[index]['budget'] = temp[index]['budget']
+      ? hoursToDecimal(temp[index]['budget']).toFixed(2)
+      : '';
+    setFixedFormData({ phase: list });
+  };
+
   const focusHandler = (index: number) => {
     setMilestoneIndex(index);
   };
@@ -133,14 +143,11 @@ const FixedProjectManage = () => {
     id: string | undefined,
     phaseIndex: number,
   ) => {
-    const filterPhase = fixedFormData.phase?.filter(
-      (_: { title: string; budget: string }, index: number) =>
-        index !== phaseIndex,
-    );
+    const filterPhase = fixedFormData.phase;
+    filterPhase[phaseIndex]['isDeleted'] = true;
     setFixedFormData({ phase: filterPhase });
     if (id) {
       await _patch(`api/milestones/${id}`, { isDeleted: true });
-      await fetchProject();
     }
   };
 
@@ -183,7 +190,7 @@ const FixedProjectManage = () => {
         position: 'top-right',
         isClosable: true,
       });
-      fetchProject();
+      fetchTempProject(index);
       setMilestoneIndex(null);
       setEditIndex(removeItem(editIndex, index));
     } catch (err) {

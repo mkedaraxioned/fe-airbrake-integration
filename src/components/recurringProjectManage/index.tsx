@@ -95,11 +95,30 @@ const RecurringProjectManage = ({ projectType }: { projectType: string }) => {
     }
   };
 
+  const fetchTempProject = async (taskChange: boolean, index: number) => {
+    const res = await _get(`api/projects/${projectId}`);
+    if (taskChange) {
+      const temp = res.data.project.tasks;
+      const taskList: Phase[] = recurringFormData.tasks;
+      taskList[index]['budget'] = temp[index]['budget']
+        ? hoursToDecimal(temp[index]['budget']).toFixed(2)
+        : '';
+      setTempFormData({ ...recurringFormData, tasks: temp });
+      setRecurringFormData({ ...recurringFormData, tasks: taskList });
+    } else {
+      const temp = res.data.project.milestones;
+      const mileList: Phase[] = recurringFormData.tasks;
+      mileList[index]['budget'] = temp[index]['budget']
+        ? hoursToDecimal(temp[index]['budget']).toFixed(2)
+        : '';
+      setTempFormData({ ...recurringFormData, milestone: temp });
+      setRecurringFormData({ ...recurringFormData, milestone: mileList });
+    }
+  };
+
   const removeTaskControls = async (id: string, taskIndex: number) => {
-    const filterTask = recurringFormData.tasks.filter(
-      (_: { title: string; budget: string }, index: number) =>
-        index !== taskIndex,
-    );
+    const filterTask = recurringFormData.tasks;
+    filterTask[taskIndex]['isDeleted'] = true;
     setRecurringFormData({
       ...recurringFormData,
       tasks: filterTask,
@@ -185,7 +204,6 @@ const RecurringProjectManage = ({ projectType }: { projectType: string }) => {
   };
 
   const handleMilestoneCancel = (index: number) => {
-    // const res = await _get(`api/projects/${projectId}`);
     const temp: Phase[] = tempFormData.milestone;
     const list: Phase[] = recurringFormData.milestone;
     list[index]['title'] = temp[index]['title'];
@@ -198,15 +216,8 @@ const RecurringProjectManage = ({ projectType }: { projectType: string }) => {
   };
 
   const handleTaskCancel = (index: number) => {
-    // const res = await _get(`api/projects/${projectId}`);
     const temp: Phase[] = tempFormData.tasks;
     const list: Phase[] = recurringFormData.tasks;
-    console.log(
-      index <= temp.length - 1,
-      index >= temp.length,
-      temp.length - 1,
-      list.length - 1,
-    );
     if (index <= temp.length - 1) {
       list[index]['title'] = temp[index]['title'];
       list[index]['budget'] = temp[index]['budget']
@@ -246,7 +257,6 @@ const RecurringProjectManage = ({ projectType }: { projectType: string }) => {
     } else if (timeStringValidate(budget)) {
       errors.budgetEr = 'Please enter valid budget';
     }
-
     return errors;
   };
 
@@ -269,7 +279,7 @@ const RecurringProjectManage = ({ projectType }: { projectType: string }) => {
       } else {
         throw 'Milestone Not saved';
       }
-      await fetchProject();
+      await fetchTempProject(true, index);
       toast({
         title: 'Task',
         description: 'Task successfully saved.',
@@ -305,7 +315,7 @@ const RecurringProjectManage = ({ projectType }: { projectType: string }) => {
       const notValid = fieldValidation(title, budget);
       if (id && Object.values(notValid).length <= 0) {
         await _patch(`api/milestones/${id}`, { title, budget });
-        await fetchProject();
+        await fetchTempProject(false, index);
         toast({
           title: 'Milestone',
           description: 'Milestone successfully saved.',
