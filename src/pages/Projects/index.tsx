@@ -87,18 +87,6 @@ const Projects = () => {
         setChecked(false);
         filterVal && insertUrlParam('show', `${filterVal.show}`);
       }
-
-      if (filterVal.search) {
-        setSearchVal(filterVal.search);
-        filterVal.project !== '' &&
-          insertUrlParam('project', filterVal.search.toLowerCase());
-      }
-
-      if (filterVal.type) {
-        setType(filterVal.type.toLowerCase());
-        filterVal.type !== '' &&
-          insertUrlParam('type', filterVal.type.toLowerCase());
-      }
     }
   };
 
@@ -112,14 +100,14 @@ const Projects = () => {
       if (clientMatch) {
         temp = temp?.filter(
           (project: { title: string; client: any }) =>
-            project?.client.name.toLowerCase() === searchVal.toLowerCase(),
+            project?.client?.name?.toLowerCase() === searchVal.toLowerCase(),
         );
       } else {
         temp = temp?.filter(
           (project: { title: string; client: any }) =>
-            project?.title.toLowerCase().includes(searchVal.toLowerCase()) ||
-            project?.client.name
-              .toLowerCase()
+            project?.title?.toLowerCase().includes(searchVal.toLowerCase()) ||
+            project?.client?.name
+              ?.toLowerCase()
               .includes(searchVal.toLowerCase()),
         );
       }
@@ -155,13 +143,11 @@ const Projects = () => {
   const handleSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setType(e.currentTarget.value);
     insertUrlParam('type', e.currentTarget.value);
-    dispatch(filterFunc({ ...filterVal, type: e.currentTarget.value }));
   };
 
   const handleInput = (ele: React.ChangeEvent<HTMLInputElement>) => {
     setSearchVal(ele.currentTarget.value);
     insertUrlParam('search', ele.currentTarget.value);
-    dispatch(filterFunc({ ...filterVal, search: ele.currentTarget.value }));
   };
 
   const fetchMyProjects = async () => {
