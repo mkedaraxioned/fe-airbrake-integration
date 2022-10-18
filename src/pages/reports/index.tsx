@@ -52,6 +52,7 @@ const Reports = () => {
     users: [],
     clients: [],
   });
+  const [printData, setPrintData] = useState<any>({});
   const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
@@ -77,6 +78,17 @@ const Reports = () => {
     }
   }, [searchQueryValues]);
 
+  const fetchPrintData = async () => {
+    try {
+      const res = await _get(
+        `api/reports/pdf?startDate=${searchQueryValues.startDate}&endDate=${searchQueryValues.endDate}&groupBy=${searchQueryValues.groupBy}&billableType=${searchQueryValues.billableType}&clientId=${searchQueryValues.clientId}&projectId=${searchQueryValues.projectId}&userId=${searchQueryValues.userId}`,
+      );
+      if (res.data.pdfReport) setPrintData(res.data.pdfReport);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   const fetchReportData = async () => {
     try {
       setLoaded(true);
@@ -86,6 +98,7 @@ const Reports = () => {
       );
       if (res?.data.data) {
         setFilteredData(res.data.data);
+        fetchPrintData();
       }
       setLoaded(false);
     } catch (error) {
@@ -261,7 +274,7 @@ const Reports = () => {
         </Box>
         {!isPrinting && (
           <PrintReport
-            filteredData={filteredData}
+            printData={printData}
             searchQueryValues={searchQueryValues}
             isPrinting={isPrinting}
             ref={componentRef}

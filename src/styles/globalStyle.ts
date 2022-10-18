@@ -39,6 +39,14 @@ export const styles = {
       borderLeft: 'none',
     },
   },
+  '.printReport li div': {
+    border: '1px solid #E2E8F0',
+    borderBottom: 'none',
+  },
+  '.printReport li div:last-child': {
+    borderTop: 'none',
+    borderBottom: '1px solid #E2E8F0',
+  },
   '.react-datepicker-popper': {
     zIndex: '4 !important',
   },
