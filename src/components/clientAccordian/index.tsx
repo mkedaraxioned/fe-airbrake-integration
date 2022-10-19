@@ -9,7 +9,7 @@ import {
 } from '@chakra-ui/react';
 import React from 'react';
 import { ReactComponent as PlusSvg } from '../../assets/images/plusSvg.svg';
-import { ReactComponent as MinusSvg } from '../../assets/images/minusSvg.svg';
+import { ReactComponent as MinusSvgWhite } from '../../assets/images/minusWhite.svg';
 import ReportProjectDetails from '../ReportProjectDetails';
 import { minutesToDecimal } from '../../utils/common';
 
@@ -52,7 +52,7 @@ const ClientAccordian = ({ projects }: any) => {
                       <Flex>
                         <Box mr='10px'>
                           {isExpanded ? (
-                            <MinusSvg fontSize='10px' />
+                            <MinusSvgWhite fontSize='10px' />
                           ) : (
                             <PlusSvg fontSize='10px' />
                           )}

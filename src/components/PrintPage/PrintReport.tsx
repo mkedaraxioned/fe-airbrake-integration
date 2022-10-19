@@ -1,6 +1,8 @@
 import { Box, Flex, Text, List, ListItem } from '@chakra-ui/react';
 import { format } from 'date-fns';
 import React, { forwardRef, LegacyRef } from 'react';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../redux';
 import { minutesToDecimal } from '../../utils/common';
 
 interface Props {
@@ -13,6 +15,10 @@ const PrintReport = forwardRef(
     { printData, isPrinting }: Props,
     ref: LegacyRef<HTMLDivElement> | undefined,
   ) => {
+    const { users } = useSelector(
+      (state: RootState) => state.rootSlices.allUsers,
+    );
+
     return (
       <Box display='none'>
         <Box m='20px 0 40px'>
@@ -42,12 +48,18 @@ const PrintReport = forwardRef(
                       'MMMM dd, yyyy',
                     )}`}</Text>
                     {client.projects.map((project: any, index: number) => {
+                      console.log(
+                        project,
+                        'project',
+                        project.client?.name,
+                        'project.client?.name',
+                      );
                       if (project.logTime === 0) return null;
                       return (
                         <Box m='15px 0 30px' key={index}>
                           <Flex
                             p='13px 53px 13px 28px'
-                            color='textColor'
+                            color='white'
                             justifyContent='space-between'
                             textStyle='sourceSansProBold'
                             textAlign='left'
@@ -58,7 +70,18 @@ const PrintReport = forwardRef(
                             borderColor='borderColor'
                             bg='accordianChildBg'
                           >
-                            <Text lineHeight='20.11px'>{project.title}</Text>
+                            <Text lineHeight='20.11px'>
+                              {project.title}
+                              {project.client?.name && (
+                                <Text
+                                  color='white'
+                                  textStyle='sourceSansProRegular'
+                                  as='span'
+                                >
+                                  {` (${project.client.name})`}
+                                </Text>
+                              )}
+                            </Text>
                             <Text lineHeight='20.11px'>
                               {minutesToDecimal(project.logTime)}
                             </Text>
@@ -113,6 +136,12 @@ const PrintReport = forwardRef(
                                                   timecard: any,
                                                   index: number,
                                                 ) => {
+                                                  const user = users?.find(
+                                                    (user: { id: string }) =>
+                                                      user.id ===
+                                                      timecard.userId,
+                                                  );
+
                                                   return (
                                                     <ListItem key={index}>
                                                       <Flex
@@ -125,7 +154,7 @@ const PrintReport = forwardRef(
                                                           lineHeight='17.6px'
                                                           flexBasis='22%'
                                                         >
-                                                          {timecard.userId}
+                                                          {user.name}
                                                         </Text>
                                                         <Text
                                                           lineHeight='17.6px'

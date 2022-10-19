@@ -47,7 +47,7 @@ const ReportProjectDetails = ({ usersData }: any) => {
                         justifyContent='space-between'
                         color='grayLight'
                         outline='none'
-                        bg={isExpanded ? 'accordianChildBg' : ''}
+                        bg={isExpanded ? '#E2E8F0' : ''}
                         fontSize='14px'
                         textStyle='sourceSansProRegular'
                         lineHeight='17.6px'
@@ -56,9 +56,7 @@ const ReportProjectDetails = ({ usersData }: any) => {
                           borderBottom: '0',
                         }}
                         _hover={{
-                          backgroundColor: `${
-                            isExpanded ? 'accordianChildBg' : ''
-                          }`,
+                          backgroundColor: `${isExpanded ? '#E2E8F0' : ''}`,
                         }}
                       >
                         <Flex>
@@ -67,12 +65,8 @@ const ReportProjectDetails = ({ usersData }: any) => {
                           </Box>
                           <Box>
                             <Text
-                              color={isExpanded ? 'white' : 'grayLight'}
-                              textStyle={
-                                isExpanded
-                                  ? 'sourceSansProBold'
-                                  : 'sourceSansProRegular'
-                              }
+                              color='grayLight'
+                              textStyle='sourceSansProRegular'
                               fontSize='14px'
                               lineHeight='17.6px'
                             >
@@ -82,12 +76,8 @@ const ReportProjectDetails = ({ usersData }: any) => {
                         </Flex>
                         <Box>
                           <Text
-                            color={isExpanded ? 'white' : 'grayLight'}
-                            textStyle={
-                              isExpanded
-                                ? 'sourceSansProBold'
-                                : 'sourceSansProRegular'
-                            }
+                            color='grayLight'
+                            textStyle='sourceSansProRegular'
                           >
                             {minutesToDecimal(user.logTime)}
                           </Text>

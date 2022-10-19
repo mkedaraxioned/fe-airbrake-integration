@@ -53,6 +53,7 @@ const EditTimecardReport = ({ timeLogId, onClose }: Props) => {
   const [userName, setUserName] = useState<string>('');
   const toast = useToast();
   const [projectType, setProjectType] = useState<EProjectType | null>(null);
+  const [isProjectBillable, setIsProjectBillable] = useState<boolean>(true);
   const [projectStartDate, setProjectStartDate] = useState('');
   const [taskNode, setTaskNode] = useState([]);
   const [milestoneData, setMilestoneData] = useState([]);
@@ -72,6 +73,12 @@ const EditTimecardReport = ({ timeLogId, onClose }: Props) => {
   useEffect(() => {
     selectOptionData();
   }, [formData.projectId, formData.date, milestoneData, projects]);
+
+  useEffect(() => {
+    if (!isProjectBillable) {
+      setFormData({ ...formData, billingType: isProjectBillable });
+    }
+  }, [isProjectBillable]);
 
   useEffect(() => {
     if (!formData.logTime) return;
@@ -107,6 +114,7 @@ const EditTimecardReport = ({ timeLogId, onClose }: Props) => {
       (project: { id: string }) => project.id === formData.projectId,
     );
     if (project) {
+      setIsProjectBillable(project.billingType);
       setTaskNode(project.tasks);
       setMilestoneData(project.milestones);
       setProjectType(project.type);
@@ -615,6 +623,7 @@ const EditTimecardReport = ({ timeLogId, onClose }: Props) => {
                 border: 'none',
               },
             }}
+            isDisabled={!isProjectBillable ? true : false}
           >
             <Text fontSize='14px' color='grayLight'>
               Billable
