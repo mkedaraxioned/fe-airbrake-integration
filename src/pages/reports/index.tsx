@@ -272,10 +272,9 @@ const Reports = () => {
             })}
           </Box>
         </Box>
-        {!isPrinting && (
+        {isPrinting && (
           <PrintReport
             printData={printData}
-            searchQueryValues={searchQueryValues}
             isPrinting={isPrinting}
             ref={componentRef}
           />
