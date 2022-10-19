@@ -106,6 +106,7 @@ const ReportProjectDetails = ({ usersData }: any) => {
                                   <Text
                                     _hover={{ textDecor: 'underline' }}
                                     onClick={() => editTimeCard(timecard.id)}
+                                    cursor='pointer'
                                   >
                                     <EditSvg />
                                   </Text>

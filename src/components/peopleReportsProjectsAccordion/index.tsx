@@ -138,7 +138,7 @@ const PeopleReportsProjectsAccordion = ({ projects }: any) => {
                                 )}
                               </Text>
                             </Flex>
-                            <Text flexBasis='62%'>{timecard.comments}</Text>
+                            <Text flexBasis='62%'>{timecard.comments}dd</Text>
                             <Text flexBasis='10%' textAlign='right'>
                               {minutesToDecimal(timecard.logTime)}
                             </Text>
