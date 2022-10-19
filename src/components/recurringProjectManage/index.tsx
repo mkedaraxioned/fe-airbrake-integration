@@ -15,13 +15,14 @@ import React, { useEffect, useState } from 'react';
 import { ReactComponent as DeleteSvg } from '../../assets/images/deletetask.svg';
 import { ReactComponent as CloseSvg } from '../../assets/images/xv2.svg';
 import { ReactComponent as ArchiveSvg } from '../../assets/images/archiveSVG.svg';
-import { ReactComponent as CheckGreySvg } from '../../assets/images/checkGray.svg';
 import { ReactComponent as CheckGreenSvg } from '../../assets/images/checkv2.svg';
 import { timeStringValidate } from '../../utils/validation';
 import { _get, _patch, _post } from '../../utils/api';
 import { useParams } from 'react-router';
 import { decreaseItem, hoursToDecimal, removeItem } from '../../utils/common';
 import { Phase } from '../fixedProjectManage';
+import { useNavigatingAway } from '../../hooks/useNavigatingAway';
+import { DialogLeavingPage } from '../DialogLeavingPage';
 
 export interface RecurringProjectError {
   milestoneEr?: string;
@@ -47,22 +48,22 @@ const RecurringProjectManage = ({ projectType }: { projectType: string }) => {
   const [taskErr, setTaskErr] = useState<Err>({});
   const [isVisibleIndex, setIsVisibleIndex] = useState<null | number>(null);
   const [taskIndex, setTaskIndex] = useState<null | number>(null);
-  const [milestoneIndex, setMilestoneIndex] = useState<null | number>(null);
   const [showMilestoneCount, setShowMilestoneCount] = useState(6);
   const [milestoneEdit, setMilestoneEdit] = useState<number[]>([]);
   const [taskEdit, setTaskEdit] = useState<number[]>([]);
   const { tasks, milestone } = recurringFormData;
   const { projectId } = useParams();
   const toast = useToast();
+  const [canShowDialogLeavingPage, setCanShowDialogLeavingPage] =
+    useState<any>(false);
+  const [showDialogLeavingPage, confirmNavigation, cancelNavigation] =
+    useNavigatingAway(canShowDialogLeavingPage);
+
   const over = (index: number) => {
     setIsVisibleIndex(index);
   };
   const focusHandler = (index: number) => {
     setTaskIndex(index);
-  };
-
-  const focusHandlerInput = (index: number) => {
-    setMilestoneIndex(index);
   };
 
   const out = () => {
@@ -72,6 +73,14 @@ const RecurringProjectManage = ({ projectType }: { projectType: string }) => {
   useEffect(() => {
     fetchProject();
   }, []);
+
+  useEffect(() => {
+    if (taskEdit.length > 0 || milestoneEdit.length > 0) {
+      setCanShowDialogLeavingPage(true);
+    } else if (!taskEdit.length || !milestoneEdit.length) {
+      setCanShowDialogLeavingPage(false);
+    }
+  }, [taskEdit, milestoneEdit]);
 
   const fetchProject = async () => {
     if (projectId) {
@@ -212,7 +221,6 @@ const RecurringProjectManage = ({ projectType }: { projectType: string }) => {
       : '';
     setRecurringFormData({ ...recurringFormData, milestone: list });
     setMilestoneEdit(removeItem(milestoneEdit, index));
-    setMilestoneIndex(null);
   };
 
   const handleTaskCancel = (index: number) => {
@@ -324,7 +332,6 @@ const RecurringProjectManage = ({ projectType }: { projectType: string }) => {
           position: 'top-right',
           isClosable: true,
         });
-        setMilestoneIndex(null);
         setMilestoneEdit(removeItem(milestoneEdit, index));
       } else {
         throw 'Milestone Not saved';
@@ -347,6 +354,12 @@ const RecurringProjectManage = ({ projectType }: { projectType: string }) => {
       justifyContent='space-between'
       divider={<StackDivider />}
     >
+      <DialogLeavingPage
+        showDialog={showDialogLeavingPage}
+        setShowDialog={setCanShowDialogLeavingPage}
+        confirmNavigation={confirmNavigation}
+        cancelNavigation={cancelNavigation}
+      />
       <Box p='22px 0'>
         <Flex
           justifyContent='space-between'
@@ -388,7 +401,6 @@ const RecurringProjectManage = ({ projectType }: { projectType: string }) => {
                               type='text'
                               name='title'
                               value={_.title}
-                              onFocus={() => focusHandlerInput(index)}
                               onChange={(e) =>
                                 handleInputChangeMilestone(e, index)
                               }
@@ -420,7 +432,6 @@ const RecurringProjectManage = ({ projectType }: { projectType: string }) => {
                               textStyle='inputTextStyle'
                               placeholder='Hrs'
                               value={_.budget}
-                              onFocus={() => focusHandlerInput(index)}
                               name='budget'
                               onChange={(e) =>
                                 handleInputChangeMilestone(e, index)
@@ -439,20 +450,6 @@ const RecurringProjectManage = ({ projectType }: { projectType: string }) => {
                             )}
                           </FormControl>
                         </Flex>
-                        {milestoneIndex !== index &&
-                          milestoneEdit.indexOf(index) < 0 &&
-                          index === recurringFormData.milestone.length - 1 && (
-                            <Box pl='10px'>
-                              <button
-                                type='submit'
-                                disabled
-                                className='not-allowed form-btn'
-                              >
-                                {' '}
-                                <CheckGreySvg />
-                              </button>
-                            </Box>
-                          )}
                         {milestoneEdit.indexOf(index) > -1 && (
                           <Flex alignItems='center'>
                             <Box
@@ -605,18 +602,6 @@ const RecurringProjectManage = ({ projectType }: { projectType: string }) => {
                                 </FormErrorMessage>
                               )}
                             </FormControl>
-                            {taskIndex !== index && index === tasks.length - 1 && (
-                              <Box>
-                                <button
-                                  type='submit'
-                                  disabled
-                                  className='not-allowed form-btn'
-                                >
-                                  {' '}
-                                  <CheckGreySvg />
-                                </button>
-                              </Box>
-                            )}
                             {taskEdit.indexOf(index) > -1 && (
                               <Flex alignItems='center'>
                                 <Box

@@ -13,12 +13,13 @@ import {
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 import { ReactComponent as DeleteSvg } from '../../assets/images/deletetask.svg';
-import { ReactComponent as CheckGreySvg } from '../../assets/images/checkGray.svg';
 import { ReactComponent as CloseSvg } from '../../assets/images/xv2.svg';
 import { ReactComponent as CheckGreenSvg } from '../../assets/images/checkv2.svg';
 import { _get, _patch, _post } from '../../utils/api';
 import { timeStringValidate } from '../../utils/validation';
 import { decreaseItem, hoursToDecimal, removeItem } from '../../utils/common';
+import { useNavigatingAway } from '../../hooks/useNavigatingAway';
+import { DialogLeavingPage } from '../DialogLeavingPage';
 
 export interface Phase {
   title: string;
@@ -50,10 +51,24 @@ const FixedProjectManage = () => {
   const [isVisibleIndex, setIsVisibleIndex] = useState<null | number>(null);
   const { projectId } = useParams();
   const toast = useToast();
+  const [canShowDialogLeavingPage, setCanShowDialogLeavingPage] =
+    useState<any>(false);
+  const [showDialogLeavingPage, confirmNavigation, cancelNavigation] =
+    useNavigatingAway(canShowDialogLeavingPage);
 
   useEffect(() => {
     fetchProject();
   }, []);
+
+  useEffect(() => {
+    console.log(editIndex.length);
+
+    if (editIndex.length) {
+      setCanShowDialogLeavingPage(true);
+    } else {
+      setCanShowDialogLeavingPage(false);
+    }
+  }, [editIndex]);
 
   const over = (index: number) => {
     setIsVisibleIndex(index);
@@ -208,6 +223,12 @@ const FixedProjectManage = () => {
 
   return (
     <Box padding='15px 0'>
+      <DialogLeavingPage
+        showDialog={showDialogLeavingPage}
+        setShowDialog={setCanShowDialogLeavingPage}
+        confirmNavigation={confirmNavigation}
+        cancelNavigation={cancelNavigation}
+      />
       <Flex w='562px' justifyContent='space-between'>
         <HStack
           flexBasis='69%'
@@ -320,19 +341,6 @@ const FixedProjectManage = () => {
                               </FormErrorMessage>
                             )}
                           </FormControl>
-                          {milestoneIndex !== index &&
-                            index === fixedFormData.phase.length - 1 && (
-                              <Box>
-                                <button
-                                  type='submit'
-                                  disabled
-                                  className='not-allowed form-btn'
-                                >
-                                  {' '}
-                                  <CheckGreySvg />
-                                </button>
-                              </Box>
-                            )}
                           {editIndex.indexOf(index) > -1 && (
                             <Flex alignItems='center'>
                               <Box display='flex' pr='7px' title='Save'>

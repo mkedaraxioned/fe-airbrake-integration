@@ -75,9 +75,14 @@ export const hoursToDecimal = (val: string) => {
 };
 
 export const removeItem = (arr: number[], index: number) => {
+  let list: number[] = [];
   arr.splice(arr.indexOf(index), 1);
-  const list = arr;
-  return list;
+  if (arr.length) {
+    list = arr;
+    return list;
+  } else {
+    return list;
+  }
 };
 
 export const decreaseItem = (arr: number[], index: number, length: number) => {
