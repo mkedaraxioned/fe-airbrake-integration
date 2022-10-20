@@ -117,7 +117,7 @@ const PrintMileStone = forwardRef(
                 <Flex
                   alignItems='center'
                   justifyContent='space-between'
-                  flexBasis={['55%', null, null, '50%', null, '45%']}
+                  flexBasis='37%'
                 >
                   <Flex alignItems='center'>
                     <Progress
@@ -140,21 +140,6 @@ const PrintMileStone = forwardRef(
                   </Flex>
                 </Flex>
               </Flex>
-            </Flex>
-            <Flex
-              p='8px 30px 8px 24px'
-              justifyContent='space-between'
-              bg='bgGray'
-              color='grayLight'
-              fontSize='14px'
-              textStyle='sourceSansProBold'
-              lineHeight='17.6px'
-            >
-              <Text flexBasis='20%'>Name</Text>
-              <Text flexBasis='60%'>Comments/Notes</Text>
-              <Text flexBasis='10%' textAlign={'right'}>
-                Hours
-              </Text>
             </Flex>
             <Accordion
               allowToggle

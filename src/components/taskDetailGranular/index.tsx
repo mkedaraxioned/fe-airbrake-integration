@@ -177,8 +177,8 @@ const TaskDetailGranular = ({
                             textStyle='sourceSansProBold'
                             lineHeight='17.6px'
                           >
-                            <Text flexBasis='25%'>Name</Text>
-                            <Text flexBasis='48%'>Comments/Notes</Text>
+                            <Text flexBasis='22%'>Name</Text>
+                            <Text flexBasis='51%'>Comments/Notes</Text>
                             <Text flexBasis='10%' textAlign={'right'}>
                               Hours
                             </Text>

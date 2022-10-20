@@ -141,15 +141,14 @@ const TaskDetail = ({ displayBlock, milestone, projectBasics }: Props) => {
           </Flex>
           <Flex
             p='8px 4% 8px 2%'
-            justifyContent='space-between'
             bg='bgGray'
             color='grayLight'
             fontSize='14px'
             textStyle='sourceSansProBold'
             lineHeight='17.6px'
           >
-            <Text flexBasis='29%'>Name</Text>
-            <Text flexBasis='48%'>Comments/Notes</Text>
+            <Text flexBasis='22%'>Name</Text>
+            <Text flexBasis='51%'>Comments/Notes</Text>
             <Text flexBasis='10%' textAlign={'right'}>
               Hours
             </Text>

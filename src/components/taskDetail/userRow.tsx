@@ -30,7 +30,7 @@ const UserRow = ({ activity, isPrinting, onOpen, setTimeLogId }: Props) => {
         justifyContent={isPrinting ? 'space-between' : 'initial'}
         borderTop={isPrinting ? '1px solid #E2E8F0' : '1px solid #E2E8F0'}
       >
-        <Flex flexBasis='20%'>
+        <Flex flexBasis='22%'>
           {!isPrinting && (
             <Text
               cursor='pointer'
@@ -43,8 +43,8 @@ const UserRow = ({ activity, isPrinting, onOpen, setTimeLogId }: Props) => {
             {format(new Date(activity.date), formatTimeCardDate)}
           </Text>
         </Flex>
-        <Text flexBasis='57%'>{activity.comments}</Text>
-        <Text pl='18px' flexBasis='10%' textAlign={'right'}>
+        <Text flexBasis='51%'>{activity.comments}</Text>
+        <Text flexBasis='10%' textAlign={'right'}>
           {minutesToDecimal(activity.logTime)}
         </Text>
         {isPrinting && (

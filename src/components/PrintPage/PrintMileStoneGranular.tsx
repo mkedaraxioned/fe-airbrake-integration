@@ -106,7 +106,7 @@ const PrintMileStoneGranular = forwardRef(
                 <Flex
                   alignItems='center'
                   justifyContent='space-between'
-                  flexBasis={['55%', null, null, '50%', null, '45%']}
+                  flexBasis='35%'
                 >
                   <Flex alignItems='center'>
                     <Progress
@@ -142,7 +142,8 @@ const PrintMileStoneGranular = forwardRef(
               }
             >
               {milestone?.tasks ? (
-                milestone?.tasks?.map((task: ProjectTask, id: number) => {
+                milestone?.tasks?.map((task: any, id: number) => {
+                  console.log(task, 'task');
                   return (
                     <AccordionItem key={id}>
                       {() => (
@@ -154,7 +155,7 @@ const PrintMileStoneGranular = forwardRef(
                               pl='25px'
                               display='flex'
                               justifyContent='space-between'
-                              bg='purpleLight'
+                              bg='bgGray'
                               color='grayLight'
                               fontSize='14px'
                               textStyle='sourceSansProRegular'
@@ -173,21 +174,6 @@ const PrintMileStoneGranular = forwardRef(
                             </AccordionButton>
                           </h2>
                           <AccordionPanel p='0'>
-                            <Flex
-                              p='8px 4% 8px 2%'
-                              justifyContent='space-between'
-                              bg='bgGray'
-                              color='grayLight'
-                              fontSize='14px'
-                              textStyle='sourceSansProBold'
-                              lineHeight='17.6px'
-                            >
-                              <Text flexBasis='25%'>Name</Text>
-                              <Text flexBasis='48%'>Comments/Notes</Text>
-                              <Text flexBasis='10%' textAlign={'right'}>
-                                Hours
-                              </Text>
-                            </Flex>
                             <Box>
                               <Accordion
                                 borderLeft={
