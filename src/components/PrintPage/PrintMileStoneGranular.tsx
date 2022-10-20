@@ -139,7 +139,6 @@ const PrintMileStoneGranular = forwardRef(
             >
               {milestone?.tasks ? (
                 milestone?.tasks?.map((task: any, id: number) => {
-                  console.log(task, 'task');
                   return (
                     <AccordionItem key={id}>
                       {() => (
