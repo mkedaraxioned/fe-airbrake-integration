@@ -398,6 +398,7 @@ const NewProjectForm = ({ onClose, projectId, setMyProjects }: Props) => {
                 border='1px'
                 borderColor='borderColor'
                 rounded='md'
+                overflow='hidden'
               >
                 <Stack
                   w='30%'
@@ -448,6 +449,7 @@ const NewProjectForm = ({ onClose, projectId, setMyProjects }: Props) => {
                   border='1px'
                   borderColor='borderColor'
                   rounded='md'
+                  overflow='hidden'
                 >
                   <Stack
                     w='30%'

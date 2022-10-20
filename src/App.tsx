@@ -41,11 +41,11 @@ export const App = () => {
                 path='/projects/:projectId/manage/'
                 element={<ManageTask />}
               />
-              <Route path='/dashboard/:timeCardId/' element={<Dashboard />} />
             </>
           )}
           {isLoggedIn && (
             <>
+              <Route path='/dashboard/:timeCardId/' element={<Dashboard />} />
               <Route path='/projects' element={<Projects />} />
               <Route path='/login' element={<Login />} />
               <Route path='/reports' element={<Reports />} />

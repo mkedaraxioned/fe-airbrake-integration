@@ -244,7 +244,6 @@ const TimeLogFrom = ({
       fetchTaskDetail(timeCardId);
     }
   }, [timeCardId]);
-
   const renderSelect = useCallback(() => {
     return (
       <CustomSelect
