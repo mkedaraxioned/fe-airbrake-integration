@@ -406,6 +406,7 @@ const NewProjectForm = ({ onClose, projectId, setMyProjects }: Props) => {
                   p='10px 0'
                   bg='grayColor'
                   color='grayLight'
+                  borderLeftRadius='md'
                 >
                   <AiOutlineCalendar fontSize='20px' />
                 </Stack>
@@ -457,6 +458,7 @@ const NewProjectForm = ({ onClose, projectId, setMyProjects }: Props) => {
                     p='10px 0'
                     bg='grayColor'
                     color='grayLight'
+                    borderLeftRadius='md'
                   >
                     <AiOutlineCalendar fontSize='20px' />
                   </Stack>
