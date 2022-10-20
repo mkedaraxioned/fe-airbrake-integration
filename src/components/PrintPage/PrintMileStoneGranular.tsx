@@ -13,11 +13,7 @@ import {
   Text,
 } from '@chakra-ui/react';
 import React, { LegacyRef } from 'react';
-import {
-  ProjectActivity,
-  ProjectTask,
-  ProjectUser,
-} from '../../interfaces/projectDetails';
+import { ProjectActivity, ProjectUser } from '../../interfaces/projectDetails';
 import {
   getIndexesBasedOnValues,
   minutesToDecimal,
