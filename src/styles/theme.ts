@@ -70,6 +70,7 @@ export const costomTheme = extendTheme({
     redLightBg: '#FFE5E5',
     bgPrimary: '#FBFBFC',
     reportCta: '#676767',
+    reportSubTitle: '#797979',
     bgSecondary: '#F9FAFB',
     bgLight: '#FDFDFD',
     bgGray: '#ECECEC',

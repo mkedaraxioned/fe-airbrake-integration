@@ -124,7 +124,6 @@ const ReportFilterForm = ({
   const selecttHandler = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const name = e.target.name;
     const value = e.target.value;
-    console.log(name, 'name');
     name === 'clientId'
       ? setFormData({ ...formData, [name]: value, projectId: '' })
       : setFormData({ ...formData, [name]: value });

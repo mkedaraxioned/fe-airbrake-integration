@@ -36,7 +36,7 @@ const usePrintHook = ({
         resolve(true);
       }, 300);
     });
-  }, [setIsPrinting]);
+  }, [isPrinting]);
 
   const handleBeforePrint = () => setIsPrinting(false);
 
